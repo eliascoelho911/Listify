@@ -156,13 +156,40 @@ validate_environment() {
 extract_plan_field() {
     local field_pattern="$1"
     local plan_file="$2"
+
+    # Escape regex meta characters in the field name (grep uses BRE).
+    local escaped_pattern
+    escaped_pattern=$(printf '%s' "$field_pattern" | sed 's/[][\\.^$*+?(){}|]/\\&/g')
     
-    grep "^\*\*${field_pattern}\*\*: " "$plan_file" 2>/dev/null | \
+    grep "^\*\*${escaped_pattern}\*\*: " "$plan_file" 2>/dev/null | \
         head -1 | \
-        sed "s|^\*\*${field_pattern}\*\*: ||" | \
+        sed "s|^\*\*${escaped_pattern}\*\*: ||" | \
         sed 's/^[ \t]*//;s/[ \t]*$//' | \
         grep -v "NEEDS CLARIFICATION" | \
         grep -v "^N/A$" || echo ""
+}
+
+extract_plan_field_any() {
+    local plan_file="$1"
+    shift
+
+    local field_pattern
+    for field_pattern in "$@"; do
+        local value
+        value=$(extract_plan_field "$field_pattern" "$plan_file")
+        if [[ -n "$value" ]]; then
+            echo "$value"
+            return 0
+        fi
+    done
+
+    echo ""
+}
+
+strip_inline_markdown() {
+    # Removes common inline Markdown formatting from extracted fields.
+    # (Keeps content stable across plan template variants.)
+    echo "$1" | sed 's/`//g'
 }
 
 parse_plan_data() {
@@ -180,10 +207,17 @@ parse_plan_data() {
     
     log_info "Parsing plan data from $plan_file"
     
-    NEW_LANG=$(extract_plan_field "Language/Version" "$plan_file")
-    NEW_FRAMEWORK=$(extract_plan_field "Primary Dependencies" "$plan_file")
-    NEW_DB=$(extract_plan_field "Storage" "$plan_file")
-    NEW_PROJECT_TYPE=$(extract_plan_field "Project Type" "$plan_file")
+    # Support both the original Specify template fields (English)
+    # and this repository's pt-BR plan conventions.
+    NEW_LANG=$(extract_plan_field_any "$plan_file" "Language/Version" "Linguagem/Versão" "Linguagem/Versao")
+    NEW_FRAMEWORK=$(extract_plan_field_any "$plan_file" "Primary Dependencies" "Dependências Principais" "Dependencias Principais")
+    NEW_DB=$(extract_plan_field_any "$plan_file" "Storage" "Armazenamento")
+    NEW_PROJECT_TYPE=$(extract_plan_field_any "$plan_file" "Project Type" "Tipo de Projeto" "Tipo do Projeto")
+
+    NEW_LANG=$(strip_inline_markdown "$NEW_LANG")
+    NEW_FRAMEWORK=$(strip_inline_markdown "$NEW_FRAMEWORK")
+    NEW_DB=$(strip_inline_markdown "$NEW_DB")
+    NEW_PROJECT_TYPE=$(strip_inline_markdown "$NEW_PROJECT_TYPE")
     
     # Log what we found
     if [[ -n "$NEW_LANG" ]]; then
@@ -796,4 +830,3 @@ main() {
 if [[ "${BASH_SOURCE[0]}" == "${0}" ]]; then
     main "$@"
 fi
-
