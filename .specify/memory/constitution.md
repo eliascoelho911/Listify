@@ -1,50 +1,112 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report
+- Version change: N/A (template) → 1.0.0
+- Modified principles: placeholders removidos e substituídos por princípios do Listify
+- Added sections: Diretrizes de Documentação e Linguagem; Workflow de Desenvolvimento e Qualidade
+- Removed sections: N/A
+- Templates requiring updates:
+  - .specify/templates/plan-template.md ✅ atualizado
+  - .specify/templates/spec-template.md ✅ atualizado
+  - .specify/templates/tasks-template.md ✅ atualizado
+  - .specify/templates/checklist-template.md ✅ atualizado
+  - .specify/templates/agent-file-template.md ✅ atualizado
+  - .codex/prompts/speckit.tasks.md ✅ atualizado
+- Follow-up TODOs: Nenhum
+-->
+
+# Listify Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Foco Inicial: Lista Única de Compras (Fase 1)
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+- O escopo inicial do produto MUST focar em uma lista única de mercado/compras.
+- Outros tipos de lista (filmes/séries, games, livros etc.) MUST ficar fora do escopo inicial e ir para Backlog.
+- Qualquer desvio desse foco MUST ser justificado em versão futura (ex.: v2) e planejado como entrega incremental.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+**Racional**: reduzir risco e atrito, garantindo utilidade imediata com uma base reaproveitável.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. Menos Atrito: Velocidade, Simplicidade e Clareza
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+- O fluxo principal (adicionar item) MUST ser executável em poucos segundos e com o mínimo de campos obrigatórios.
+- Em caso de dúvida entre “mais opções” e “menos atrito”, o produto MUST escolher “menos atrito”.
+- Fluxos críticos (adicionar, marcar, filtrar) MUST permanecer minimalistas e diretos.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+**Racional**: o valor do Listify depende de captura rápida e manutenção leve no dia a dia.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. Estado e Progresso Sempre Claros
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+- Cada item MUST ter estado inequívoco (ex.: pendente vs comprado).
+- O topo da lista SHOULD exibir resumo de progresso (pendentes vs concluídos).
+- Para compras, o topo da lista SHOULD exibir visão de gasto total quando houver preços informados.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Racional**: clareza de estado reduz retrabalho e dá feedback imediato de progresso.
+
+### IV. Offline-First e Operações Instantâneas
+
+- As operações principais (adicionar item, marcar como concluído, editar) MUST funcionar offline-first.
+- As operações principais MUST ser instantâneas do ponto de vista do usuário (sem travar UI).
+- Se existir sincronização, ela MUST ocorrer sem bloquear a UI e com tolerância a falhas.
+
+**Racional**: listas são usadas em contextos com conectividade instável; confiabilidade é parte do produto.
+
+### V. Entregas Incrementais e Versionadas
+
+- O produto MUST evoluir em versões claramente definidas (MVP → v1 → v1.x → v2…).
+- Toda spec/plano/tasks MUST indicar a qual versão pertence (ex.: MVP, v1.0, v1.1).
+- Cada versão MUST explicitar objetivos, funcionalidades incluídas e o que está fora de escopo.
+- Itens não essenciais MUST ir para Backlog / Próximas Versões e MUST NOT bloquear o MVP.
+
+**Racional**: lançamentos pequenos e frequentes aceleram aprendizado e reduzem complexidade.
+
+### VI. Playful Leve, Sem Competir com a Função
+
+- O tom “playful leve” MUST ser aplicado apenas em: empty states, micro-animações de feedback,
+  ícones/ilustrações sutis e pequenas mensagens de incentivo.
+- Elementos playful MUST NOT competir com velocidade e clareza (sem mascotes permanentes, gamificação invasiva
+  ou excesso de cores/textos “engraçadinhos”).
+
+**Racional**: leveza melhora a experiência, mas não pode atrapalhar o objetivo principal.
+
+### VII. Clean Architecture e Separação Clara de Camadas
+
+- A base do produto MUST seguir Clean Architecture (UI, domínio e dados bem separados).
+- Lógica de negócio MUST residir no domínio (ex.: use cases) e MUST NOT ficar em componentes de UI.
+- O código MUST ser modular e testável desde o início.
+
+**Racional**: separação de responsabilidades facilita evolução, testes e manutenção.
+
+### VIII. Testes para Regras de Negócio (Obrigatório)
+
+- Novos requisitos de negócio MUST vir acompanhados de testes automatizados.
+- Regras de domínio SHOULD ser cobertas por testes de unidade.
+- Fluxo de dados SHOULD ser coberto por testes de integração quando aplicável.
+
+**Racional**: testes protegem as regras do produto e dão segurança para evoluir rápido.
+
+## Diretrizes de Documentação e Linguagem
+
+- Toda documentação (specs, planos técnicos, tasks e comentários) MUST ser escrita em português do Brasil.
+- Nomes de classes, funções, endpoints, pacotes, componentes de UI e termos de bibliotecas MUST permanecer em inglês.
+- O texto SHOULD evitar traduções estranhas de termos técnicos já comuns em inglês (ex.: “layout”, “endpoint”,
+  “use case”).
+
+## Workflow de Desenvolvimento e Qualidade
+
+- O trabalho de produto e engenharia SHOULD seguir a cadência: spec → plan → tasks → implementação incremental.
+- Cada feature MUST manter o escopo da versão-alvo explícito (inclui / fora de escopo / backlog).
+- Implementações MUST respeitar as camadas (UI ↔ domínio ↔ dados) e evitar acoplamentos “curtos” por conveniência.
+- A inclusão de novos use cases MUST incluir testes automatizados junto com a implementação.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- Esta constituição tem precedência sobre templates e práticas locais; divergências MUST ser explicitadas e
+  justificadas no artefato de design correspondente.
+- Emendas MUST:
+  - descrever o motivo e o impacto (produto e engenharia),
+  - atualizar templates afetados para manter consistência,
+  - atualizar a versão seguindo SemVer (MAJOR/MINOR/PATCH) conforme a mudança.
+- Revisões de mudanças de produto/engenharia SHOULD validar aderência aos princípios antes de iniciar
+  implementação.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-01-04 | **Last Amended**: 2026-01-04

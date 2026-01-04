@@ -68,7 +68,7 @@ The tasks.md should be immediately executable - each task must be specific enoug
 
 **CRITICAL**: Tasks MUST be organized by user story to enable independent implementation and testing.
 
-**Tests are OPTIONAL**: Only generate test tasks if explicitly requested in the feature specification or if user requests TDD approach.
+**Tests are REQUIRED for business logic**: Always generate unit test tasks for new use cases/domain rules, and add integration test tasks for data flows when applicable. Only omit test tasks if the feature explicitly adds no new business behavior (e.g., docs/copy-only).
 
 ### Checklist Format (REQUIRED)
 

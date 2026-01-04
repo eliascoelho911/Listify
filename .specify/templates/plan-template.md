@@ -1,41 +1,47 @@
-# Implementation Plan: [FEATURE]
+# Plano de Implementação: [FEATURE]
 
-**Branch**: `[###-feature-name]` | **Date**: [DATE] | **Spec**: [link]
-**Input**: Feature specification from `/specs/[###-feature-name]/spec.md`
+**Branch**: `[###-feature-name]` | **Data**: [DATE] | **Versão alvo**: [ex.: MVP, v1.0] | **Spec**: [link]
+**Input**: Feature specification de `/specs/[###-feature-name]/spec.md`
 
-**Note**: This template is filled in by the `/speckit.plan` command. See `.specify/templates/commands/plan.md` for the execution workflow.
+**Nota**: Este template é preenchido pelo comando `/speckit.plan`. Veja `.codex/prompts/speckit.plan.md`
+para o workflow de execução.
 
-## Summary
+## Resumo
 
-[Extract from feature spec: primary requirement + technical approach from research]
+[Extrato da spec: requisito principal + abordagem técnica vinda de research]
 
-## Technical Context
+## Contexto Técnico
 
 <!--
-  ACTION REQUIRED: Replace the content in this section with the technical details
-  for the project. The structure here is presented in advisory capacity to guide
-  the iteration process.
+  ACTION REQUIRED: Substitua o conteúdo desta seção pelos detalhes técnicos
+  do projeto. A estrutura abaixo é apenas um guia para orientar a iteração.
 -->
 
-**Language/Version**: [e.g., Python 3.11, Swift 5.9, Rust 1.75 or NEEDS CLARIFICATION]  
-**Primary Dependencies**: [e.g., FastAPI, UIKit, LLVM or NEEDS CLARIFICATION]  
-**Storage**: [if applicable, e.g., PostgreSQL, CoreData, files or N/A]  
-**Testing**: [e.g., pytest, XCTest, cargo test or NEEDS CLARIFICATION]  
-**Target Platform**: [e.g., Linux server, iOS 15+, WASM or NEEDS CLARIFICATION]
-**Project Type**: [single/web/mobile - determines source structure]  
-**Performance Goals**: [domain-specific, e.g., 1000 req/s, 10k lines/sec, 60 fps or NEEDS CLARIFICATION]  
-**Constraints**: [domain-specific, e.g., <200ms p95, <100MB memory, offline-capable or NEEDS CLARIFICATION]  
-**Scale/Scope**: [domain-specific, e.g., 10k users, 1M LOC, 50 screens or NEEDS CLARIFICATION]
+**Linguagem/Versão**: [ex.: Kotlin 2.x, Swift 5.x, TS 5.x ou NEEDS CLARIFICATION]  
+**Dependências Principais**: [ex.: Jetpack Compose, SwiftUI, React Native ou NEEDS CLARIFICATION]  
+**Storage**: [se aplicável, ex.: SQLite, CoreData, arquivos ou N/A]  
+**Testes**: [ex.: JUnit, XCTest, Jest ou NEEDS CLARIFICATION]  
+**Plataforma-alvo**: [ex.: Android, iOS ou NEEDS CLARIFICATION]  
+**Tipo de Projeto**: [single/web/mobile - determina a estrutura]  
+**Metas de Performance**: [ex.: 60 fps, “instantâneo” percebido, offline-first ou NEEDS CLARIFICATION]  
+**Restrições**: [ex.: offline-first, sem travar UI, <100MB ou NEEDS CLARIFICATION]  
+**Escala/Escopo**: [ex.: MVP com 1 lista, v1 com X telas, ou NEEDS CLARIFICATION]
 
-## Constitution Check
+## Checagem da Constituição
 
 *GATE: Must pass before Phase 0 research. Re-check after Phase 1 design.*
 
-[Gates determined based on constitution file]
+- [ ] Documentação em pt-BR; nomes de código (classes/funções/endpoints) em inglês
+- [ ] Versão-alvo definida (MVP/v1/v1.x) + fora de escopo explícito
+- [ ] Fluxos críticos minimalistas (adicionar/marcar/filtrar com pouco atrito)
+- [ ] Offline-first e UX instantânea (sem travar UI)
+- [ ] Estados claros e resumo de progresso no topo
+- [ ] Clean Architecture (UI sem lógica de negócio; domínio testável)
+- [ ] Testes planejados para novas regras de negócio (unidade no domínio; integração quando aplicável)
 
-## Project Structure
+## Estrutura do Projeto
 
-### Documentation (this feature)
+### Documentação (esta feature)
 
 ```text
 specs/[###-feature]/
@@ -47,12 +53,12 @@ specs/[###-feature]/
 └── tasks.md             # Phase 2 output (/speckit.tasks command - NOT created by /speckit.plan)
 ```
 
-### Source Code (repository root)
+### Código-fonte (raiz do repositório)
 <!--
-  ACTION REQUIRED: Replace the placeholder tree below with the concrete layout
-  for this feature. Delete unused options and expand the chosen structure with
-  real paths (e.g., apps/admin, packages/something). The delivered plan must
-  not include Option labels.
+  ACTION REQUIRED: Substitua a árvore placeholder abaixo pela estrutura real
+  desta feature. Remova opções não usadas e expanda a opção escolhida com
+  paths reais (ex.: apps/admin, packages/something). O plano final MUST NOT
+  incluir labels "Option".
 -->
 
 ```text
@@ -94,11 +100,11 @@ ios/ or android/
 **Structure Decision**: [Document the selected structure and reference the real
 directories captured above]
 
-## Complexity Tracking
+## Tracking de Complexidade
 
-> **Fill ONLY if Constitution Check has violations that must be justified**
+> **Preencha APENAS se houver violações na Checagem da Constituição que precisem ser justificadas**
 
-| Violation | Why Needed | Simpler Alternative Rejected Because |
+| Violação | Por que é necessário | Alternativa mais simples rejeitada porque |
 |-----------|------------|-------------------------------------|
 | [e.g., 4th project] | [current need] | [why 3 projects insufficient] |
 | [e.g., Repository pattern] | [specific problem] | [why direct DB access insufficient] |
