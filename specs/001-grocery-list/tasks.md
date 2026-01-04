@@ -22,11 +22,11 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ## Fase 0: Bootstrap do app (bloqueante)
 
-- [ ] T001 Criar projeto Expo + Expo Router (TypeScript strict) com rotas em `app/` (`app/_layout.tsx`, `app/index.tsx`, `app/item/[id].tsx`)
-- [ ] T002 [P] Definir estrutura de pastas conforme `plan.md` (`src/domain`, `src/data`, `src/infra`, `src/presentation`, `src/design-system`, `tests/`)
-- [ ] T003 Configurar aliases TS (ex.: `@domain/*`, `@infra/*`) em `tsconfig.json` e ajustar imports-base
-- [ ] T004 [P] Configurar ESLint (TS strict) + regras de fronteira do domínio (proibir imports de RN/Expo em `src/domain/**`) + script `npm run lint`
-- [ ] T005 [P] Configurar Jest para testes puros de TypeScript (domínio) em `tests/` + script `npm test`
+- [X] T001 Criar projeto Expo + Expo Router (TypeScript strict) com rotas em `app/` (`app/_layout.tsx`, `app/index.tsx`, `app/item/[id].tsx`)
+- [X] T002 [P] Definir estrutura de pastas conforme `plan.md` (`src/domain`, `src/data`, `src/infra`, `src/presentation`, `src/design-system`, `tests/`)
+- [X] T003 Configurar aliases TS (ex.: `@domain/*`, `@infra/*`) em `tsconfig.json` e ajustar imports-base
+- [X] T004 [P] Configurar ESLint (TS strict) + regras de fronteira do domínio (proibir imports de RN/Expo em `src/domain/**`) + script `npm run lint`
+- [X] T005 [P] Configurar Jest para testes puros de TypeScript (domínio) em `tests/` + script `npm test`
 
 **Checkpoint**: `npm test` e `npm run lint` rodam; app abre e renderiza uma tela simples.
 
