@@ -1,6 +1,7 @@
+import type { ReactElement } from 'react';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-export default function ShoppingListScreen(): JSX.Element {
+export default function ShoppingListScreen(): ReactElement {
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>

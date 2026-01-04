@@ -26,4 +26,5 @@ TypeScript (strict): Follow standard conventions
 - 001-grocery-list: Added TypeScript (strict) + Expo SDK + React Native + Expo Router
 
 <!-- MANUAL ADDITIONS START -->
+- Use `ReactElement` instead of `JSX.Element` in component return types.
 <!-- MANUAL ADDITIONS END -->
