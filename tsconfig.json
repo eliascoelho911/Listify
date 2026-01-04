@@ -1,0 +1,40 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "baseUrl": ".",
+    "paths": {
+      "@app/*": [
+        "src/app/*"
+      ],
+      "@domain/*": [
+        "src/domain/*"
+      ],
+      "@data/*": [
+        "src/data/*"
+      ],
+      "@infra/*": [
+        "src/infra/*"
+      ],
+      "@presentation/*": [
+        "src/presentation/*"
+      ],
+      "@design-system/*": [
+        "src/design-system/*"
+      ],
+      "@tests/*": [
+        "tests/*"
+      ]
+    },
+    "types": [
+      "expo-router/types",
+      "jest"
+    ]
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts"
+  ]
+}
