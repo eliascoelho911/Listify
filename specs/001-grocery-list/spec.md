@@ -36,6 +36,16 @@
 - Compartilhamento colaborativo de lista (casal/grupo) e edição simultânea
 - Sugestões “inteligentes” (ML), leitura por voz, scanner de código de barras
 
+## Clarifications
+
+### Session 2026-01-04
+
+- Q: Como representar `quantity` e `unit` internamente? → A (proposta): `quantity` decimal (até 3 casas) + `unit` string normalizada (lista + fallback raw).
+- Q: Como representar preços (`unitPrice`/`totalPrice`) internamente? → A (proposta): armazenar em “minor units” (ex.: centavos) na moeda da lista; permitir editar unitário ou total.
+- Q: Em falha de persistência local, qual comportamento? → A (proposta): UI otimista + rollback + toast/erro não-bloqueante; não perder a entrada (texto) do usuário.
+- Q: Qual a diferença entre “reiniciar” vs “concluir” lista? → A (proposta): `reiniciar` limpa a lista ativa sem registrar histórico; `concluir` salva snapshot no histórico e inicia uma nova lista vazia.
+- Q: Notificação por localização: quantos locais, raio e cooldown? → A (proposta): 1 local por lista; raio padrão 300m; notificar ao entrar; cooldown de 6h (por local/lista).
+
 ## Cenários do Usuário & Testes *(obrigatório)*
 
 ### User Story 1 — Capturar e concluir itens rapidamente (Priority: P1) 🎯 MVP
@@ -167,6 +177,72 @@ Como usuário, quero configurar a moeda e preferências simples (notificações 
 3. **Given** que a permissão de localização foi negada, **When** eu tento ativar notificações por proximidade, **Then** o app mantém a funcionalidade principal intacta e orienta como habilitar no sistema.
 4. **Given** que “ocultar comprados” está configurado como padrão, **When** eu abro a lista, **Then** a lista respeita essa preferência sem exigir passos extras.
 
+## Fluxos de UX prioritários (detalhado)
+
+### 1) Adicionar item por texto livre (com parsing)
+
+- Campo fixo no rodapé (linha única) com ação de confirmar via teclado (ex.: “Enter/Done”) e/ou botão de “+”.
+- Parsing acontece no “submit” (não a cada tecla), mas o app SHOULD mostrar um preview leve do que foi entendido enquanto digita (sem travar).
+- Gramática alvo (MVP):
+  - `"<quantidade> <unidade> <nome...> @<categoria>"`
+  - `@<categoria>` pode aparecer em qualquer posição; apenas a última ocorrência é considerada.
+  - Se `<quantidade>` ou `<unidade>` não existirem, usar defaults.
+- Normalização (MVP):
+  - Quantidade aceita formatos: `2`, `2,5`, `2.5`, `1/2`; internamente normaliza para decimal com `.`.
+  - Unidades aceitam sinônimos (ex.: `un`, `unid`, `unidade`) e normalizam para o “código canônico” definido no modelo de dados.
+- Erros:
+  - Se não houver “nome” após remover quantidade/unidade/@categoria, não criar item; manter texto no input e mostrar feedback curto.
+
+### 2) Editar item existente
+
+- Toque no item abre edição inline (preferível) ou sheet/modal (aceitável) com campos: `name`, `quantity`, `unit`, `category`, `unitPrice`, `totalPrice`.
+- Editar MUST preservar o estado `pending/purchased`.
+- Ao editar `quantity` quando houver preço:
+  - Se houver `unitPrice`, recalcular `totalPrice`.
+  - Se houver apenas `totalPrice`, recalcular `unitPrice` quando matematicamente possível.
+  - Se o usuário editar manualmente ambos, o app MUST respeitar o último campo editado como “fonte” para recálculo.
+
+### 3) Marcar item como comprado e desfazer (undo)
+
+- Um toque alterna `pending ↔ purchased`.
+- Ao marcar como comprado:
+  - mover para o final do grupo “comprados” dentro da sua categoria;
+  - registrar `purchasedAt=now`.
+  - se `askPriceOnPurchase` estiver ativo e o item não tiver preço, oferecer registrar preço (com opção clara de “pular”).
+- Undo:
+  - após marcar/desmarcar, exibir affordance de desfazer por curto período (ex.: snackbar).
+  - desfazer restaura estado anterior e posição relativa (dentro do possível).
+
+### 4) Filtrar/esconder itens comprados
+
+- “Ocultar comprados”:
+  - esconde itens `purchased` da lista (sem apagar);
+  - mantém resumo correto (inclui comprados nos totais);
+  - não deve quebrar drag-and-drop (reordenar afeta apenas visíveis; comprados mantêm ordenação interna).
+
+### 5) Notificações baseadas em localização
+
+- Associação de local é opt-in; sem permissões, o app funciona normalmente.
+- Um local associado à lista contém: `label`, `latitude`, `longitude`, `radiusMeters`.
+- Disparo: notificar ao entrar no raio (`enter`), apenas se existirem itens pendentes.
+- Anti-spam: respeitar cooldown por local/lista usando `lastNotifiedAt`.
+
+### 6) Histórico de listas anteriores
+
+- Ao concluir, criar registro de histórico com snapshot dos itens (campos relevantes para reuso).
+- Reuso:
+  - Incremental: adiciona itens do snapshot na lista ativa sem apagar o que já existe (duplicados permitidos).
+  - Substituir: apaga a lista ativa e recria a partir do snapshot (exigir confirmação explícita).
+
+### 7) Reiniciar vs concluir lista
+
+- `Reiniciar`:
+  - limpa a lista ativa (itens e ordenação) sem criar registro no histórico.
+  - exige confirmação se houver itens (pendentes ou comprados).
+- `Concluir`:
+  - permitido apenas quando “faz sentido”: recomendado quando todos os itens estão comprados; mas o app MAY permitir concluir mesmo com pendentes (desde que deixe claro).
+  - cria snapshot no histórico e inicia uma nova lista vazia.
+
 ### Edge Cases
 
 - Parsing:
@@ -238,6 +314,14 @@ Como usuário, quero configurar a moeda e preferências simples (notificações 
   - ocultar itens comprados (padrão on/off)
   - solicitar preço ao marcar item como comprado (padrão on/off)
 
+- **FR-040**: O app MUST normalizar `quantity` para um número decimal (interno) com no máximo 3 casas decimais, aceitando entrada com vírgula (`2,5`) e fração (`1/2`).
+- **FR-041**: O app MUST normalizar `unit` para um valor canônico (ex.: `un`, `kg`, `g`, `l`, `ml`) quando possível, preservando o valor original quando não reconhecido.
+- **FR-042**: O app MUST armazenar valores monetários em “minor units” (ex.: centavos) na moeda configurada, evitando arredondamento inconsistente.
+- **FR-043**: Em falha ao persistir uma operação (criar/editar/marcar/reordenar), o app MUST informar erro de forma não bloqueante e MUST manter o usuário capaz de tentar novamente sem redigitar (quando aplicável).
+- **FR-044**: Se ocorrer falha ao ler a persistência local ao abrir o app (ex.: dados corrompidos), o app MUST exibir um estado de recuperação com opção de “tentar novamente” e “resetar dados locais” (com confirmação).
+- **FR-045**: O app MUST diferenciar explicitamente `reiniciar` vs `concluir` conforme definido em “Fluxos de UX prioritários”.
+- **FR-046**: Notificação por proximidade MUST respeitar: 1 local associado por lista (MVP), raio padrão 300m e cooldown mínimo de 6h por local/lista.
+
 ### Requisitos de UX, Acessibilidade e Qualidade
 
 - **NFR-001**: O app MUST permitir concluir a ação “adicionar item” com o mínimo de passos (digitar + confirmar), sem exigir abrir telas de configuração.
@@ -246,13 +330,105 @@ Como usuário, quero configurar a moeda e preferências simples (notificações 
 - **NFR-004**: As operações principais (adicionar, marcar como comprado, editar, reordenar, deletar) MUST funcionar offline e parecer instantâneas.
 - **NFR-005**: O app SHOULD reduzir risco de toque acidental em ações destrutivas (ex.: undo breve após deleção, quando viável).
 
-### Entidades-chave *(inclua se a feature envolve dados)*
+### Offline-first e persistência local (comportamento em falhas)
 
-- **ShoppingList**: lista ativa atual; metadados como `createdAt`, `completedAt?`, `associatedLocations?`.
-- **ShoppingItem**: item da lista; `name`, `quantity`, `unit`, `categoryId`, `status` (pending/purchased), `position`, `createdAt`, `updatedAt`, `unitPrice?`, `totalPrice?`, `purchasedAt?`.
-- **Category**: categoria de mercado; `id`, `name`, `isPredefined`, `sortOrder`.
-- **PurchaseHistoryEntry**: compra concluída; `completedAt`, `itemCount`, `totalSpent?`, snapshot de itens/categorias relevantes para reuso.
-- **LocationAssociation**: vínculo opcional entre lista e local; `label`, `geoRadius`, `lastNotifiedAt?`, `isEnabled`.
+- Sem internet, o app MUST continuar suportando: adicionar/editar/remover, marcar/desmarcar comprado (com undo), reordenar, busca/filtros, ocultar comprados, histórico e concluir/reiniciar.
+- A persistência local é a fonte de verdade (MVP sem sync).
+- Operações MUST ser atômicas (ou totalmente aplicadas, ou revertidas).
+- Se uma escrita falhar (ex.: falta de espaço), o app MUST:
+  - avisar com feedback não-bloqueante;
+  - manter o usuário no controle (poder tentar novamente);
+  - evitar perda de input (ex.: manter texto no campo de adicionar quando falha ao criar item).
+- Se uma leitura falhar ao iniciar, o app MUST entrar em modo de recuperação (FR-044) e, ao “resetar dados locais”, recriar estado inicial consistente (lista vazia + categorias pré-definidas).
+
+### Resumo (métricas) e regras de cálculo
+
+- Contadores:
+  - `totalItems` = todos os itens (pendentes + comprados)
+  - `purchasedItems` = itens com `status=purchased`
+  - `pendingItems` = itens com `status=pending`
+- Valores:
+  - `totalSpent` = soma (itens comprados com preço) usando `totalPrice` quando presente, senão `quantity * unitPrice` quando possível.
+  - `totalEstimatedPending` = soma (itens pendentes com preço) usando mesma regra.
+  - `totalPlanned` (opcional) = `totalSpent + totalEstimatedPending`.
+- Indisponibilidade:
+  - Se não houver preços suficientes para calcular, o app MUST esconder o bloco de valores ou indicar “—” (sem inventar número).
+
+#### Modelo de dados (detalhado) — MVP
+
+**Convenções gerais**
+
+- IDs: UUID string.
+- Datas: ISO-8601 em UTC (ou `Date` equivalente na plataforma), sempre serializáveis.
+- Moeda: armazenada na `ShoppingList` como `currencyCode` (ex.: `BRL`) e aplicada a todos os itens/valores da lista e seus snapshots.
+
+**Tipos de valor**
+
+- `Quantity`: decimal com até 3 casas (interno); entrada aceita vírgula e fração.
+- `Unit`: string canônica (mínimo: `un`, `kg`, `g`, `l`, `ml`). Sinônimos mapeiam para o canônico.
+- `MoneyMinor`: inteiro em minor units (ex.: centavos); exibição depende de `currencyCode`.
+
+**ShoppingList**
+
+- `id: UUID`
+- `createdAt: datetime`
+- `updatedAt: datetime`
+- `currencyCode: string` (default `BRL`)
+- `isCompleted: boolean`
+- `completedAt?: datetime`
+- `hidePurchasedByDefault: boolean` (preferência)
+- `askPriceOnPurchase: boolean` (preferência)
+- `location?: LocationAssociation` (MVP: 0 ou 1)
+
+**ShoppingItem**
+
+- `id: UUID`
+- `listId: UUID`
+- `name: string` (trim; MUST NOT ser vazio)
+- `quantity: Quantity` (default `1`)
+- `unit: Unit` (default `un`)
+- `categoryId: UUID`
+- `status: "pending" | "purchased"`
+- `position: number` (ordenação manual dentro do grupo da categoria)
+- `createdAt: datetime`
+- `updatedAt: datetime`
+- `purchasedAt?: datetime`
+- `unitPriceMinor?: MoneyMinor`
+- `totalPriceMinor?: MoneyMinor`
+
+**Category**
+
+- `id: UUID`
+- `name: string` (case-insensitive unique dentro do app)
+- `isPredefined: boolean`
+- `sortOrder: number`
+
+**PurchaseHistoryEntry**
+
+- `id: UUID`
+- `completedAt: datetime`
+- `currencyCode: string`
+- `itemCount: number`
+- `totalSpentMinor?: MoneyMinor`
+- `snapshot: { categories: CategorySnapshot[], items: ItemSnapshot[] }`
+
+**ItemSnapshot** (para reuso)
+
+- `name: string`
+- `quantity: Quantity`
+- `unit: Unit`
+- `categoryName: string` (para remapear/criar categoria na restauração)
+- `unitPriceMinor?: MoneyMinor`
+- `totalPriceMinor?: MoneyMinor`
+
+**LocationAssociation**
+
+- `label: string`
+- `latitude: number`
+- `longitude: number`
+- `radiusMeters: number` (default 300)
+- `isEnabled: boolean`
+- `lastNotifiedAt?: datetime`
 
 ## Critérios de Sucesso *(obrigatório)*
 
