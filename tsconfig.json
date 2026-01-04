@@ -28,6 +28,8 @@
     },
     "types": [
       "expo-router/types",
+      "react",
+      "react-native",
       "jest"
     ]
   },
