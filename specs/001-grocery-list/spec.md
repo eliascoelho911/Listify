@@ -11,6 +11,7 @@
 **Inclui**:
 
 - Lista única de compras ativa (uma “compra em andamento” por vez)
+- App disponível em **pt-BR** e **en** (internacionalização desde o MVP; sem strings hard coded)
 - Campo de entrada fixo no rodapé para adicionar itens rapidamente (linha única)
 - Parsing inteligente da entrada: quantidade, unidade, nome do item e categoria (`@categoria`)
   - Defaults: quantidade `1`, unidade `unidade`, categoria `outros`
@@ -329,6 +330,15 @@ Como usuário, quero configurar a moeda e preferências simples (notificações 
 - **NFR-003**: O app MUST manter contraste adequado e respeitar configurações do sistema relacionadas a redução de movimento quando disponíveis.
 - **NFR-004**: As operações principais (adicionar, marcar como comprado, editar, reordenar, deletar) MUST funcionar offline e parecer instantâneas.
 - **NFR-005**: O app SHOULD reduzir risco de toque acidental em ações destrutivas (ex.: undo breve após deleção, quando viável).
+- **NFR-006**: O app MUST suportar **pt-BR** e **en**, usando i18n (sem texto hard coded); fallback seguro (ex.: `en`) quando o locale do dispositivo não for suportado.
+
+### Internacionalização (i18n) — pt-BR + en
+
+- **Libs**: usar `i18next` + `react-i18next` para tradução e `expo-localization` para detectar o idioma do dispositivo.
+- **Regra**: todo texto na UI MUST vir de `t(...)` (ou `Trans`), evitando concatenação manual de strings.
+- **Dados do usuário**: nomes de itens e categorias customizadas são dados e MUST NOT ser traduzidos automaticamente.
+- **Pré-definidos**: unidades e categorias pré-definidas SHOULD usar identificadores canônicos (ex.: `unitCode`, `categoryCode`) e exibir labels via i18n, evitando persistir nomes localizados no banco.
+- **Formatação**: valores (moeda/número/data) SHOULD usar `Intl.*Format` com o locale ativo + `currencyCode` da lista (sem hardcode de separadores/símbolos).
 
 ### Offline-first e persistência local (comportamento em falhas)
 
