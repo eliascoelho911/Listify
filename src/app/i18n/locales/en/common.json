@@ -1,0 +1,31 @@
+{
+  "appName": "Listify",
+  "loading": {
+    "title": "Starting up",
+    "subtitle": "Initializing Listify..."
+  },
+  "errors": {
+    "bootstrapFailed": {
+      "title": "Couldn't start",
+      "message": "We couldn't open the local database.",
+      "hint": "Try reopening the app or clearing local storage."
+    }
+  },
+  "navigation": {
+    "homeTitle": "Listify",
+    "editItemTitle": "Edit Item"
+  },
+  "screens": {
+    "home": {
+      "title": "Listify",
+      "subtitle": "Capture and track your shopping list, even offline.",
+      "cardTitle": "Next steps",
+      "cardText": "Add items, group them by category, and check them off quickly."
+    },
+    "editItem": {
+      "title": "Edit item",
+      "selectedId": "Selected ID: {{id}}",
+      "missingId": "not provided"
+    }
+  }
+}

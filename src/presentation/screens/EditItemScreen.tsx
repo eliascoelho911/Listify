@@ -1,4 +1,5 @@
 import type { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 type EditItemScreenProps = {
@@ -6,11 +7,14 @@ type EditItemScreenProps = {
 };
 
 export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactElement {
+  const { t } = useTranslation();
+  const displayedId = itemId ?? t('screens.editItem.missingId');
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
-        <Text style={styles.title}>Editar item</Text>
-        <Text style={styles.subtitle}>ID selecionado: {itemId ?? 'não informado'}</Text>
+        <Text style={styles.title}>{t('screens.editItem.title')}</Text>
+        <Text style={styles.subtitle}>{t('screens.editItem.selectedId', { id: displayedId })}</Text>
       </View>
     </SafeAreaView>
   );
