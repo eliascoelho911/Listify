@@ -42,7 +42,79 @@
     "editItem": {
       "title": "Editar item",
       "selectedId": "ID selecionado: {{id}}",
-      "missingId": "não informado"
+      "missingId": "não informado",
+      "fields": {
+        "name": "Nome",
+        "namePlaceholder": "Ex.: maçã",
+        "quantity": "Quantidade",
+        "quantityPlaceholder": "Ex.: 2 ou 1/2",
+        "unit": "Unidade",
+        "unitPlaceholder": "Ex.: kg",
+        "category": "Categoria"
+      },
+      "save": "Salvar alterações",
+      "saving": "Salvando...",
+      "cancel": "Cancelar",
+      "back": "Voltar para a lista",
+      "notFound": {
+        "title": "Item não encontrado",
+        "subtitle": "Não conseguimos localizar este item. Tente selecioná-lo novamente na lista."
+      }
     }
+  },
+  "shoppingList": {
+    "loading": "Carregando sua lista...",
+    "summary": {
+      "title": "Progresso",
+      "total": "Total",
+      "pending": "Pendentes",
+      "purchased": "Comprados"
+    },
+    "add": {
+      "accessibilityLabel": "Campo para adicionar item",
+      "placeholder": "Adicionar item (ex.: “2 kg maçã @hortifruti”)",
+      "submit": "Adicionar",
+      "sending": "Adicionando..."
+    },
+    "preview": {
+      "quantity": "Qtd",
+      "unit": "Unidade",
+      "category": "Categoria",
+      "name": "Item"
+    },
+    "category": {
+      "count_one": "{{count}} item",
+      "count_other": "{{count}} itens",
+      "purchasedLabel_one": "{{count}} comprado",
+      "purchasedLabel_other": "{{count}} comprados"
+    },
+    "empty": {
+      "title": "Comece sua lista",
+      "subtitle": "Adicione o primeiro item e organizaremos tudo por categoria."
+    },
+    "errors": {
+      "load": "Não conseguimos carregar sua lista. Puxe para atualizar e tentar novamente.",
+      "write": "Não foi possível salvar a alteração. Tente de novo."
+    },
+    "actions": {
+      "delete": "Remover"
+    },
+    "undo": {
+      "label": "{{name}} removido",
+      "action": "Desfazer"
+    }
+  },
+  "categories": {
+    "hortifruti": "Hortifruti",
+    "mercearia": "Mercearia",
+    "açougue": "Açougue",
+    "laticínios": "Laticínios",
+    "padaria": "Padaria",
+    "bebidas": "Bebidas",
+    "limpeza": "Limpeza",
+    "higiene": "Higiene",
+    "congelados": "Congelados",
+    "pet": "Pet",
+    "outros": "Outros"
   }
 }
