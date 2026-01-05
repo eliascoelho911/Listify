@@ -1,11 +1,21 @@
 import type { ReactElement, ReactNode } from 'react';
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useEffect, useMemo, useState } from 'react';
 import { I18nextProvider, useTranslation } from 'react-i18next';
-import { ActivityIndicator, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  Alert,
+  Pressable,
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
 import { buildDependencies } from '@app/di/container';
-import type { AppDependencies } from '@app/di/types';
-import { i18n, initializeI18n } from '@app/i18n/i18n';
+import type { AppDependencies, BuildDependenciesOptions } from '@app/di/types';
+import { DEFAULT_DATABASE_NAME, SqliteDatabase } from '@infra/storage/sqlite/SqliteDatabase';
+
+import { i18n, initializeI18n } from '../i18n/i18n';
 
 const DependenciesContext = createContext<AppDependencies | null>(null);
 
@@ -22,12 +32,20 @@ type AppProvidersProps = {
 };
 
 export function AppProviders({ children }: AppProvidersProps): ReactElement {
+  const [reloadToken, setReloadToken] = useState(0);
   const [deps, setDeps] = useState<AppDependencies | null>(null);
   const [bootstrapError, setBootstrapError] = useState<Error | null>(null);
   const [isI18nReady, setIsI18nReady] = useState<boolean>(i18n.isInitialized);
+  const [isResetting, setIsResetting] = useState<boolean>(false);
+  const buildOptions = useMemo<BuildDependenciesOptions>(() => ({}), []);
+  const databaseName = buildOptions.databaseName ?? DEFAULT_DATABASE_NAME;
 
   useEffect(() => {
     let isMounted = true;
+    if (i18n.isInitialized) {
+      return;
+    }
+
     initializeI18n()
       .then(() => {
         if (isMounted) {
@@ -38,16 +56,29 @@ export function AppProviders({ children }: AppProvidersProps): ReactElement {
         if (isMounted) {
           setBootstrapError(err instanceof Error ? err : new Error('Failed to initialize i18n.'));
         }
+      })
+      .finally(() => {
+        if (isMounted && !i18n.isInitialized) {
+          setIsI18nReady(false);
+        }
       });
 
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [reloadToken]);
 
   useEffect(() => {
     let isMounted = true;
-    buildDependencies()
+    if (!isI18nReady) {
+      return () => {
+        isMounted = false;
+      };
+    }
+
+    setBootstrapError(null);
+    setDeps(null);
+    buildDependencies(buildOptions)
       .then((built) => {
         if (isMounted) {
           setDeps(built);
@@ -62,26 +93,58 @@ export function AppProviders({ children }: AppProvidersProps): ReactElement {
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [isI18nReady, reloadToken, buildOptions]);
 
-  if (!isI18nReady) {
-    return (
-      <BootstrapScreen
-        showSpinner={!bootstrapError}
-        title="Starting up"
-        subtitle={bootstrapError ? 'Failed to start the app.' : 'Loading translations...'}
-        hint={bootstrapError ? 'Try reopening the app or clearing local storage.' : undefined}
-      />
+  const handleRetry = (): void => {
+    setBootstrapError(null);
+    setReloadToken((token) => token + 1);
+  };
+
+  const handleReset = (): void => {
+    Alert.alert(
+      i18n.t('recovery.reset.title'),
+      i18n.t('recovery.reset.message'),
+      [
+        {
+          text: i18n.t('recovery.reset.cancel'),
+          style: 'cancel',
+        },
+        {
+          text: i18n.t('recovery.reset.confirm'),
+          style: 'destructive',
+          onPress: async () => {
+            setIsResetting(true);
+            try {
+              await SqliteDatabase.resetDatabase(databaseName);
+              setBootstrapError(null);
+              setReloadToken((token) => token + 1);
+            } catch (error) {
+              setBootstrapError(
+                error instanceof Error ? error : new Error('Failed to reset local data.'),
+              );
+            } finally {
+              setIsResetting(false);
+            }
+          },
+        },
+      ],
+      { cancelable: true },
     );
-  }
+  };
 
-  const content = bootstrapError ? (
-    <BootstrapErrorScreen />
-  ) : !deps ? (
-    <BootstrapLoadingScreen />
-  ) : (
-    <DependenciesContext.Provider value={deps}>{children}</DependenciesContext.Provider>
-  );
+  const content = (() => {
+    if (bootstrapError) {
+      return (
+        <RecoveryScreen isResetting={isResetting} onReset={handleReset} onRetry={handleRetry} />
+      );
+    }
+
+    if (!isI18nReady || !deps) {
+      return <BootstrapLoadingScreen showSpinner={!bootstrapError} />;
+    }
+
+    return <DependenciesContext.Provider value={deps}>{children}</DependenciesContext.Provider>;
+  })();
 
   return <I18nextProvider i18n={i18n}>{content}</I18nextProvider>;
 }
@@ -113,13 +176,35 @@ const styles = StyleSheet.create({
     color: '#6b7280',
     textAlign: 'center',
   },
+  actions: {
+    flexDirection: 'row',
+    gap: 12,
+    marginTop: 8,
+  },
+  button: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+    borderRadius: 8,
+    backgroundColor: '#111827',
+  },
+  buttonSecondary: {
+    backgroundColor: '#e5e7eb',
+  },
+  buttonText: {
+    color: '#ffffff',
+    fontWeight: '700',
+  },
+  buttonTextSecondary: {
+    color: '#111827',
+  },
 });
 
 type BootstrapScreenProps = {
   title: string;
-  subtitle?: string;
+  subtitle: string;
   hint?: string;
   showSpinner?: boolean;
+  children?: ReactNode;
 };
 
 function BootstrapScreen({
@@ -127,6 +212,7 @@ function BootstrapScreen({
   subtitle,
   hint,
   showSpinner = false,
+  children,
 }: BootstrapScreenProps): ReactElement {
   return (
     <SafeAreaView style={styles.fullscreen}>
@@ -135,25 +221,65 @@ function BootstrapScreen({
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}
+        {children}
       </View>
     </SafeAreaView>
   );
 }
 
-function BootstrapLoadingScreen(): ReactElement {
-  const { t } = useTranslation();
-  return (
-    <BootstrapScreen showSpinner title={t('loading.title')} subtitle={t('loading.subtitle')} />
-  );
-}
+type BootstrapLoadingScreenProps = {
+  showSpinner?: boolean;
+};
 
-function BootstrapErrorScreen(): ReactElement {
+function BootstrapLoadingScreen({ showSpinner = true }: BootstrapLoadingScreenProps): ReactElement {
   const { t } = useTranslation();
   return (
     <BootstrapScreen
-      title={t('errors.bootstrapFailed.title')}
-      subtitle={t('errors.bootstrapFailed.message')}
-      hint={t('errors.bootstrapFailed.hint')}
+      showSpinner={showSpinner}
+      title={t('loading.title')}
+      subtitle={t('loading.subtitle')}
+      hint={t('loading.hint')}
     />
+  );
+}
+
+type RecoveryScreenProps = {
+  onRetry: () => void;
+  onReset: () => void;
+  isResetting: boolean;
+};
+
+function RecoveryScreen({ onRetry, onReset, isResetting }: RecoveryScreenProps): ReactElement {
+  const { t } = useTranslation();
+  return (
+    <BootstrapScreen
+      title={t('recovery.title')}
+      subtitle={t('recovery.subtitle')}
+      hint={t('recovery.hint')}
+      showSpinner={isResetting}
+    >
+      <View style={styles.actions}>
+        <Pressable
+          accessibilityRole="button"
+          onPress={onRetry}
+          style={[styles.button, styles.buttonSecondary]}
+          disabled={isResetting}
+        >
+          <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
+            {t('recovery.actions.retry')}
+          </Text>
+        </Pressable>
+        <Pressable
+          accessibilityRole="button"
+          onPress={onReset}
+          style={styles.button}
+          disabled={isResetting}
+        >
+          <Text style={styles.buttonText}>
+            {isResetting ? t('recovery.actions.resetting') : t('recovery.actions.reset')}
+          </Text>
+        </Pressable>
+      </View>
+    </BootstrapScreen>
   );
 }

@@ -2,13 +2,30 @@
   "appName": "Listify",
   "loading": {
     "title": "Iniciando",
-    "subtitle": "Inicializando o Listify..."
+    "subtitle": "Inicializando o Listify...",
+    "hint": "Preparando seus dados locais."
   },
   "errors": {
     "bootstrapFailed": {
       "title": "Falha ao iniciar",
       "message": "Não conseguimos abrir a base local.",
       "hint": "Tente reabrir o app ou limpar o armazenamento."
+    }
+  },
+  "recovery": {
+    "title": "Precisamos de uma ajudinha",
+    "subtitle": "Não conseguimos ler seus dados locais.",
+    "hint": "Você pode tentar novamente ou resetar os dados locais e recomeçar.",
+    "actions": {
+      "retry": "Tentar novamente",
+      "reset": "Resetar dados locais",
+      "resetting": "Resetando..."
+    },
+    "reset": {
+      "title": "Resetar dados locais?",
+      "message": "Isso limpa os dados offline e recria a lista com as categorias padrão.",
+      "cancel": "Cancelar",
+      "confirm": "Sim, resetar"
     }
   },
   "navigation": {
