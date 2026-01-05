@@ -2,6 +2,8 @@ import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { theme } from '@design-system/theme/theme';
+
 export default function ShoppingListScreen(): ReactElement {
   const { t } = useTranslation();
 
@@ -22,39 +24,43 @@ export default function ShoppingListScreen(): ReactElement {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: theme.colors.background.canvas,
   },
   content: {
-    padding: 24,
-    gap: 12,
+    padding: theme.spacing.xl,
+    gap: theme.spacing.md,
   },
   title: {
-    fontSize: 28,
-    fontWeight: '700',
-    color: '#111827',
+    fontFamily: theme.typography.families.heading,
+    fontSize: theme.typography.sizes.display,
+    lineHeight: theme.typography.sizes.display * theme.typography.lineHeights.tight,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.content.primary,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#374151',
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.md,
+    lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.relaxed,
+    color: theme.colors.content.secondary,
   },
   card: {
-    backgroundColor: '#ffffff',
-    borderRadius: 12,
-    padding: 16,
-    shadowColor: '#111827',
-    shadowOpacity: 0.06,
-    shadowRadius: 6,
-    shadowOffset: { width: 0, height: 2 },
-    elevation: 2,
-    gap: 6,
+    backgroundColor: theme.colors.background.surface,
+    borderRadius: theme.radii.lg,
+    padding: theme.spacing.lg,
+    gap: theme.spacing.xs,
+    ...theme.shadows.card,
   },
   cardTitle: {
-    fontSize: 18,
-    fontWeight: '700',
-    color: '#111827',
+    fontFamily: theme.typography.families.heading,
+    fontSize: theme.typography.sizes.lg,
+    lineHeight: theme.typography.sizes.lg * theme.typography.lineHeights.normal,
+    fontWeight: theme.typography.weights.semibold,
+    color: theme.colors.content.primary,
   },
   cardText: {
-    fontSize: 15,
-    color: '#4b5563',
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.md,
+    lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.relaxed,
+    color: theme.colors.content.muted,
   },
 });
