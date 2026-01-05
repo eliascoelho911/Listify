@@ -27,4 +27,5 @@ TypeScript (strict): Follow standard conventions
 
 <!-- MANUAL ADDITIONS START -->
 - Use `ReactElement` instead of `JSX.Element` in component return types.
+- Evitar valores hard coded (cores, tipografia, espaçamentos e outros); sempre preferir tokens do Design System para garantir reuso e consistencia visual.
 <!-- MANUAL ADDITIONS END -->
