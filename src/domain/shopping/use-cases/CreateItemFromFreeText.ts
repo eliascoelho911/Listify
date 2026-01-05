@@ -1,3 +1,4 @@
+import { DEFAULT_CATEGORY_CODE, DEFAULT_UNIT_CODE, FALLBACK_LOCALE } from '../constants';
 import { Quantity } from '../value-objects/Quantity';
 import type { UnitCode } from '../value-objects/Unit';
 import { defaultUnitDictionaries, type UnitDictionaries } from '../value-objects/unitDictionaries';
@@ -42,7 +43,7 @@ export function createItemFromFreeText(
   }
 
   const unitCandidate = tryParseUnit(tokens[currentIndex], options);
-  const unit: UnitCode = unitCandidate ?? 'un';
+  const unit: UnitCode = unitCandidate ?? DEFAULT_UNIT_CODE;
   if (unitCandidate) {
     currentIndex += 1;
   }
@@ -82,7 +83,7 @@ function normalizeCategory(
   category: string | undefined,
   options: CreateItemFromFreeTextOptions,
 ): string {
-  const normalized = (category ?? options.defaultCategory ?? 'outros').trim();
+  const normalized = (category ?? options.defaultCategory ?? DEFAULT_CATEGORY_CODE).trim();
   return normalized.toLowerCase();
 }
 
@@ -120,7 +121,7 @@ function tryParseUnit(
   }
 
   const dictionaries = options.dictionaries ?? defaultUnitDictionaries;
-  const locale = (options.locale ?? 'pt').toLowerCase();
+  const locale = (options.locale ?? FALLBACK_LOCALE).toLowerCase();
   const localeBase = locale.split('-')[0];
 
   const lookupOrder = [dictionaries[locale], dictionaries[localeBase], dictionaries.default];

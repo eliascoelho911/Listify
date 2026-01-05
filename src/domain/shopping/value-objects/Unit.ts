@@ -1,3 +1,4 @@
+import { DEFAULT_UNIT_CODE, FALLBACK_LOCALE } from '../constants';
 import { defaultUnitDictionaries, type UnitDictionaries } from './unitDictionaries';
 
 export type UnitCode = 'un' | 'kg' | 'g' | 'l' | 'ml' | string;
@@ -6,7 +7,7 @@ export class Unit {
   private constructor(readonly value: UnitCode) {}
 
   static default(): Unit {
-    return new Unit('un');
+    return new Unit(DEFAULT_UNIT_CODE);
   }
 
   static parse(
@@ -44,7 +45,7 @@ export class Unit {
   }
 
   private static normalizeLocale(locale?: string): string {
-    return (locale ?? 'pt').toLowerCase();
+    return (locale ?? FALLBACK_LOCALE).toLowerCase();
   }
 
   toString(): string {
