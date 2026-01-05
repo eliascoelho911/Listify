@@ -1,7 +1,8 @@
 <!--
 Sync Impact Report
-- Version change: N/A (template) → 1.0.0
+- Version change: 1.0.0 → 1.1.0
 - Modified principles: placeholders removidos e substituídos por princípios do Listify
+- Added principles: Internacionalização (pt-BR + en) desde o início
 - Added sections: Diretrizes de Documentação e Linguagem; Workflow de Desenvolvimento e Qualidade
 - Removed sections: N/A
 - Templates requiring updates:
@@ -84,12 +85,23 @@ Sync Impact Report
 
 **Racional**: testes protegem as regras do produto e dão segurança para evoluir rápido.
 
+### IX. Internacionalização desde o Início (pt-BR + en)
+
+- O app MUST suportar **português (pt-BR)** e **inglês (en)** desde o MVP.
+- Texto visível ao usuário (títulos, botões, labels, mensagens, empty states) MUST ser internacionalizável e MUST NOT ficar hard coded em componentes.
+- Implementação MUST usar `i18next` + `react-i18next`, com detecção de locale via `expo-localization` e fallback seguro (ex.: `en`).
+- Conteúdo do usuário (ex.: nomes de itens e categorias customizadas) MUST permanecer como dado (não traduzido automaticamente).
+- Categorias/unidades pré-definidas SHOULD ter identificadores estáveis (ex.: `categoryCode`, `unitCode`) e exibir rótulos localizados via i18n (evitar persistir nomes localizados no banco).
+
+**Racional**: o Listify precisa ser utilizável por usuários em pt-BR e en sem rework estrutural; i18n é uma decisão de arquitetura e de UX, não “polimento”.
+
 ## Diretrizes de Documentação e Linguagem
 
 - Toda documentação (specs, planos técnicos, tasks e comentários) MUST ser escrita em português do Brasil.
 - Nomes de classes, funções, endpoints, pacotes, componentes de UI e termos de bibliotecas MUST permanecer em inglês.
 - O texto SHOULD evitar traduções estranhas de termos técnicos já comuns em inglês (ex.: “layout”, “endpoint”,
   “use case”).
+- Copy do app (texto na UI) MUST ser escrito em **pt-BR e en** via i18n; evitar misturar idiomas na mesma tela.
 
 ## Workflow de Desenvolvimento e Qualidade
 
@@ -109,4 +121,4 @@ Sync Impact Report
 - Revisões de mudanças de produto/engenharia SHOULD validar aderência aos princípios antes de iniciar
   implementação.
 
-**Version**: 1.0.0 | **Ratified**: 2026-01-04 | **Last Amended**: 2026-01-04
+**Version**: 1.1.0 | **Ratified**: 2026-01-04 | **Last Amended**: 2026-01-05

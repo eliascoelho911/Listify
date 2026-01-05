@@ -20,6 +20,7 @@ Este plano organiza:
 | Runtime | React Native + Expo (managed) | reduz atrito de setup, build e deploy; bom suporte cross-plataform | RN bare |
 | Navegação | Expo Router | file-based routing, integração boa com Expo e deep linking | React Navigation “manual” |
 | Linguagem | TypeScript (strict) | tipagem forte em todas as camadas e testes de domínio mais fáceis | JS |
+| i18n | `i18next` + `react-i18next` + `expo-localization` | app bilíngue (pt-BR/en) desde o MVP; evita strings hard coded | “strings soltas”, libs ad-hoc |
 | State (UI) | Zustand | simples, baixo boilerplate, encaixa bem com “view model/store” | Context+hooks, Jotai |
 | Persistência | `expo-sqlite` (SQL direto + migrações simples) | estrutura, consultas e evolução/migrações mais seguras que key-value | AsyncStorage puro |
 | Qualidade | ESLint + Prettier | consistência e redução de bugs; CI futuro mais previsível | só ESLint |
@@ -47,6 +48,7 @@ Este plano organiza:
 - [x] Estados claros e resumo de progresso no topo
 - [x] Clean Architecture (UI sem lógica de negócio; domínio testável)
 - [x] Testes planejados para regras de negócio (unidade no domínio)
+- [x] i18n planejado desde o MVP (pt-BR + en; sem strings hard coded)
 
 ## 5) Roadmap e delimitação de versões
 
@@ -63,6 +65,7 @@ Este plano organiza:
 - Resumo no topo (pendentes vs comprados; valores só quando calculáveis).
 - Busca por nome e filtro “ocultar comprados” (se não complicar o drag/drop do futuro).
 - Persistência local (SQLite) como fonte de verdade; recuperação em falha de leitura.
+- Base de i18n (pt-BR + en) inicializada no app e aplicada às telas do MVP.
 
 **Fora do MVP (vai para v1.1/v2.0):**
 
@@ -120,6 +123,11 @@ src/
 │  ├── di/
 │  │  ├── container.ts             # buildDependencies()
 │  │  └── types.ts                 # tokens/aliases de DI (sem lib externa)
+│  ├── i18n/                       # inicialização e recursos de tradução
+│  │  ├── i18n.ts                  # init i18next + react-i18next + expo-localization
+│  │  └── locales/
+│  │     ├── en/
+│  │     └── pt-BR/
 │  └── providers/
 │     └── AppProviders.tsx         # Provider de DI + tema + store
 ├── presentation/

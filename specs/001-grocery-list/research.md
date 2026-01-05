@@ -49,3 +49,11 @@ Este documento consolida decisões do stack e da arquitetura para reduzir rework
 - **Racional**: acelera iteração visual e reduz regressão de UI.
 - **Alternativas consideradas**:
   - “Screen sandbox” manual: menos setup, mas menos sistemático e menos reutilizável.
+
+## Decisão: Internacionalização (pt-BR + en) com `react-i18next` + `expo-localization`
+
+- **Escolha**: `i18next` + `react-i18next` para traduções, com detecção de idioma por `expo-localization`.
+- **Racional**: requisito do projeto (pt-BR/en) desde o MVP; evita strings hard coded e reduz rework em UX/copy.
+- **Alternativas consideradas**:
+  - “Strings soltas” por tela: rápido no curto prazo, mas vira dívida técnica e dificulta consistência.
+  - Outras libs de i18n: viáveis, mas `react-i18next` é bem estabelecida e flexível (pluralização/interpolação).

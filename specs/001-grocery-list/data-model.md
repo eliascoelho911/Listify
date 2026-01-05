@@ -131,3 +131,13 @@ Opções:
 2) **Tabelas normalizadas** `history_entries`, `history_items` (melhor para consultas/estatísticas).
 
 Recomendação: começar com **snapshot JSON** (se v1.1 precisar rápido) e migrar para tabelas normalizadas em v2.0 se necessário.
+
+## 6) Internacionalização (i18n) — implicações no modelo
+
+O Listify deve suportar **pt-BR** e **en** desde o MVP. Para evitar problemas de “dados presos em um idioma”:
+
+- **Conteúdo do usuário** (ex.: `ShoppingItem.name`, categorias customizadas): é dado e permanece como foi digitado (não traduzir automaticamente).
+- **Rótulos pré-definidos** (categorias e unidades): SHOULD ser derivados de identificadores estáveis e renderizados via i18n.
+  - Categorias pré-definidas: considerar adicionar `code TEXT` (ex.: `produce`, `dairy`, `bakery`, `other`) em `categories` e usar `is_predefined=1`; a UI exibe `t("categories.<code>")`.
+  - Unidades: armazenar `unit` como código canônico (ex.: `un`, `kg`, `g`) e exibir label via i18n (`t("units.kg")`) quando necessário.
+- **Parsing de `@categoria`**: mapear aliases por idioma (ex.: `@hortifruti` e `@produce` → `produce`) para manter consistência entre pt-BR/en.
