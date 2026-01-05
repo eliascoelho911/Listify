@@ -5,7 +5,7 @@ import {
   type SQLiteVariadicBindParams,
 } from 'expo-sqlite';
 
-import { MIGRATIONS, type Migration } from './migrations';
+import { type Migration, MIGRATIONS } from './migrations';
 
 export class SqliteDatabase {
   private readonly dbPromise: Promise<ExpoSQLiteDatabase>;
@@ -14,7 +14,7 @@ export class SqliteDatabase {
     private readonly options: {
       databaseName?: string;
       migrations?: Migration[];
-    } = {}
+    } = {},
   ) {
     this.dbPromise = this.initialize();
   }
@@ -27,7 +27,9 @@ export class SqliteDatabase {
   }
 
   private async applyMigrations(db: ExpoSQLiteDatabase): Promise<void> {
-    const currentVersionRow = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version;');
+    const currentVersionRow = await db.getFirstAsync<{ user_version: number }>(
+      'PRAGMA user_version;',
+    );
     const currentVersion = currentVersionRow?.user_version ?? 0;
 
     const migrations = (this.options.migrations ?? MIGRATIONS).sort((a, b) => a.id - b.id);

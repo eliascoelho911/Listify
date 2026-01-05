@@ -1,21 +1,19 @@
+import type { SQLiteDatabase as ExpoSQLiteDatabase, SQLiteVariadicBindParams } from 'expo-sqlite';
+
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
 import type { ShoppingRepository } from '@domain/shopping/ports/ShoppingRepository';
 import {
+  type CategoryRow,
+  type ItemRow,
   mapCategoryEntityToRow,
   mapCategoryRowToEntity,
   mapItemEntityToRow,
   mapItemRowToEntity,
   mapListRowToEntity,
-  type CategoryRow,
-  type ItemRow,
   type ShoppingListRow,
 } from '@data/shopping/mappers/sqliteMappers';
-import type {
-  SQLiteDatabase as ExpoSQLiteDatabase,
-  SQLiteVariadicBindParams,
-} from 'expo-sqlite';
 
 import { SqliteDatabase } from './SqliteDatabase';
 
@@ -46,7 +44,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
   constructor(
     private readonly db: SqliteDatabase,
     executor?: SqlExecutor,
-    isTransactionBound = false
+    isTransactionBound = false,
   ) {
     this.executor = executor ?? this.createExecutorFromDb(db);
     this.isTransactionBound = isTransactionBound;
@@ -55,7 +53,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
   async getActiveList(): Promise<ShoppingList> {
     await this.ensureSeeded();
     const row = await this.executor.getFirst<ShoppingListRow>(
-      'SELECT * FROM lists ORDER BY created_at ASC LIMIT 1'
+      'SELECT * FROM lists ORDER BY created_at ASC LIMIT 1',
     );
     if (!row) {
       throw new Error('Não foi possível carregar a lista ativa.');
@@ -66,7 +64,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
   async getCategories(): Promise<Category[]> {
     await this.ensureSeeded();
     const rows = await this.executor.getAll<CategoryRow>(
-      'SELECT * FROM categories ORDER BY sort_order ASC, name ASC'
+      'SELECT * FROM categories ORDER BY sort_order ASC, name ASC',
     );
     return rows.map(mapCategoryRowToEntity);
   }
@@ -74,7 +72,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
   async getItems(listId: string): Promise<ShoppingItem[]> {
     const rows = await this.executor.getAll<ItemRow>(
       'SELECT * FROM items WHERE list_id = ? ORDER BY category_id ASC, status ASC, position ASC',
-      listId
+      listId,
     );
     return rows.map(mapItemRowToEntity);
   }
@@ -85,7 +83,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
       const position = await this.resolvePosition(executor, item);
       const existing = await executor.getFirst<{ count: number }>(
         'SELECT COUNT(*) as count FROM items WHERE id = ?',
-        item.id
+        item.id,
       );
 
       const entity: ShoppingItem = {
@@ -124,7 +122,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
           row.purchased_at,
           row.unit_price_minor,
           row.total_price_minor,
-          row.id
+          row.id,
         );
       } else {
         await executor.run(
@@ -144,7 +142,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
           row.updated_at,
           row.purchased_at,
           row.unit_price_minor,
-          row.total_price_minor
+          row.total_price_minor,
         );
       }
     };
@@ -176,7 +174,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
       row.id,
       row.name,
       row.is_predefined,
-      row.sort_order
+      row.sort_order,
     );
   }
 
@@ -191,7 +189,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
   private async ensureSeeded(): Promise<void> {
     const seed = async (executor: SqlExecutor) => {
       const listCount = await executor.getFirst<{ count: number }>(
-        'SELECT COUNT(*) as count FROM lists'
+        'SELECT COUNT(*) as count FROM lists',
       );
       const hasList = (listCount?.count ?? 0) > 0;
 
@@ -206,12 +204,12 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
           listId,
           nowIso,
           nowIso,
-          'BRL'
+          'BRL',
         );
       }
 
       const categoryCount = await executor.getFirst<{ count: number }>(
-        'SELECT COUNT(*) as count FROM categories'
+        'SELECT COUNT(*) as count FROM categories',
       );
       if ((categoryCount?.count ?? 0) === 0) {
         const categories = this.buildDefaultCategories();
@@ -222,7 +220,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
             row.id,
             row.name,
             row.is_predefined,
-            row.sort_order
+            row.sort_order,
           );
         }
       }
@@ -256,13 +254,17 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
     const result = await executor.getFirst<{ maxPosition: number }>(
       'SELECT MAX(position) as maxPosition FROM items WHERE category_id = ? AND status = ?',
       item.categoryId,
-      item.status
+      item.status,
     );
     return (result?.maxPosition ?? 0) + 1;
   }
 
   private generateId(): string {
-    if (typeof crypto !== 'undefined' && 'randomUUID' in crypto && typeof crypto.randomUUID === 'function') {
+    if (
+      typeof crypto !== 'undefined' &&
+      'randomUUID' in crypto &&
+      typeof crypto.randomUUID === 'function'
+    ) {
       return crypto.randomUUID();
     }
     return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
