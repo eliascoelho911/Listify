@@ -63,18 +63,18 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ### Testes de domínio (TDD recomendado)
 
-- [ ] T018 [P] [US1] Implementar testes de `CreateItemFromFreeText` (defaults, `@categoria`, frações, vírgula, erro “nome vazio”) em `tests/domain/shopping/CreateItemFromFreeText.test.ts`
-- [ ] T019 [P] [US1] Implementar testes de `ToggleItemPurchased` (alternância, `purchasedAt`, reposicionamento básico “comprados ao final da categoria”) em `tests/domain/shopping/ToggleItemPurchased.test.ts`
-- [ ] T020 [P] [US1] Implementar testes de `UpdateItem` (regras de preço conforme spec, sem perder status) em `tests/domain/shopping/UpdateItem.test.ts`
+- [x] T018 [P] [US1] Implementar testes de `CreateItemFromFreeText` (defaults, `@categoria`, frações, vírgula, erro “nome vazio”) em `tests/domain/shopping/CreateItemFromFreeText.test.ts`
+- [x] T019 [P] [US1] Implementar testes de `ToggleItemPurchased` (alternância, `purchasedAt`, reposicionamento básico “comprados ao final da categoria”) em `tests/domain/shopping/ToggleItemPurchased.test.ts`
+- [x] T020 [P] [US1] Implementar testes de `UpdateItem` (regras de preço conforme spec, sem perder status) em `tests/domain/shopping/UpdateItem.test.ts`
 
 ### Domínio (entities, value objects, use cases)
 
 - [x] T021 [P] [US1] Criar value objects: `src/domain/shopping/value-objects/Quantity.ts` e `src/domain/shopping/value-objects/Unit.ts` (normalização + parse)
 - [x] T022 [P] [US1] Criar tipos/entidades: `src/domain/shopping/entities/ShoppingList.ts`, `src/domain/shopping/entities/ShoppingItem.ts`, `src/domain/shopping/entities/Category.ts`
-- [ ] T023 [US1] Implementar parsing de linha única (quantidade/unidade/nome/@categoria) em `src/domain/shopping/use-cases/CreateItemFromFreeText.ts`
-- [ ] T024 [US1] Implementar `ToggleItemPurchased` em `src/domain/shopping/use-cases/ToggleItemPurchased.ts`
-- [ ] T025 [US1] Implementar `UpdateItem` e `DeleteItem` em `src/domain/shopping/use-cases/UpdateItem.ts` e `src/domain/shopping/use-cases/DeleteItem.ts`
-- [ ] T026 [US1] Implementar `GetActiveListState` (shape “VM-friendly”) em `src/domain/shopping/use-cases/GetActiveListState.ts`
+- [x] T023 [US1] Implementar parsing de linha única (quantidade/unidade/nome/@categoria) em `src/domain/shopping/use-cases/CreateItemFromFreeText.ts`
+- [x] T024 [US1] Implementar `ToggleItemPurchased` em `src/domain/shopping/use-cases/ToggleItemPurchased.ts`
+- [x] T025 [US1] Implementar `UpdateItem` e `DeleteItem` em `src/domain/shopping/use-cases/UpdateItem.ts` e `src/domain/shopping/use-cases/DeleteItem.ts`
+- [x] T026 [US1] Implementar `GetActiveListState` (shape “VM-friendly”) em `src/domain/shopping/use-cases/GetActiveListState.ts`
 
 ### Data/Infra (mappers + repositório)
 
