@@ -1,4 +1,5 @@
 import {
+  deleteDatabaseAsync,
   openDatabaseAsync,
   type SQLiteDatabase as ExpoSQLiteDatabase,
   type SQLiteRunResult,
@@ -7,7 +8,21 @@ import {
 
 import { type Migration, MIGRATIONS } from './migrations';
 
+export const DEFAULT_DATABASE_NAME = 'listify.db';
+
+export class DatabaseBootstrapError extends Error {
+  constructor(
+    message: string,
+    readonly originalError?: unknown,
+  ) {
+    super(message);
+    this.name = 'DatabaseBootstrapError';
+  }
+}
+
 export class SqliteDatabase {
+  private readonly databaseName: string;
+  private readonly migrations: Migration[];
   private readonly dbPromise: Promise<ExpoSQLiteDatabase>;
 
   constructor(
@@ -16,14 +31,20 @@ export class SqliteDatabase {
       migrations?: Migration[];
     } = {},
   ) {
+    this.databaseName = this.options.databaseName ?? DEFAULT_DATABASE_NAME;
+    this.migrations = (this.options.migrations ?? MIGRATIONS).sort((a, b) => a.id - b.id);
     this.dbPromise = this.initialize();
   }
 
   private async initialize(): Promise<ExpoSQLiteDatabase> {
-    const db = await openDatabaseAsync(this.options.databaseName ?? 'listify.db');
-    await db.execAsync('PRAGMA foreign_keys = ON;');
-    await this.applyMigrations(db);
-    return db;
+    try {
+      const db = await openDatabaseAsync(this.databaseName);
+      await db.execAsync('PRAGMA foreign_keys = ON;');
+      await this.applyMigrations(db);
+      return db;
+    } catch (error) {
+      throw new DatabaseBootstrapError('Failed to initialize database', error);
+    }
   }
 
   private async applyMigrations(db: ExpoSQLiteDatabase): Promise<void> {
@@ -32,8 +53,7 @@ export class SqliteDatabase {
     );
     const currentVersion = currentVersionRow?.user_version ?? 0;
 
-    const migrations = (this.options.migrations ?? MIGRATIONS).sort((a, b) => a.id - b.id);
-    const pending = migrations.filter((migration) => migration.id > currentVersion);
+    const pending = this.migrations.filter((migration) => migration.id > currentVersion);
 
     for (const migration of pending) {
       await db.withExclusiveTransactionAsync(async (txn) => {
@@ -41,6 +61,10 @@ export class SqliteDatabase {
         await txn.execAsync(`PRAGMA user_version = ${migration.id};`);
       });
     }
+  }
+
+  static async resetDatabase(databaseName = DEFAULT_DATABASE_NAME): Promise<void> {
+    await deleteDatabaseAsync(databaseName);
   }
 
   private async getDb(): Promise<ExpoSQLiteDatabase> {

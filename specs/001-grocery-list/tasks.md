@@ -1,7 +1,5 @@
 ---
-
-description: "Lista de tarefas para implementar a feature 001-grocery-list"
-
+description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 ---
 
 # Tarefas: Listify — Lista Única de Compras
@@ -24,12 +22,12 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ## Fase 0: Bootstrap do app (bloqueante)
 
-- [X] T001 Criar projeto Expo + Expo Router (TypeScript strict) com rotas em `app/` (`app/_layout.tsx`, `app/index.tsx`, `app/item/[id].tsx`)
-- [X] T002 [P] Definir estrutura de pastas conforme `plan.md` (`src/domain`, `src/data`, `src/infra`, `src/presentation`, `src/design-system`, `tests/`)
-- [X] T003 Configurar aliases TS (ex.: `@domain/*`, `@infra/*`) em `tsconfig.json` e ajustar imports-base
-- [X] T004 [P] Configurar ESLint (TS strict) + regras de fronteira do domínio (proibir imports de RN/Expo em `src/domain/**`) + script `npm run lint`
-- [X] T005 [P] Configurar Jest para testes puros de TypeScript (domínio) em `tests/` + script `npm test`
-- [X] T005A [P] Configurar i18n (pt-BR + en): instalar `i18next`, `react-i18next`, `expo-localization`; criar init em `src/app/i18n/i18n.ts`; adicionar recursos `src/app/i18n/locales/{en,pt-BR}`; inicializar no bootstrap (`app/_layout.tsx` / `AppProviders`) e adotar `t()` nas telas do MVP
+- [x] T001 Criar projeto Expo + Expo Router (TypeScript strict) com rotas em `app/` (`app/_layout.tsx`, `app/index.tsx`, `app/item/[id].tsx`)
+- [x] T002 [P] Definir estrutura de pastas conforme `plan.md` (`src/domain`, `src/data`, `src/infra`, `src/presentation`, `src/design-system`, `tests/`)
+- [x] T003 Configurar aliases TS (ex.: `@domain/*`, `@infra/*`) em `tsconfig.json` e ajustar imports-base
+- [x] T004 [P] Configurar ESLint (TS strict) + regras de fronteira do domínio (proibir imports de RN/Expo em `src/domain/**`) + script `npm run lint`
+- [x] T005 [P] Configurar Jest para testes puros de TypeScript (domínio) em `tests/` + script `npm test`
+- [x] T005A [P] Configurar i18n (pt-BR + en): instalar `i18next`, `react-i18next`, `expo-localization`; criar init em `src/app/i18n/i18n.ts`; adicionar recursos `src/app/i18n/locales/{en,pt-BR}`; inicializar no bootstrap (`app/_layout.tsx` / `AppProviders`) e adotar `t()` nas telas do MVP
 
 **Checkpoint**: `npm test` e `npm run lint` rodam; app abre e renderiza uma tela simples.
 
@@ -37,13 +35,13 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ## Fase 1: Fundacional (offline-first + DI) — bloqueia US1
 
-- [X] T006 [P] Criar composition root/DI: `src/app/di/types.ts` e `src/app/di/container.ts` (sem lib externa)
-- [X] T007 Criar providers globais: `src/app/providers/AppProviders.tsx` (DI + tema + store)
-- [X] T008 Implementar SQLite wrapper + migrações: `src/infra/storage/sqlite/SqliteDatabase.ts` e `src/infra/storage/sqlite/migrations/0001_init.sql`
-- [ ] T009 Implementar bootstrap do schema (PRAGMA `user_version`, migrate on start) e tratamento de falha de leitura (estado “recovery” em `presentation`)
-- [X] T010 Implementar `ShoppingRepository` (port) em `src/domain/shopping/ports/ShoppingRepository.ts` (assinaturas mínimas do `data-model.md`)
-- [X] T011 Implementar repo SQLite: `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` com `getActiveList()`, `getCategories()`, `getItems(listId)`, `upsertItem()`, `deleteItem()`, `upsertCategory()`, `transaction()`
-- [X] T012 Seed inicial: criar 1 lista ativa + categorias pré-definidas (FR-007) se o DB estiver vazio (dentro de transação)
+- [x] T006 [P] Criar composition root/DI: `src/app/di/types.ts` e `src/app/di/container.ts` (sem lib externa)
+- [x] T007 Criar providers globais: `src/app/providers/AppProviders.tsx` (DI + tema + store)
+- [x] T008 Implementar SQLite wrapper + migrações: `src/infra/storage/sqlite/SqliteDatabase.ts` e `src/infra/storage/sqlite/migrations/0001_init.sql`
+- [x] T009 Implementar bootstrap do schema (PRAGMA `user_version`, migrate on start) e tratamento de falha de leitura (estado “recovery” em `presentation`)
+- [x] T010 Implementar `ShoppingRepository` (port) em `src/domain/shopping/ports/ShoppingRepository.ts` (assinaturas mínimas do `data-model.md`)
+- [x] T011 Implementar repo SQLite: `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` com `getActiveList()`, `getCategories()`, `getItems(listId)`, `upsertItem()`, `deleteItem()`, `upsertCategory()`, `transaction()`
+- [x] T012 Seed inicial: criar 1 lista ativa + categorias pré-definidas (FR-007) se o DB estiver vazio (dentro de transação)
 
 **Checkpoint**: abrir o app cria DB local e retorna lista ativa + categorias + itens (vazio) sem crash.
 
@@ -71,8 +69,8 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ### Domínio (entities, value objects, use cases)
 
-- [X] T021 [P] [US1] Criar value objects: `src/domain/shopping/value-objects/Quantity.ts` e `src/domain/shopping/value-objects/Unit.ts` (normalização + parse)
-- [X] T022 [P] [US1] Criar tipos/entidades: `src/domain/shopping/entities/ShoppingList.ts`, `src/domain/shopping/entities/ShoppingItem.ts`, `src/domain/shopping/entities/Category.ts`
+- [x] T021 [P] [US1] Criar value objects: `src/domain/shopping/value-objects/Quantity.ts` e `src/domain/shopping/value-objects/Unit.ts` (normalização + parse)
+- [x] T022 [P] [US1] Criar tipos/entidades: `src/domain/shopping/entities/ShoppingList.ts`, `src/domain/shopping/entities/ShoppingItem.ts`, `src/domain/shopping/entities/Category.ts`
 - [ ] T023 [US1] Implementar parsing de linha única (quantidade/unidade/nome/@categoria) em `src/domain/shopping/use-cases/CreateItemFromFreeText.ts`
 - [ ] T024 [US1] Implementar `ToggleItemPurchased` em `src/domain/shopping/use-cases/ToggleItemPurchased.ts`
 - [ ] T025 [US1] Implementar `UpdateItem` e `DeleteItem` em `src/domain/shopping/use-cases/UpdateItem.ts` e `src/domain/shopping/use-cases/DeleteItem.ts`
@@ -80,9 +78,9 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ### Data/Infra (mappers + repositório)
 
-- [X] T027 [P] [US1] Criar DTOs e mappers SQLite↔domínio: `src/data/shopping/mappers/*` (rows → entities; entities → params SQL)
-- [X] T028 [US1] Ajustar `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` para respeitar ordenação por `categoryId` + `status` + `position` e garantir posições consistentes ao inserir
-- [X] T029 [US1] Garantir atomicidade das operações críticas via `transaction()` (create/toggle/update/delete)
+- [x] T027 [P] [US1] Criar DTOs e mappers SQLite↔domínio: `src/data/shopping/mappers/*` (rows → entities; entities → params SQL)
+- [x] T028 [US1] Ajustar `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` para respeitar ordenação por `categoryId` + `status` + `position` e garantir posições consistentes ao inserir
+- [x] T029 [US1] Garantir atomicidade das operações críticas via `transaction()` (create/toggle/update/delete)
 
 ### Presentation (telas + store + UX)
 

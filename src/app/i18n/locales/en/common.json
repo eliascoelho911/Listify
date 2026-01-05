@@ -2,13 +2,30 @@
   "appName": "Listify",
   "loading": {
     "title": "Starting up",
-    "subtitle": "Initializing Listify..."
+    "subtitle": "Initializing Listify...",
+    "hint": "Preparing your local data."
   },
   "errors": {
     "bootstrapFailed": {
       "title": "Couldn't start",
       "message": "We couldn't open the local database.",
       "hint": "Try reopening the app or clearing local storage."
+    }
+  },
+  "recovery": {
+    "title": "Need a little help",
+    "subtitle": "We couldn't read your local data.",
+    "hint": "You can try again or reset your local data to start fresh.",
+    "actions": {
+      "retry": "Try again",
+      "reset": "Reset local data",
+      "resetting": "Resetting..."
+    },
+    "reset": {
+      "title": "Reset local data?",
+      "message": "This clears your offline data and recreates the shopping list with default categories.",
+      "cancel": "Cancel",
+      "confirm": "Yes, reset"
     }
   },
   "navigation": {
