@@ -33,4 +33,6 @@ TypeScript (strict): Follow standard conventions
 - Dados do usuário (ex.: nome do item, categorias customizadas) MUST NOT ser traduzidos automaticamente; apenas UI/copy é traduzível.
 - Categorias/unidades pré-definidas SHOULD usar identificadores/códigos estáveis e labels via i18n (evitar persistir nomes localizados no banco).
 - Formatação de moeda/número/data SHOULD usar `Intl.*Format` com o locale ativo + `currencyCode` da lista (sem hardcode de separadores/símbolos).
+- Rodar `npx prettier --write <arquivos modificados>` para formatar tudo que foi alterado antes de subir.
+- Executar sempre `npm test && npm run lint` antes de subir mudanças.
 <!-- MANUAL ADDITIONS END -->
