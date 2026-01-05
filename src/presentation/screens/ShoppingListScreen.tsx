@@ -1,19 +1,18 @@
 import type { ReactElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { SafeAreaView, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 export default function ShoppingListScreen(): ReactElement {
+  const { t } = useTranslation();
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
-        <Text style={styles.title}>Listify</Text>
-        <Text style={styles.subtitle}>
-          Capture e acompanhe sua lista de compras, mesmo offline.
-        </Text>
+        <Text style={styles.title}>{t('screens.home.title')}</Text>
+        <Text style={styles.subtitle}>{t('screens.home.subtitle')}</Text>
         <View style={styles.card}>
-          <Text style={styles.cardTitle}>Próximos passos</Text>
-          <Text style={styles.cardText}>
-            Adicione itens, agrupe por categoria e conclua rapidamente.
-          </Text>
+          <Text style={styles.cardTitle}>{t('screens.home.cardTitle')}</Text>
+          <Text style={styles.cardText}>{t('screens.home.cardText')}</Text>
         </View>
       </ScrollView>
     </SafeAreaView>

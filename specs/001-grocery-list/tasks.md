@@ -29,7 +29,7 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 - [X] T003 Configurar aliases TS (ex.: `@domain/*`, `@infra/*`) em `tsconfig.json` e ajustar imports-base
 - [X] T004 [P] Configurar ESLint (TS strict) + regras de fronteira do domínio (proibir imports de RN/Expo em `src/domain/**`) + script `npm run lint`
 - [X] T005 [P] Configurar Jest para testes puros de TypeScript (domínio) em `tests/` + script `npm test`
-- [ ] T005A [P] Configurar i18n (pt-BR + en): instalar `i18next`, `react-i18next`, `expo-localization`; criar init em `src/app/i18n/i18n.ts`; adicionar recursos `src/app/i18n/locales/{en,pt-BR}`; inicializar no bootstrap (`app/_layout.tsx` / `AppProviders`) e adotar `t()` nas telas do MVP
+- [X] T005A [P] Configurar i18n (pt-BR + en): instalar `i18next`, `react-i18next`, `expo-localization`; criar init em `src/app/i18n/i18n.ts`; adicionar recursos `src/app/i18n/locales/{en,pt-BR}`; inicializar no bootstrap (`app/_layout.tsx` / `AppProviders`) e adotar `t()` nas telas do MVP
 
 **Checkpoint**: `npm test` e `npm run lint` rodam; app abre e renderiza uma tela simples.
 

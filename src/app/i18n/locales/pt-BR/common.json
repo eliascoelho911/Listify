@@ -1,0 +1,31 @@
+{
+  "appName": "Listify",
+  "loading": {
+    "title": "Iniciando",
+    "subtitle": "Inicializando o Listify..."
+  },
+  "errors": {
+    "bootstrapFailed": {
+      "title": "Falha ao iniciar",
+      "message": "Não conseguimos abrir a base local.",
+      "hint": "Tente reabrir o app ou limpar o armazenamento."
+    }
+  },
+  "navigation": {
+    "homeTitle": "Listify",
+    "editItemTitle": "Editar item"
+  },
+  "screens": {
+    "home": {
+      "title": "Listify",
+      "subtitle": "Capture e acompanhe sua lista de compras, mesmo offline.",
+      "cardTitle": "Próximos passos",
+      "cardText": "Adicione itens, agrupe por categoria e conclua rapidamente."
+    },
+    "editItem": {
+      "title": "Editar item",
+      "selectedId": "ID selecionado: {{id}}",
+      "missingId": "não informado"
+    }
+  }
+}
