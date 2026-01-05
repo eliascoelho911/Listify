@@ -37,13 +37,13 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ## Fase 1: Fundacional (offline-first + DI) — bloqueia US1
 
-- [ ] T006 [P] Criar composition root/DI: `src/app/di/types.ts` e `src/app/di/container.ts` (sem lib externa)
-- [ ] T007 Criar providers globais: `src/app/providers/AppProviders.tsx` (DI + tema + store)
-- [ ] T008 Implementar SQLite wrapper + migrações: `src/infra/storage/sqlite/SqliteDatabase.ts` e `src/infra/storage/sqlite/migrations/0001_init.sql`
+- [X] T006 [P] Criar composition root/DI: `src/app/di/types.ts` e `src/app/di/container.ts` (sem lib externa)
+- [X] T007 Criar providers globais: `src/app/providers/AppProviders.tsx` (DI + tema + store)
+- [X] T008 Implementar SQLite wrapper + migrações: `src/infra/storage/sqlite/SqliteDatabase.ts` e `src/infra/storage/sqlite/migrations/0001_init.sql`
 - [ ] T009 Implementar bootstrap do schema (PRAGMA `user_version`, migrate on start) e tratamento de falha de leitura (estado “recovery” em `presentation`)
-- [ ] T010 Implementar `ShoppingRepository` (port) em `src/domain/shopping/ports/ShoppingRepository.ts` (assinaturas mínimas do `data-model.md`)
-- [ ] T011 Implementar repo SQLite: `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` com `getActiveList()`, `getCategories()`, `getItems(listId)`, `upsertItem()`, `deleteItem()`, `upsertCategory()`, `transaction()`
-- [ ] T012 Seed inicial: criar 1 lista ativa + categorias pré-definidas (FR-007) se o DB estiver vazio (dentro de transação)
+- [X] T010 Implementar `ShoppingRepository` (port) em `src/domain/shopping/ports/ShoppingRepository.ts` (assinaturas mínimas do `data-model.md`)
+- [X] T011 Implementar repo SQLite: `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` com `getActiveList()`, `getCategories()`, `getItems(listId)`, `upsertItem()`, `deleteItem()`, `upsertCategory()`, `transaction()`
+- [X] T012 Seed inicial: criar 1 lista ativa + categorias pré-definidas (FR-007) se o DB estiver vazio (dentro de transação)
 
 **Checkpoint**: abrir o app cria DB local e retorna lista ativa + categorias + itens (vazio) sem crash.
 
@@ -71,8 +71,8 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ### Domínio (entities, value objects, use cases)
 
-- [ ] T021 [P] [US1] Criar value objects: `src/domain/shopping/value-objects/Quantity.ts` e `src/domain/shopping/value-objects/Unit.ts` (normalização + parse)
-- [ ] T022 [P] [US1] Criar tipos/entidades: `src/domain/shopping/entities/ShoppingList.ts`, `src/domain/shopping/entities/ShoppingItem.ts`, `src/domain/shopping/entities/Category.ts`
+- [X] T021 [P] [US1] Criar value objects: `src/domain/shopping/value-objects/Quantity.ts` e `src/domain/shopping/value-objects/Unit.ts` (normalização + parse)
+- [X] T022 [P] [US1] Criar tipos/entidades: `src/domain/shopping/entities/ShoppingList.ts`, `src/domain/shopping/entities/ShoppingItem.ts`, `src/domain/shopping/entities/Category.ts`
 - [ ] T023 [US1] Implementar parsing de linha única (quantidade/unidade/nome/@categoria) em `src/domain/shopping/use-cases/CreateItemFromFreeText.ts`
 - [ ] T024 [US1] Implementar `ToggleItemPurchased` em `src/domain/shopping/use-cases/ToggleItemPurchased.ts`
 - [ ] T025 [US1] Implementar `UpdateItem` e `DeleteItem` em `src/domain/shopping/use-cases/UpdateItem.ts` e `src/domain/shopping/use-cases/DeleteItem.ts`
@@ -80,9 +80,9 @@ description: "Lista de tarefas para implementar a feature 001-grocery-list"
 
 ### Data/Infra (mappers + repositório)
 
-- [ ] T027 [P] [US1] Criar DTOs e mappers SQLite↔domínio: `src/data/shopping/mappers/*` (rows → entities; entities → params SQL)
-- [ ] T028 [US1] Ajustar `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` para respeitar ordenação por `categoryId` + `status` + `position` e garantir posições consistentes ao inserir
-- [ ] T029 [US1] Garantir atomicidade das operações críticas via `transaction()` (create/toggle/update/delete)
+- [X] T027 [P] [US1] Criar DTOs e mappers SQLite↔domínio: `src/data/shopping/mappers/*` (rows → entities; entities → params SQL)
+- [X] T028 [US1] Ajustar `src/infra/storage/sqlite/ShoppingSqliteRepo.ts` para respeitar ordenação por `categoryId` + `status` + `position` e garantir posições consistentes ao inserir
+- [X] T029 [US1] Garantir atomicidade das operações críticas via `transaction()` (create/toggle/update/delete)
 
 ### Presentation (telas + store + UX)
 
