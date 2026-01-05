@@ -2,6 +2,8 @@ import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
+import { theme } from '@design-system/theme/theme';
+
 type EditItemScreenProps = {
   itemId?: string;
 };
@@ -23,22 +25,26 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: theme.colors.background.canvas,
   },
   content: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 8,
-    paddingHorizontal: 24,
+    gap: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.xl,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '700',
-    color: '#111827',
+    fontFamily: theme.typography.families.heading,
+    fontSize: theme.typography.sizes.xl,
+    lineHeight: theme.typography.sizes.xl * theme.typography.lineHeights.tight,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.content.primary,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#374151',
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.md,
+    lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.normal,
+    color: theme.colors.content.secondary,
   },
 });

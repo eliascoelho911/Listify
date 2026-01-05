@@ -14,6 +14,7 @@ import {
 import { buildDependencies } from '@app/di/container';
 import type { AppDependencies, BuildDependenciesOptions } from '@app/di/types';
 import { DEFAULT_DATABASE_NAME, SqliteDatabase } from '@infra/storage/sqlite/SqliteDatabase';
+import { theme } from '@design-system/theme/theme';
 
 import { i18n, initializeI18n } from '../i18n/i18n';
 
@@ -152,50 +153,57 @@ export function AppProviders({ children }: AppProvidersProps): ReactElement {
 const styles = StyleSheet.create({
   fullscreen: {
     flex: 1,
-    backgroundColor: '#f7f7f7',
+    backgroundColor: theme.colors.background.canvas,
   },
   centered: {
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 12,
-    paddingHorizontal: 24,
+    gap: theme.spacing.md,
+    paddingHorizontal: theme.spacing.xl,
   },
   title: {
-    fontSize: 20,
-    fontWeight: '700',
-    color: '#111827',
+    fontFamily: theme.typography.families.heading,
+    fontSize: theme.typography.sizes.xl,
+    lineHeight: theme.typography.sizes.xl * theme.typography.lineHeights.tight,
+    fontWeight: theme.typography.weights.bold,
+    color: theme.colors.content.primary,
   },
   subtitle: {
-    fontSize: 16,
-    color: '#374151',
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.md,
+    lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.normal,
+    color: theme.colors.content.secondary,
     textAlign: 'center',
   },
   hint: {
-    fontSize: 14,
-    color: '#6b7280',
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.sm,
+    lineHeight: theme.typography.sizes.sm * theme.typography.lineHeights.relaxed,
+    color: theme.colors.content.muted,
     textAlign: 'center',
   },
   actions: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 8,
+    gap: theme.spacing.sm,
+    marginTop: theme.spacing.xs,
   },
   button: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 8,
-    backgroundColor: '#111827',
+    paddingHorizontal: theme.spacing.md,
+    paddingVertical: theme.spacing.sm,
+    borderRadius: theme.radii.md,
+    backgroundColor: theme.colors.brand[700],
   },
   buttonSecondary: {
-    backgroundColor: '#e5e7eb',
+    backgroundColor: theme.colors.background.muted,
   },
   buttonText: {
-    color: '#ffffff',
-    fontWeight: '700',
+    fontFamily: theme.typography.families.heading,
+    color: theme.colors.content.inverse,
+    fontWeight: theme.typography.weights.semibold,
   },
   buttonTextSecondary: {
-    color: '#111827',
+    color: theme.colors.content.primary,
   },
 });
 
@@ -217,7 +225,7 @@ function BootstrapScreen({
   return (
     <SafeAreaView style={styles.fullscreen}>
       <View style={styles.centered}>
-        {showSpinner ? <ActivityIndicator size="large" color="#111827" /> : null}
+        {showSpinner ? <ActivityIndicator size="large" color={theme.colors.brand[600]} /> : null}
         <Text style={styles.title}>{title}</Text>
         {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
         {hint ? <Text style={styles.hint}>{hint}</Text> : null}

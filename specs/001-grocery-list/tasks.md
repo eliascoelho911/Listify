@@ -49,11 +49,11 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ## Fase 2: Design System (tokens + base visual) — bloqueante para as fases seguintes
 
-- [ ] T013 [P] Definir tokens de cores (neutros, primária, estados) em `src/design-system/tokens/colors.ts`
-- [ ] T014 [P] Definir tokens de tipografia (família, tamanhos, pesos, line-height) em `src/design-system/tokens/typography.ts`
-- [ ] T015 [P] Definir tokens de espaçamento, raios e sombras em `src/design-system/tokens/spacing.ts`, `src/design-system/tokens/radii.ts`, `src/design-system/tokens/shadows.ts`
-- [ ] T016 Definir tema base e exports unificados em `src/design-system/theme/theme.ts` e `src/design-system/tokens/index.ts`
-- [ ] T017 Adaptar a base de UI para usar tokens do design system (substituir valores hard coded) em `src/presentation/screens/ShoppingListScreen.tsx`, `src/presentation/screens/EditItemScreen.tsx`, `src/app/providers/AppProviders.tsx`, `src/app/index.tsx`
+- [x] T013 [P] Definir tokens de cores (neutros, primária, estados) em `src/design-system/tokens/colors.ts`
+- [x] T014 [P] Definir tokens de tipografia (família, tamanhos, pesos, line-height) em `src/design-system/tokens/typography.ts`
+- [x] T015 [P] Definir tokens de espaçamento, raios e sombras em `src/design-system/tokens/spacing.ts`, `src/design-system/tokens/radii.ts`, `src/design-system/tokens/shadows.ts`
+- [x] T016 Definir tema base e exports unificados em `src/design-system/theme/theme.ts` e `src/design-system/tokens/index.ts`
+- [x] T017 Adaptar a base de UI para usar tokens do design system (substituir valores hard coded) em `src/presentation/screens/ShoppingListScreen.tsx`, `src/presentation/screens/EditItemScreen.tsx`, `src/app/providers/AppProviders.tsx`, `src/app/index.tsx`
 
 **Checkpoint**: tokens definidos e UI existente usando apenas tokens do design system.
 
