@@ -22,7 +22,7 @@
       },
       "edgeToEdgeEnabled": true,
       "predictiveBackGestureEnabled": false,
-      "package": "com.anonymous.listify"
+      "package": "com.eliascoelho911.listify"
     },
     "scheme": "listify",
     "experiments": {
