@@ -17,7 +17,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
-import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
+import { useShoppingListVM } from '@presentation/state/shopping-list/useShoppingListVM';
 import { theme } from '@design-system/theme/theme';
 
 type EditItemScreenProps = {

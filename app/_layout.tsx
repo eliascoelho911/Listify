@@ -6,25 +6,38 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { initializeI18n } from '@app/i18n/i18n';
-import { AppProviders } from '@app/providers/AppProviders';
+import { AppProviders, useDependencies } from '@app/providers/AppProviders';
+import { FALLBACK_LOCALE } from '@domain/shopping/constants';
+import { ShoppingListStoreProvider } from '@presentation/state/shopping-list/ShoppingListStoreProvider';
 
 initializeI18n().catch(() => undefined);
 
-export default function RootLayout(): ReactElement {
-  const { t } = useTranslation();
+function NavigationStack(): ReactElement {
+  const { t, i18n } = useTranslation();
+  const deps = useDependencies();
+  return (
+    <ShoppingListStoreProvider
+      repository={deps.shoppingRepository}
+      getLocale={() => i18n.language ?? FALLBACK_LOCALE}
+    >
+      <Stack>
+        <Stack.Screen name="index" options={{ title: t('navigation.homeTitle') }} />
+        <Stack.Screen
+          name="item/[id]"
+          options={{ title: t('navigation.editItemTitle'), presentation: 'modal' }}
+        />
+      </Stack>
+    </ShoppingListStoreProvider>
+  );
+}
 
+export default function RootLayout(): ReactElement {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>
         <StatusBar style="auto" />
         <AppProviders>
-          <Stack>
-            <Stack.Screen name="index" options={{ title: t('navigation.homeTitle') }} />
-            <Stack.Screen
-              name="item/[id]"
-              options={{ title: t('navigation.editItemTitle'), presentation: 'modal' }}
-            />
-          </Stack>
+          <NavigationStack />
         </AppProviders>
       </SafeAreaProvider>
     </GestureHandlerRootView>

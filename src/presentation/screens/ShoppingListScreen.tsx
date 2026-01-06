@@ -18,7 +18,7 @@ import { theme } from '@design-system/theme/theme';
 
 import { AddItemInput } from '../components/AddItemInput';
 import { CategorySection } from '../components/CategorySection';
-import { useShoppingListVM } from '../hooks/useShoppingListVM';
+import { useShoppingListVM } from '../state/shopping-list/useShoppingListVM';
 
 export default function ShoppingListScreen(): ReactElement {
   const { t } = useTranslation();
