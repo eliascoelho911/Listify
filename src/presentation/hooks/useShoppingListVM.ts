@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 import { useShallow } from 'zustand/react/shallow';
 
-import { ShoppingListStore } from './shoppingListStore';
-import { useShoppingListStoreApi } from './ShoppingListStoreProvider';
+import { ShoppingListStore } from '../state/shopping-list/shoppingListStore';
+import { useShoppingListStoreApi } from '../state/shopping-list/ShoppingListStoreProvider';
 
 export function useShoppingListVM(): {
   state: Pick<

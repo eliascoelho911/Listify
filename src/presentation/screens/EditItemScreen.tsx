@@ -1,3 +1,4 @@
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import type { ReactElement } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,12 +14,11 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useLocalSearchParams, useRouter } from 'expo-router';
 
+import { theme } from '@design-system/theme/theme';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
-import { useShoppingListVM } from '@presentation/state/shopping-list/useShoppingListVM';
-import { theme } from '@design-system/theme/theme';
+import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
 
 type EditItemScreenProps = {
   itemId?: string;
