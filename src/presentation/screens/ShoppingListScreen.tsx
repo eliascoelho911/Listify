@@ -14,6 +14,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
+import { SnackBar } from '@design-system/components/SnackBar';
 import { theme } from '@design-system/theme/theme';
 
 import { AddItemInput } from '../components/AddItemInput';
@@ -138,20 +139,20 @@ export default function ShoppingListScreen(): ReactElement {
           ) : (
             emptyState
           )}
-
-          {state.pendingUndo ? (
-            <View style={styles.undoBanner}>
-              <Text style={styles.undoText}>
-                {t('shoppingList.undo.label', { name: state.pendingUndo.name })}
-              </Text>
-              <View style={styles.undoActions}>
-                <Text style={styles.undoButton} onPress={actions.undoRemove}>
-                  {t('shoppingList.undo.action')}
-                </Text>
-              </View>
-            </View>
-          ) : null}
         </ScrollView>
+
+        {state.pendingUndo ? (
+          <SnackBar
+            message={t('shoppingList.undo.label', { name: state.pendingUndo.name })}
+            actionLabel={t('shoppingList.undo.action')}
+            onAction={actions.undoRemove}
+            tone="info"
+            style={styles.snackBar}
+            onDismiss={actions.dismissUndo}
+            closeLabel={t('shoppingList.undo.dismiss')}
+            onClose={actions.dismissUndo}
+          />
+        ) : null}
 
         <View
           style={{
@@ -304,28 +305,8 @@ const styles = StyleSheet.create({
     color: theme.colors.content.secondary,
     textAlign: 'center',
   },
-  undoBanner: {
-    marginTop: theme.spacing.md,
-    padding: theme.spacing.md,
-    borderRadius: theme.radii.md,
-    backgroundColor: theme.colors.background.muted,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: theme.spacing.sm,
-  },
-  undoText: {
-    fontFamily: theme.typography.families.body,
-    color: theme.colors.content.primary,
-    flex: 1,
-  },
-  undoActions: {
-    flexDirection: 'row',
-    gap: theme.spacing.sm,
-  },
-  undoButton: {
-    fontFamily: theme.typography.families.heading,
-    color: theme.colors.brand[700],
-    fontWeight: theme.typography.weights.semibold,
+  snackBar: {
+    marginHorizontal: theme.spacing.lg,
+    marginBottom: theme.spacing.md,
   },
 });

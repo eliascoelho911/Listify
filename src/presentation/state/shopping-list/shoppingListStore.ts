@@ -52,6 +52,7 @@ type ShoppingListActions = {
   updateItem: (input: UpdateItemInput) => Promise<ShoppingItem | null>;
   removeItem: (itemId: string) => Promise<void>;
   undoRemove: () => Promise<void>;
+  dismissUndo: () => void;
   clearError: () => void;
 };
 
@@ -415,6 +416,13 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         set((state) => ({
           ...state,
           lastError: null,
+        }));
+      },
+
+      dismissUndo: () => {
+        set((state) => ({
+          ...state,
+          pendingUndo: undefined,
         }));
       },
     },

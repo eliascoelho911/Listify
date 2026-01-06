@@ -101,7 +101,8 @@
     },
     "undo": {
       "label": "Removed {{name}}",
-      "action": "Undo"
+      "action": "Undo",
+      "dismiss": "Dismiss"
     }
   },
   "categories": {
