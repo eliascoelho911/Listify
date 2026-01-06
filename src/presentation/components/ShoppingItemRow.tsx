@@ -21,7 +21,7 @@ export function ShoppingItemRow({
   onPress,
 }: ShoppingItemRowProps): ReactElement {
   const swipeableRef = useRef<Swipeable>(null);
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const handleToggle = (): void => {
     onToggleStatus(item.id);

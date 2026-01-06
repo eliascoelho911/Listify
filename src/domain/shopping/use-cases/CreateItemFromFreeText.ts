@@ -36,15 +36,17 @@ export function createItemFromFreeText(
   const tokens = tokenize(remainingText);
 
   let currentIndex = 0;
-  const quantityCandidate = tryParseQuantity(tokens[0]);
+  const combinedQuantityAndUnit = tryParseCombinedQuantityAndUnit(tokens[0], options);
+  const quantityCandidate = combinedQuantityAndUnit?.quantity ?? tryParseQuantity(tokens[0]);
   const quantity = quantityCandidate ?? Quantity.default();
   if (quantityCandidate) {
     currentIndex += 1;
   }
 
-  const unitCandidate = tryParseUnit(tokens[currentIndex], options);
+  const unitCandidate =
+    combinedQuantityAndUnit?.unit ?? tryParseUnit(tokens[currentIndex], options);
   const unit: UnitCode = unitCandidate ?? DEFAULT_UNIT_CODE;
-  if (unitCandidate) {
+  if (unitCandidate && !combinedQuantityAndUnit) {
     currentIndex += 1;
   }
 
@@ -129,6 +131,33 @@ function tryParseUnit(
     if (dictionary && dictionary[normalized]) {
       return dictionary[normalized];
     }
+  }
+
+  return null;
+}
+
+function tryParseCombinedQuantityAndUnit(
+  token: string | undefined,
+  options: CreateItemFromFreeTextOptions,
+): { quantity: Quantity; unit: UnitCode } | null {
+  if (!token) {
+    return null;
+  }
+
+  const normalized = token.trim().toLowerCase();
+  const match = normalized.match(/^([0-9]+(?:[.,][0-9]+)?|[0-9]+\/[0-9]+)([a-z]+)$/i);
+
+  if (!match) {
+    return null;
+  }
+
+  const [, quantityToken, unitToken] = match;
+
+  const quantity = tryParseQuantity(quantityToken);
+  const unit = tryParseUnit(unitToken, options);
+
+  if (quantity && unit) {
+    return { quantity, unit };
   }
 
   return null;
