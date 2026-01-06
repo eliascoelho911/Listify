@@ -84,15 +84,15 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ### Presentation (telas + store + UX)
 
-- [ ] T030 [P] [US1] Criar store/view-model Zustand: `src/presentation/state/shoppingListStore.ts` (carregar estado, ações async, optimistic UI + rollback)
-- [ ] T031 [P] [US1] Criar hook `src/presentation/hooks/useShoppingListVM.ts` (selectors + actions)
-- [ ] T032 [P] [US1] Criar componentes base: `src/presentation/components/AddItemInput.tsx`, `src/presentation/components/CategorySection.tsx`, `src/presentation/components/ShoppingItemRow.tsx`
-- [ ] T033 [US1] Implementar tela principal: `src/presentation/screens/ShoppingListScreen.tsx` (agrupamento por categoria, “comprados ao final”, input fixo no rodapé)
-- [ ] T034 [US1] Implementar fluxo de editar item via rota `app/item/[id].tsx` + screen `src/presentation/screens/EditItemScreen.tsx`
-- [ ] T035 [US1] Implementar gesto simples de remover (ex.: swipe) + undo via snackbar/toast (presentation-level)
-- [ ] T036 [US1] Implementar preview leve do parsing enquanto digita (sem bloquear): destaque/tooltip no `AddItemInput`
-- [ ] T037 [US1] Implementar estado de erro não-bloqueante para falhas de escrita (FR-043) preservando texto digitado
-- [ ] T038 [US1] Implementar estado de recovery (FR-044) com “tentar novamente” e “resetar dados locais” (com confirmação)
+- [x] T030 [P] [US1] Criar store/view-model Zustand: `src/presentation/state/shoppingListStore.ts` (carregar estado, ações async, optimistic UI + rollback)
+- [x] T031 [P] [US1] Criar hook `src/presentation/hooks/useShoppingListVM.ts` (selectors + actions)
+- [x] T032 [P] [US1] Criar componentes base: `src/presentation/components/AddItemInput.tsx`, `src/presentation/components/CategorySection.tsx`, `src/presentation/components/ShoppingItemRow.tsx`
+- [x] T033 [US1] Implementar tela principal: `src/presentation/screens/ShoppingListScreen.tsx` (agrupamento por categoria, “comprados ao final”, input fixo no rodapé)
+- [x] T034 [US1] Implementar fluxo de editar item via rota `app/item/[id].tsx` + screen `src/presentation/screens/EditItemScreen.tsx`
+- [x] T035 [US1] Implementar gesto simples de remover (ex.: swipe) + undo via snackbar/toast (presentation-level)
+- [x] T036 [US1] Implementar preview leve do parsing enquanto digita (sem bloquear): destaque/tooltip no `AddItemInput`
+- [x] T037 [US1] Implementar estado de erro não-bloqueante para falhas de escrita (FR-043) preservando texto digitado
+- [x] T038 [US1] Implementar estado de recovery (FR-044) com “tentar novamente” e “resetar dados locais” (com confirmação)
 
 **Checkpoint**: US1 completa manualmente: adicionar por texto, agrupar por categoria, marcar comprado (mover ao final), editar e remover com UX robusta.
 

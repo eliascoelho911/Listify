@@ -48,4 +48,20 @@ describe('CreateItemFromFreeText', () => {
   it('throws when there is no item name left after parsing', () => {
     expect(() => createItemFromFreeText('2 kg @hortifruti')).toThrow(EmptyItemNameError);
   });
+
+  it('parses quantity and unit when they are attached without spaces', () => {
+    const result = createItemFromFreeText('2l água');
+
+    expect(result.quantity.toNumber()).toBe(2);
+    expect(result.unit).toBe('l');
+    expect(result.name).toBe('água');
+  });
+
+  it('parses fractional quantity and unit when they are attached', () => {
+    const result = createItemFromFreeText('1/2kg arroz integral');
+
+    expect(result.quantity.toNumber()).toBeCloseTo(0.5);
+    expect(result.unit).toBe('kg');
+    expect(result.name).toBe('arroz integral');
+  });
 });

@@ -42,7 +42,80 @@
     "editItem": {
       "title": "Edit item",
       "selectedId": "Selected ID: {{id}}",
-      "missingId": "not provided"
+      "missingId": "not provided",
+      "fields": {
+        "name": "Name",
+        "namePlaceholder": "Ex: apples",
+        "quantity": "Quantity",
+        "quantityPlaceholder": "Ex: 2 or 1/2",
+        "unit": "Unit",
+        "unitPlaceholder": "Ex: kg",
+        "category": "Category"
+      },
+      "save": "Save changes",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "back": "Back to list",
+      "notFound": {
+        "title": "Item not found",
+        "subtitle": "We couldn't find this item. Try selecting it from the list again."
+      }
     }
+  },
+  "shoppingList": {
+    "loading": "Loading your list...",
+    "summary": {
+      "title": "Progress",
+      "total": "Total",
+      "pending": "Pending",
+      "purchased": "Purchased"
+    },
+    "add": {
+      "accessibilityLabel": "Add item input",
+      "placeholder": "Add an item (e.g., “2 kg apples @produce”)",
+      "submit": "Add",
+      "sending": "Adding..."
+    },
+    "preview": {
+      "quantity": "Qty",
+      "unit": "Unit",
+      "category": "Category",
+      "name": "Item"
+    },
+    "category": {
+      "count_one": "{{count}} item",
+      "count_other": "{{count}} items",
+      "purchasedLabel_one": "{{count}} purchased",
+      "purchasedLabel_other": "{{count}} purchased"
+    },
+    "empty": {
+      "title": "Start your list",
+      "subtitle": "Add your first item and we’ll organize everything by category."
+    },
+    "errors": {
+      "load": "We couldn't load your list. Pull to refresh to try again.",
+      "write": "We couldn't save this change. Try again."
+    },
+    "actions": {
+      "delete": "Remove"
+    },
+    "undo": {
+      "label": "Removed {{name}}",
+      "action": "Undo",
+      "dismiss": "Dismiss"
+    }
+  },
+  "categories": {
+    "hortifruti": "Produce",
+    "mercearia": "Pantry",
+    "açougue": "Butcher",
+    "laticínios": "Dairy",
+    "padaria": "Bakery",
+    "bebidas": "Drinks",
+    "limpeza": "Cleaning",
+    "higiene": "Personal care",
+    "congelados": "Frozen",
+    "pet": "Pet",
+    "outros": "Other"
   }
 }

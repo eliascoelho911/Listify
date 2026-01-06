@@ -21,7 +21,8 @@
         "backgroundColor": "#ffffff"
       },
       "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false
+      "predictiveBackGestureEnabled": false,
+      "package": "com.eliascoelho911.listify"
     },
     "scheme": "listify",
     "experiments": {
@@ -30,10 +31,21 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "extra": {
+      "router": {
+        "root": "app"
+      }
+    },
     "plugins": [
-      "expo-router",
+      [
+        "expo-router",
+        {
+          "root": "app"
+        }
+      ],
       "expo-sqlite",
-      "expo-localization"
+      "expo-localization",
+      "./plugins/withAndroidWindowSoftInputMode"
     ]
   }
 }
