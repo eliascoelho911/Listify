@@ -1,17 +1,17 @@
 import type { ReactElement } from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
+  Keyboard,
   KeyboardAvoidingView,
-  Platform,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
 import { theme } from '@design-system/theme/theme';
@@ -25,6 +25,7 @@ export default function ShoppingListScreen(): ReactElement {
   const router = useRouter();
   const { state, actions } = useShoppingListVM();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const insets = useSafeAreaInsets();
 
   const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true);
@@ -59,11 +60,29 @@ export default function ShoppingListScreen(): ReactElement {
     </View>
   );
 
+  // FIXME: https://github.com/facebook/react-native/issues/52596
+  const [behaviour, setBehaviour] = useState<'padding' | undefined>('padding');
+
+  useEffect(() => {
+    const showListener = Keyboard.addListener('keyboardDidShow', () => {
+      setBehaviour('padding');
+    });
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setBehaviour(undefined);
+    });
+
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
+
   return (
-    <SafeAreaView style={styles.container}>
+    <View style={styles.container}>
       <KeyboardAvoidingView
         style={styles.keyboard}
-        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+        behavior={behaviour}
+        keyboardVerticalOffset={insets.bottom}
       >
         <ScrollView
           style={styles.scroll}
@@ -134,15 +153,21 @@ export default function ShoppingListScreen(): ReactElement {
           ) : null}
         </ScrollView>
 
-        <AddItemInput
-          value={state.inputText}
-          preview={state.preview}
-          isSubmitting={state.isSubmitting}
-          onChangeText={actions.setInputText}
-          onSubmit={actions.addItemFromInput}
-        />
+        <View
+          style={{
+            paddingBottom: insets.bottom,
+          }}
+        >
+          <AddItemInput
+            value={state.inputText}
+            preview={state.preview}
+            isSubmitting={state.isSubmitting}
+            onChangeText={actions.setInputText}
+            onSubmit={actions.addItemFromInput}
+          />
+        </View>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </View>
   );
 }
 
