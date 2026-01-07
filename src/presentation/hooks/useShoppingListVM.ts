@@ -9,6 +9,7 @@ export function useShoppingListVM(): {
     ShoppingListStore,
     | 'list'
     | 'categories'
+    | 'visibleCategories'
     | 'totals'
     | 'monetaryTotals'
     | 'inputText'
@@ -17,6 +18,7 @@ export function useShoppingListVM(): {
     | 'isSubmitting'
     | 'lastError'
     | 'pendingUndo'
+    | 'filters'
   >;
   actions: ShoppingListStore['actions'];
 } {
@@ -26,6 +28,7 @@ export function useShoppingListVM(): {
     useShallow((s) => ({
       list: s.list,
       categories: s.categories,
+      visibleCategories: s.visibleCategories,
       totals: s.totals,
       monetaryTotals: s.monetaryTotals,
       inputText: s.inputText,
@@ -34,6 +37,7 @@ export function useShoppingListVM(): {
       isSubmitting: s.isSubmitting,
       lastError: s.lastError,
       pendingUndo: s.pendingUndo,
+      filters: s.filters,
     })),
   );
 

@@ -94,6 +94,18 @@
       "category": "Category",
       "name": "Item"
     },
+    "filters": {
+      "searchLabel": "Search items",
+      "searchPlaceholder": "Search by name",
+      "hidePurchased": "Hide purchased",
+      "hidePurchasedOn": "Purchased items are hidden",
+      "hidePurchasedOff": "Showing purchased items",
+      "toggleOn": "On",
+      "toggleOff": "Off",
+      "emptyTitle": "Nothing matches",
+      "emptySubtitle": "Adjust your search to find items.",
+      "emptyWithHide": "Showing pending items only. Show purchased to view everything."
+    },
     "item": {
       "unitPrice": "{{price}} / {{unit}}"
     },
@@ -109,7 +121,10 @@
     },
     "errors": {
       "load": "We couldn't load your list. Pull to refresh to try again.",
-      "write": "We couldn't save this change. Try again."
+      "write": "We couldn't save this change. Try again.",
+      "details": {
+        "preferences_failed": "We couldn't update your preference. Try again."
+      }
     },
     "actions": {
       "delete": "Remove"

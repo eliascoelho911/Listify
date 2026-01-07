@@ -218,9 +218,10 @@ function resolveInputPrecision(input: string, decimalSeparator: string): number 
   return Math.max(0, input.length - separatorIndex - 1);
 }
 
-function resolveNumberSeparators(
-  locale: string,
-): { groupSeparator: string; decimalSeparator: string } {
+function resolveNumberSeparators(locale: string): {
+  groupSeparator: string;
+  decimalSeparator: string;
+} {
   try {
     const parts = new Intl.NumberFormat(locale).formatToParts(1000.1);
     const groupSeparator = parts.find((part) => part.type === 'group')?.value ?? ',';
@@ -245,11 +246,7 @@ function formatValue(value: number, locale: string, precision: number): string {
   }
 }
 
-function applyDecimalMask(
-  input: string,
-  decimalSeparator: string,
-  groupSeparator: string,
-): string {
+function applyDecimalMask(input: string, decimalSeparator: string, groupSeparator: string): string {
   if (!input) {
     return '';
   }
