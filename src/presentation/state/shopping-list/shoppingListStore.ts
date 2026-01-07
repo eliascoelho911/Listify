@@ -116,6 +116,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             lastError: null,
           }));
         } catch (error) {
+          console.debug('shoppingListStore.load_failed', { error });
           set((state) => ({
             ...state,
             isLoading: false,
@@ -136,6 +137,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             lastError: null,
           }));
         } catch (error) {
+          console.debug('shoppingListStore.refresh_failed', { error });
           set((state) => ({
             ...state,
             lastError: {
@@ -174,6 +176,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             defaultCategory: DEFAULT_CATEGORY_CODE,
           });
         } catch (error) {
+          console.debug('shoppingListStore.parse_input_failed', { error });
           set((state) => ({
             ...state,
             lastError: {
@@ -243,6 +246,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             isSubmitting: false,
           }));
         } catch (error) {
+          console.debug('shoppingListStore.add_item_failed', { error });
           set((state) => ({
             ...state,
             ...snapshot,
@@ -315,6 +319,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             };
           });
         } catch (error) {
+          console.debug('shoppingListStore.toggle_item_failed', { error });
           set((state) => ({
             ...state,
             ...stateSnapshot,
@@ -355,6 +360,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           });
           return updated;
         } catch (error) {
+          console.debug('shoppingListStore.update_item_failed', { error });
           set((state) => ({
             ...state,
             ...stateSnapshot,
@@ -396,6 +402,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         try {
           await deleteItemUseCase(itemId, { repository });
         } catch (error) {
+          console.debug('shoppingListStore.delete_item_failed', { error });
           set((state) => ({
             ...state,
             ...stateSnapshot,
@@ -432,6 +439,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         try {
           await repository.upsertItem(undoItem);
         } catch (error) {
+          console.debug('shoppingListStore.undo_remove_failed', { error });
           set((state) => ({
             ...state,
             ...stateSnapshot,
@@ -472,6 +480,7 @@ function buildPreview(text: string, locale: string): CreateItemFromFreeTextResul
     if (error instanceof EmptyItemNameError) {
       return null;
     }
+    console.debug('shoppingListStore.preview_failed', { error });
     return null;
   }
 }

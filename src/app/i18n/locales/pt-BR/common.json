@@ -48,12 +48,14 @@
         "namePlaceholder": "Ex.: maçã",
         "quantity": "Quantidade",
         "quantityPlaceholder": "Ex.: 2 ou 1/2",
+        "quantityDecrease": "Diminuir quantidade",
+        "quantityIncrease": "Aumentar quantidade",
         "unit": "Unidade",
         "unitPlaceholder": "Ex.: kg",
         "unitPrice": "Preço unitário",
-        "unitPricePlaceholder": "Ex.: 9,90 {{currency}}",
+        "unitPricePlaceholder": "Ex.: {{currency}}9,90",
         "totalPrice": "Preço total",
-        "totalPricePlaceholder": "Ex.: 19,80 {{currency}}",
+        "totalPricePlaceholder": "Ex.: {{currency}}19,80",
         "category": "Categoria"
       },
       "save": "Salvar alterações",
@@ -121,8 +123,8 @@
       "currency": "Moeda: {{currency}}",
       "unitPrice": "Preço unitário",
       "totalPrice": "Preço total",
-      "unitPricePlaceholder": "Ex.: 9,90 {{currency}}",
-      "totalPricePlaceholder": "Ex.: 19,80 {{currency}}",
+      "unitPricePlaceholder": "Ex.: {{currency}}9,90",
+      "totalPricePlaceholder": "Ex.: {{currency}}19,80",
       "missingPrice": "Informe pelo menos um preço para salvar.",
       "invalidPrice": "Use apenas números (ponto ou vírgula).",
       "save": "Salvar preço",
@@ -130,6 +132,13 @@
       "skip": "Pular",
       "saveError": "Não foi possível salvar este preço. Tente novamente."
     }
+  },
+  "units": {
+    "un": "un",
+    "kg": "kg",
+    "g": "g",
+    "l": "l",
+    "ml": "ml"
   },
   "categories": {
     "hortifruti": "Hortifruti",

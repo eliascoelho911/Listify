@@ -13,6 +13,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
+import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
 import { ListSummaryHeader } from '@presentation/components/ListSummaryHeader';
@@ -215,7 +216,9 @@ export default function ShoppingListScreen(): ReactElement {
           visible={Boolean(pricePrompt)}
           itemName={pricePrompt?.name ?? ''}
           quantity={pricePrompt?.quantity ?? 0}
-          currencyCode={pricePrompt?.currencyCode ?? state.list?.currencyCode ?? 'BRL'}
+          currencyCode={
+            pricePrompt?.currencyCode ?? state.list?.currencyCode ?? DEFAULT_CURRENCY_CODE
+          }
           locale={locale}
           isSubmitting={isSavingPrice}
           errorMessage={pricePromptError}

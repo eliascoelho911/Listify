@@ -1,5 +1,6 @@
 import type { SQLiteDatabase as ExpoSQLiteDatabase, SQLiteVariadicBindParams } from 'expo-sqlite';
 
+import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
@@ -204,7 +205,7 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
           listId,
           nowIso,
           nowIso,
-          'BRL',
+          DEFAULT_CURRENCY_CODE,
         );
       }
 

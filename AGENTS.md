@@ -37,4 +37,7 @@ TypeScript (strict): Follow standard conventions
 - Formatação de moeda/número/data SHOULD usar `Intl.*Format` com o locale ativo + `currencyCode` da lista (sem hardcode de separadores/símbolos).
 - Rodar `npx prettier --write <arquivos modificados>` para formatar tudo que foi alterado antes de subir SOMENTE QUANDO houver mudanças significativas.
 - Executar sempre `npm test && npm run lint` antes de subir mudanças SOMENTE QUANDO houver mudanças significativas.
+- Os componentes devem seguir o estilo Playful, Modern e Friendly do Design System. O tema de cores deve ser leve e vibrante, com ênfase em tons pastéis e acentos coloridos para destacar elementos interativos. O tema está definido em `src/theme`.
+- Posso mexer no projeto enquanto você trabalha, portanto não estranhe se algo mudar de uma hora para outra. Não reverta mudanças sem me consultar.
+- Busque adicionar logs de debug úteis para facilitar a identificação de problemas futuros (com `console.debug` ou similar).
 <!-- MANUAL ADDITIONS END -->

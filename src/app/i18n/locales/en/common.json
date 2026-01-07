@@ -48,12 +48,14 @@
         "namePlaceholder": "Ex: apples",
         "quantity": "Quantity",
         "quantityPlaceholder": "Ex: 2 or 1/2",
+        "quantityDecrease": "Decrease quantity",
+        "quantityIncrease": "Increase quantity",
         "unit": "Unit",
         "unitPlaceholder": "Ex: kg",
         "unitPrice": "Unit price",
-        "unitPricePlaceholder": "Ex: 9.90 {{currency}}",
+        "unitPricePlaceholder": "Ex: {{currency}}9.90",
         "totalPrice": "Total price",
-        "totalPricePlaceholder": "Ex: 19.80 {{currency}}",
+        "totalPricePlaceholder": "Ex: {{currency}}19.80",
         "category": "Category"
       },
       "save": "Save changes",
@@ -121,8 +123,8 @@
       "currency": "Currency: {{currency}}",
       "unitPrice": "Unit price",
       "totalPrice": "Total price",
-      "unitPricePlaceholder": "Ex: 9.90 {{currency}}",
-      "totalPricePlaceholder": "Ex: 19.80 {{currency}}",
+      "unitPricePlaceholder": "Ex: {{currency}}9.90",
+      "totalPricePlaceholder": "Ex: {{currency}}19.80",
       "missingPrice": "Add at least one price to save.",
       "invalidPrice": "Use numbers only (dot or comma).",
       "save": "Save price",
@@ -130,6 +132,13 @@
       "skip": "Skip",
       "saveError": "We couldn't save this price. Try again."
     }
+  },
+  "units": {
+    "un": "un",
+    "kg": "kg",
+    "g": "g",
+    "l": "l",
+    "ml": "ml"
   },
   "categories": {
     "hortifruti": "Produce",
