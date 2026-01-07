@@ -4,10 +4,12 @@ import {
   ActivityIndicator,
   Keyboard,
   KeyboardAvoidingView,
+  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
+  TextInput,
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -46,11 +48,20 @@ export default function ShoppingListScreen(): ReactElement {
   const insets = useSafeAreaInsets();
   const locale = i18n.language;
   const currencyCode = state.list?.currencyCode ?? DEFAULT_CURRENCY_CODE;
+  const visibleCategories = state.visibleCategories ?? state.categories;
 
   const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true);
     await actions.refresh();
     setIsRefreshing(false);
+  };
+
+  const handleSearchChange = (text: string): void => {
+    actions.setSearchQuery(text);
+  };
+
+  const handleToggleHidePurchased = async (): Promise<void> => {
+    await actions.toggleHidePurchased();
   };
 
   const handleToggleItem = async (itemId: string): Promise<void> => {
@@ -111,24 +122,39 @@ export default function ShoppingListScreen(): ReactElement {
     }
     const messageKey =
       state.lastError.type === 'load' ? 'shoppingList.errors.load' : 'shoppingList.errors.write';
+    const detailedMessage =
+      state.lastError.message &&
+      t(`shoppingList.errors.details.${state.lastError.message}`, {
+        defaultValue: state.lastError.message,
+      });
     return (
       <View style={styles.errorBanner}>
         <Text style={styles.errorTitle}>{t(messageKey)}</Text>
-        {state.lastError.message ? (
-          <Text style={styles.errorSubtitle}>{state.lastError.message}</Text>
-        ) : null}
+        {detailedMessage ? <Text style={styles.errorSubtitle}>{detailedMessage}</Text> : null}
       </View>
     );
   }, [state.lastError, t]);
 
-  const hasItems = state.categories.some(
+  const hasVisibleItems = visibleCategories.some(
     (category) => category.items.pending.length + category.items.purchased.length > 0,
   );
+  const hasAnyItems = state.totals.totalItems > 0;
 
   const emptyState = (
     <View style={styles.emptyState}>
       <Text style={styles.emptyTitle}>{t('shoppingList.empty.title')}</Text>
       <Text style={styles.emptySubtitle}>{t('shoppingList.empty.subtitle')}</Text>
+    </View>
+  );
+
+  const filteredEmptyState = (
+    <View style={[styles.emptyState, styles.filteredEmptyState]}>
+      <Text style={styles.emptyTitle}>{t('shoppingList.filters.emptyTitle')}</Text>
+      <Text style={styles.emptySubtitle}>
+        {state.filters.hidePurchased
+          ? t('shoppingList.filters.emptyWithHide')
+          : t('shoppingList.filters.emptySubtitle')}
+      </Text>
     </View>
   );
 
@@ -178,6 +204,52 @@ export default function ShoppingListScreen(): ReactElement {
             locale={locale}
           />
 
+          <View style={styles.filtersCard}>
+            <TextInput
+              accessibilityLabel={t('shoppingList.filters.searchLabel')}
+              placeholder={t('shoppingList.filters.searchPlaceholder')}
+              placeholderTextColor={theme.colors.content.muted}
+              value={state.filters.query}
+              onChangeText={handleSearchChange}
+              returnKeyType="search"
+              style={styles.searchInput}
+            />
+
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel={t('shoppingList.filters.hidePurchased')}
+              onPress={handleToggleHidePurchased}
+              style={({ pressed }) => [
+                styles.toggleButton,
+                state.filters.hidePurchased && styles.toggleButtonActive,
+                pressed && styles.toggleButtonPressed,
+              ]}
+            >
+              <View style={styles.toggleTexts}>
+                <Text style={styles.toggleTitle}>{t('shoppingList.filters.hidePurchased')}</Text>
+                <Text style={styles.toggleSubtitle}>
+                  {state.filters.hidePurchased
+                    ? t('shoppingList.filters.hidePurchasedOn')
+                    : t('shoppingList.filters.hidePurchasedOff')}
+                </Text>
+              </View>
+              <View
+                style={[styles.togglePill, state.filters.hidePurchased && styles.togglePillActive]}
+              >
+                <Text
+                  style={[
+                    styles.togglePillLabel,
+                    state.filters.hidePurchased && styles.togglePillLabelActive,
+                  ]}
+                >
+                  {state.filters.hidePurchased
+                    ? t('shoppingList.filters.toggleOn')
+                    : t('shoppingList.filters.toggleOff')}
+                </Text>
+              </View>
+            </Pressable>
+          </View>
+
           {errorBanner}
 
           {state.isLoading ? (
@@ -185,8 +257,8 @@ export default function ShoppingListScreen(): ReactElement {
               <ActivityIndicator color={theme.colors.brand[600]} size="large" />
               <Text style={styles.loadingText}>{t('shoppingList.loading')}</Text>
             </View>
-          ) : hasItems ? (
-            state.categories.map((category) => (
+          ) : hasVisibleItems ? (
+            visibleCategories.map((category) => (
               <CategorySection
                 key={category.id}
                 category={category}
@@ -196,6 +268,8 @@ export default function ShoppingListScreen(): ReactElement {
                 onPressItem={(id) => router.push({ pathname: '/item/[id]', params: { id } })}
               />
             ))
+          ) : hasAnyItems ? (
+            filteredEmptyState
           ) : (
             emptyState
           )}
@@ -293,6 +367,81 @@ const styles = StyleSheet.create({
     lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.relaxed,
     color: theme.colors.content.secondary,
   },
+  filtersCard: {
+    gap: theme.spacing.sm,
+    padding: theme.spacing.md,
+    backgroundColor: theme.colors.background.surface,
+    borderRadius: theme.radii.lg,
+    borderWidth: 1,
+    borderColor: theme.colors.border.subtle,
+    shadowColor: theme.colors.neutral[700],
+    shadowOpacity: 0.05,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 4 },
+  },
+  searchInput: {
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    backgroundColor: theme.colors.background.muted,
+    borderRadius: theme.radii.md,
+    color: theme.colors.content.primary,
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.md,
+  },
+  toggleButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: theme.spacing.sm,
+    paddingHorizontal: theme.spacing.md,
+    borderRadius: theme.radii.md,
+    borderWidth: 1,
+    borderColor: theme.colors.border.subtle,
+    backgroundColor: theme.colors.background.muted,
+  },
+  toggleButtonActive: {
+    backgroundColor: theme.colors.brand[50],
+    borderColor: theme.colors.brand[200],
+  },
+  toggleButtonPressed: {
+    borderColor: theme.colors.brand[300],
+  },
+  toggleTexts: {
+    flex: 1,
+    gap: theme.spacing.xxs,
+    paddingRight: theme.spacing.sm,
+  },
+  toggleTitle: {
+    fontFamily: theme.typography.families.heading,
+    fontWeight: theme.typography.weights.semibold,
+    color: theme.colors.content.primary,
+    fontSize: theme.typography.sizes.md,
+  },
+  toggleSubtitle: {
+    fontFamily: theme.typography.families.body,
+    color: theme.colors.content.secondary,
+    fontSize: theme.typography.sizes.sm,
+  },
+  togglePill: {
+    borderRadius: theme.radii.lg,
+    paddingVertical: theme.spacing.xs,
+    paddingHorizontal: theme.spacing.sm,
+    backgroundColor: theme.colors.background.surface,
+    borderWidth: 1,
+    borderColor: theme.colors.border.subtle,
+  },
+  togglePillActive: {
+    backgroundColor: theme.colors.brand[500],
+    borderColor: theme.colors.brand[500],
+  },
+  togglePillLabel: {
+    fontFamily: theme.typography.families.heading,
+    fontWeight: theme.typography.weights.semibold,
+    color: theme.colors.content.secondary,
+  },
+  togglePillLabelActive: {
+    color: theme.colors.content.inverse,
+  },
   errorBanner: {
     padding: theme.spacing.md,
     borderRadius: theme.radii.md,
@@ -328,6 +477,10 @@ const styles = StyleSheet.create({
     gap: theme.spacing.sm,
     borderWidth: 1,
     borderColor: theme.colors.border.subtle,
+  },
+  filteredEmptyState: {
+    backgroundColor: theme.colors.accent[50],
+    borderColor: theme.colors.accent[200],
   },
   emptyTitle: {
     fontFamily: theme.typography.families.heading,

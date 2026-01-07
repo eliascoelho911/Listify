@@ -25,15 +25,22 @@ import {
   updateItem as updateItemUseCase,
   type UpdateItemInput,
 } from '@domain/shopping/use-cases/UpdateItem';
+import { updatePreferences } from '@domain/shopping/use-cases/UpdatePreferences';
 
 type StoreError = {
   type: 'load' | 'write';
   message?: string;
 };
 
+type ShoppingListFilters = {
+  query: string;
+  hidePurchased: boolean;
+};
+
 type ShoppingListState = {
   list: ShoppingList | null;
   categories: CategoryItems[];
+  visibleCategories: CategoryItems[];
   totals: {
     totalItems: number;
     pendingItems: number;
@@ -46,6 +53,7 @@ type ShoppingListState = {
   isSubmitting: boolean;
   lastError: StoreError | null;
   pendingUndo?: ShoppingItem;
+  filters: ShoppingListFilters;
 };
 
 type ShoppingListActions = {
@@ -58,6 +66,8 @@ type ShoppingListActions = {
   removeItem: (itemId: string) => Promise<void>;
   undoRemove: () => Promise<void>;
   dismissUndo: () => void;
+  setSearchQuery: (query: string) => void;
+  toggleHidePurchased: () => Promise<void>;
   clearError: () => void;
 };
 
@@ -91,6 +101,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
   return create<ShoppingListStore>((set, get) => ({
     list: null,
     categories: [],
+    visibleCategories: [],
     totals: { totalItems: 0, pendingItems: 0, purchasedItems: 0 },
     monetaryTotals: undefined,
     inputText: '',
@@ -98,6 +109,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
     isLoading: true,
     isSubmitting: false,
     lastError: null,
+    filters: { query: '', hidePurchased: false },
 
     actions: {
       load: async () => {
@@ -109,9 +121,13 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
 
         try {
           const refreshed = await refreshFromRepository();
+          const filters = resolveFiltersFromList(refreshed.list, get().filters);
+          const derived = deriveStateFromCategories(refreshed.categories, refreshed.list, filters);
           set((state) => ({
             ...state,
             ...refreshed,
+            ...derived,
+            filters,
             isLoading: false,
             lastError: null,
           }));
@@ -131,9 +147,13 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
       refresh: async () => {
         try {
           const refreshed = await refreshFromRepository();
+          const filters = resolveFiltersFromList(refreshed.list, get().filters);
+          const derived = deriveStateFromCategories(refreshed.categories, refreshed.list, filters);
           set((state) => ({
             ...state,
             ...refreshed,
+            ...derived,
+            filters,
             lastError: null,
           }));
         } catch (error) {
@@ -214,13 +234,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           isPredefined: targetCategory?.isPredefined ?? false,
           sortOrder,
         });
-        const optimisticSummary = recomputeSummaryFromCategories(optimisticCategories, list);
+        const optimisticDerived = deriveStateFromCategories(
+          optimisticCategories,
+          list,
+          snapshot.filters,
+        );
 
         set((state) => ({
           ...state,
-          categories: optimisticCategories,
-          totals: optimisticSummary.totals,
-          monetaryTotals: optimisticSummary.monetaryTotals,
+          ...optimisticDerived,
           inputText: '',
           preview: null,
           isSubmitting: true,
@@ -240,9 +262,13 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             await txRepo.upsertItem(newItem);
           });
           const refreshed = await refreshFromRepository();
+          const filters = resolveFiltersFromList(refreshed.list, snapshot.filters);
+          const derived = deriveStateFromCategories(refreshed.categories, refreshed.list, filters);
           set((state) => ({
             ...state,
             ...refreshed,
+            ...derived,
+            filters,
             isSubmitting: false,
           }));
         } catch (error) {
@@ -290,16 +316,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         };
 
         const optimisticCategories = replaceItem(stateSnapshot.categories, optimisticItem);
-        const optimisticSummary = recomputeSummaryFromCategories(
+        const optimisticDerived = deriveStateFromCategories(
           optimisticCategories,
           stateSnapshot.list,
+          stateSnapshot.filters,
         );
 
         set((state) => ({
           ...state,
-          categories: optimisticCategories,
-          totals: optimisticSummary.totals,
-          monetaryTotals: optimisticSummary.monetaryTotals,
+          ...optimisticDerived,
           lastError: null,
         }));
 
@@ -307,15 +332,14 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           const saved = await toggleItemPurchased(itemId, { repository });
           set((state) => {
             const categoriesAfterSave = replaceItem(state.categories, saved);
-            const summaryAfterSave = recomputeSummaryFromCategories(
+            const derivedAfterSave = deriveStateFromCategories(
               categoriesAfterSave,
               state.list,
+              state.filters,
             );
             return {
               ...state,
-              categories: categoriesAfterSave,
-              totals: summaryAfterSave.totals,
-              monetaryTotals: summaryAfterSave.monetaryTotals,
+              ...derivedAfterSave,
             };
           });
         } catch (error) {
@@ -346,15 +370,14 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           const updated = await updateItemUseCase(input, { repository });
           set((state) => {
             const categoriesAfterUpdate = replaceItem(state.categories, updated);
-            const summaryAfterUpdate = recomputeSummaryFromCategories(
+            const derivedAfterUpdate = deriveStateFromCategories(
               categoriesAfterUpdate,
               state.list,
+              state.filters,
             );
             return {
               ...state,
-              categories: categoriesAfterUpdate,
-              totals: summaryAfterUpdate.totals,
-              monetaryTotals: summaryAfterUpdate.monetaryTotals,
+              ...derivedAfterUpdate,
               lastError: null,
             };
           });
@@ -385,16 +408,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }
 
         const optimisticCategories = removeItemFromCategories(stateSnapshot.categories, itemId);
-        const optimisticSummary = recomputeSummaryFromCategories(
+        const optimisticDerived = deriveStateFromCategories(
           optimisticCategories,
           stateSnapshot.list,
+          stateSnapshot.filters,
         );
 
         set((state) => ({
           ...state,
-          categories: optimisticCategories,
-          totals: optimisticSummary.totals,
-          monetaryTotals: optimisticSummary.monetaryTotals,
+          ...optimisticDerived,
           pendingUndo: target,
           lastError: null,
         }));
@@ -423,16 +445,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
 
         const stateSnapshot = snapshotState(get());
         const optimisticCategories = insertItem(stateSnapshot.categories, undoItem);
-        const optimisticSummary = recomputeSummaryFromCategories(
+        const optimisticSummary = deriveStateFromCategories(
           optimisticCategories,
           stateSnapshot.list,
+          stateSnapshot.filters,
         );
 
         set((state) => ({
           ...state,
-          categories: optimisticCategories,
-          totals: optimisticSummary.totals,
-          monetaryTotals: optimisticSummary.monetaryTotals,
+          ...optimisticSummary,
           pendingUndo: undefined,
         }));
 
@@ -446,6 +467,73 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
             lastError: {
               type: 'write',
               message: error instanceof Error ? error.message : 'undo_failed',
+            },
+          }));
+        }
+      },
+
+      setSearchQuery: (query: string) => {
+        const nextFilters: ShoppingListFilters = {
+          ...get().filters,
+          query,
+        };
+        set((state) => ({
+          ...state,
+          filters: nextFilters,
+          visibleCategories: filterCategories(state.categories, nextFilters),
+        }));
+      },
+
+      toggleHidePurchased: async () => {
+        const current = get();
+        if (!current.list) {
+          set((state) => ({
+            ...state,
+            lastError: { type: 'load', message: 'missing_list' },
+          }));
+          return;
+        }
+
+        const nextHidePurchased = !current.filters.hidePurchased;
+        const optimisticFilters: ShoppingListFilters = {
+          ...current.filters,
+          hidePurchased: nextHidePurchased,
+        };
+        const snapshot = snapshotState(current);
+        const optimisticDerived = deriveStateFromCategories(
+          current.categories,
+          current.list,
+          optimisticFilters,
+        );
+
+        set((state) => ({
+          ...state,
+          ...optimisticDerived,
+          filters: optimisticFilters,
+        }));
+
+        try {
+          const updatedList = await updatePreferences(
+            { listId: current.list.id, hidePurchasedByDefault: nextHidePurchased },
+            { repository },
+          );
+          const syncedFilters = resolveFiltersFromList(updatedList, optimisticFilters);
+          const derived = deriveStateFromCategories(get().categories, updatedList, syncedFilters);
+          set((state) => ({
+            ...state,
+            ...derived,
+            list: updatedList,
+            filters: syncedFilters,
+            lastError: null,
+          }));
+        } catch (error) {
+          console.debug('shoppingListStore.toggle_hide_failed', { error });
+          set((state) => ({
+            ...state,
+            ...snapshot,
+            lastError: {
+              type: 'write',
+              message: error instanceof Error ? error.message : 'preferences_failed',
             },
           }));
         }
@@ -466,6 +554,66 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
       },
     },
   }));
+}
+
+function resolveFiltersFromList(
+  list: ShoppingList | null,
+  currentFilters: ShoppingListFilters,
+): ShoppingListFilters {
+  return {
+    query: currentFilters.query,
+    hidePurchased: list?.hidePurchasedByDefault ?? currentFilters.hidePurchased,
+  };
+}
+
+function deriveStateFromCategories(
+  categories: CategoryItems[],
+  list: ShoppingList | null,
+  filters: ShoppingListFilters,
+): Pick<ShoppingListState, 'categories' | 'visibleCategories' | 'totals' | 'monetaryTotals'> {
+  const summary = recomputeSummaryFromCategories(categories, list);
+  return {
+    categories,
+    visibleCategories: filterCategories(categories, filters),
+    totals: summary.totals,
+    monetaryTotals: summary.monetaryTotals,
+  };
+}
+
+function filterCategories(
+  categories: CategoryItems[],
+  filters: ShoppingListFilters,
+): CategoryItems[] {
+  const normalizedQuery = filters.query.trim().toLocaleLowerCase();
+
+  return categories
+    .map((category) => {
+      const pending = filterItems(category.items.pending, normalizedQuery);
+      const purchased = filters.hidePurchased
+        ? []
+        : filterItems(category.items.purchased, normalizedQuery);
+
+      if (pending.length === 0 && purchased.length === 0) {
+        return null;
+      }
+
+      return {
+        ...category,
+        items: {
+          pending,
+          purchased,
+        },
+      };
+    })
+    .filter((category): category is CategoryItems => Boolean(category));
+}
+
+function filterItems(items: ShoppingItem[], normalizedQuery: string): ShoppingItem[] {
+  if (!normalizedQuery) {
+    return items;
+  }
+
+  return items.filter((item) => item.name.toLocaleLowerCase().includes(normalizedQuery));
 }
 
 function buildPreview(text: string, locale: string): CreateItemFromFreeTextResult | null {
@@ -489,15 +637,24 @@ function snapshotState(
   state: ShoppingListStore,
 ): Pick<
   ShoppingListStore,
-  'categories' | 'totals' | 'monetaryTotals' | 'inputText' | 'preview' | 'list'
+  | 'categories'
+  | 'visibleCategories'
+  | 'totals'
+  | 'monetaryTotals'
+  | 'inputText'
+  | 'preview'
+  | 'list'
+  | 'filters'
 > {
   return {
     categories: state.categories,
+    visibleCategories: state.visibleCategories,
     totals: state.totals,
     monetaryTotals: state.monetaryTotals,
     inputText: state.inputText,
     preview: state.preview,
     list: state.list,
+    filters: state.filters,
   };
 }
 

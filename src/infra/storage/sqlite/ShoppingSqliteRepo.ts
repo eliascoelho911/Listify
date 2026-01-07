@@ -4,7 +4,10 @@ import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
-import type { ShoppingRepository } from '@domain/shopping/ports/ShoppingRepository';
+import type {
+  ShoppingRepository,
+  UpdateListPreferencesInput,
+} from '@domain/shopping/ports/ShoppingRepository';
 import {
   type CategoryRow,
   type ItemRow,
@@ -177,6 +180,46 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
       row.is_predefined,
       row.sort_order,
     );
+  }
+
+  async updateListPreferences(preferences: UpdateListPreferencesInput): Promise<ShoppingList> {
+    await this.ensureSeeded();
+    const current = await this.executor.getFirst<ShoppingListRow>(
+      'SELECT * FROM lists WHERE id = ? LIMIT 1',
+      preferences.listId,
+    );
+    if (!current) {
+      throw new Error('Lista ativa não encontrada.');
+    }
+
+    const nextRow: ShoppingListRow = {
+      ...current,
+      hide_purchased_by_default:
+        preferences.hidePurchasedByDefault !== undefined
+          ? preferences.hidePurchasedByDefault
+            ? 1
+            : 0
+          : current.hide_purchased_by_default,
+      ask_price_on_purchase:
+        preferences.askPriceOnPurchase !== undefined
+          ? preferences.askPriceOnPurchase
+            ? 1
+            : 0
+          : current.ask_price_on_purchase,
+      updated_at: new Date().toISOString(),
+    };
+
+    await this.executor.run(
+      `UPDATE lists
+       SET hide_purchased_by_default = ?, ask_price_on_purchase = ?, updated_at = ?
+       WHERE id = ?`,
+      nextRow.hide_purchased_by_default,
+      nextRow.ask_price_on_purchase,
+      nextRow.updated_at,
+      nextRow.id,
+    );
+
+    return mapListRowToEntity(nextRow);
   }
 
   async transaction<T>(fn: (repo: ShoppingRepository) => Promise<T>): Promise<T> {

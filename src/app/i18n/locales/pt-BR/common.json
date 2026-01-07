@@ -94,6 +94,18 @@
       "category": "Categoria",
       "name": "Item"
     },
+    "filters": {
+      "searchLabel": "Buscar itens",
+      "searchPlaceholder": "Buscar pelo nome",
+      "hidePurchased": "Ocultar comprados",
+      "hidePurchasedOn": "Comprados ocultos",
+      "hidePurchasedOff": "Mostrando comprados",
+      "toggleOn": "Ativo",
+      "toggleOff": "Inativo",
+      "emptyTitle": "Nenhum item encontrado",
+      "emptySubtitle": "Ajuste a busca para ver os itens.",
+      "emptyWithHide": "Mostrando apenas pendentes. Exiba comprados para ver tudo."
+    },
     "item": {
       "unitPrice": "{{price}} / {{unit}}"
     },
@@ -109,7 +121,10 @@
     },
     "errors": {
       "load": "Não conseguimos carregar sua lista. Puxe para atualizar e tentar novamente.",
-      "write": "Não foi possível salvar a alteração. Tente de novo."
+      "write": "Não foi possível salvar a alteração. Tente de novo.",
+      "details": {
+        "preferences_failed": "Não foi possível atualizar a preferência. Tente novamente."
+      }
     },
     "actions": {
       "delete": "Remover"

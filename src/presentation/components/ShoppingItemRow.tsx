@@ -5,8 +5,8 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
-import { theme } from '@design-system/theme/theme';
 import { formatMoney } from '@presentation/utils/price';
+import { theme } from '@design-system/theme/theme';
 
 type ShoppingItemRowProps = {
   item: ShoppingItem;
@@ -149,7 +149,11 @@ function resolveUnitPriceMinor(
   if (typeof item.unitPriceMinor === 'number' && Number.isFinite(item.unitPriceMinor)) {
     return item.unitPriceMinor;
   }
-  if (typeof totalPriceMinor === 'number' && Number.isFinite(totalPriceMinor) && quantityValue > 0) {
+  if (
+    typeof totalPriceMinor === 'number' &&
+    Number.isFinite(totalPriceMinor) &&
+    quantityValue > 0
+  ) {
     return Math.round(totalPriceMinor / quantityValue);
   }
   return undefined;

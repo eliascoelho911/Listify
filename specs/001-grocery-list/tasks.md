@@ -112,9 +112,9 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ## Fase 5: US4 (P3) — Busca e “ocultar comprados” (opcional v1.0; recomendado v1.1 se conflitar com DnD)
 
-- [ ] T044 [P] [US4] Implementar busca por nome (client-side) no VM em `src/presentation/state/shoppingListStore.ts` (sem violar domínio)
-- [ ] T045 [US4] Implementar toggle “ocultar comprados” na UI (comportamento local) e garantir que resumo permanece correto
-- [ ] T046 [US4] Persistir preferência `hidePurchasedByDefault` em `lists` via `ShoppingRepository` (quando existir UI de configuração)
+- [x] T044 [P] [US4] Implementar busca por nome (client-side) no VM em `src/presentation/state/shoppingListStore.ts` (sem violar domínio)
+- [x] T045 [US4] Implementar toggle “ocultar comprados” na UI (comportamento local) e garantir que resumo permanece correto
+- [x] T046 [US4] Persistir preferência `hidePurchasedByDefault` em `lists` via `ShoppingRepository` (quando existir UI de configuração)
 
 ---
 

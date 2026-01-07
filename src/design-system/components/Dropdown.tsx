@@ -3,10 +3,10 @@ import {
   Modal,
   Pressable,
   ScrollView,
+  type StyleProp,
   StyleSheet,
   Text,
   View,
-  type StyleProp,
   type ViewStyle,
 } from 'react-native';
 
@@ -45,7 +45,7 @@ export function Dropdown({
     [options, value],
   );
 
-  const displayLabel = value ? selectedOption?.label ?? value : placeholder ?? '';
+  const displayLabel = value ? (selectedOption?.label ?? value) : (placeholder ?? '');
   const displayColor = value ? theme.colors.content.primary : theme.colors.content.muted;
 
   const handleOpen = (): void => {

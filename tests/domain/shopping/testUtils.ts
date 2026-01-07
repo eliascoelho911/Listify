@@ -2,7 +2,10 @@ import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
-import type { ShoppingRepository } from '@domain/shopping/ports/ShoppingRepository';
+import type {
+  ShoppingRepository,
+  UpdateListPreferencesInput,
+} from '@domain/shopping/ports/ShoppingRepository';
 import { Quantity } from '@domain/shopping/value-objects/Quantity';
 
 type InMemoryState = {
@@ -48,6 +51,21 @@ export class InMemoryShoppingRepository implements ShoppingRepository {
       return;
     }
     this.state.categories.push(this.clone(category));
+  }
+
+  async updateListPreferences(preferences: UpdateListPreferencesInput): Promise<ShoppingList> {
+    if (preferences.listId !== this.state.list.id) {
+      throw new Error('list_not_found');
+    }
+    const updated: ShoppingList = {
+      ...this.state.list,
+      hidePurchasedByDefault:
+        preferences.hidePurchasedByDefault ?? this.state.list.hidePurchasedByDefault,
+      askPriceOnPurchase: preferences.askPriceOnPurchase ?? this.state.list.askPriceOnPurchase,
+      updatedAt: new Date(),
+    };
+    this.state.list = this.clone(updated);
+    return this.clone(updated);
   }
 
   async transaction<T>(fn: (repo: ShoppingRepository) => Promise<T>): Promise<T> {
