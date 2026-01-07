@@ -6,9 +6,11 @@ import { Swipeable } from 'react-native-gesture-handler';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import { theme } from '@design-system/theme/theme';
+import { formatMoney } from '@presentation/utils/price';
 
 type ShoppingItemRowProps = {
   item: ShoppingItem;
+  currencyCode: string;
   onToggleStatus: (itemId: string) => void;
   onRemove: (itemId: string) => void;
   onPress?: (itemId: string) => void;
@@ -16,12 +18,18 @@ type ShoppingItemRowProps = {
 
 export function ShoppingItemRow({
   item,
+  currencyCode,
   onToggleStatus,
   onRemove,
   onPress,
 }: ShoppingItemRowProps): ReactElement {
   const swipeableRef = useRef<Swipeable>(null);
   const { t, i18n } = useTranslation();
+  const locale = i18n.language;
+  const unitLabel = t(`units.${item.unit}`, { defaultValue: item.unit });
+  const quantityValue = item.quantity.toNumber();
+  const totalPriceMinor = resolveTotalPriceMinor(item, quantityValue);
+  const unitPriceMinor = resolveUnitPriceMinor(item, totalPriceMinor, quantityValue);
 
   const handleToggle = (): void => {
     onToggleStatus(item.id);
@@ -88,9 +96,31 @@ export function ShoppingItemRow({
             {item.name}
           </Text>
           <Text style={styles.meta}>
-            {formatQuantity(item, i18n.language)} • {item.unit}
+            {formatQuantity(item, locale)} • {unitLabel}
           </Text>
         </View>
+        {totalPriceMinor !== undefined || unitPriceMinor !== undefined ? (
+          <View style={styles.priceBlock}>
+            {totalPriceMinor !== undefined ? (
+              <Text
+                style={[
+                  styles.priceTotal,
+                  item.status === 'purchased' && styles.priceTotalPurchased,
+                ]}
+              >
+                {formatMoney(totalPriceMinor, currencyCode, locale)}
+              </Text>
+            ) : null}
+            {unitPriceMinor !== undefined ? (
+              <Text style={styles.priceUnit}>
+                {t('shoppingList.item.unitPrice', {
+                  price: formatMoney(unitPriceMinor, currencyCode, locale),
+                  unit: unitLabel,
+                })}
+              </Text>
+            ) : null}
+          </View>
+        ) : null}
       </Pressable>
     </Swipeable>
   );
@@ -99,6 +129,30 @@ export function ShoppingItemRow({
 function formatQuantity(item: ShoppingItem, locale: string): string {
   const formatter = new Intl.NumberFormat(locale);
   return formatter.format(item.quantity.toNumber());
+}
+
+function resolveTotalPriceMinor(item: ShoppingItem, quantityValue: number): number | undefined {
+  if (typeof item.totalPriceMinor === 'number' && Number.isFinite(item.totalPriceMinor)) {
+    return item.totalPriceMinor;
+  }
+  if (typeof item.unitPriceMinor === 'number' && Number.isFinite(item.unitPriceMinor)) {
+    return Math.round(quantityValue * item.unitPriceMinor);
+  }
+  return undefined;
+}
+
+function resolveUnitPriceMinor(
+  item: ShoppingItem,
+  totalPriceMinor: number | undefined,
+  quantityValue: number,
+): number | undefined {
+  if (typeof item.unitPriceMinor === 'number' && Number.isFinite(item.unitPriceMinor)) {
+    return item.unitPriceMinor;
+  }
+  if (typeof totalPriceMinor === 'number' && Number.isFinite(totalPriceMinor) && quantityValue > 0) {
+    return Math.round(totalPriceMinor / quantityValue);
+  }
+  return undefined;
 }
 
 const styles = StyleSheet.create({
@@ -146,6 +200,26 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     gap: theme.spacing.xxs,
+  },
+  priceBlock: {
+    alignItems: 'flex-end',
+    gap: theme.spacing.xxs,
+  },
+  priceTotal: {
+    fontFamily: theme.typography.families.heading,
+    fontWeight: theme.typography.weights.semibold,
+    fontSize: theme.typography.sizes.sm,
+    lineHeight: theme.typography.sizes.sm * theme.typography.lineHeights.normal,
+    color: theme.colors.content.primary,
+  },
+  priceTotalPurchased: {
+    color: theme.colors.content.muted,
+  },
+  priceUnit: {
+    fontFamily: theme.typography.families.body,
+    fontSize: theme.typography.sizes.xs,
+    lineHeight: theme.typography.sizes.xs * theme.typography.lineHeights.normal,
+    color: theme.colors.content.muted,
   },
   title: {
     fontFamily: theme.typography.families.heading,

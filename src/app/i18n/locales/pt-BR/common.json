@@ -94,6 +94,9 @@
       "category": "Categoria",
       "name": "Item"
     },
+    "item": {
+      "unitPrice": "{{price}} / {{unit}}"
+    },
     "category": {
       "count_one": "{{count}} item",
       "count_other": "{{count}} itens",

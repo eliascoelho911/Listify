@@ -45,6 +45,7 @@ export default function ShoppingListScreen(): ReactElement {
   const [isSavingPrice, setIsSavingPrice] = useState(false);
   const insets = useSafeAreaInsets();
   const locale = i18n.language;
+  const currencyCode = state.list?.currencyCode ?? DEFAULT_CURRENCY_CODE;
 
   const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true);
@@ -189,6 +190,7 @@ export default function ShoppingListScreen(): ReactElement {
               <CategorySection
                 key={category.id}
                 category={category}
+                currencyCode={currencyCode}
                 onToggleItem={handleToggleItem}
                 onRemoveItem={actions.removeItem}
                 onPressItem={(id) => router.push({ pathname: '/item/[id]', params: { id } })}
