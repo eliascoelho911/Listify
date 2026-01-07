@@ -48,8 +48,14 @@
         "namePlaceholder": "Ex.: maçã",
         "quantity": "Quantidade",
         "quantityPlaceholder": "Ex.: 2 ou 1/2",
+        "quantityDecrease": "Diminuir quantidade",
+        "quantityIncrease": "Aumentar quantidade",
         "unit": "Unidade",
         "unitPlaceholder": "Ex.: kg",
+        "unitPrice": "Preço unitário",
+        "unitPricePlaceholder": "Ex.: {{currency}}9,90",
+        "totalPrice": "Preço total",
+        "totalPricePlaceholder": "Ex.: {{currency}}19,80",
         "category": "Categoria"
       },
       "save": "Salvar alterações",
@@ -59,6 +65,9 @@
       "notFound": {
         "title": "Item não encontrado",
         "subtitle": "Não conseguimos localizar este item. Tente selecioná-lo novamente na lista."
+      },
+      "errors": {
+        "invalidPrice": "Informe um preço válido (apenas números, ponto ou vírgula)."
       }
     }
   },
@@ -68,7 +77,10 @@
       "title": "Progresso",
       "total": "Total",
       "pending": "Pendentes",
-      "purchased": "Comprados"
+      "purchased": "Comprados",
+      "estimated": "Estimado",
+      "spent": "Gasto",
+      "planned": "Planejado"
     },
     "add": {
       "accessibilityLabel": "Campo para adicionar item",
@@ -81,6 +93,9 @@
       "unit": "Unidade",
       "category": "Categoria",
       "name": "Item"
+    },
+    "item": {
+      "unitPrice": "{{price}} / {{unit}}"
     },
     "category": {
       "count_one": "{{count}} item",
@@ -103,7 +118,30 @@
       "label": "{{name}} removido",
       "action": "Desfazer",
       "dismiss": "Fechar"
+    },
+    "pricePrompt": {
+      "title": "Adicionar preço?",
+      "description": "Registre preço unitário ou total para {{name}} e acompanhe o gasto.",
+      "quantity": "Qtd: {{quantity}}",
+      "currency": "Moeda: {{currency}}",
+      "unitPrice": "Preço unitário",
+      "totalPrice": "Preço total",
+      "unitPricePlaceholder": "Ex.: {{currency}}9,90",
+      "totalPricePlaceholder": "Ex.: {{currency}}19,80",
+      "missingPrice": "Informe pelo menos um preço para salvar.",
+      "invalidPrice": "Use apenas números (ponto ou vírgula).",
+      "save": "Salvar preço",
+      "saving": "Salvando...",
+      "skip": "Pular",
+      "saveError": "Não foi possível salvar este preço. Tente novamente."
     }
+  },
+  "units": {
+    "un": "un",
+    "kg": "kg",
+    "g": "g",
+    "l": "l",
+    "ml": "ml"
   },
   "categories": {
     "hortifruti": "Hortifruti",

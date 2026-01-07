@@ -1,5 +1,4 @@
-import type { ReactElement } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { type ReactElement, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -14,6 +13,14 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 
+import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
+import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
+import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
+import { ListSummaryHeader } from '@presentation/components/ListSummaryHeader';
+import {
+  type PricePromptResult,
+  PricePromptSheet,
+} from '@presentation/components/PricePromptSheet';
 import { SnackBar } from '@design-system/components/SnackBar';
 import { theme } from '@design-system/theme/theme';
 
@@ -21,17 +28,81 @@ import { AddItemInput } from '../components/AddItemInput';
 import { CategorySection } from '../components/CategorySection';
 import { useShoppingListVM } from '../hooks/useShoppingListVM';
 
+type PricePromptState = {
+  itemId: string;
+  name: string;
+  quantity: number;
+  currencyCode: string;
+};
+
 export default function ShoppingListScreen(): ReactElement {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const router = useRouter();
   const { state, actions } = useShoppingListVM();
   const [isRefreshing, setIsRefreshing] = useState(false);
+  const [pricePrompt, setPricePrompt] = useState<PricePromptState | null>(null);
+  const [pricePromptError, setPricePromptError] = useState<string | null>(null);
+  const [isSavingPrice, setIsSavingPrice] = useState(false);
   const insets = useSafeAreaInsets();
+  const locale = i18n.language;
+  const currencyCode = state.list?.currencyCode ?? DEFAULT_CURRENCY_CODE;
 
   const handleRefresh = async (): Promise<void> => {
     setIsRefreshing(true);
     await actions.refresh();
     setIsRefreshing(false);
+  };
+
+  const handleToggleItem = async (itemId: string): Promise<void> => {
+    const item = findItemById(state.categories, itemId);
+    const shouldPrompt =
+      item &&
+      item.status === 'pending' &&
+      state.list?.askPriceOnPurchase &&
+      !item.unitPriceMinor &&
+      !item.totalPriceMinor &&
+      state.list?.currencyCode;
+
+    await actions.toggleItemStatus(itemId);
+
+    if (shouldPrompt && state.list) {
+      setPricePrompt({
+        itemId,
+        name: item.name,
+        quantity: item.quantity.toNumber(),
+        currencyCode: state.list.currencyCode,
+      });
+      setPricePromptError(null);
+    }
+  };
+
+  const handleSubmitPrice = async (input: PricePromptResult): Promise<void> => {
+    if (!pricePrompt) {
+      return;
+    }
+
+    setIsSavingPrice(true);
+    setPricePromptError(null);
+    const updated = await actions.updateItem({
+      itemId: pricePrompt.itemId,
+      unitPriceMinor: input.unitPriceMinor ?? null,
+      totalPriceMinor: input.totalPriceMinor ?? null,
+      priceSource: input.priceSource,
+    });
+    setIsSavingPrice(false);
+
+    if (updated) {
+      setPricePrompt(null);
+      return;
+    }
+
+    setPricePromptError(t('shoppingList.pricePrompt.saveError'));
+  };
+
+  const handleSkipPrice = (): void => {
+    setPricePrompt(null);
+    setPricePromptError(null);
+    setIsSavingPrice(false);
   };
 
   const errorBanner = useMemo(() => {
@@ -101,23 +172,11 @@ export default function ShoppingListScreen(): ReactElement {
             <Text style={styles.subtitle}>{t('screens.home.subtitle')}</Text>
           </View>
 
-          <View style={styles.summaryCard}>
-            <Text style={styles.summaryTitle}>{t('shoppingList.summary.title')}</Text>
-            <View style={styles.summaryRow}>
-              <SummaryPill
-                label={t('shoppingList.summary.total')}
-                value={state.totals.totalItems}
-              />
-              <SummaryPill
-                label={t('shoppingList.summary.pending')}
-                value={state.totals.pendingItems}
-              />
-              <SummaryPill
-                label={t('shoppingList.summary.purchased')}
-                value={state.totals.purchasedItems}
-              />
-            </View>
-          </View>
+          <ListSummaryHeader
+            totals={state.totals}
+            monetaryTotals={state.monetaryTotals}
+            locale={locale}
+          />
 
           {errorBanner}
 
@@ -131,7 +190,8 @@ export default function ShoppingListScreen(): ReactElement {
               <CategorySection
                 key={category.id}
                 category={category}
-                onToggleItem={actions.toggleItemStatus}
+                currencyCode={currencyCode}
+                onToggleItem={handleToggleItem}
                 onRemoveItem={actions.removeItem}
                 onPressItem={(id) => router.push({ pathname: '/item/[id]', params: { id } })}
               />
@@ -154,6 +214,20 @@ export default function ShoppingListScreen(): ReactElement {
           />
         ) : null}
 
+        <PricePromptSheet
+          visible={Boolean(pricePrompt)}
+          itemName={pricePrompt?.name ?? ''}
+          quantity={pricePrompt?.quantity ?? 0}
+          currencyCode={
+            pricePrompt?.currencyCode ?? state.list?.currencyCode ?? DEFAULT_CURRENCY_CODE
+          }
+          locale={locale}
+          isSubmitting={isSavingPrice}
+          errorMessage={pricePromptError}
+          onSubmit={handleSubmitPrice}
+          onSkip={handleSkipPrice}
+        />
+
         <View
           style={{
             paddingBottom: insets.bottom,
@@ -172,18 +246,18 @@ export default function ShoppingListScreen(): ReactElement {
   );
 }
 
-type SummaryPillProps = {
-  label: string;
-  value: number;
-};
-
-function SummaryPill({ label, value }: SummaryPillProps): ReactElement {
-  return (
-    <View style={styles.pill}>
-      <Text style={styles.pillLabel}>{label}</Text>
-      <Text style={styles.pillValue}>{value}</Text>
-    </View>
-  );
+function findItemById(categories: CategoryItems[], itemId: string): ShoppingItem | undefined {
+  for (const category of categories) {
+    const pendingMatch = category.items.pending.find((item) => item.id === itemId);
+    if (pendingMatch) {
+      return pendingMatch;
+    }
+    const purchasedMatch = category.items.purchased.find((item) => item.id === itemId);
+    if (purchasedMatch) {
+      return purchasedMatch;
+    }
+  }
+  return undefined;
 }
 
 const styles = StyleSheet.create({
@@ -218,43 +292,6 @@ const styles = StyleSheet.create({
     fontSize: theme.typography.sizes.md,
     lineHeight: theme.typography.sizes.md * theme.typography.lineHeights.relaxed,
     color: theme.colors.content.secondary,
-  },
-  summaryCard: {
-    backgroundColor: theme.colors.background.surface,
-    padding: theme.spacing.md,
-    borderRadius: theme.radii.lg,
-    gap: theme.spacing.sm,
-    ...theme.shadows.card,
-  },
-  summaryTitle: {
-    fontFamily: theme.typography.families.heading,
-    fontWeight: theme.typography.weights.semibold,
-    fontSize: theme.typography.sizes.lg,
-    lineHeight: theme.typography.sizes.lg * theme.typography.lineHeights.normal,
-    color: theme.colors.content.primary,
-  },
-  summaryRow: {
-    flexDirection: 'row',
-    gap: theme.spacing.sm,
-  },
-  pill: {
-    flex: 1,
-    backgroundColor: theme.colors.background.muted,
-    paddingVertical: theme.spacing.sm,
-    paddingHorizontal: theme.spacing.md,
-    borderRadius: theme.radii.md,
-    gap: theme.spacing.xxs,
-  },
-  pillLabel: {
-    fontFamily: theme.typography.families.body,
-    fontSize: theme.typography.sizes.sm,
-    color: theme.colors.content.muted,
-  },
-  pillValue: {
-    fontFamily: theme.typography.families.heading,
-    fontSize: theme.typography.sizes.xl,
-    fontWeight: theme.typography.weights.bold,
-    color: theme.colors.content.primary,
   },
   errorBanner: {
     padding: theme.spacing.md,

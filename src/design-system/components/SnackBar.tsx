@@ -1,13 +1,12 @@
-import type { ReactElement } from 'react';
-import { useEffect, useMemo, useRef } from 'react';
+import { type ReactElement, useEffect, useMemo, useRef } from 'react';
 import {
   Animated,
   Easing,
   Pressable,
+  type StyleProp,
   StyleSheet,
   Text,
   View,
-  type StyleProp,
   type ViewStyle,
 } from 'react-native';
 
@@ -166,17 +165,19 @@ export function SnackBar({
         ) : null}
         {onClose && closeLabel ? (
           <Pressable
-            accessibilityRole='button'
+            accessibilityRole="button"
             accessibilityLabel={closeLabel}
             style={({ pressed }) => [
               styles.closeButton,
               {
-                backgroundColor: pressed ? palette.actionBackgroundPressed : palette.actionBackground,
+                backgroundColor: pressed
+                  ? palette.actionBackgroundPressed
+                  : palette.actionBackground,
               },
             ]}
             onPress={onClose}
           >
-            <Text style={[styles.closeLabel, { color: palette.actionText }]}>{'x'}</Text>
+            <Text style={[styles.closeLabel, { color: palette.actionText }]}>x</Text>
           </Pressable>
         ) : null}
       </View>

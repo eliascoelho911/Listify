@@ -2,6 +2,7 @@ import type { Category } from '../entities/Category';
 import type { ShoppingItem } from '../entities/ShoppingItem';
 import type { ShoppingList } from '../entities/ShoppingList';
 import type { ShoppingRepository } from '../ports/ShoppingRepository';
+import { computeListSummary, type ListSummary } from './ComputeListSummary';
 
 export type CategoryItems = Category & {
   items: {
@@ -13,11 +14,8 @@ export type CategoryItems = Category & {
 export type GetActiveListStateResult = {
   list: ShoppingList;
   categories: CategoryItems[];
-  totals: {
-    totalItems: number;
-    pendingItems: number;
-    purchasedItems: number;
-  };
+  summary: ListSummary;
+  totals: ListSummary['counts'];
 };
 
 export type GetActiveListStateDeps = {
@@ -33,31 +31,25 @@ export async function getActiveListState(
   const items = await repository.getItems(list.id);
 
   const categoriesWithItems = initializeCategories(categories);
-  let pendingItems = 0;
-  let purchasedItems = 0;
 
   for (const item of items) {
     const entry =
       categoriesWithItems.get(item.categoryId) ?? createPlaceholderCategory(categoriesWithItems);
     if (item.status === 'purchased') {
       entry.items.purchased.push(item);
-      purchasedItems += 1;
     } else {
       entry.items.pending.push(item);
-      pendingItems += 1;
     }
   }
 
   const sortedCategories = Array.from(categoriesWithItems.values()).sort(sortByOrderAndName);
+  const summary = computeListSummary(items, list.currencyCode);
 
   return {
     list,
     categories: sortedCategories,
-    totals: {
-      totalItems: items.length,
-      pendingItems,
-      purchasedItems,
-    },
+    summary,
+    totals: summary.counts,
   };
 }
 

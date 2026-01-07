@@ -100,11 +100,11 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ## Fase 4: US3 (P2) — Resumo e preços opcionais (incluído no v1.0 pelo `plan.md`)
 
-- [ ] T039 [P] [US3] Criar util de dinheiro (minor units + formatação) em `src/domain/shopping/value-objects/Money.ts` (ou equivalente) + testes em `tests/domain/shopping/Money.test.ts`
-- [ ] T040 [US3] Implementar regra de cálculo do resumo (contadores + gastos/estimativas) em `src/domain/shopping/use-cases/ComputeListSummary.ts` + testes em `tests/domain/shopping/ComputeListSummary.test.ts`
-- [ ] T041 [US3] Adicionar bloco de resumo no topo em `src/presentation/components/ListSummaryHeader.tsx` (ocultar valores quando não calculáveis)
-- [ ] T042 [US3] Implementar captura opcional de preço ao marcar como comprado (sheet/modal) respeitando `askPriceOnPurchase` em `src/presentation/components/PricePromptSheet.tsx`
-- [ ] T043 [US3] Integrar `UpdateItem` para recalcular `unitPriceMinor/totalPriceMinor` ao editar quantidade/preço (spec “último campo editado”)
+- [x] T039 [P] [US3] Criar util de dinheiro (minor units + formatação) em `src/domain/shopping/value-objects/Money.ts` (ou equivalente) + testes em `tests/domain/shopping/Money.test.ts`
+- [x] T040 [US3] Implementar regra de cálculo do resumo (contadores + gastos/estimativas) em `src/domain/shopping/use-cases/ComputeListSummary.ts` + testes em `tests/domain/shopping/ComputeListSummary.test.ts`
+- [x] T041 [US3] Adicionar bloco de resumo no topo em `src/presentation/components/ListSummaryHeader.tsx` (ocultar valores quando não calculáveis)
+- [x] T042 [US3] Implementar captura opcional de preço ao marcar como comprado (sheet/modal) respeitando `askPriceOnPurchase` em `src/presentation/components/PricePromptSheet.tsx`
+- [x] T043 [US3] Integrar `UpdateItem` para recalcular `unitPriceMinor/totalPriceMinor` ao editar quantidade/preço (spec “último campo editado”)
 
 **Checkpoint**: com alguns itens precificados, resumo mostra contadores e valores; ao marcar comprado, app pode sugerir inserir preço sem bloquear fluxo.
 

@@ -1,3 +1,4 @@
+import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
@@ -86,7 +87,7 @@ export function createShoppingList(overrides: Partial<ShoppingList> = {}): Shopp
     id: overrides.id ?? 'list-1',
     createdAt: overrides.createdAt ?? now,
     updatedAt: overrides.updatedAt ?? now,
-    currencyCode: overrides.currencyCode ?? 'BRL',
+    currencyCode: overrides.currencyCode ?? DEFAULT_CURRENCY_CODE,
     isCompleted: overrides.isCompleted ?? false,
     completedAt: overrides.completedAt,
     hidePurchasedByDefault: overrides.hidePurchasedByDefault ?? false,

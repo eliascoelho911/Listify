@@ -10,6 +10,7 @@ export function useShoppingListVM(): {
     | 'list'
     | 'categories'
     | 'totals'
+    | 'monetaryTotals'
     | 'inputText'
     | 'preview'
     | 'isLoading'
@@ -26,6 +27,7 @@ export function useShoppingListVM(): {
       list: s.list,
       categories: s.categories,
       totals: s.totals,
+      monetaryTotals: s.monetaryTotals,
       inputText: s.inputText,
       preview: s.preview,
       isLoading: s.isLoading,

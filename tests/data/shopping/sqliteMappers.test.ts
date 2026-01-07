@@ -1,4 +1,3 @@
-import { Quantity } from '@domain/shopping/value-objects/Quantity';
 import {
   mapCategoryEntityToRow,
   mapCategoryRowToEntity,
@@ -6,6 +5,7 @@ import {
   mapItemRowToEntity,
   mapListRowToEntity,
 } from '@data/shopping/mappers/sqliteMappers';
+import { Quantity } from '@domain/shopping/value-objects/Quantity';
 
 describe('sqlite mappers', () => {
   it('maps ShoppingList row to entity', () => {

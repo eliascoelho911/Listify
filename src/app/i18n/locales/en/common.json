@@ -48,8 +48,14 @@
         "namePlaceholder": "Ex: apples",
         "quantity": "Quantity",
         "quantityPlaceholder": "Ex: 2 or 1/2",
+        "quantityDecrease": "Decrease quantity",
+        "quantityIncrease": "Increase quantity",
         "unit": "Unit",
         "unitPlaceholder": "Ex: kg",
+        "unitPrice": "Unit price",
+        "unitPricePlaceholder": "Ex: {{currency}}9.90",
+        "totalPrice": "Total price",
+        "totalPricePlaceholder": "Ex: {{currency}}19.80",
         "category": "Category"
       },
       "save": "Save changes",
@@ -59,6 +65,9 @@
       "notFound": {
         "title": "Item not found",
         "subtitle": "We couldn't find this item. Try selecting it from the list again."
+      },
+      "errors": {
+        "invalidPrice": "Enter a valid price (use numbers, dot or comma)."
       }
     }
   },
@@ -68,7 +77,10 @@
       "title": "Progress",
       "total": "Total",
       "pending": "Pending",
-      "purchased": "Purchased"
+      "purchased": "Purchased",
+      "estimated": "Estimated",
+      "spent": "Spent",
+      "planned": "Planned"
     },
     "add": {
       "accessibilityLabel": "Add item input",
@@ -81,6 +93,9 @@
       "unit": "Unit",
       "category": "Category",
       "name": "Item"
+    },
+    "item": {
+      "unitPrice": "{{price}} / {{unit}}"
     },
     "category": {
       "count_one": "{{count}} item",
@@ -103,7 +118,30 @@
       "label": "Removed {{name}}",
       "action": "Undo",
       "dismiss": "Dismiss"
+    },
+    "pricePrompt": {
+      "title": "Add a price?",
+      "description": "Track spending by adding a unit or total price for {{name}}.",
+      "quantity": "Qty: {{quantity}}",
+      "currency": "Currency: {{currency}}",
+      "unitPrice": "Unit price",
+      "totalPrice": "Total price",
+      "unitPricePlaceholder": "Ex: {{currency}}9.90",
+      "totalPricePlaceholder": "Ex: {{currency}}19.80",
+      "missingPrice": "Add at least one price to save.",
+      "invalidPrice": "Use numbers only (dot or comma).",
+      "save": "Save price",
+      "saving": "Saving...",
+      "skip": "Skip",
+      "saveError": "We couldn't save this price. Try again."
     }
+  },
+  "units": {
+    "un": "un",
+    "kg": "kg",
+    "g": "g",
+    "l": "l",
+    "ml": "ml"
   },
   "categories": {
     "hortifruti": "Produce",

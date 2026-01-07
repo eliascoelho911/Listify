@@ -37,5 +37,7 @@ describe('GetActiveListState', () => {
     expect(result.totals.totalItems).toBe(4);
     expect(result.totals.pendingItems).toBe(3);
     expect(result.totals.purchasedItems).toBe(1);
+    expect(result.summary.counts).toEqual(result.totals);
+    expect(result.summary.monetary).toBeUndefined();
   });
 });
