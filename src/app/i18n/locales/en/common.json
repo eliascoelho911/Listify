@@ -50,6 +50,10 @@
         "quantityPlaceholder": "Ex: 2 or 1/2",
         "unit": "Unit",
         "unitPlaceholder": "Ex: kg",
+        "unitPrice": "Unit price",
+        "unitPricePlaceholder": "Ex: 9.90 {{currency}}",
+        "totalPrice": "Total price",
+        "totalPricePlaceholder": "Ex: 19.80 {{currency}}",
         "category": "Category"
       },
       "save": "Save changes",
@@ -59,6 +63,9 @@
       "notFound": {
         "title": "Item not found",
         "subtitle": "We couldn't find this item. Try selecting it from the list again."
+      },
+      "errors": {
+        "invalidPrice": "Enter a valid price (use numbers, dot or comma)."
       }
     }
   },
@@ -68,7 +75,10 @@
       "title": "Progress",
       "total": "Total",
       "pending": "Pending",
-      "purchased": "Purchased"
+      "purchased": "Purchased",
+      "estimated": "Estimated",
+      "spent": "Spent",
+      "planned": "Planned"
     },
     "add": {
       "accessibilityLabel": "Add item input",
@@ -103,6 +113,22 @@
       "label": "Removed {{name}}",
       "action": "Undo",
       "dismiss": "Dismiss"
+    },
+    "pricePrompt": {
+      "title": "Add a price?",
+      "description": "Track spending by adding a unit or total price for {{name}}.",
+      "quantity": "Qty: {{quantity}}",
+      "currency": "Currency: {{currency}}",
+      "unitPrice": "Unit price",
+      "totalPrice": "Total price",
+      "unitPricePlaceholder": "Ex: 9.90 {{currency}}",
+      "totalPricePlaceholder": "Ex: 19.80 {{currency}}",
+      "missingPrice": "Add at least one price to save.",
+      "invalidPrice": "Use numbers only (dot or comma).",
+      "save": "Save price",
+      "saving": "Saving...",
+      "skip": "Skip",
+      "saveError": "We couldn't save this price. Try again."
     }
   },
   "categories": {

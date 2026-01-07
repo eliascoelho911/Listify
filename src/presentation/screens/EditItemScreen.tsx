@@ -1,6 +1,4 @@
-import { useLocalSearchParams, useRouter } from 'expo-router';
-import type { ReactElement } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import { type ReactElement, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   ActivityIndicator,
@@ -14,11 +12,13 @@ import {
   View,
 } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 
-import { theme } from '@design-system/theme/theme';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
 import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
+import { formatPriceInput, parsePriceInput } from '@presentation/utils/price';
+import { theme } from '@design-system/theme/theme';
 
 type EditItemScreenProps = {
   itemId?: string;
@@ -31,6 +31,7 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
   const routeId = Array.isArray(params.id) ? params.id[0] : params.id;
   const targetId = itemId ?? routeId;
   const { state, actions } = useShoppingListVM();
+  const currencyCode = state.list?.currencyCode ?? 'BRL';
 
   const item = useMemo(
     () => (targetId ? findItem(state.categories, targetId) : undefined),
@@ -41,6 +42,11 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
   const [quantity, setQuantity] = useState('');
   const [unit, setUnit] = useState('');
   const [categoryId, setCategoryId] = useState<string | undefined>(undefined);
+  const [unitPrice, setUnitPrice] = useState('');
+  const [totalPrice, setTotalPrice] = useState('');
+  const [lastEditedPriceField, setLastEditedPriceField] = useState<'unit' | 'total' | undefined>(
+    undefined,
+  );
   const [isSaving, setIsSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
 
@@ -50,15 +56,45 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
       setQuantity(item.quantity.toString());
       setUnit(item.unit);
       setCategoryId(item.categoryId);
+      setUnitPrice(formatPriceInput(item.unitPriceMinor, currencyCode));
+      setTotalPrice(formatPriceInput(item.totalPriceMinor, currencyCode));
+      setLastEditedPriceField(
+        item.totalPriceMinor !== undefined
+          ? 'total'
+          : item.unitPriceMinor !== undefined
+            ? 'unit'
+            : undefined,
+      );
       setSaveError(null);
     }
-  }, [item]);
+  }, [currencyCode, item]);
 
   const handleSave = async (): Promise<void> => {
     if (!targetId) {
       setSaveError(t('screens.editItem.missingId'));
       return;
     }
+
+    let parsedUnitPrice: number | undefined;
+    let parsedTotalPrice: number | undefined;
+    try {
+      parsedUnitPrice = parsePriceInput(unitPrice, currencyCode);
+      parsedTotalPrice = parsePriceInput(totalPrice, currencyCode);
+    } catch {
+      setSaveError(t('screens.editItem.errors.invalidPrice'));
+      return;
+    }
+
+    const normalizedUnitPrice = unitPrice.trim() === '' ? null : (parsedUnitPrice ?? null);
+    const normalizedTotalPrice = totalPrice.trim() === '' ? null : (parsedTotalPrice ?? null);
+    const priceSource =
+      lastEditedPriceField ??
+      (normalizedTotalPrice !== null && normalizedUnitPrice === null
+        ? 'total'
+        : normalizedUnitPrice !== null && normalizedTotalPrice === null
+          ? 'unit'
+          : undefined);
+
     setIsSaving(true);
     setSaveError(null);
     const updated = await actions.updateItem({
@@ -67,6 +103,9 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
       quantity,
       unit,
       categoryId,
+      unitPriceMinor: normalizedUnitPrice,
+      totalPriceMinor: normalizedTotalPrice,
+      priceSource,
     });
     setIsSaving(false);
     if (updated) {
@@ -140,6 +179,41 @@ export default function EditItemScreen({ itemId }: EditItemScreenProps): ReactEl
                 value={unit}
                 onChangeText={setUnit}
                 placeholder={t('screens.editItem.fields.unitPlaceholder')}
+                placeholderTextColor={theme.colors.content.muted}
+                style={styles.input}
+              />
+            </View>
+          </View>
+
+          <View style={styles.inlineRow}>
+            <View style={[styles.field, styles.inlineField]}>
+              <Text style={styles.label}>{t('screens.editItem.fields.unitPrice')}</Text>
+              <TextInput
+                value={unitPrice}
+                onChangeText={(text) => {
+                  setUnitPrice(text);
+                  setLastEditedPriceField('unit');
+                }}
+                keyboardType="decimal-pad"
+                placeholder={t('screens.editItem.fields.unitPricePlaceholder', {
+                  currency: currencyCode,
+                })}
+                placeholderTextColor={theme.colors.content.muted}
+                style={styles.input}
+              />
+            </View>
+            <View style={[styles.field, styles.inlineField]}>
+              <Text style={styles.label}>{t('screens.editItem.fields.totalPrice')}</Text>
+              <TextInput
+                value={totalPrice}
+                onChangeText={(text) => {
+                  setTotalPrice(text);
+                  setLastEditedPriceField('total');
+                }}
+                keyboardType="decimal-pad"
+                placeholder={t('screens.editItem.fields.totalPricePlaceholder', {
+                  currency: currencyCode,
+                })}
                 placeholderTextColor={theme.colors.content.muted}
                 style={styles.input}
               />

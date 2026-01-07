@@ -7,6 +7,10 @@ import type { ShoppingItem, ShoppingItemStatus } from '@domain/shopping/entities
 import type { ShoppingList } from '@domain/shopping/entities/ShoppingList';
 import type { ShoppingRepository } from '@domain/shopping/ports/ShoppingRepository';
 import {
+  computeListSummary,
+  type MonetarySummary,
+} from '@domain/shopping/use-cases/ComputeListSummary';
+import {
   createItemFromFreeText,
   type CreateItemFromFreeTextResult,
   EmptyItemNameError,
@@ -35,6 +39,7 @@ type ShoppingListState = {
     pendingItems: number;
     purchasedItems: number;
   };
+  monetaryTotals?: MonetarySummary;
   inputText: string;
   preview: CreateItemFromFreeTextResult | null;
   isLoading: boolean;
@@ -72,12 +77,14 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
     list: ShoppingList;
     categories: CategoryItems[];
     totals: ShoppingListState['totals'];
+    monetaryTotals?: MonetarySummary;
   }> => {
     const result = await getActiveListState({ repository });
     return {
       list: result.list,
       categories: result.categories,
-      totals: result.totals,
+      totals: result.summary.counts,
+      monetaryTotals: result.summary.monetary,
     };
   };
 
@@ -85,6 +92,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
     list: null,
     categories: [],
     totals: { totalItems: 0, pendingItems: 0, purchasedItems: 0 },
+    monetaryTotals: undefined,
     inputText: '',
     preview: null,
     isLoading: true,
@@ -203,12 +211,13 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           isPredefined: targetCategory?.isPredefined ?? false,
           sortOrder,
         });
-        const optimisticTotals = recomputeTotals(optimisticCategories);
+        const optimisticSummary = recomputeSummaryFromCategories(optimisticCategories, list);
 
         set((state) => ({
           ...state,
           categories: optimisticCategories,
-          totals: optimisticTotals,
+          totals: optimisticSummary.totals,
+          monetaryTotals: optimisticSummary.monetaryTotals,
           inputText: '',
           preview: null,
           isSubmitting: true,
@@ -277,12 +286,16 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         };
 
         const optimisticCategories = replaceItem(stateSnapshot.categories, optimisticItem);
-        const optimisticTotals = recomputeTotals(optimisticCategories);
+        const optimisticSummary = recomputeSummaryFromCategories(
+          optimisticCategories,
+          stateSnapshot.list,
+        );
 
         set((state) => ({
           ...state,
           categories: optimisticCategories,
-          totals: optimisticTotals,
+          totals: optimisticSummary.totals,
+          monetaryTotals: optimisticSummary.monetaryTotals,
           lastError: null,
         }));
 
@@ -290,10 +303,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           const saved = await toggleItemPurchased(itemId, { repository });
           set((state) => {
             const categoriesAfterSave = replaceItem(state.categories, saved);
+            const summaryAfterSave = recomputeSummaryFromCategories(
+              categoriesAfterSave,
+              state.list,
+            );
             return {
               ...state,
               categories: categoriesAfterSave,
-              totals: recomputeTotals(categoriesAfterSave),
+              totals: summaryAfterSave.totals,
+              monetaryTotals: summaryAfterSave.monetaryTotals,
             };
           });
         } catch (error) {
@@ -323,10 +341,15 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
           const updated = await updateItemUseCase(input, { repository });
           set((state) => {
             const categoriesAfterUpdate = replaceItem(state.categories, updated);
+            const summaryAfterUpdate = recomputeSummaryFromCategories(
+              categoriesAfterUpdate,
+              state.list,
+            );
             return {
               ...state,
               categories: categoriesAfterUpdate,
-              totals: recomputeTotals(categoriesAfterUpdate),
+              totals: summaryAfterUpdate.totals,
+              monetaryTotals: summaryAfterUpdate.monetaryTotals,
               lastError: null,
             };
           });
@@ -356,12 +379,16 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }
 
         const optimisticCategories = removeItemFromCategories(stateSnapshot.categories, itemId);
-        const optimisticTotals = recomputeTotals(optimisticCategories);
+        const optimisticSummary = recomputeSummaryFromCategories(
+          optimisticCategories,
+          stateSnapshot.list,
+        );
 
         set((state) => ({
           ...state,
           categories: optimisticCategories,
-          totals: optimisticTotals,
+          totals: optimisticSummary.totals,
+          monetaryTotals: optimisticSummary.monetaryTotals,
           pendingUndo: target,
           lastError: null,
         }));
@@ -389,12 +416,16 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
 
         const stateSnapshot = snapshotState(get());
         const optimisticCategories = insertItem(stateSnapshot.categories, undoItem);
-        const optimisticTotals = recomputeTotals(optimisticCategories);
+        const optimisticSummary = recomputeSummaryFromCategories(
+          optimisticCategories,
+          stateSnapshot.list,
+        );
 
         set((state) => ({
           ...state,
           categories: optimisticCategories,
-          totals: optimisticTotals,
+          totals: optimisticSummary.totals,
+          monetaryTotals: optimisticSummary.monetaryTotals,
           pendingUndo: undefined,
         }));
 
@@ -447,10 +478,14 @@ function buildPreview(text: string, locale: string): CreateItemFromFreeTextResul
 
 function snapshotState(
   state: ShoppingListStore,
-): Pick<ShoppingListStore, 'categories' | 'totals' | 'inputText' | 'preview' | 'list'> {
+): Pick<
+  ShoppingListStore,
+  'categories' | 'totals' | 'monetaryTotals' | 'inputText' | 'preview' | 'list'
+> {
   return {
     categories: state.categories,
     totals: state.totals,
+    monetaryTotals: state.monetaryTotals,
     inputText: state.inputText,
     preview: state.preview,
     list: state.list,
@@ -567,6 +602,32 @@ function sortCategories(categories: CategoryItems[]): CategoryItems[] {
     }
     return a.name.localeCompare(b.name);
   });
+}
+
+function recomputeSummaryFromCategories(
+  categories: CategoryItems[],
+  list: ShoppingList | null,
+): Pick<ShoppingListState, 'totals' | 'monetaryTotals'> {
+  if (!list) {
+    return {
+      totals: recomputeTotals(categories),
+      monetaryTotals: undefined,
+    };
+  }
+
+  const summary = computeListSummary(collectItems(categories), list.currencyCode);
+  return {
+    totals: summary.counts,
+    monetaryTotals: summary.monetary,
+  };
+}
+
+function collectItems(categories: CategoryItems[]): ShoppingItem[] {
+  const items: ShoppingItem[] = [];
+  for (const category of categories) {
+    items.push(...category.items.pending, ...category.items.purchased);
+  }
+  return items;
 }
 
 function recomputeTotals(categories: CategoryItems[]): ShoppingListState['totals'] {
