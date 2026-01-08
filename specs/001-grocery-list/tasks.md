@@ -122,9 +122,9 @@ description: 'Lista de tarefas para implementar a feature 001-grocery-list'
 
 ### US2 (P2) — Gestos avançados + drag-and-drop
 
-- [ ] T047 [US2] Implementar drag-and-drop dentro e entre categorias, persistindo `position`/`categoryId` em `src/presentation/screens/ShoppingListScreen.tsx`
-- [ ] T048 [US2] Definir estratégia consistente com “ocultar comprados” (reordenar visíveis sem quebrar ordem dos comprados)
-- [ ] T049 [US2] Testes de integração (quando aplicável) para reorder/move garantindo atomicidade no repo SQLite
+- [ ] T047 [US2] Implementar drag-and-drop dentro e entre categorias, persistindo `position`/`categoryId` em `src/presentation/screens/ShoppingListScreen.tsx` (BLOCKED/despriorizado)
+- [ ] T048 [US2] Definir estratégia consistente com “ocultar comprados” (reordenar visíveis sem quebrar ordem dos comprados) (BLOCKED/despriorizado)
+- [ ] T049 [US2] Testes de integração (quando aplicável) para reorder/move garantindo atomicidade no repo SQLite (BLOCKED/despriorizado)
 
 ### US5/US6 (P3) — Histórico, concluir e reuso
 
