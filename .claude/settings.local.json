@@ -67,6 +67,21 @@
       "WebFetch(domain:*)",
       "WebSearch"
     ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./.env.*)",
+      "Read(**/.env)",
+      "Read(**/.env.*)",
+      "Read(**/secrets/**)",
+      "Read(**/*.pem)",
+      "Read(**/*.key)",
+      "Read(**/credentials.json)",
+      "Read(**/service-account*.json)",
+      "Read(**/*secret*)",
+      "Read(**/google-services.json)",
+      "Read(**/*.keystore)",
+      "Read(**/*.jks)"
+    ],
     "ask": [
       "Bash(rm:*)",
       "Bash(rmdir:*)",
@@ -136,21 +151,19 @@
       "Write(/var/*)",
       "Write(/opt/*)",
       "Write(../*)"
-    ],
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.*)",
-      "Read(**/.env)",
-      "Read(**/.env.*)",
-      "Read(**/secrets/**)",
-      "Read(**/*.pem)",
-      "Read(**/*.key)",
-      "Read(**/credentials.json)",
-      "Read(**/service-account*.json)",
-      "Read(**/*secret*)",
-      "Read(**/google-services.json)",
-      "Read(**/*.keystore)",
-      "Read(**/*.jks)"
+    ]
+  },
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "npx prettier -w app src tests && npm test && npm run lint -f"
+          }
+        ]
+      }
     ]
   }
 }
