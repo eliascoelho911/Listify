@@ -127,10 +127,10 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T042 [P] [US2] Criar styles `src/design-system/atoms/Label/Label.styles.ts` usando typography tokens
 - [x] T043 [P] [US2] Criar types `src/design-system/atoms/Label/Label.types.ts`
 - [x] T044 [P] [US2] Criar stories `src/design-system/atoms/Label/Label.stories.tsx`
-- [ ] T045 [P] [US2] Criar atom Badge em `src/design-system/atoms/Badge/Badge.tsx` com variants (default, secondary, destructive, outline)
-- [ ] T046 [P] [US2] Criar styles `src/design-system/atoms/Badge/Badge.styles.ts` usando xl radius
-- [ ] T047 [P] [US2] Criar types `src/design-system/atoms/Badge/Badge.types.ts`
-- [ ] T048 [P] [US2] Criar stories `src/design-system/atoms/Badge/Badge.stories.tsx`
+- [x] T045 [P] [US2] Criar atom Badge em `src/design-system/atoms/Badge/Badge.tsx` com variants (default, secondary, destructive, outline)
+- [x] T046 [P] [US2] Criar styles `src/design-system/atoms/Badge/Badge.styles.ts` usando xl radius
+- [x] T047 [P] [US2] Criar types `src/design-system/atoms/Badge/Badge.types.ts`
+- [x] T048 [P] [US2] Criar stories `src/design-system/atoms/Badge/Badge.stories.tsx`
 - [x] T049 [P] [US2] Criar atom Icon em `src/design-system/atoms/Icon/Icon.tsx` como wrapper para lucide-react-native
 - [x] T050 [P] [US2] Criar types `src/design-system/atoms/Icon/Icon.types.ts` com IconProps interface
 - [x] T051 [P] [US2] Criar stories `src/design-system/atoms/Icon/Icon.stories.tsx` com ícones comuns
