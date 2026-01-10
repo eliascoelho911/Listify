@@ -320,14 +320,14 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [ ] T142 [P] Validar contraste WCAG AA em light theme (cyan/gray)
 - [ ] T143 [P] Verificar touch targets mínimos 44x44px mesmo com spacing compacto
 - [ ] T144 [P] Testar reduced motion preference funcionando (animações desabilitadas)
-- [ ] T145 Executar todos os testes do DS: `npm test tests/design-system/`
-- [ ] T146 Executar linting completo: `npm run lint` verificando zero warnings (política do projeto)
-- [ ] T147 Validar quickstart.md seguindo passo a passo para criar componente
-- [ ] T148 Criar screenshots de Storybook (atoms, molecules, organisms) em dark/light themes para documentação
-- [ ] T149 [P] Otimizar imports de Lucide icons para tree-shaking máximo
-- [ ] T150 [P] Verificar que nenhum token tem valor hard-coded (auditoria final)
-- [ ] T151 Atualizar README.md principal do projeto mencionando novo Design System
-- [ ] T152 Criar PR summary documentando mudanças: novo DS, migração completa, remoção do DS antigo
+- [x] T145 Executar todos os testes do DS: `npm test tests/design-system/`
+- [x] T146 Executar linting completo: `npm run lint` verificando zero warnings (política do projeto)
+- [x] T147 Validar quickstart.md seguindo passo a passo para criar componente
+- [x] T148 Criar screenshots de Storybook (atoms, molecules, organisms) em dark/light themes para documentação
+- [x] T149 [P] Otimizar imports de Lucide icons para tree-shaking máximo
+- [x] T150 [P] Verificar que nenhum token tem valor hard-coded (auditoria final)
+- [x] T151 Atualizar README.md principal do projeto mencionando novo Design System
+- [x] T152 Criar PR summary documentando mudanças: novo DS, migração completa, remoção do DS antigo
 
 ---
 

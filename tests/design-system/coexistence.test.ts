@@ -87,17 +87,17 @@ describe('Design Systems Coexistence', () => {
   });
 
   it('should have new Design System with topbar custom tokens', () => {
-    const { darkTheme, lightTheme } = require('@design-system/theme/theme');
+    const { darkColors, lightColors } = require('@design-system/tokens');
 
     // Validate custom topbar tokens exist in both themes
-    expect(darkTheme.colors.topbar).toBeDefined();
-    expect(darkTheme.colors['topbar-foreground']).toBeDefined();
-    expect(darkTheme.colors['topbar-primary']).toBeDefined();
-    expect(darkTheme.colors['topbar-border']).toBeDefined();
+    expect(darkColors.topbar).toBeDefined();
+    expect(darkColors['topbar-foreground']).toBeDefined();
+    expect(darkColors['topbar-primary']).toBeDefined();
+    expect(darkColors['topbar-border']).toBeDefined();
 
-    expect(lightTheme.colors.topbar).toBeDefined();
-    expect(lightTheme.colors['topbar-foreground']).toBeDefined();
-    expect(lightTheme.colors['topbar-primary']).toBeDefined();
-    expect(lightTheme.colors['topbar-border']).toBeDefined();
+    expect(lightColors.topbar).toBeDefined();
+    expect(lightColors['topbar-foreground']).toBeDefined();
+    expect(lightColors['topbar-primary']).toBeDefined();
+    expect(lightColors['topbar-border']).toBeDefined();
   });
 });
