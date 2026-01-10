@@ -171,14 +171,14 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 5
 
-- [ ] T063 [US5] Executar `npx storybook@latest init --type react_native` para setup inicial
-- [ ] T064 [US5] Criar arquivo `.storybook/main.ts` com configuração de stories paths (atoms, molecules, organisms, templates)
-- [ ] T065 [US5] Criar arquivo `.storybook/preview.tsx` com ThemeProvider wrapper global
-- [ ] T066 [US5] Criar arquivo `.storybook/theme.ts` customizando Storybook UI com cores do DS
-- [ ] T067 [US5] Configurar theme switcher toolbar addon em `.storybook/preview.tsx`
-- [ ] T068 [US5] Adicionar script `"storybook": "storybook dev"` em package.json
-- [ ] T069 [US5] Testar Storybook abrindo in-app e verificando stories de atoms renderizando com Fira fonts, large radius, spacing compacto
-- [ ] T070 [US5] Validar alternância de theme (dark ↔ light) via toolbar
+- [x] T063 [US5] Executar `npx storybook@latest init --type react_native` para setup inicial
+- [x] T064 [US5] Criar arquivo `.storybook/main.ts` com configuração de stories paths (atoms, molecules, organisms, templates)
+- [x] T065 [US5] Criar arquivo `.storybook/preview.tsx` com ThemeProvider wrapper global
+- [x] T066 [US5] Criar arquivo `.storybook/theme.ts` customizando Storybook UI com cores do DS
+- [x] T067 [US5] Configurar theme switcher toolbar addon em `.storybook/preview.tsx`
+- [x] T068 [US5] Adicionar script `"storybook": "storybook dev"` em package.json
+- [x] T069 [US5] Testar Storybook abrindo in-app e verificando stories de atoms renderizando com Fira fonts, large radius, spacing compacto
+- [x] T070 [US5] Validar alternância de theme (dark ↔ light) via toolbar
 
 **Checkpoint**: Storybook funcional com atoms documentados e theme switching
 
