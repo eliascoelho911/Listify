@@ -38,7 +38,7 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T001 Renomear `src/design-system/` para `src/legacy-design-system/`
 - [x] T002 Atualizar tsconfig.json para adicionar path alias `@legacy-design-system/*` apontando para `src/legacy-design-system/*`
 - [x] T003 Atualizar todos os imports em `src/presentation/` de `@design-system/*` para `@legacy-design-system/*`
-- [ ] T004 Criar estrutura de pastas do novo Design System em `src/design-system/`
+- [x] T004 Criar estrutura de pastas do novo Design System em `src/design-system/`
 - [ ] T005 [P] Instalar dependência lucide-react-native
 - [ ] T006 [P] Instalar dependências do Storybook (@storybook/react-native ~7.6.x)
 - [ ] T007 [P] Baixar e adicionar Fira Sans fonts (Regular, Medium, SemiBold, Bold) em `assets/fonts/`
