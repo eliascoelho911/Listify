@@ -94,10 +94,10 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 3
 
-- [ ] T025 [P] [US3] Criar arquivo `src/design-system/theme/theme.ts` com objetos darkTheme e lightTheme usando tokens cyan/gray
-- [ ] T026 [US3] Criar arquivo `src/design-system/theme/ThemeProvider.tsx` com Context provider, font loading (expo-font), AsyncStorage persistence, splash screen management
-- [ ] T027 [P] [US3] Criar arquivo `src/design-system/theme/useTheme.ts` com hook consumindo ThemeContext
-- [ ] T028 [P] [US3] Criar arquivo `src/design-system/theme/index.ts` com barrel export
+- [x] T025 [P] [US3] Criar arquivo `src/design-system/theme/theme.ts` com objetos darkTheme e lightTheme usando tokens cyan/gray
+- [x] T026 [US3] Criar arquivo `src/design-system/theme/ThemeProvider.tsx` com Context provider, font loading (expo-font), AsyncStorage persistence, splash screen management
+- [x] T027 [P] [US3] Criar arquivo `src/design-system/theme/useTheme.ts` com hook consumindo ThemeContext
+- [x] T028 [P] [US3] Criar arquivo `src/design-system/theme/index.ts` com barrel export
 - [ ] T029 [US3] Criar testes em `tests/design-system/theme/theme.test.ts` validando dark/light theme values
 - [ ] T030 [US3] Criar testes em `tests/design-system/theme/ThemeProvider.test.tsx` validando dark default, theme switching, persistência
 
