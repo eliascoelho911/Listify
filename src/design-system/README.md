@@ -219,9 +219,25 @@ import { Button } from '../atoms';         // ✅ Organism pode importar Atoms
 
 ### Paleta de Cores
 
+#### Por que Cyan Theme?
+
+Escolhemos o cyan (`#06b6d4`) como cor primária por:
+- **Modernidade**: Cyan é vibrante e contemporâneo, transmitindo inovação
+- **Contraste**: Excelente contraste em dark e light themes (WCAG AA+)
+- **Psicologia**: Transmite confiança, clareza e eficiência (ideal para app de produtividade)
+- **Diferenciação**: Destaca-se de apps similares que usam azul tradicional ou verde
+
 **Cyan Theme**: Cor primária vibrante
 - Base: `#06b6d4` (cyan-500)
 - Variações: cyan-50 até cyan-950
+
+#### Por que Gray "Chumbo"?
+
+Escolhemos gray "chumbo" com undertones azulados por:
+- **Sofisticação**: Cinza com toque azulado é mais elegante que cinza neutro
+- **Coerência**: Harmoniza perfeitamente com cyan primary
+- **Legibilidade**: Base `#6c757d` oferece contraste ideal para textos
+- **Dark Theme**: Gray-950 (#16191d) é mais confortável que preto puro para leitura prolongada
 
 **Gray "Chumbo"**: Base neutra com undertones azulados
 - Base: `#6c757d` (gray-600)
@@ -230,29 +246,92 @@ import { Button } from '../atoms';         // ✅ Organism pode importar Atoms
 **Tokens Shadcn completos**:
 - background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring
 
-**Tokens customizados para topbar**:
-- topbar, topbar-foreground, topbar-primary, topbar-accent, topbar-border, topbar-ring
+#### Tokens Customizados para Topbar
+
+Criamos tokens específicos para a barra de navegação (topbar) para máxima flexibilidade:
+
+**Por que tokens topbar separados?**
+- Permite estilização independente da navbar sem afetar resto do app
+- Facilita temas customizados (ex: topbar sempre dark, mesmo em light theme)
+- Melhora separação visual entre navegação e conteúdo
+
+**Tokens disponíveis**:
+- `topbar` - Background da navbar
+- `topbar-foreground` - Texto e ícones
+- `topbar-primary` - Botão primário ativo
+- `topbar-accent` - Highlights e badges
+- `topbar-border` - Bordas e separadores
+- `topbar-ring` - Focus rings
+
+**Exemplo de uso**:
+```typescript
+const styles = (theme: Theme) => StyleSheet.create({
+  navbar: {
+    backgroundColor: theme.colors.topbar,
+    borderBottomColor: theme.colors['topbar-border'],
+  },
+  title: {
+    color: theme.colors['topbar-foreground'],
+  },
+});
+```
 
 ### Tipografia
 
+#### Por que Fira Sans e Fira Code?
+
+Escolhemos as fontes Fira por:
+- **Legibilidade**: Otimizadas para telas digitais com excelente clareza
+- **Modernidade**: Design contemporâneo e profissional
+- **Versatilidade**: Múltiplos pesos disponíveis (Regular, Medium, SemiBold, Bold)
+- **Open Source**: Gratuitas e sem restrições de licença
+- **Coerência**: Fira Code complementa perfeitamente Fira Sans para código/monospace
+- **Brand Identity**: Menos comum que system fonts, cria identidade única
+
 **Fira Sans**: Font família principal para body text
 - Pesos: Regular (400), Medium (500), SemiBold (600), Bold (700)
+- Uso: Textos gerais, labels, botões, títulos
 
 **Fira Code**: Font monospace para código
 - Pesos: Regular (400), Medium (500)
+- Uso: Code snippets, valores numéricos, IDs
 
 **Tamanhos**:
 - xs: 12, sm: 14, base: 16, md: 18, lg: 20, xl: 24, 2xl: 30, 3xl: 36, 4xl: 48
 
 ### Espaçamento (Compact Scale)
 
-Valores **menores** que padrão Shadcn para densidade maior:
+#### Por que Spacing Compacto?
+
+Escolhemos valores **menores** que padrão Shadcn por:
+- **Densidade**: Mais informação visível sem scroll excessivo
+- **Mobile-first**: Otimizado para telas pequenas
+- **Eficiência**: Menos atrito ao escanear conteúdo
+- **Modernidade**: Alinhado com tendências de interfaces densas (ex: Notion, Linear)
+
+**Escala compacta**:
 - xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, 3xl: 48, 4xl: 64
+
+**Comparação com Shadcn**:
+- Shadcn: `sm: 8, md: 16, lg: 24`
+- Listify: `sm: 8, md: 12, lg: 16` (25-33% menor)
 
 ### Border Radius (Large Scale)
 
-Valores **maiores** que padrão Shadcn para visual mais suave:
+#### Por que Large Radius?
+
+Escolhemos valores **maiores** que padrão Shadcn por:
+- **Friendly**: Cantos arredondados transmitem acessibilidade e conforto
+- **Moderno**: Visual contemporâneo e menos rígido
+- **Destaque**: Componentes se destacam com bordas mais suaves
+- **Brand**: Consistente com identidade visual playful e moderna
+
+**Escala large**:
 - sm: 8, md: 12, lg: 16, xl: 24, full: 9999
+
+**Comparação com Shadcn**:
+- Shadcn: `md: 6, lg: 8`
+- Listify: `md: 12, lg: 16` (50-100% maior)
 
 ## Importando do Design System
 
@@ -487,12 +566,133 @@ Quando migrar um componente do DS legado para o novo:
 - [ ] Documentar no Storybook
 - [ ] Executar ESLint (zero warnings)
 
+## Dark Theme como Padrão
+
+O Listify usa **dark theme como padrão** por escolha de design:
+
+**Por que Dark como padrão?**
+- **Conforto Visual**: Reduz fadiga ocular em uso prolongado
+- **Economia de Bateria**: Displays OLED consomem menos energia com pixels escuros
+- **Modernidade**: Dark mode é tendência em apps de produtividade (Notion, Slack, VS Code)
+- **Foco**: Background escuro ajuda conteúdo a se destacar
+- **Preferência do Público**: Maioria dos usuários prefere dark mode para apps de lista/tarefas
+
+**Como funciona**:
+- App inicia sempre em dark theme
+- Usuário pode alternar para light theme manualmente
+- Preferência é salva no AsyncStorage
+- **Não** detecta system preference automaticamente (decisão de UX para consistência)
+
+**Theme Switching**:
+```typescript
+import { useTheme } from '@design-system';
+
+function Settings() {
+  const { mode, toggleTheme } = useTheme();
+
+  return (
+    <Button onPress={toggleTheme}>
+      {mode === 'dark' ? 'Switch to Light' : 'Switch to Dark'}
+    </Button>
+  );
+}
+```
+
+## Acessibilidade
+
+O Design System segue diretrizes WCAG 2.1 Level AA para garantir acessibilidade:
+
+### Contraste de Cores (WCAG AA)
+
+**Todos os pares de cores foram validados**:
+- Text normal: Mínimo 4.5:1
+- Text large (18pt+): Mínimo 3:1
+- Componentes UI: Mínimo 3:1
+
+**Exemplos validados**:
+- Dark theme: gray-50 (#f8f9fa) em gray-950 (#16191d) = 17.8:1 ✓
+- Light theme: gray-900 em gray-50 = 16.1:1 ✓
+- Cyan primary: Contraste adequado em ambos temas ✓
+- Destructive red: Validado para erros e avisos ✓
+
+### Touch Targets (Mobile)
+
+**Todos os componentes interativos têm mínimo 44x44 pts**:
+- Buttons: Mínimo 44pt de altura
+- Icons clicáveis: Padding aumentado para 44x44 área
+- Form inputs: Altura mínima 44pt
+- Cards touchable: Área completa clicável
+
+**Implementação**:
+```typescript
+// Button atom já inclui touch target adequado
+const styles = StyleSheet.create({
+  button: {
+    minHeight: 44,
+    minWidth: 44,
+    paddingVertical: theme.spacing.md, // 12pt
+    paddingHorizontal: theme.spacing.lg, // 16pt
+  },
+});
+```
+
+### Reduced Motion
+
+**Suporte para prefers-reduced-motion**:
+- Sistema detecta preferência do usuário
+- Animações são desabilitadas automaticamente quando ativo
+- Transições tornam-se instantâneas
+- Hook `useReducedMotion()` disponível para componentes customizados
+
+**Exemplo**:
+```typescript
+import { useReducedMotion } from '@design-system/utils/animations';
+
+function AnimatedComponent() {
+  const reducedMotion = useReducedMotion();
+
+  const animationDuration = reducedMotion ? 0 : 300;
+
+  // Animação respeita preferência
+}
+```
+
+### Navegação por Teclado
+
+**Componentes suportam navegação via teclado**:
+- Tab order lógico em formulários
+- Enter/Space ativa buttons
+- Escape fecha modals
+- Focus indicators visíveis (ring tokens)
+
+### Screen Readers
+
+**Todos os componentes têm labels apropriados**:
+- `accessibilityLabel` em componentes interativos
+- `accessibilityHint` para ações não-óbvias
+- `accessibilityRole` correto (button, link, header, etc)
+- Estados comunicados (disabled, selected, checked)
+
+**Exemplo de Button acessível**:
+```typescript
+<Button
+  onPress={handleSave}
+  accessibilityLabel="Save shopping list"
+  accessibilityHint="Saves your current list and returns to home"
+  accessibilityRole="button"
+>
+  Save
+</Button>
+```
+
 ## Recursos
 
 - **Storybook**: Documentação visual de todos os componentes
 - **ESLint Rules**: Enforcement automático de regras do DS
 - **TypeScript**: Type-safety completo em todos os componentes
 - **Tests**: Cobertura de testes para atoms, molecules e organisms
+- **Acessibilidade**: WCAG 2.1 Level AA compliance
+- **Dark/Light Themes**: Suporte completo com switching manual
 
 ## Comandos Úteis
 

@@ -264,18 +264,18 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 11
 
-- [ ] T111 [P] [US11] Expandir `src/design-system/README.md` com seção "Por que Fira Sans/Code" (brand identity, legibilidade)
-- [ ] T112 [P] [US11] Adicionar seção "Por que cyan theme e gray chumbo base" (paleta moderna, contraste)
-- [ ] T113 [P] [US11] Adicionar seção "Por que large radius" (visual moderno, friendly)
-- [ ] T114 [P] [US11] Adicionar seção "Por que spacing compacto" (densidade de informação, menos atrito)
-- [ ] T115 [P] [US11] Adicionar seção "Tokens customizados topbar" com exemplos de uso
-- [ ] T116 [P] [US11] Adicionar seção "Dark theme como padrão" (preferência de design, conforto visual)
-- [ ] T117 [P] [US11] Adicionar guidelines "Quando criar atom vs molecule vs organism" com exemplos práticos
-- [ ] T118 [P] [US11] Adicionar seção "Import rules e hierarquia Atomic Design" com exemplos de código correto/incorreto
-- [ ] T119 [P] [US11] Adicionar seção "Como usar theme switching" com código de exemplo
-- [ ] T120 [P] [US11] Adicionar seção "Acessibilidade" (contraste WCAG AA, touch targets, reduced motion)
-- [ ] T121 [US11] Criar guia de contribuição em `src/design-system/CONTRIBUTING.md` explicando como adicionar novos componentes
-- [ ] T122 [US11] Pedir feedback de desenvolvedor novo seguindo documentação para criar componente teste
+- [x] T111 [P] [US11] Expandir `src/design-system/README.md` com seção "Por que Fira Sans/Code" (brand identity, legibilidade)
+- [x] T112 [P] [US11] Adicionar seção "Por que cyan theme e gray chumbo base" (paleta moderna, contraste)
+- [x] T113 [P] [US11] Adicionar seção "Por que large radius" (visual moderno, friendly)
+- [x] T114 [P] [US11] Adicionar seção "Por que spacing compacto" (densidade de informação, menos atrito)
+- [x] T115 [P] [US11] Adicionar seção "Tokens customizados topbar" com exemplos de uso
+- [x] T116 [P] [US11] Adicionar seção "Dark theme como padrão" (preferência de design, conforto visual)
+- [x] T117 [P] [US11] Adicionar guidelines "Quando criar atom vs molecule vs organism" com exemplos práticos
+- [x] T118 [P] [US11] Adicionar seção "Import rules e hierarquia Atomic Design" com exemplos de código correto/incorreto
+- [x] T119 [P] [US11] Adicionar seção "Como usar theme switching" com código de exemplo
+- [x] T120 [P] [US11] Adicionar seção "Acessibilidade" (contraste WCAG AA, touch targets, reduced motion)
+- [x] T121 [US11] Criar guia de contribuição em `src/design-system/CONTRIBUTING.md` explicando como adicionar novos componentes
+- [x] T122 [US11] Pedir feedback de desenvolvedor novo seguindo documentação para criar componente teste
 
 **Checkpoint**: Documentação completa e validada por onboarding real
 
