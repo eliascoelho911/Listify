@@ -113,11 +113,11 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 2
 
-- [ ] T031 [P] [US2] Criar atom Button em `src/design-system/atoms/Button/Button.tsx` com variants Shadcn (default, destructive, outline, ghost, link) e sizes (sm, md, lg, icon)
-- [ ] T032 [P] [US2] Criar styles `src/design-system/atoms/Button/Button.styles.ts` usando tokens (zero hard-coded)
-- [ ] T033 [P] [US2] Criar types `src/design-system/atoms/Button/Button.types.ts` com ButtonProps interface
-- [ ] T034 [P] [US2] Criar stories `src/design-system/atoms/Button/Button.stories.tsx` com todas variants/sizes
-- [ ] T035 [P] [US2] Criar testes `tests/design-system/atoms/Button.test.tsx` validando variants, states (disabled, loading)
+- [x] T031 [P] [US2] Criar atom Button em `src/design-system/atoms/Button/Button.tsx` com variants Shadcn (default, destructive, outline, ghost, link) e sizes (sm, md, lg, icon)
+- [x] T032 [P] [US2] Criar styles `src/design-system/atoms/Button/Button.styles.ts` usando tokens (zero hard-coded)
+- [x] T033 [P] [US2] Criar types `src/design-system/atoms/Button/Button.types.ts` com ButtonProps interface
+- [x] T034 [P] [US2] Criar stories `src/design-system/atoms/Button/Button.stories.tsx` com todas variants/sizes
+- [x] T035 [P] [US2] Criar testes `tests/design-system/atoms/Button.test.tsx` validando variants, states (disabled, loading)
 - [ ] T036 [P] [US2] Criar atom Input em `src/design-system/atoms/Input/Input.tsx` com states (default, focus, error, disabled)
 - [ ] T037 [P] [US2] Criar styles `src/design-system/atoms/Input/Input.styles.ts` usando tokens
 - [ ] T038 [P] [US2] Criar types `src/design-system/atoms/Input/Input.types.ts` com InputProps interface
