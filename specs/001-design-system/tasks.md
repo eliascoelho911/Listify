@@ -77,10 +77,10 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T018 [P] [US1] Criar arquivo `src/design-system/tokens/animations.ts` com durations (fast: 150, normal: 300, slow: 500) e easings
 - [x] T019 [P] [US1] Criar arquivo `src/design-system/tokens/shadows.ts` com elevation levels (none, sm, md, lg, xl)
 - [x] T020 [US1] Criar arquivo `src/design-system/tokens/index.ts` com barrel export de todos os tokens
-- [ ] T021 [US1] Criar testes em `tests/design-system/tokens/colors.test.ts` validando paleta cyan/gray e tokens Shadcn/topbar
-- [ ] T022 [US1] Criar testes em `tests/design-system/tokens/typography.test.ts` validando Fira Sans/Code families
-- [ ] T023 [US1] Criar testes em `tests/design-system/tokens/spacing.test.ts` validando valores compactos
-- [ ] T024 [US1] Criar testes em `tests/design-system/tokens/radii.test.ts` validando large radius padrão
+- [x] T021 [US1] Criar testes em `tests/design-system/tokens/colors.test.ts` validando paleta cyan/gray e tokens Shadcn/topbar
+- [x] T022 [US1] Criar testes em `tests/design-system/tokens/typography.test.ts` validando Fira Sans/Code families
+- [x] T023 [US1] Criar testes em `tests/design-system/tokens/spacing.test.ts` validando valores compactos
+- [x] T024 [US1] Criar testes em `tests/design-system/tokens/radii.test.ts` validando large radius padrão
 
 **Checkpoint**: Tokens completos e testados — foundation pronta para themes e componentes
 
