@@ -131,9 +131,9 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [ ] T046 [P] [US2] Criar styles `src/design-system/atoms/Badge/Badge.styles.ts` usando xl radius
 - [ ] T047 [P] [US2] Criar types `src/design-system/atoms/Badge/Badge.types.ts`
 - [ ] T048 [P] [US2] Criar stories `src/design-system/atoms/Badge/Badge.stories.tsx`
-- [ ] T049 [P] [US2] Criar atom Icon em `src/design-system/atoms/Icon/Icon.tsx` como wrapper para lucide-react-native
-- [ ] T050 [P] [US2] Criar types `src/design-system/atoms/Icon/Icon.types.ts` com IconProps interface
-- [ ] T051 [P] [US2] Criar stories `src/design-system/atoms/Icon/Icon.stories.tsx` com ícones comuns
+- [x] T049 [P] [US2] Criar atom Icon em `src/design-system/atoms/Icon/Icon.tsx` como wrapper para lucide-react-native
+- [x] T050 [P] [US2] Criar types `src/design-system/atoms/Icon/Icon.types.ts` com IconProps interface
+- [x] T051 [P] [US2] Criar stories `src/design-system/atoms/Icon/Icon.stories.tsx` com ícones comuns
 - [ ] T052 [P] [US2] Criar componentes Card atoms em `src/design-system/atoms/Card/` (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter)
 - [ ] T053 [P] [US2] Criar styles `src/design-system/atoms/Card/Card.styles.ts` usando large radius
 - [ ] T054 [P] [US2] Criar types `src/design-system/atoms/Card/Card.types.ts`
