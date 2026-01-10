@@ -1,6 +1,6 @@
 ---
 active: true
-iteration: 4
+iteration: 5
 max_iterations: 50
 completion_promise: "DESIGN_SYSTEM_COMPLETE"
 started_at: "2026-01-10T15:58:47Z"

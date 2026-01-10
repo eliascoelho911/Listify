@@ -245,12 +245,12 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 6
 
-- [ ] T098 [US6] Criar documentação em `src/design-system/README.md` explicando estratégia de coexistência (quando usar DS legado vs novo DS)
-- [ ] T099 [US6] Adicionar seção em `src/design-system/README.md` com guidelines: "Componentes existentes usam `@legacy-design-system/*`, novos componentes usam `@design-system/*`"
-- [ ] T100 [US6] Adicionar exemplos na documentação mostrando imports corretos para ambos DS
-- [ ] T101 [US6] Executar `npm test` para validar que ambos DS funcionam sem conflitos
-- [ ] T102 [US6] Executar `npm run build` para validar que path aliases estão configurados corretamente
-- [ ] T103 [US6] Criar teste de smoke em `tests/design-system/coexistence.test.ts` verificando que imports de ambos DS funcionam simultaneamente
+- [x] T098 [US6] Criar documentação em `src/design-system/README.md` explicando estratégia de coexistência (quando usar DS legado vs novo DS)
+- [x] T099 [US6] Adicionar seção em `src/design-system/README.md` com guidelines: "Componentes existentes usam `@legacy-design-system/*`, novos componentes usam `@design-system/*`"
+- [x] T100 [US6] Adicionar exemplos na documentação mostrando imports corretos para ambos DS
+- [x] T101 [US6] Executar `npm test` para validar que ambos DS funcionam sem conflitos
+- [x] T102 [US6] Executar `npm run build` para validar que path aliases estão configurados corretamente
+- [x] T103 [US6] Criar teste de smoke em `tests/design-system/coexistence.test.ts` verificando que imports de ambos DS funcionam simultaneamente
 
 **Checkpoint**: Coexistência estabelecida, documentação clara, ambos DS funcionais sem conflitos
 

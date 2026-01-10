@@ -387,20 +387,105 @@ describe('Button Atom', () => {
 
 ## Coexistência com Design System Legado
 
-O Design System legado foi renomeado para `@legacy-design-system/*` e coexiste com o novo DS:
+O Design System legado foi renomeado para `@legacy-design-system/*` e coexiste com o novo DS durante o período de transição.
+
+### Quando Usar Cada Design System
+
+**Use `@design-system` (Novo DS) quando:**
+- ✅ Criar novos componentes ou features
+- ✅ Refatorar componentes existentes
+- ✅ Implementar telas novas
+- ✅ Componente precisa de dark/light theme
+- ✅ Precisa de Fira fonts, large radius, compact spacing
+
+**Use `@legacy-design-system` (DS Legado) quando:**
+- ⚠️ Manutenção de componentes existentes (temporariamente)
+- ⚠️ Correção de bugs urgentes sem tempo para migração
+- ⚠️ Componente será removido em breve
+
+### Exemplos de Importação
 
 ```typescript
-// ✅ Novo Design System
-import { Button } from '@design-system';
+// ✅ CORRETO: Novo componente usando novo DS
+import { Button, Card, FormField } from '@design-system';
+import { useTheme } from '@design-system';
 
-// ✅ Design System Legado (para migração gradual)
+function NewFeatureScreen() {
+  const { theme } = useTheme();
+  return (
+    <Card>
+      <FormField label="Email" required />
+      <Button>Submit</Button>
+    </Card>
+  );
+}
+
+// ✅ CORRETO: Componente existente usando DS legado
 import { Button as LegacyButton } from '@legacy-design-system';
+
+function ExistingScreen() {
+  return <LegacyButton>Click</LegacyButton>;
+}
+
+// ✅ CORRETO: Transição gradual - mistura temporária
+import { Button } from '@design-system';
+import { OldComponent } from '@legacy-design-system';
+
+function TransitionScreen() {
+  return (
+    <>
+      <OldComponent /> {/* Legado - será migrado depois */}
+      <Button>New Button</Button> {/* Novo DS */}
+    </>
+  );
+}
+
+// ❌ ERRADO: Misturar styles de ambos DS no mesmo componente
+import { Button } from '@design-system';
+import { colors as legacyColors } from '@legacy-design-system/tokens';
+
+function BadComponent() {
+  return (
+    <Button style={{ backgroundColor: legacyColors.primary }}> {/* ❌ Não misture! */}
+      Bad Practice
+    </Button>
+  );
+}
 ```
 
-**Estratégia de migração**:
-1. Novos componentes usam `@design-system`
-2. Componentes existentes podem permanecer com `@legacy-design-system` temporariamente
-3. Migrar gradualmente componente por componente
+### Estratégia de Migração
+
+**Fase 1 - Coexistência (Atual)**:
+1. Novo DS está pronto e documentado
+2. DS Legado permanece intacto em `@legacy-design-system/*`
+3. Novos componentes usam `@design-system`
+4. Componentes existentes continuam com `@legacy-design-system`
+
+**Fase 2 - Migração Gradual**:
+1. Identificar componentes críticos para migração
+2. Migrar componente por componente
+3. Atualizar testes após migração
+4. Validar visualmente no Storybook
+
+**Fase 3 - Deprecação**:
+1. Quando todos componentes migraram, deprecar `@legacy-design-system`
+2. Adicionar warnings em imports legados
+3. Remover após período de grace
+
+### Checklist de Migração de Componente
+
+Quando migrar um componente do DS legado para o novo:
+
+- [ ] Substituir imports de `@legacy-design-system` por `@design-system`
+- [ ] Substituir hard-coded values por tokens (via `useTheme()`)
+- [ ] Aplicar Fira fonts nos textos
+- [ ] Usar large radius (lg: 16, xl: 24)
+- [ ] Usar compact spacing (xs: 4, sm: 8, md: 12)
+- [ ] Testar dark e light themes
+- [ ] Atualizar testes do componente
+- [ ] Validar acessibilidade (touch targets, contraste)
+- [ ] Documentar no Storybook
+- [ ] Executar ESLint (zero warnings)
 
 ## Recursos
 
