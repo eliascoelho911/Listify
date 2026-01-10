@@ -70,13 +70,13 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 1
 
-- [ ] T014 [P] [US1] Criar arquivo `src/design-system/tokens/colors.ts` com paletas gray (chumbo) e cyan + tokens Shadcn + topbar customizados
-- [ ] T015 [P] [US1] Criar arquivo `src/design-system/tokens/typography.ts` com families (Fira Sans/Code), weights, sizes, lineHeights
-- [ ] T016 [P] [US1] Criar arquivo `src/design-system/tokens/spacing.ts` com escala compacta (xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32)
-- [ ] T017 [P] [US1] Criar arquivo `src/design-system/tokens/radii.ts` com escala large (none: 0, sm: 8, md: 12, lg: 16, xl: 24, full: 9999)
-- [ ] T018 [P] [US1] Criar arquivo `src/design-system/tokens/animations.ts` com durations (fast: 150, normal: 300, slow: 500) e easings
-- [ ] T019 [P] [US1] Criar arquivo `src/design-system/tokens/shadows.ts` com elevation levels (none, sm, md, lg, xl)
-- [ ] T020 [US1] Criar arquivo `src/design-system/tokens/index.ts` com barrel export de todos os tokens
+- [x] T014 [P] [US1] Criar arquivo `src/design-system/tokens/colors.ts` com paletas gray (chumbo) e cyan + tokens Shadcn + topbar customizados
+- [x] T015 [P] [US1] Criar arquivo `src/design-system/tokens/typography.ts` com families (Fira Sans/Code), weights, sizes, lineHeights
+- [x] T016 [P] [US1] Criar arquivo `src/design-system/tokens/spacing.ts` com escala compacta (xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32)
+- [x] T017 [P] [US1] Criar arquivo `src/design-system/tokens/radii.ts` com escala large (none: 0, sm: 8, md: 12, lg: 16, xl: 24, full: 9999)
+- [x] T018 [P] [US1] Criar arquivo `src/design-system/tokens/animations.ts` com durations (fast: 150, normal: 300, slow: 500) e easings
+- [x] T019 [P] [US1] Criar arquivo `src/design-system/tokens/shadows.ts` com elevation levels (none, sm, md, lg, xl)
+- [x] T020 [US1] Criar arquivo `src/design-system/tokens/index.ts` com barrel export de todos os tokens
 - [ ] T021 [US1] Criar testes em `tests/design-system/tokens/colors.test.ts` validando paleta cyan/gray e tokens Shadcn/topbar
 - [ ] T022 [US1] Criar testes em `tests/design-system/tokens/typography.test.ts` validando Fira Sans/Code families
 - [ ] T023 [US1] Criar testes em `tests/design-system/tokens/spacing.test.ts` validando valores compactos
