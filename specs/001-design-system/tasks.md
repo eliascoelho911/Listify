@@ -192,25 +192,25 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 7
 
-- [ ] T071 [P] [US7] Criar molecule FormField em `src/design-system/molecules/FormField/FormField.tsx` compondo Label + Input atoms
-- [ ] T072 [P] [US7] Criar styles `src/design-system/molecules/FormField/FormField.styles.ts` com spacing compacto
-- [ ] T073 [P] [US7] Criar types `src/design-system/molecules/FormField/FormField.types.ts`
-- [ ] T074 [P] [US7] Criar stories `src/design-system/molecules/FormField/FormField.stories.tsx`
-- [ ] T075 [P] [US7] Criar molecule SearchBar em `src/design-system/molecules/SearchBar/SearchBar.tsx` compondo Input + Icon atoms
-- [ ] T076 [P] [US7] Criar styles `src/design-system/molecules/SearchBar/SearchBar.styles.ts`
-- [ ] T077 [P] [US7] Criar types `src/design-system/molecules/SearchBar/SearchBar.types.ts`
-- [ ] T078 [P] [US7] Criar stories `src/design-system/molecules/SearchBar/SearchBar.stories.tsx`
-- [ ] T079 [US7] Criar arquivo `src/design-system/molecules/index.ts` com barrel export
-- [ ] T080 [P] [US7] Criar organism Navbar em `src/design-system/organisms/Navbar/Navbar.tsx` usando tokens customizados topbar (topbar, topbar-foreground, topbar-primary, topbar-accent, topbar-border, topbar-ring)
-- [ ] T081 [P] [US7] Criar styles `src/design-system/organisms/Navbar/Navbar.styles.ts` com topbar tokens
-- [ ] T082 [P] [US7] Criar types `src/design-system/organisms/Navbar/Navbar.types.ts`
-- [ ] T083 [P] [US7] Criar stories `src/design-system/organisms/Navbar/Navbar.stories.tsx`
-- [ ] T084 [P] [US7] Criar organism ShoppingListCard em `src/design-system/organisms/ShoppingListCard/ShoppingListCard.tsx` compondo Card, Badge, Icon atoms
-- [ ] T085 [P] [US7] Criar styles `src/design-system/organisms/ShoppingListCard/ShoppingListCard.styles.ts`
-- [ ] T086 [P] [US7] Criar types `src/design-system/organisms/ShoppingListCard/ShoppingListCard.types.ts`
-- [ ] T087 [P] [US7] Criar stories `src/design-system/organisms/ShoppingListCard/ShoppingListCard.stories.tsx`
-- [ ] T088 [US7] Criar arquivo `src/design-system/organisms/index.ts` com barrel export
-- [ ] T089 [US7] Validar no Storybook que molecules importam apenas atoms e organisms importam atoms + molecules (compliance ESLint)
+- [x] T071 [P] [US7] Criar molecule FormField em `src/design-system/molecules/FormField/FormField.tsx` compondo Label + Input atoms
+- [x] T072 [P] [US7] Criar styles `src/design-system/molecules/FormField/FormField.styles.ts` com spacing compacto
+- [x] T073 [P] [US7] Criar types `src/design-system/molecules/FormField/FormField.types.ts`
+- [x] T074 [P] [US7] Criar stories `src/design-system/molecules/FormField/FormField.stories.tsx`
+- [x] T075 [P] [US7] Criar molecule SearchBar em `src/design-system/molecules/SearchBar/SearchBar.tsx` compondo Input + Icon atoms
+- [x] T076 [P] [US7] Criar styles `src/design-system/molecules/SearchBar/SearchBar.styles.ts`
+- [x] T077 [P] [US7] Criar types `src/design-system/molecules/SearchBar/SearchBar.types.ts`
+- [x] T078 [P] [US7] Criar stories `src/design-system/molecules/SearchBar/SearchBar.stories.tsx`
+- [x] T079 [US7] Criar arquivo `src/design-system/molecules/index.ts` com barrel export
+- [x] T080 [P] [US7] Criar organism Navbar em `src/design-system/organisms/Navbar/Navbar.tsx` usando tokens customizados topbar (topbar, topbar-foreground, topbar-primary, topbar-accent, topbar-border, topbar-ring)
+- [x] T081 [P] [US7] Criar styles `src/design-system/organisms/Navbar/Navbar.styles.ts` com topbar tokens
+- [x] T082 [P] [US7] Criar types `src/design-system/organisms/Navbar/Navbar.types.ts`
+- [x] T083 [P] [US7] Criar stories `src/design-system/organisms/Navbar/Navbar.stories.tsx`
+- [x] T084 [P] [US7] Criar organism ShoppingListCard em `src/design-system/organisms/ShoppingListCard/ShoppingListCard.tsx` compondo Card, Badge, Icon atoms
+- [x] T085 [P] [US7] Criar styles `src/design-system/organisms/ShoppingListCard/ShoppingListCard.styles.ts`
+- [x] T086 [P] [US7] Criar types `src/design-system/organisms/ShoppingListCard/ShoppingListCard.types.ts`
+- [x] T087 [P] [US7] Criar stories `src/design-system/organisms/ShoppingListCard/ShoppingListCard.stories.tsx`
+- [x] T088 [US7] Criar arquivo `src/design-system/organisms/index.ts` com barrel export
+- [x] T089 [US7] Validar no Storybook que molecules importam apenas atoms e organisms importam atoms + molecules (compliance ESLint)
 
 **Checkpoint**: Molecules e organisms completos e documentados no Storybook
 

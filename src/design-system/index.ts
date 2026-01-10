@@ -18,11 +18,11 @@ export type { Theme, ThemeMode } from './theme/theme';
 // Atoms
 export * from './atoms';
 
-// Molecules (empty for now, will be populated in Phase 8)
-// export * from './molecules';
+// Molecules
+export * from './molecules';
 
-// Organisms (empty for now, will be populated in Phase 8)
-// export * from './organisms';
+// Organisms
+export * from './organisms';
 
 // Templates (empty for now, will be populated later)
 // export * from './templates';
