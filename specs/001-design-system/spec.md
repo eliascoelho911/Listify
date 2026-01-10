@@ -23,7 +23,7 @@
 - Componentes base redesenhados do zero
 - Storybook para documentação visual interativa
 - Sistema de animações e transições
-- Migração completa de todos os componentes existentes
+- Coexistência com Design System legado para componentes existentes
 - Testes visuais automatizados com screenshots
 - CLI para scaffolding de componentes
 - Theme provider com persistência e detecção de preferência do sistema
@@ -127,21 +127,21 @@ Como desenvolvedor, preciso de Storybook configurado exibindo atoms, molecules e
 
 ---
 
-### User Story 6 - Migrar Todos os Componentes Existentes (Priority: P1)
+### User Story 6 - Estabelecer Coexistência entre Design Systems (Priority: P1)
 
-Como desenvolvedor, preciso que 100% dos componentes existentes sejam migrados para usar novo DS (atoms/molecules/organisms), para que app inteiro siga novo visual (Fira fonts, cyan/gray, large radius, spacing compacto) sem código legado.
+Como desenvolvedor, preciso que o novo DS coexista com o DS legado de forma organizada, para que novos componentes possam usar o novo visual (Fira fonts, cyan/gray, large radius, spacing compacto) enquanto componentes existentes continuam funcionando sem breaking changes.
 
-**Por que esta prioridade**: Migração completa é essencial para aplicar novo design consistentemente. Componentes parcialmente migrados criariam inconsistência visual inaceitável.
+**Por que esta prioridade**: Coexistência controlada é essencial para permitir adoção gradual do novo design sem quebrar funcionalidades existentes. Permite desenvolvimento incremental de novos recursos com o novo visual.
 
-**Teste Independente**: Pode ser testado auditando codebase verificando que nenhum componente usa DS antigo. Entrega valor ao garantir consistência total do novo visual.
+**Teste Independente**: Pode ser testado verificando que ambos DS funcionam simultaneamente, imports estão corretos, e não há conflitos. Entrega valor ao estabelecer base para desenvolvimento futuro.
 
 **Cenários de Aceite**:
 
-1. **Given** todos os componentes do app, **When** audito, **Then** 0% usam DS antigo (verificável via grep/lint)
-2. **Given** qualquer tela do app, **When** visualizo, **Then** vejo Fira Sans (não fonts antigas), large radius (não radius antigo), spacing compacto (não spacing antigo)
-3. **Given** componentes migrados, **When** executo testes, **Then** 100% passam sem regressões
-4. **Given** app após migração, **When** abro, **Then** dark theme com cyan/gray é aplicado por padrão
-5. **Given** código do DS antigo, **When** migração completa, **Then** todo código legado (tokens/componentes antigos) foi removido
+1. **Given** estrutura do projeto, **When** audito, **Then** existe `src/legacy-design-system/` (DS antigo) e `src/design-system/` (DS novo) coexistindo
+2. **Given** componentes existentes, **When** inspeciono imports, **Then** usam `@legacy-design-system/*` e funcionam normalmente
+3. **Given** novos componentes criados, **When** uso CLI do novo DS, **Then** automaticamente importam de `@design-system/*`
+4. **Given** documentação, **When** leio guidelines, **Then** há instruções claras sobre quando usar DS legado vs novo DS
+5. **Given** ambos DS ativos, **When** executo testes, **Then** não há conflitos de estilos ou nomes entre eles
 
 ---
 
@@ -274,8 +274,8 @@ Como desenvolvedor, preciso de documentação completa (README.md) sobre tokens,
 - **FR-023**: Sistema MUST incluir testes visuais automatizados capturando screenshots
 - **FR-024**: Testes visuais MUST cobrir dark theme, light theme e diferentes viewports
 - **FR-025**: Sistema MUST incluir documentação README.md completa sobre tokens, Atomic Design e guidelines
-- **FR-026**: 100% dos componentes existentes do app MUST ser migrados para novo DS
-- **FR-027**: Após migração, 0% do código MUST usar DS antigo (verificável via lint)
+- **FR-026**: Sistema MUST estabelecer coexistência entre DS legado (`@legacy-design-system/*`) e novo DS (`@design-system/*`)
+- **FR-027**: Sistema MUST fornecer documentação clara sobre quando usar DS legado vs novo DS
 
 ### Entidades-chave
 
@@ -301,8 +301,8 @@ Como desenvolvedor, preciso de documentação completa (README.md) sobre tokens,
 - **SC-008**: 0% dos molecules importam outros molecules ou organisms (hierarquia respeitada) - verificável via lint
 - **SC-009**: 0% dos componentes do novo DS contêm valores hard-coded - verificável via lint
 - **SC-010**: 100% dos componentes base (atoms/molecules/organisms) estão documentados no Storybook
-- **SC-011**: 100% dos componentes existentes do app foram migrados para novo DS - verificável via audit
-- **SC-012**: 0% do código usa DS antigo após migração - verificável via grep
+- **SC-011**: DS legado e novo DS coexistem sem conflitos de imports ou estilos - verificável via testes
+- **SC-012**: Path aliases `@legacy-design-system/*` e `@design-system/*` funcionam corretamente - verificável via build
 - **SC-013**: CLI gera componentes que passam em 100% das lint rules do DS
 - **SC-014**: Testes visuais cobrem 100% dos atoms e 90%+ molecules/organisms em ambos temas
 - **SC-015**: Desenvolvedores conseguem criar novo componente usando apenas documentação (sem consultar código-fonte)

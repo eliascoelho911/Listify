@@ -8,7 +8,7 @@ para o workflow de execução.
 
 ## Resumo
 
-Implementar um Design System completamente novo para o Listify usando Atomic Design, com tokens baseados em Shadcn (incluindo tokens customizados de topbar), tipografia Fira Sans/Code, paleta cyan/gray, large radius e spacing compacto. Inclui suporte a dark/light themes (dark padrão), Storybook para documentação, CLI para scaffolding, testes visuais e migração completa de todos os componentes existentes.
+Implementar um Design System completamente novo para o Listify usando Atomic Design, com tokens baseados em Shadcn (incluindo tokens customizados de topbar), tipografia Fira Sans/Code, paleta cyan/gray, large radius e spacing compacto. Inclui suporte a dark/light themes (dark padrão), Storybook para documentação, CLI para scaffolding, testes visuais e coexistência controlada com o Design System legado para permitir desenvolvimento gradual.
 
 ## Contexto Técnico
 
@@ -155,15 +155,16 @@ tests/
 └── presentation/                 # Existente
 ```
 
-**Structure Decision**: Mobile app (React Native + Expo) com Clean Architecture existente. O novo Design System será adicionado em `src/design-system/` seguindo Atomic Design estrito. A estrutura atual do app (`src/presentation/`) será gradualmente migrada para usar componentes do novo DS.
+**Structure Decision**: Mobile app (React Native + Expo) com Clean Architecture existente. O novo Design System será adicionado em `src/design-system/` seguindo Atomic Design estrito, coexistindo com o Design System legado em `src/legacy-design-system/`. Novos componentes devem usar o novo DS, enquanto componentes existentes em `src/presentation/` continuam usando o DS legado.
 
-**⚠️ IMPORTANTE - Migração do DS Antigo**:
+**⚠️ IMPORTANTE - Coexistência com DS Legado**:
 1. Renomear `src/design-system/` → `src/legacy-design-system/` antes de começar implementação
 2. Atualizar `tsconfig.json` para adicionar path alias `@legacy-design-system/*` apontando para `src/legacy-design-system/*`
 3. Manter path alias `@design-system/*` para o novo DS
-4. Atualizar imports em `src/presentation/` para usar `@legacy-design-system/*` temporariamente
-5. Durante migração, gradualmente substituir imports de `@legacy-design-system/*` por `@design-system/*`
-6. Ao final, quando migração 100% completa, deletar `src/legacy-design-system/` inteiro
+4. Atualizar imports em `src/presentation/` para usar `@legacy-design-system/*`
+5. Componentes existentes continuam usando `@legacy-design-system/*` indefinidamente
+6. Novos componentes devem usar `@design-system/*` (novo DS)
+7. DS legado permanece no projeto para manter compatibilidade com código existente
 
 ## Tracking de Complexidade
 

@@ -237,29 +237,22 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ---
 
-## Fase 10: User Story 6 - Migrar Todos os Componentes Existentes (Priority: P1)
+## Fase 10: User Story 6 - Estabelecer Coexistência entre Design Systems (Priority: P1)
 
-**Objetivo**: Migrar 100% dos componentes existentes de `@legacy-design-system/*` para novo DS, garantindo consistência visual total
+**Objetivo**: Estabelecer coexistência controlada entre DS legado e novo DS, permitindo desenvolvimento incremental
 
-**Teste Independente**: Auditar codebase verificando 0% uso de DS antigo (grep/lint), 100% testes passando
+**Teste Independente**: Verificar que ambos DS funcionam simultaneamente, imports corretos, sem conflitos
 
 ### Implementação para User Story 6
 
-- [ ] T098 [US6] Fazer inventário completo de todos os componentes em `src/presentation/` que usam `@legacy-design-system/*`
-- [ ] T099 [US6] Criar checklist de migração com mapeamento: componente legado → novo atom/molecule/organism
-- [ ] T100 [P] [US6] Migrar componentes de telas principais (home, shopping list, item detail) para usar atoms do novo DS
-- [ ] T101 [P] [US6] Migrar componentes de formulários para usar Input, Label, Button atoms
-- [ ] T102 [P] [US6] Migrar componentes de listagem para usar Card, Badge atoms
-- [ ] T103 [P] [US6] Migrar componentes de navegação para usar Navbar organism com topbar tokens
-- [ ] T104 [US6] Substituir todos os imports restantes de `@legacy-design-system/*` por `@design-system/*` em `src/presentation/`
-- [ ] T105 [US6] Executar `npm test` e corrigir todos os testes quebrados pela migração
-- [ ] T106 [US6] Validar visualmente app completo verificando Fira fonts aplicadas, large radius, spacing compacto, cores cyan/gray
-- [ ] T107 [US6] Verificar dark theme aplicado por padrão na primeira abertura
-- [ ] T108 [US6] Executar grep para confirmar 0% uso de `@legacy-design-system/*` (exceto na pasta `src/legacy-design-system/`)
-- [ ] T109 [US6] Deletar pasta `src/legacy-design-system/` inteira após validação completa
-- [ ] T110 [US6] Remover path alias `@legacy-design-system/*` de tsconfig.json
+- [ ] T098 [US6] Criar documentação em `src/design-system/README.md` explicando estratégia de coexistência (quando usar DS legado vs novo DS)
+- [ ] T099 [US6] Adicionar seção em `src/design-system/README.md` com guidelines: "Componentes existentes usam `@legacy-design-system/*`, novos componentes usam `@design-system/*`"
+- [ ] T100 [US6] Adicionar exemplos na documentação mostrando imports corretos para ambos DS
+- [ ] T101 [US6] Executar `npm test` para validar que ambos DS funcionam sem conflitos
+- [ ] T102 [US6] Executar `npm run build` para validar que path aliases estão configurados corretamente
+- [ ] T103 [US6] Criar teste de smoke em `tests/design-system/coexistence.test.ts` verificando que imports de ambos DS funcionam simultaneamente
 
-**Checkpoint**: 100% migração completa, DS antigo removido, app usando novo DS consistentemente
+**Checkpoint**: Coexistência estabelecida, documentação clara, ambos DS funcionais sem conflitos
 
 ---
 
@@ -366,8 +359,8 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - **User Story 5 (P1) - Storybook**: Pode começar após US2 concluída
 - **User Story 7 (P2) - Molecules/Organisms**: Pode começar após US2 concluída
 - **User Story 8 (P2) - Animações**: Pode começar após US2 concluída
-- **User Story 6 (P1) - Migração**: Pode começar após US2 e US7 concluídas
-- **User Story 11 (P2) - Documentação**: Pode começar após todas anteriores concluídas
+- **User Story 6 (P1) - Coexistência**: Pode começar após US2 concluída (setup básico de documentação)
+- **User Story 11 (P2) - Documentação**: Pode começar após US6 concluída (expande documentação de coexistência)
 - **User Story 9 (P3) - CLI**: Pode começar após US2 e US7 concluídas (padrões maduros)
 
 ### Within Each User Story
@@ -377,7 +370,7 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - Atoms (US2): Todos os atoms podem ser implementados em paralelo [P]
 - Molecules/Organisms (US7): Molecules em paralelo, organisms em paralelo
 - Animações (US8): Hooks em paralelo, integração sequencial
-- Migração (US6): Inventário primeiro, depois migração em paralelo por áreas
+- Coexistência (US6): Tarefas de documentação podem ser feitas em paralelo [P], testes ao final
 
 ### Parallel Opportunities
 
@@ -388,7 +381,7 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - **US2 (Atoms)**: Cada atom (Button, Input, Label, Badge, Icon, Card) paralelo [P]
 - **US7 (Molecules/Organisms)**: FormField e SearchBar paralelos, Navbar e ShoppingListCard paralelos
 - **US8 (Animações)**: Todos os hooks paralelos [P]
-- **US6 (Migração)**: T100-T103 paralelos [P]
+- **US6 (Coexistência)**: T098-T100 paralelos [P] (documentação), T101-T103 sequenciais (testes)
 - **US9 (CLI)**: Templates paralelos [P], T123-T128
 - **US11 (Documentação)**: T111-T120 paralelos [P]
 - **Polish**: T137-T144 e T149-T150 paralelos [P]
@@ -433,7 +426,7 @@ Input: T036 [P], T037 [P], T038 [P], T039 [P] → todos juntos
 1. **MVP (Fases 1-7)**: Tokens + Themes + Atoms + Storybook → validar visualmente
 2. **Fase 8**: User Story 7 → adicionar Molecules/Organisms → testar composição
 3. **Fase 9**: User Story 8 → adicionar Animações → validar UX
-4. **Fase 10**: User Story 6 → Migração completa → validar app inteiro
+4. **Fase 10**: User Story 6 → Estabelecer Coexistência → documentar estratégia
 5. **Fase 11**: User Story 11 → Documentar → validar onboarding
 6. **Fase 12**: User Story 9 → CLI → facilitar desenvolvimento futuro
 7. **Fase 13**: Polish → otimizações finais
@@ -458,12 +451,12 @@ Com múltiplas pessoas:
    - Pessoa C: US8 (Animações - T090-T097)
 6. **Após US7**:
    - Pessoa A: US7 (Organisms - T080-T089)
-   - Pessoa B: US6 (Migração parte 1 - T098-T103)
+   - Pessoa B: US6 (Coexistência - T098-T103)
    - Pessoa C: US9 (CLI - T123-T136)
 7. **Finalizações paralelas**:
-   - Pessoa A: US6 (Migração parte 2 - T104-T110)
-   - Pessoa B: US11 (Documentação - T111-T122)
-   - Pessoa C: Polish (T137-T152)
+   - Pessoa A: US11 (Documentação - T111-T122)
+   - Pessoa B: Polish parte 1 (T137-T144)
+   - Pessoa C: Polish parte 2 (T145-T152)
 
 ---
 
@@ -478,13 +471,13 @@ Com múltiplas pessoas:
 - Pare em checkpoints para validar independentemente
 - ESLint enforça arquitetura — confie nas rules customizadas
 - Dark theme é padrão fixo inicial — não detecta system preference
-- Migração completa (US6) é CRÍTICA para consistência visual total
+- Coexistência entre DS legado e novo DS permite desenvolvimento incremental sem breaking changes
 
 ---
 
 ## Resumo de Tarefas
 
-**Total de Tarefas**: 152
+**Total de Tarefas**: 145
 
 **Por User Story**:
 - Setup (Fase 1): 8 tarefas
@@ -496,7 +489,7 @@ Com múltiplas pessoas:
 - US5 (Storybook): 8 tarefas
 - US7 (Molecules/Organisms): 19 tarefas
 - US8 (Animações): 8 tarefas
-- US6 (Migração): 13 tarefas
+- US6 (Coexistência): 6 tarefas
 - US11 (Documentação): 12 tarefas
 - US9 (CLI): 14 tarefas
 - Polish (Fase 13): 16 tarefas
@@ -519,8 +512,8 @@ Com múltiplas pessoas:
 **Path to Production**:
 1. MVP (Fases 1-7): 70 tarefas → DS base funcional
 2. Molecules/Organisms + Animações (Fases 8-9): +27 tarefas → componentes complexos
-3. Migração completa (Fase 10): +13 tarefas → app usando novo DS 100%
+3. Coexistência (Fase 10): +6 tarefas → estratégia de adoção gradual documentada
 4. Documentação + CLI (Fases 11-12): +26 tarefas → developer experience
 5. Polish (Fase 13): +16 tarefas → otimizações finais
 
-**Validação de Formato**: ✅ Todas as 152 tarefas seguem formato: `- [ ] [ID] [P?] [Story?] Descrição com file path`
+**Validação de Formato**: ✅ Todas as 145 tarefas seguem formato: `- [ ] [ID] [P?] [Story?] Descrição com file path`

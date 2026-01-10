@@ -2,6 +2,22 @@
 
 Guia rápido para começar a usar o novo Design System baseado em Atomic Design.
 
+## ⚠️ Coexistência com Design System Legado
+
+Este projeto possui **dois Design Systems** que coexistem:
+
+- **`@legacy-design-system/*`**: Design System antigo (em `src/legacy-design-system/`)
+  - Usado por **componentes existentes** em `src/presentation/`
+  - **Não criar novos componentes** com este DS
+  - Mantido para compatibilidade com código legado
+
+- **`@design-system/*`**: Novo Design System (em `src/design-system/`)
+  - Usar para **todos os novos componentes** e funcionalidades
+  - Atomic Design, Fira fonts, cyan/gray theme, large radius, spacing compacto
+  - Documentado neste guia
+
+**Regra de ouro**: Novos componentes → `@design-system/*` | Componentes existentes → `@legacy-design-system/*`
+
 ---
 
 ## 📦 Instalação
@@ -385,11 +401,52 @@ if (isLoading) {
 
 ---
 
+## 🔄 Trabalhando com Componentes Existentes
+
+### Quando modificar componentes existentes?
+
+**Cenário 1: Bug fix ou pequena mudança**
+- ✅ Manter import de `@legacy-design-system/*`
+- ✅ Fazer correção mínima necessária
+- ❌ Não migrar para novo DS neste momento
+
+**Cenário 2: Refactoring grande ou nova feature**
+- ✅ Considerar criar novo componente com `@design-system/*`
+- ✅ Gradualmente substituir uso do componente antigo pelo novo
+- ⚠️ Avaliar impacto em toda aplicação
+
+**Cenário 3: Criar funcionalidade completamente nova**
+- ✅ **SEMPRE** usar `@design-system/*`
+- ✅ Seguir Atomic Design (atoms → molecules → organisms)
+- ✅ Usar CLI para scaffolding: `npm run ds generate atom MyComponent`
+
+### Exemplo: Adicionando botão em tela nova
+
+```tsx
+// ✅ CORRETO - Nova tela, usar novo DS
+import { Button } from '@design-system/atoms';
+
+export function NewFeatureScreen() {
+  return <Button variant="default">Click me</Button>;
+}
+```
+
+```tsx
+// ❌ ERRADO - Não usar DS legado em código novo
+import { Button } from '@legacy-design-system';
+
+export function NewFeatureScreen() {
+  return <Button>Click me</Button>;
+}
+```
+
+---
+
 ## 📚 Próximos Passos
 
 1. **Explore o Storybook**: Veja todos os componentes disponíveis
 2. **Leia a documentação completa**: `src/design-system/README.md`
-3. **Migre componentes gradualmente**: Substitua estilos hard-coded por tokens
+3. **Use o novo DS para novos componentes**: Siga a regra de ouro
 4. **Use ESLint**: Regras customizadas detectam violações automaticamente
 
 ---

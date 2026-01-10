@@ -41,7 +41,7 @@ A especificação está completa e pronta para as próximas fases (`/speckit.cla
 - **Shadcn tokens completos**: Todos os tokens padrão + tokens customizados de topbar listados
 - **Atomic Design claro**: Hierarquia atoms → molecules → organisms → templates → pages bem estruturada
 - **Themes especificados**: Dark (padrão) e Light com paleta consistente
-- **Escopo completo**: Inclui Storybook, CLI, testes visuais, migração completa
+- **Escopo completo**: Inclui Storybook, CLI, testes visuais, coexistência com DS legado
 - **27 Requisitos Funcionais**: Todos testáveis e específicos
 - **15 Critérios de Sucesso**: Todos mensuráveis e technology-agnostic
 - **11 User Stories**: Priorizadas (P1, P2, P3) e independentemente testáveis
