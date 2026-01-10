@@ -138,7 +138,7 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T053 [P] [US2] Criar styles `src/design-system/atoms/Card/Card.styles.ts` usando large radius
 - [x] T054 [P] [US2] Criar types `src/design-system/atoms/Card/Card.types.ts`
 - [x] T055 [P] [US2] Criar stories `src/design-system/atoms/Card/Card.stories.tsx` com composição completa
-- [ ] T056 [US2] Criar arquivo `src/design-system/atoms/index.ts` com barrel export de todos atoms
+- [x] T056 [US2] Criar arquivo `src/design-system/atoms/index.ts` com barrel export de todos atoms
 
 **Checkpoint**: Atoms completos e documentados no Storybook — blocos fundamentais prontos
 
