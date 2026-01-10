@@ -24,6 +24,7 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/tokens/`
 
 **Exemplos**:
+
 - `colors.ts` - Paleta de cores (cyan theme + gray "chumbo")
 - `typography.ts` - Famílias de fontes (Fira Sans/Code), tamanhos, pesos
 - `spacing.ts` - Escala de espaçamento compacto (4, 8, 12, 16, 24...)
@@ -40,11 +41,13 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/theme/`
 
 **Componentes**:
+
 - `ThemeProvider.tsx` - Provider com dark/light themes, AsyncStorage persistence
 - `useTheme.ts` - Hook para acessar theme atual
 - `theme.ts` - Definição de Theme interface e temas concretos
 
 **Temas disponíveis**:
+
 - Dark (padrão) - Gray 950 background + cyan primary
 - Light - Gray 50 background + cyan primary
 
@@ -57,6 +60,7 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/atoms/`
 
 **Exemplos**:
+
 - `Button` - Botão com 5 variants Shadcn (default, destructive, outline, ghost, link)
 - `Input` - Campo de texto com states (default, focus, error, disabled)
 - `Label` - Rótulo com required indicator
@@ -65,10 +69,12 @@ utils/        → Funções auxiliares
 - `Card` - 6 componentes compostos (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter)
 
 **Import rules**:
+
 - ✅ Atoms podem importar: `tokens`, `theme`, `utils`
 - ❌ Atoms NÃO podem importar: `molecules`, `organisms`, `templates`, `pages`
 
 **Quando criar um Atom**:
+
 - Componente é indivisível (não pode ser quebrado em partes menores)
 - Não depende de outros componentes além de primitivos do RN
 - Representa um elemento UI básico (botão, input, ícone, etc)
@@ -80,15 +86,18 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/molecules/`
 
 **Exemplos** (a serem implementados):
+
 - `FormField` - Label + Input com error message
 - `SearchBar` - Input + Icon de busca
 
 **Import rules**:
+
 - ✅ Molecules podem importar: `atoms`, `tokens`, `theme`, `utils`
 - ❌ Molecules NÃO podem importar: `organisms`, `templates`, `pages`
 - ❌ Molecules NÃO podem importar outras `molecules` (para evitar dependências circulares)
 
 **Quando criar uma Molecule**:
+
 - Componente combina 2-3 atoms de forma simples
 - Tem propósito funcional específico (ex: campo de formulário)
 - Ainda é relativamente genérico e reutilizável
@@ -100,16 +109,19 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/organisms/`
 
 **Exemplos** (a serem implementados):
+
 - `Navbar` - Barra de navegação com logo, links, actions
 - `ShoppingListCard` - Card completo de lista de compras
 - `FilterPanel` - Painel com múltiplos filtros
 
 **Import rules**:
+
 - ✅ Organisms podem importar: `atoms`, `molecules`, `tokens`, `theme`, `utils`
 - ❌ Organisms NÃO podem importar: `templates`, `pages`
 - ⚠️ Organisms podem importar outros `organisms` com cautela (evitar dependências circulares)
 
 **Quando criar um Organism**:
+
 - Componente combina múltiplos molecules/atoms
 - Representa seção distinta de interface (navbar, card complexo, form completo)
 - Pode ter lógica de estado complexa
@@ -121,14 +133,17 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/templates/`
 
 **Exemplos**:
+
 - `AuthTemplate` - Layout para páginas de autenticação
 - `DashboardTemplate` - Layout com sidebar + content area
 
 **Import rules**:
+
 - ✅ Templates podem importar: `atoms`, `molecules`, `organisms`, `tokens`, `theme`, `utils`
 - ❌ Templates NÃO podem importar: `pages`
 
 **Quando criar um Template**:
+
 - Define estrutura de layout reutilizável
 - Sem conteúdo específico (apenas placeholders)
 - Múltiplas páginas compartilham o mesmo layout
@@ -140,6 +155,7 @@ utils/        → Funções auxiliares
 **Localização**: `src/design-system/pages/`
 
 **Import rules**:
+
 - ✅ Pages podem importar qualquer coisa
 
 **Nota**: No Listify, pages residem em `src/app/` (Expo Router), não neste Design System.
@@ -149,25 +165,28 @@ utils/        → Funções auxiliares
 ### 1. Zero Hard-Coded Values
 
 ❌ **NUNCA** faça isso:
+
 ```typescript
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '#06b6d4',  // Hard-coded!
-    padding: 16,                  // Hard-coded!
-    borderRadius: 8,              // Hard-coded!
-  }
+    backgroundColor: '#06b6d4', // Hard-coded!
+    padding: 16, // Hard-coded!
+    borderRadius: 8, // Hard-coded!
+  },
 });
 ```
 
 ✅ **SEMPRE** use tokens via theme:
+
 ```typescript
-const styles = (theme: Theme) => StyleSheet.create({
-  button: {
-    backgroundColor: theme.colors.primary,
-    padding: theme.spacing.lg,
-    borderRadius: theme.radii.lg,
-  }
-});
+const styles = (theme: Theme) =>
+  StyleSheet.create({
+    button: {
+      backgroundColor: theme.colors.primary,
+      padding: theme.spacing.lg,
+      borderRadius: theme.radii.lg,
+    },
+  });
 ```
 
 **Enforcement**: ESLint custom rule `local-rules/no-hardcoded-values` detecta violações.
@@ -175,17 +194,19 @@ const styles = (theme: Theme) => StyleSheet.create({
 ### 2. Use useTheme() Hook
 
 ❌ **NUNCA** importe theme diretamente:
+
 ```typescript
 import { darkTheme } from '@design-system/theme/theme';
 // ❌ Ignora preferência do usuário!
 ```
 
 ✅ **SEMPRE** use o hook:
+
 ```typescript
 import { useTheme } from '@design-system/theme';
 
 function MyComponent() {
-  const { theme } = useTheme();  // ✅ Respeita tema atual
+  const { theme } = useTheme(); // ✅ Respeita tema atual
   const styles = createStyles(theme);
 }
 ```
@@ -195,22 +216,24 @@ function MyComponent() {
 ### 3. Respeite Hierarquia Atomic Design
 
 ❌ **NUNCA** quebre a hierarquia:
+
 ```typescript
 // Em um Atom
-import { SearchBar } from '../molecules/SearchBar';  // ❌ Atom não pode importar Molecule!
+import { SearchBar } from '../molecules/SearchBar'; // ❌ Atom não pode importar Molecule!
 
 // Em uma Molecule
-import { Navbar } from '../organisms/Navbar';  // ❌ Molecule não pode importar Organism!
+import { Navbar } from '../organisms/Navbar'; // ❌ Molecule não pode importar Organism!
 ```
 
 ✅ **SEMPRE** respeite a ordem:
+
 ```typescript
 // Em uma Molecule
-import { Button, Input } from '../atoms';  // ✅ Molecule pode importar Atoms
+import { Button, Input } from '../atoms'; // ✅ Molecule pode importar Atoms
 
 // Em um Organism
-import { FormField } from '../molecules';  // ✅ Organism pode importar Molecules
-import { Button } from '../atoms';         // ✅ Organism pode importar Atoms
+import { FormField } from '../molecules'; // ✅ Organism pode importar Molecules
+import { Button } from '../atoms'; // ✅ Organism pode importar Atoms
 ```
 
 **Enforcement**: ESLint custom rule `local-rules/atomic-design-imports` detecta violações.
@@ -222,28 +245,33 @@ import { Button } from '../atoms';         // ✅ Organism pode importar Atoms
 #### Por que Cyan Theme?
 
 Escolhemos o cyan (`#06b6d4`) como cor primária por:
+
 - **Modernidade**: Cyan é vibrante e contemporâneo, transmitindo inovação
 - **Contraste**: Excelente contraste em dark e light themes (WCAG AA+)
 - **Psicologia**: Transmite confiança, clareza e eficiência (ideal para app de produtividade)
 - **Diferenciação**: Destaca-se de apps similares que usam azul tradicional ou verde
 
 **Cyan Theme**: Cor primária vibrante
+
 - Base: `#06b6d4` (cyan-500)
 - Variações: cyan-50 até cyan-950
 
 #### Por que Gray "Chumbo"?
 
 Escolhemos gray "chumbo" com undertones azulados por:
+
 - **Sofisticação**: Cinza com toque azulado é mais elegante que cinza neutro
 - **Coerência**: Harmoniza perfeitamente com cyan primary
 - **Legibilidade**: Base `#6c757d` oferece contraste ideal para textos
 - **Dark Theme**: Gray-950 (#16191d) é mais confortável que preto puro para leitura prolongada
 
 **Gray "Chumbo"**: Base neutra com undertones azulados
+
 - Base: `#6c757d` (gray-600)
 - Variações: gray-50 (#f8f9fa) até gray-950 (#16191d)
 
 **Tokens Shadcn completos**:
+
 - background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring
 
 #### Tokens Customizados para Topbar
@@ -251,11 +279,13 @@ Escolhemos gray "chumbo" com undertones azulados por:
 Criamos tokens específicos para a barra de navegação (topbar) para máxima flexibilidade:
 
 **Por que tokens topbar separados?**
+
 - Permite estilização independente da navbar sem afetar resto do app
 - Facilita temas customizados (ex: topbar sempre dark, mesmo em light theme)
 - Melhora separação visual entre navegação e conteúdo
 
 **Tokens disponíveis**:
+
 - `topbar` - Background da navbar
 - `topbar-foreground` - Texto e ícones
 - `topbar-primary` - Botão primário ativo
@@ -264,16 +294,18 @@ Criamos tokens específicos para a barra de navegação (topbar) para máxima fl
 - `topbar-ring` - Focus rings
 
 **Exemplo de uso**:
+
 ```typescript
-const styles = (theme: Theme) => StyleSheet.create({
-  navbar: {
-    backgroundColor: theme.colors.topbar,
-    borderBottomColor: theme.colors['topbar-border'],
-  },
-  title: {
-    color: theme.colors['topbar-foreground'],
-  },
-});
+const styles = (theme: Theme) =>
+  StyleSheet.create({
+    navbar: {
+      backgroundColor: theme.colors.topbar,
+      borderBottomColor: theme.colors['topbar-border'],
+    },
+    title: {
+      color: theme.colors['topbar-foreground'],
+    },
+  });
 ```
 
 ### Tipografia
@@ -281,6 +313,7 @@ const styles = (theme: Theme) => StyleSheet.create({
 #### Por que Fira Sans e Fira Code?
 
 Escolhemos as fontes Fira por:
+
 - **Legibilidade**: Otimizadas para telas digitais com excelente clareza
 - **Modernidade**: Design contemporâneo e profissional
 - **Versatilidade**: Múltiplos pesos disponíveis (Regular, Medium, SemiBold, Bold)
@@ -289,14 +322,17 @@ Escolhemos as fontes Fira por:
 - **Brand Identity**: Menos comum que system fonts, cria identidade única
 
 **Fira Sans**: Font família principal para body text
+
 - Pesos: Regular (400), Medium (500), SemiBold (600), Bold (700)
 - Uso: Textos gerais, labels, botões, títulos
 
 **Fira Code**: Font monospace para código
+
 - Pesos: Regular (400), Medium (500)
 - Uso: Code snippets, valores numéricos, IDs
 
 **Tamanhos**:
+
 - xs: 12, sm: 14, base: 16, md: 18, lg: 20, xl: 24, 2xl: 30, 3xl: 36, 4xl: 48
 
 ### Espaçamento (Compact Scale)
@@ -304,15 +340,18 @@ Escolhemos as fontes Fira por:
 #### Por que Spacing Compacto?
 
 Escolhemos valores **menores** que padrão Shadcn por:
+
 - **Densidade**: Mais informação visível sem scroll excessivo
 - **Mobile-first**: Otimizado para telas pequenas
 - **Eficiência**: Menos atrito ao escanear conteúdo
 - **Modernidade**: Alinhado com tendências de interfaces densas (ex: Notion, Linear)
 
 **Escala compacta**:
+
 - xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, 3xl: 48, 4xl: 64
 
 **Comparação com Shadcn**:
+
 - Shadcn: `sm: 8, md: 16, lg: 24`
 - Listify: `sm: 8, md: 12, lg: 16` (25-33% menor)
 
@@ -321,15 +360,18 @@ Escolhemos valores **menores** que padrão Shadcn por:
 #### Por que Large Radius?
 
 Escolhemos valores **maiores** que padrão Shadcn por:
+
 - **Friendly**: Cantos arredondados transmitem acessibilidade e conforto
 - **Moderno**: Visual contemporâneo e menos rígido
 - **Destaque**: Componentes se destacam com bordas mais suaves
 - **Brand**: Consistente com identidade visual playful e moderna
 
 **Escala large**:
+
 - sm: 8, md: 12, lg: 16, xl: 24, full: 9999
 
 **Comparação com Shadcn**:
+
 - Shadcn: `md: 6, lg: 8`
 - Listify: `md: 12, lg: 16` (50-100% maior)
 
@@ -366,6 +408,7 @@ import type { ButtonProps } from '@design-system/atoms/Button/Button.types';
 ### Estrutura de arquivos padrão
 
 Para cada componente, crie:
+
 ```
 ComponentName/
 ├── ComponentName.tsx        # Componente principal
@@ -471,6 +514,7 @@ O Design System legado foi renomeado para `@legacy-design-system/*` e coexiste c
 ### Quando Usar Cada Design System
 
 **Use `@design-system` (Novo DS) quando:**
+
 - ✅ Criar novos componentes ou features
 - ✅ Refatorar componentes existentes
 - ✅ Implementar telas novas
@@ -478,6 +522,7 @@ O Design System legado foi renomeado para `@legacy-design-system/*` e coexiste c
 - ✅ Precisa de Fira fonts, large radius, compact spacing
 
 **Use `@legacy-design-system` (DS Legado) quando:**
+
 - ⚠️ Manutenção de componentes existentes (temporariamente)
 - ⚠️ Correção de bugs urgentes sem tempo para migração
 - ⚠️ Componente será removido em breve
@@ -535,18 +580,21 @@ function BadComponent() {
 ### Estratégia de Migração
 
 **Fase 1 - Coexistência (Atual)**:
+
 1. Novo DS está pronto e documentado
 2. DS Legado permanece intacto em `@legacy-design-system/*`
 3. Novos componentes usam `@design-system`
 4. Componentes existentes continuam com `@legacy-design-system`
 
 **Fase 2 - Migração Gradual**:
+
 1. Identificar componentes críticos para migração
 2. Migrar componente por componente
 3. Atualizar testes após migração
 4. Validar visualmente no Storybook
 
 **Fase 3 - Deprecação**:
+
 1. Quando todos componentes migraram, deprecar `@legacy-design-system`
 2. Adicionar warnings em imports legados
 3. Remover após período de grace
@@ -571,6 +619,7 @@ Quando migrar um componente do DS legado para o novo:
 O Listify usa **dark theme como padrão** por escolha de design:
 
 **Por que Dark como padrão?**
+
 - **Conforto Visual**: Reduz fadiga ocular em uso prolongado
 - **Economia de Bateria**: Displays OLED consomem menos energia com pixels escuros
 - **Modernidade**: Dark mode é tendência em apps de produtividade (Notion, Slack, VS Code)
@@ -578,12 +627,14 @@ O Listify usa **dark theme como padrão** por escolha de design:
 - **Preferência do Público**: Maioria dos usuários prefere dark mode para apps de lista/tarefas
 
 **Como funciona**:
+
 - App inicia sempre em dark theme
 - Usuário pode alternar para light theme manualmente
 - Preferência é salva no AsyncStorage
 - **Não** detecta system preference automaticamente (decisão de UX para consistência)
 
 **Theme Switching**:
+
 ```typescript
 import { useTheme } from '@design-system';
 
@@ -605,11 +656,13 @@ O Design System segue diretrizes WCAG 2.1 Level AA para garantir acessibilidade:
 ### Contraste de Cores (WCAG AA)
 
 **Todos os pares de cores foram validados**:
+
 - Text normal: Mínimo 4.5:1
 - Text large (18pt+): Mínimo 3:1
 - Componentes UI: Mínimo 3:1
 
 **Exemplos validados**:
+
 - Dark theme: gray-50 (#f8f9fa) em gray-950 (#16191d) = 17.8:1 ✓
 - Light theme: gray-900 em gray-50 = 16.1:1 ✓
 - Cyan primary: Contraste adequado em ambos temas ✓
@@ -618,12 +671,14 @@ O Design System segue diretrizes WCAG 2.1 Level AA para garantir acessibilidade:
 ### Touch Targets (Mobile)
 
 **Todos os componentes interativos têm mínimo 44x44 pts**:
+
 - Buttons: Mínimo 44pt de altura
 - Icons clicáveis: Padding aumentado para 44x44 área
 - Form inputs: Altura mínima 44pt
 - Cards touchable: Área completa clicável
 
 **Implementação**:
+
 ```typescript
 // Button atom já inclui touch target adequado
 const styles = StyleSheet.create({
@@ -639,12 +694,14 @@ const styles = StyleSheet.create({
 ### Reduced Motion
 
 **Suporte para prefers-reduced-motion**:
+
 - Sistema detecta preferência do usuário
 - Animações são desabilitadas automaticamente quando ativo
 - Transições tornam-se instantâneas
 - Hook `useReducedMotion()` disponível para componentes customizados
 
 **Exemplo**:
+
 ```typescript
 import { useReducedMotion } from '@design-system/utils/animations';
 
@@ -660,6 +717,7 @@ function AnimatedComponent() {
 ### Navegação por Teclado
 
 **Componentes suportam navegação via teclado**:
+
 - Tab order lógico em formulários
 - Enter/Space ativa buttons
 - Escape fecha modals
@@ -668,12 +726,14 @@ function AnimatedComponent() {
 ### Screen Readers
 
 **Todos os componentes têm labels apropriados**:
+
 - `accessibilityLabel` em componentes interativos
 - `accessibilityHint` para ações não-óbvias
 - `accessibilityRole` correto (button, link, header, etc)
 - Estados comunicados (disabled, selected, checked)
 
 **Exemplo de Button acessível**:
+
 ```typescript
 <Button
   onPress={handleSave}

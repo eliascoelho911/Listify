@@ -41,15 +41,15 @@ export const createButtonStyles = (theme: Theme) => {
       backgroundColor: theme.colors.destructive,
     },
     outline: {
-      backgroundColor: 'transparent',
+      backgroundColor: theme.colors.transparent,
       borderWidth: 1,
       borderColor: theme.colors.border,
     },
     ghost: {
-      backgroundColor: 'transparent',
+      backgroundColor: theme.colors.transparent,
     },
     link: {
-      backgroundColor: 'transparent',
+      backgroundColor: theme.colors.transparent,
       paddingHorizontal: 0,
     },
   };

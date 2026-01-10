@@ -4,9 +4,9 @@
  * Composes Input + Icon atoms into a search bar
  */
 
-import { Search, X } from 'lucide-react-native';
 import React, { type ReactElement, useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
+import { Search, X } from 'lucide-react-native';
 
 import { Icon } from '../../atoms/Icon/Icon';
 import { Input } from '../../atoms/Input/Input';

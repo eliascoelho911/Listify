@@ -2,9 +2,9 @@
  * Badge Atom Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { Badge } from './Badge';

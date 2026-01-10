@@ -2,10 +2,10 @@
  * Icon Atom Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react-native';
-import { Check, Heart, Home, Settings, Star, User, X } from 'lucide-react-native';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react-native';
+import { Check, Heart, Home, Settings, Star, User, X } from 'lucide-react-native';
 
 import { ThemeProvider } from '../../theme';
 import { Icon } from './Icon';

@@ -2,8 +2,8 @@
  * Label Atom Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { Label } from '@design-system/atoms/Label/Label';
 import { ThemeProvider } from '@design-system/theme';

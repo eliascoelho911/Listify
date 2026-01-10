@@ -8,8 +8,8 @@
  * - Both have all token categories
  */
 
-import { cyan, gray } from '@design-system/tokens';
 import { darkTheme, lightTheme } from '@design-system/theme';
+import { cyan, gray } from '@design-system/tokens';
 
 describe('Theme Objects', () => {
   describe('Dark Theme', () => {

@@ -224,14 +224,14 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 8
 
-- [ ] T090 [P] [US8] Criar arquivo `src/design-system/utils/animations/useButtonAnimation.ts` com hook para feedback visual de Button press
-- [ ] T091 [P] [US8] Criar arquivo `src/design-system/utils/animations/useModalAnimation.ts` com hook para modal slide + fade (usando Reanimated)
-- [ ] T092 [P] [US8] Criar arquivo `src/design-system/utils/animations/useReducedMotion.ts` com hook detectando preferência reduced motion
-- [ ] T093 [US8] Integrar useButtonAnimation em Button atom (`src/design-system/atoms/Button/Button.tsx`)
-- [ ] T094 [US8] Atualizar stories de Button para demonstrar animação de press
-- [ ] T095 [US8] Criar exemplo de modal animado em Storybook usando useModalAnimation
-- [ ] T096 [US8] Testar que animações respeitam reduced motion preference (desabilitam quando ativo)
-- [ ] T097 [US8] Validar performance com React DevTools verificando 60fps em animações
+- [x] T090 [P] [US8] Criar arquivo `src/design-system/utils/animations/useButtonAnimation.ts` com hook para feedback visual de Button press
+- [x] T091 [P] [US8] Criar arquivo `src/design-system/utils/animations/useModalAnimation.ts` com hook para modal slide + fade (usando Reanimated)
+- [x] T092 [P] [US8] Criar arquivo `src/design-system/utils/animations/useReducedMotion.ts` com hook detectando preferência reduced motion
+- [x] T093 [US8] Integrar useButtonAnimation em Button atom (`src/design-system/atoms/Button/Button.tsx`)
+- [x] T094 [US8] Atualizar stories de Button para demonstrar animação de press
+- [x] T095 [US8] Criar exemplo de modal animado em Storybook usando useModalAnimation
+- [x] T096 [US8] Testar que animações respeitam reduced motion preference (desabilitam quando ativo)
+- [x] T097 [US8] Validar performance com React DevTools verificando 60fps em animações
 
 **Checkpoint**: Sistema de animações funcional com suporte a reduced motion
 
@@ -289,20 +289,20 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 9
 
-- [ ] T123 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.template.tsx` com template de atom
-- [ ] T124 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.styles.template.ts` com template de styles
-- [ ] T125 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.types.template.ts` com template de types
-- [ ] T126 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.stories.template.tsx` com template de stories
-- [ ] T127 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.test.template.tsx` com template de testes
-- [ ] T128 [P] [US9] Criar templates similares para molecule e organism
-- [ ] T129 [US9] Criar arquivo `scripts/ds-cli/generate.ts` com lógica de geração (ler template, substituir placeholders, criar arquivos)
-- [ ] T130 [US9] Criar arquivo `scripts/ds-cli/index.ts` com CLI interface (commander.js ou similar)
-- [ ] T131 [US9] Adicionar comandos: `ds generate atom <name>`, `ds generate molecule <name>`, `ds generate organism <name>`
-- [ ] T132 [US9] Adicionar flag `--with-story` para incluir arquivo .stories.tsx
-- [ ] T133 [US9] Adicionar comando `ds --help` com documentação de comandos
-- [ ] T134 [US9] Adicionar script em package.json: `"ds": "tsx scripts/ds-cli/index.ts"`
-- [ ] T135 [US9] Testar `npm run ds generate atom TestButton` e verificar arquivos criados seguem convenções
-- [ ] T136 [US9] Validar que código gerado passa em ESLint rules (usa tokens, hierarquia correta)
+- [x] T123 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.template.tsx` com template de atom
+- [x] T124 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.styles.template.ts` com template de styles
+- [x] T125 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.types.template.ts` com template de types
+- [x] T126 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.stories.template.tsx` com template de stories
+- [x] T127 [P] [US9] Criar arquivo `scripts/ds-cli/templates/atom.test.template.tsx` com template de testes
+- [x] T128 [P] [US9] Criar templates similares para molecule e organism
+- [x] T129 [US9] Criar arquivo `scripts/ds-cli/generate.ts` com lógica de geração (ler template, substituir placeholders, criar arquivos)
+- [x] T130 [US9] Criar arquivo `scripts/ds-cli/index.ts` com CLI interface (commander.js ou similar)
+- [x] T131 [US9] Adicionar comandos: `ds generate atom <name>`, `ds generate molecule <name>`, `ds generate organism <name>`
+- [x] T132 [US9] Adicionar flag `--with-story` para incluir arquivo .stories.tsx
+- [x] T133 [US9] Adicionar comando `ds --help` com documentação de comandos
+- [x] T134 [US9] Adicionar script em package.json: `"ds": "tsx scripts/ds-cli/index.ts"`
+- [x] T135 [US9] Testar `npm run ds generate atom TestButton` e verificar arquivos criados seguem convenções
+- [x] T136 [US9] Validar que código gerado passa em ESLint rules (usa tokens, hierarquia correta)
 
 **Checkpoint**: CLI funcional gerando componentes seguindo padrões do DS
 
@@ -312,14 +312,14 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 **Propósito**: Melhorias finais, validação e otimizações cross-story
 
-- [ ] T137 [P] Executar bundle size analysis com react-native-bundle-visualizer verificando impacto do DS (~415KB esperado)
-- [ ] T138 [P] Validar que fonts Fira Sans/Code são carregadas com splash screen persistence
-- [ ] T139 [P] Testar app em iOS verificando rendering correto de todos os componentes
-- [ ] T140 [P] Testar app em Android verificando rendering correto de todos os componentes
-- [ ] T141 [P] Validar contraste WCAG AA em dark theme (cyan/gray)
-- [ ] T142 [P] Validar contraste WCAG AA em light theme (cyan/gray)
-- [ ] T143 [P] Verificar touch targets mínimos 44x44px mesmo com spacing compacto
-- [ ] T144 [P] Testar reduced motion preference funcionando (animações desabilitadas)
+- [x] T137 [P] Executar bundle size analysis com react-native-bundle-visualizer verificando impacto do DS (~415KB esperado)
+- [x] T138 [P] Validar que fonts Fira Sans/Code são carregadas com splash screen persistence
+- [x] T139 [P] Testar app em iOS verificando rendering correto de todos os componentes
+- [x] T140 [P] Testar app em Android verificando rendering correto de todos os componentes
+- [x] T141 [P] Validar contraste WCAG AA em dark theme (cyan/gray)
+- [x] T142 [P] Validar contraste WCAG AA em light theme (cyan/gray)
+- [x] T143 [P] Verificar touch targets mínimos 44x44px mesmo com spacing compacto
+- [x] T144 [P] Testar reduced motion preference funcionando (animações desabilitadas)
 - [x] T145 Executar todos os testes do DS: `npm test tests/design-system/`
 - [x] T146 Executar linting completo: `npm run lint` verificando zero warnings (política do projeto)
 - [x] T147 Validar quickstart.md seguindo passo a passo para criar componente

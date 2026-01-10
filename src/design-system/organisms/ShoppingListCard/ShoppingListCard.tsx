@@ -4,9 +4,9 @@
  * Composes Card, Badge, and Icon atoms into a shopping list card
  */
 
-import { Check, ShoppingCart } from 'lucide-react-native';
 import React, { type ReactElement } from 'react';
 import { Text, TouchableOpacity, View } from 'react-native';
+import { Check, ShoppingCart } from 'lucide-react-native';
 
 import { Badge } from '../../atoms/Badge/Badge';
 import { Icon } from '../../atoms/Icon/Icon';
@@ -27,7 +27,8 @@ export function ShoppingListCard({
   const { theme } = useTheme();
   const styles = createShoppingListCardStyles(theme);
 
-  const statusVariant = status === 'completed' ? 'default' : status === 'archived' ? 'secondary' : 'outline';
+  const statusVariant =
+    status === 'completed' ? 'default' : status === 'archived' ? 'secondary' : 'outline';
   const statusLabel = status.charAt(0).toUpperCase() + status.slice(1);
 
   const CardContainer = onPress ? TouchableOpacity : View;

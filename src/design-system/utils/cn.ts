@@ -18,6 +18,6 @@ import type { StyleProp } from 'react-native';
  *   isDisabled && styles.disabled
  * );
  */
-export function cn<T>(...styles: Array<StyleProp<T> | false | undefined | null>): StyleProp<T> {
+export function cn<T>(...styles: (StyleProp<T> | false | undefined | null)[]): StyleProp<T> {
   return styles.filter(Boolean) as StyleProp<T>;
 }

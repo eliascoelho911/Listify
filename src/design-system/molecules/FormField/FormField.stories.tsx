@@ -2,9 +2,9 @@
  * FormField Molecule Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { FormField } from './FormField';
@@ -82,16 +82,8 @@ export const Disabled: Story = {
 export const MultipleFields: Story = {
   render: () => (
     <>
-      <FormField
-        label="First Name"
-        required
-        inputProps={{ placeholder: 'Enter first name' }}
-      />
-      <FormField
-        label="Last Name"
-        required
-        inputProps={{ placeholder: 'Enter last name' }}
-      />
+      <FormField label="First Name" required inputProps={{ placeholder: 'Enter first name' }} />
+      <FormField label="Last Name" required inputProps={{ placeholder: 'Enter last name' }} />
       <FormField
         label="Email"
         required

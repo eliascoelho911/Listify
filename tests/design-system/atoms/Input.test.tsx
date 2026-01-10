@@ -2,8 +2,8 @@
  * Input Atom Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { Input } from '@design-system/atoms/Input/Input';
 import { ThemeProvider } from '@design-system/theme';

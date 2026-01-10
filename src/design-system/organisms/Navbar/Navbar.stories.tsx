@@ -2,10 +2,10 @@
  * Navbar Organism Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
-import { Bell, Menu, Search, Settings } from 'lucide-react-native';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
+import { Bell, Menu, Search, Settings } from 'lucide-react-native';
 
 import { ThemeProvider } from '../../theme';
 import { Navbar } from './Navbar';

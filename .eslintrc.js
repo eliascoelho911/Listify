@@ -84,5 +84,11 @@ module.exports = {
         node: true,
       },
     },
+    {
+      files: ['**/*.stories.{ts,tsx}', '**/*.styles.ts'],
+      rules: {
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+      },
+    },
   ],
 };

@@ -2,8 +2,8 @@
  * Navbar Organism Types
  */
 
-import type { LucideIcon } from 'lucide-react-native';
 import type { ViewProps } from 'react-native';
+import type { LucideIcon } from 'lucide-react-native';
 
 export interface NavbarAction {
   icon: LucideIcon;

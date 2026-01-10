@@ -2,9 +2,9 @@
  * Card Atom Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Text, View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { Button } from '../Button/Button';
@@ -89,7 +89,9 @@ export const FullComposition: Story = {
           Cards are versatile containers that can hold any type of content. They provide visual
           hierarchy and grouping for related information.
         </Text>
-        <Text style={{ marginTop: 8 }}>Use them to organize complex layouts into digestible sections.</Text>
+        <Text style={{ marginTop: 8 }}>
+          Use them to organize complex layouts into digestible sections.
+        </Text>
       </CardContent>
       <CardFooter>
         <Button variant="ghost" size="sm">

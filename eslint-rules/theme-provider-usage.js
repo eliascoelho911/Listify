@@ -36,13 +36,14 @@ module.exports = {
 
     if (!isComponent) return {};
 
-    // Skip test files and story files
+    // Skip test files, story files, types files, and styles files
     if (
       filename.endsWith('.test.tsx') ||
       filename.endsWith('.test.ts') ||
       filename.endsWith('.stories.tsx') ||
       filename.endsWith('.stories.ts') ||
-      filename.endsWith('.types.ts')
+      filename.endsWith('.types.ts') ||
+      filename.endsWith('.styles.ts')
     ) {
       return {};
     }

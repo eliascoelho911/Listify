@@ -2,11 +2,18 @@
  * Card Atom Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import { Text } from 'react-native';
+import { render } from '@testing-library/react-native';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@design-system/atoms/Card/Card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@design-system/atoms/Card/Card';
 import { ThemeProvider } from '@design-system/theme';
 
 const renderWithTheme = (component: React.ReactElement) => {

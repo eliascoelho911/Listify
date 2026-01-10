@@ -4,8 +4,8 @@
  * Validates all variants, sizes, and states
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { Button } from '@design-system/atoms/Button/Button';
 import { ThemeProvider } from '@design-system/theme';

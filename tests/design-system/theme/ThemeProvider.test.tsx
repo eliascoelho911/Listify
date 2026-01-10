@@ -8,10 +8,10 @@
  * - useTheme hook functionality
  */
 
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 import { Text } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { render, waitFor } from '@testing-library/react-native';
 
 import { ThemeProvider, useTheme } from '@design-system/theme';
 

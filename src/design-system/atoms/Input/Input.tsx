@@ -20,7 +20,13 @@ export function Input({
   const styles = createInputStyles(theme);
   const [isFocused, setIsFocused] = useState(false);
 
-  const currentState = !editable ? 'disabled' : state === 'error' ? 'error' : isFocused ? 'focus' : 'default';
+  const currentState = !editable
+    ? 'disabled'
+    : state === 'error'
+      ? 'error'
+      : isFocused
+        ? 'focus'
+        : 'default';
 
   const inputStyle = [styles.baseStyles.input, styles.stateStyles[currentState]];
 
@@ -35,7 +41,9 @@ export function Input({
         {...textInputProps}
       />
       {errorMessage && <Text style={styles.baseStyles.errorText}>{errorMessage}</Text>}
-      {helperText && !errorMessage && <Text style={styles.baseStyles.helperText}>{helperText}</Text>}
+      {helperText && !errorMessage && (
+        <Text style={styles.baseStyles.helperText}>{helperText}</Text>
+      )}
     </View>
   );
 }

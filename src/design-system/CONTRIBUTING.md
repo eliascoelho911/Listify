@@ -23,6 +23,7 @@ Obrigado por contribuir com o Design System do Listify! Este guia ajudará você
 Antes de escrever código, responda:
 
 **a) Qual nível da hierarquia Atomic Design?**
+
 - **Atom**: Indivisível (Button, Input, Icon, Badge)
 - **Molecule**: 2-3 atoms combinados (FormField = Label + Input)
 - **Organism**: Múltiplos atoms/molecules (Navbar, ShoppingListCard)
@@ -30,16 +31,19 @@ Antes de escrever código, responda:
 - **Page**: Template com conteúdo real
 
 **b) Já existe um componente similar?**
+
 - Verifique no Storybook antes de criar duplicata
 - Considere expandir componente existente com props
 
 **c) Quais atoms/molecules preciso?**
+
 - Liste dependências
 - Certifique-se que respeitam hierarquia (molecules não importam organisms!)
 
 ### 2. Crie a Estrutura de Arquivos
 
 **Para um Atom chamado "Avatar"**:
+
 ```bash
 src/design-system/atoms/Avatar/
 ├── Avatar.tsx              # Componente principal
@@ -49,6 +53,7 @@ src/design-system/atoms/Avatar/
 ```
 
 **Para uma Molecule chamada "UserProfile"**:
+
 ```bash
 src/design-system/molecules/UserProfile/
 ├── UserProfile.tsx
@@ -60,6 +65,7 @@ src/design-system/molecules/UserProfile/
 ### 3. Implemente o Componente
 
 #### Avatar.types.ts
+
 ```typescript
 /**
  * Avatar Atom Types
@@ -88,6 +94,7 @@ export interface AvatarProps extends Omit<ViewProps, 'style'> {
 ```
 
 #### Avatar.styles.ts
+
 ```typescript
 /**
  * Avatar Atom Styles
@@ -138,19 +145,21 @@ export const createAvatarStyles = (theme: Theme) => {
 ```
 
 **⚠️ IMPORTANTE: ZERO hard-coded values!**
+
 ```typescript
 // ❌ ERRADO
-backgroundColor: '#06b6d4'
-padding: 16
-borderRadius: 12
+backgroundColor: '#06b6d4';
+padding: 16;
+borderRadius: 12;
 
 // ✅ CORRETO
-backgroundColor: theme.colors.primary
-padding: theme.spacing.lg
-borderRadius: theme.radii.lg
+backgroundColor: theme.colors.primary;
+padding: theme.spacing.lg;
+borderRadius: theme.radii.lg;
 ```
 
 #### Avatar.tsx
+
 ```typescript
 /**
  * Avatar Atom Component
@@ -188,6 +197,7 @@ export function Avatar({
 ```
 
 #### Avatar.stories.tsx
+
 ```typescript
 /**
  * Avatar Atom Stories
@@ -247,6 +257,7 @@ export const Sizes: Story = {
 ### 4. Adicione ao Barrel Export
 
 **Atoms**: `src/design-system/atoms/index.ts`
+
 ```typescript
 // Avatar
 export { Avatar } from './Avatar/Avatar';
@@ -254,6 +265,7 @@ export type { AvatarProps, AvatarSize } from './Avatar/Avatar.types';
 ```
 
 **Molecules**: `src/design-system/molecules/index.ts`
+
 ```typescript
 // UserProfile
 export { UserProfile } from './UserProfile/UserProfile';
@@ -263,6 +275,7 @@ export type { UserProfileProps } from './UserProfile/UserProfile.types';
 ### 5. Crie Testes
 
 `tests/design-system/atoms/Avatar.test.tsx`:
+
 ```typescript
 /**
  * Avatar Atom Tests
@@ -314,16 +327,20 @@ npm run storybook
 ### 7. Envie Pull Request
 
 **Título do PR**:
+
 ```
 feat(ds): add Avatar atom component
 ```
 
 **Descrição do PR**:
+
 ```markdown
 ## Resumo
+
 Adiciona componente Avatar atom com suporte a imagem e initials fallback.
 
 ## Implementação
+
 - [x] Avatar.tsx com 4 tamanhos (sm, md, lg, xl)
 - [x] Avatar.styles.ts usando tokens (radii.full, colors.muted)
 - [x] Avatar.types.ts com AvatarProps e AvatarSize
@@ -332,6 +349,7 @@ Adiciona componente Avatar atom com suporte a imagem e initials fallback.
 - [x] Barrel export atualizado
 
 ## Checklist
+
 - [x] Zero hard-coded values (ESLint passa)
 - [x] useTheme() usado corretamente
 - [x] Storybook stories criadas
@@ -340,12 +358,14 @@ Adiciona componente Avatar atom com suporte a imagem e initials fallback.
 - [x] README.md atualizado (se necessário)
 
 ## Screenshots
+
 [Screenshot do Storybook mostrando Avatar em diferentes tamanhos]
 ```
 
 ## Diretrizes de Código
 
 ### Use TypeScript Strict
+
 ```typescript
 // ✅ CORRETO
 export function Button({ children, variant = 'default' }: ButtonProps): ReactElement {
@@ -353,12 +373,14 @@ export function Button({ children, variant = 'default' }: ButtonProps): ReactEle
 }
 
 // ❌ ERRADO
-export function Button({ children, variant }) { // Sem tipos!
+export function Button({ children, variant }) {
+  // Sem tipos!
   // ...
 }
 ```
 
 ### Componentes são ReactElement
+
 ```typescript
 // ✅ CORRETO
 import { type ReactElement } from 'react';
@@ -374,6 +396,7 @@ export function Button(): JSX.Element { // Use ReactElement!
 ```
 
 ### Evite `any`
+
 ```typescript
 // ❌ ERRADO
 const styles: any = {};
@@ -383,6 +406,7 @@ const styles: StyleProp<ViewStyle> = {};
 ```
 
 ### Props com Omit<>
+
 ```typescript
 // ✅ CORRETO: Remove 'style' do ViewProps para evitar conflito
 export interface CardProps extends Omit<ViewProps, 'style'> {
@@ -393,14 +417,17 @@ export interface CardProps extends Omit<ViewProps, 'style'> {
 ## Hierarquia Atomic Design - Regras
 
 ### Atoms
+
 - ✅ Podem importar: `tokens`, `theme`, `utils`
 - ❌ NÃO podem importar: `molecules`, `organisms`, `templates`, `pages`
 
 ### Molecules
+
 - ✅ Podem importar: `atoms`, `tokens`, `theme`, `utils`
 - ❌ NÃO podem importar: `organisms`, `templates`, `pages`, outras `molecules`
 
 ### Organisms
+
 - ✅ Podem importar: `atoms`, `molecules`, `tokens`, `theme`, `utils`
 - ❌ NÃO podem importar: `templates`, `pages`
 
@@ -419,6 +446,7 @@ Todo componente interativo deve ter:
 - [ ] Estado disabled comunicado
 
 **Exemplo**:
+
 ```typescript
 <TouchableOpacity
   accessibilityLabel="Delete item"
@@ -435,11 +463,13 @@ Todo componente interativo deve ter:
 ### Como saber se devo criar um Atom ou Molecule?
 
 **Crie um Atom se**:
+
 - Componente é indivisível
 - Não depende de outros componentes do DS
 - Exemplo: Button, Input, Icon, Badge
 
 **Crie uma Molecule se**:
+
 - Componente combina 2-3 atoms
 - Tem propósito funcional específico
 - Exemplo: FormField (Label + Input), SearchBar (Input + Icon)
@@ -447,6 +477,7 @@ Todo componente interativo deve ter:
 ### Posso usar hard-coded values para casos especiais?
 
 **Não.** ESLint vai bloquear. Se precisar de valor específico:
+
 1. Adicione ao tokens (`src/design-system/tokens/`)
 2. Use o token via `theme`
 
@@ -460,6 +491,7 @@ Todo componente interativo deve ter:
 ### Preciso adicionar testes?
 
 **Sim.** Todos os componentes precisam de testes básicos validando:
+
 - Renderização sem erros
 - Props funcionam corretamente
 - Estados diferentes (disabled, loading, etc)
@@ -467,6 +499,7 @@ Todo componente interativo deve ter:
 ### Meu componente precisa de Storybook?
 
 **Sim.** Stories documentam:
+
 - Todas as variants do componente
 - Diferentes estados
 - Casos de uso comuns

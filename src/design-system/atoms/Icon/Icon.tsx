@@ -17,7 +17,12 @@ const sizeMap = {
   xl: 32,
 };
 
-export function Icon({ icon: IconComponent, size = 'md', color, iconProps }: IconProps): ReactElement {
+export function Icon({
+  icon: IconComponent,
+  size = 'md',
+  color,
+  iconProps,
+}: IconProps): ReactElement {
   const { theme } = useTheme();
 
   const iconSize = sizeMap[size];

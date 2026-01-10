@@ -14,7 +14,7 @@ export const createBadgeStyles = (theme: Theme) => {
       paddingVertical: theme.spacing.xs,
       borderRadius: theme.radii.xl, // XL radius for pill shape
       borderWidth: 1,
-      borderColor: 'transparent',
+      borderColor: theme.colors.transparent,
       alignSelf: 'flex-start',
       flexDirection: 'row',
       alignItems: 'center',
@@ -30,7 +30,7 @@ export const createBadgeStyles = (theme: Theme) => {
     default: {
       badge: {
         backgroundColor: theme.colors.primary,
-        borderColor: 'transparent',
+        borderColor: theme.colors.transparent,
       },
       text: {
         color: theme.colors['primary-foreground'],
@@ -39,7 +39,7 @@ export const createBadgeStyles = (theme: Theme) => {
     secondary: {
       badge: {
         backgroundColor: theme.colors.secondary,
-        borderColor: 'transparent',
+        borderColor: theme.colors.transparent,
       },
       text: {
         color: theme.colors['secondary-foreground'],
@@ -48,7 +48,7 @@ export const createBadgeStyles = (theme: Theme) => {
     destructive: {
       badge: {
         backgroundColor: theme.colors.destructive,
-        borderColor: 'transparent',
+        borderColor: theme.colors.transparent,
       },
       text: {
         color: theme.colors['destructive-foreground'],
@@ -56,7 +56,7 @@ export const createBadgeStyles = (theme: Theme) => {
     },
     outline: {
       badge: {
-        backgroundColor: 'transparent',
+        backgroundColor: theme.colors.transparent,
         borderColor: theme.colors.border,
       },
       text: {

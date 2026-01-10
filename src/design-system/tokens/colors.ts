@@ -10,6 +10,9 @@
  * Suporta dark theme (padrão) e light theme
  */
 
+// Special values
+export const transparent = 'transparent';
+
 // Gray "chumbo" palette (cool gray with blue undertones)
 export const gray = {
   50: '#f8f9fa',
@@ -52,6 +55,9 @@ export const semantic = {
  * Dark Theme Tokens (padrão)
  */
 export const darkTheme = {
+  // Special values
+  transparent,
+
   // Shadcn base tokens
   background: gray[950],
   foreground: gray[50],
@@ -104,6 +110,9 @@ export const darkTheme = {
  * Light Theme Tokens
  */
 export const lightTheme = {
+  // Special values
+  transparent,
+
   // Shadcn base tokens
   background: gray[50],
   foreground: gray[950],

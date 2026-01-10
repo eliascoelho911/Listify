@@ -25,14 +25,7 @@ export { Badge } from './Badge/Badge';
 export type { BadgeProps, BadgeVariant } from './Badge/Badge.types';
 
 // Card
-export {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from './Card/Card';
+export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card/Card';
 export type {
   CardContentProps,
   CardDescriptionProps,

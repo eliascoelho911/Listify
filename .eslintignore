@@ -7,3 +7,4 @@ coverage/
 .expo-shared/
 /ios
 /android
+scripts/ds-cli/templates/
