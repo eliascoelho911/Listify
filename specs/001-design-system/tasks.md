@@ -134,10 +134,10 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T049 [P] [US2] Criar atom Icon em `src/design-system/atoms/Icon/Icon.tsx` como wrapper para lucide-react-native
 - [x] T050 [P] [US2] Criar types `src/design-system/atoms/Icon/Icon.types.ts` com IconProps interface
 - [x] T051 [P] [US2] Criar stories `src/design-system/atoms/Icon/Icon.stories.tsx` com ícones comuns
-- [ ] T052 [P] [US2] Criar componentes Card atoms em `src/design-system/atoms/Card/` (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter)
-- [ ] T053 [P] [US2] Criar styles `src/design-system/atoms/Card/Card.styles.ts` usando large radius
-- [ ] T054 [P] [US2] Criar types `src/design-system/atoms/Card/Card.types.ts`
-- [ ] T055 [P] [US2] Criar stories `src/design-system/atoms/Card/Card.stories.tsx` com composição completa
+- [x] T052 [P] [US2] Criar componentes Card atoms em `src/design-system/atoms/Card/` (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter)
+- [x] T053 [P] [US2] Criar styles `src/design-system/atoms/Card/Card.styles.ts` usando large radius
+- [x] T054 [P] [US2] Criar types `src/design-system/atoms/Card/Card.types.ts`
+- [x] T055 [P] [US2] Criar stories `src/design-system/atoms/Card/Card.stories.tsx` com composição completa
 - [ ] T056 [US2] Criar arquivo `src/design-system/atoms/index.ts` com barrel export de todos atoms
 
 **Checkpoint**: Atoms completos e documentados no Storybook — blocos fundamentais prontos
