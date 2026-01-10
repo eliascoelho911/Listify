@@ -152,12 +152,12 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 ### Implementação para User Story 4
 
-- [ ] T057 [P] [US4] Criar pastas vazias: `src/design-system/molecules/`, `src/design-system/organisms/`, `src/design-system/templates/`, `src/design-system/pages/`
-- [ ] T058 [P] [US4] Criar arquivo `src/design-system/utils/cn.ts` com classnames utility (se necessário)
-- [ ] T059 [P] [US4] Criar arquivo `src/design-system/utils/index.ts` com barrel export
-- [ ] T060 [US4] Criar arquivo `src/design-system/index.ts` com barrel export completo do DS (tokens, theme, atoms, molecules, organisms, templates, utils)
-- [ ] T061 [US4] Criar documentação `src/design-system/README.md` explicando Atomic Design hierarchy, import rules, quando criar atom vs molecule vs organism
-- [ ] T062 [US4] Validar que ESLint detecta violações de hierarquia (testar import de molecule em atom, etc)
+- [x] T057 [P] [US4] Criar pastas vazias: `src/design-system/molecules/`, `src/design-system/organisms/`, `src/design-system/templates/`, `src/design-system/pages/`
+- [x] T058 [P] [US4] Criar arquivo `src/design-system/utils/cn.ts` com classnames utility (se necessário)
+- [x] T059 [P] [US4] Criar arquivo `src/design-system/utils/index.ts` com barrel export
+- [x] T060 [US4] Criar arquivo `src/design-system/index.ts` com barrel export completo do DS (tokens, theme, atoms, molecules, organisms, templates, utils)
+- [x] T061 [US4] Criar documentação `src/design-system/README.md` explicando Atomic Design hierarchy, import rules, quando criar atom vs molecule vs organism
+- [x] T062 [US4] Validar que ESLint detecta violações de hierarquia (testar import de molecule em atom, etc)
 
 **Checkpoint**: Estrutura Atomic Design completa e enforçada por ESLint
 

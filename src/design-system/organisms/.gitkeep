@@ -1,0 +1,10 @@
+# Organisms directory
+#
+# Organisms are combinations of molecules and atoms. They can import:
+# - Atoms
+# - Molecules
+# - Tokens
+# - Theme
+# - Utils
+#
+# Examples: Navbar, ShoppingListCard, Form

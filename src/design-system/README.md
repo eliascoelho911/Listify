@@ -1,0 +1,434 @@
+# Listify Design System
+
+Design System completo do Listify seguindo princípios do **Atomic Design** e convenções do **Shadcn**.
+
+## Arquitetura Atomic Design
+
+O Design System é organizado em cinco níveis hierárquicos:
+
+```
+tokens/       → Valores primitivos (cores, espaçamento, tipografia)
+theme/        → Sistema de temas (dark/light) e contexto
+atoms/        → Componentes básicos indivisíveis
+molecules/    → Combinações simples de atoms
+organisms/    → Combinações complexas de molecules + atoms
+templates/    → Layouts de página sem conteúdo específico
+pages/        → Instâncias de templates com conteúdo real
+utils/        → Funções auxiliares
+```
+
+### 1. Tokens
+
+**O que são**: Valores primitivos que formam o vocabulário visual do Design System.
+
+**Localização**: `src/design-system/tokens/`
+
+**Exemplos**:
+- `colors.ts` - Paleta de cores (cyan theme + gray "chumbo")
+- `typography.ts` - Famílias de fontes (Fira Sans/Code), tamanhos, pesos
+- `spacing.ts` - Escala de espaçamento compacto (4, 8, 12, 16, 24...)
+- `radii.ts` - Border radius largo (8, 12, 16, 24)
+- `shadows.ts` - Elevações
+- `animations.ts` - Durações e easings
+
+**Import rules**: Tokens podem ser importados em qualquer nível.
+
+### 2. Theme
+
+**O que é**: Sistema de temas que combina tokens e fornece contexto global via React Context.
+
+**Localização**: `src/design-system/theme/`
+
+**Componentes**:
+- `ThemeProvider.tsx` - Provider com dark/light themes, AsyncStorage persistence
+- `useTheme.ts` - Hook para acessar theme atual
+- `theme.ts` - Definição de Theme interface e temas concretos
+
+**Temas disponíveis**:
+- Dark (padrão) - Gray 950 background + cyan primary
+- Light - Gray 50 background + cyan primary
+
+**Import rules**: Theme provider e hook podem ser importados em qualquer nível.
+
+### 3. Atoms
+
+**O que são**: Componentes básicos indivisíveis que não podem ser decompostos em partes menores.
+
+**Localização**: `src/design-system/atoms/`
+
+**Exemplos**:
+- `Button` - Botão com 5 variants Shadcn (default, destructive, outline, ghost, link)
+- `Input` - Campo de texto com states (default, focus, error, disabled)
+- `Label` - Rótulo com required indicator
+- `Badge` - Tag com 4 variants e pill shape (XL radius)
+- `Icon` - Wrapper para Lucide icons
+- `Card` - 6 componentes compostos (Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter)
+
+**Import rules**:
+- ✅ Atoms podem importar: `tokens`, `theme`, `utils`
+- ❌ Atoms NÃO podem importar: `molecules`, `organisms`, `templates`, `pages`
+
+**Quando criar um Atom**:
+- Componente é indivisível (não pode ser quebrado em partes menores)
+- Não depende de outros componentes além de primitivos do RN
+- Representa um elemento UI básico (botão, input, ícone, etc)
+
+### 4. Molecules
+
+**O que são**: Combinações simples de atoms que formam componentes funcionais.
+
+**Localização**: `src/design-system/molecules/`
+
+**Exemplos** (a serem implementados):
+- `FormField` - Label + Input com error message
+- `SearchBar` - Input + Icon de busca
+
+**Import rules**:
+- ✅ Molecules podem importar: `atoms`, `tokens`, `theme`, `utils`
+- ❌ Molecules NÃO podem importar: `organisms`, `templates`, `pages`
+- ❌ Molecules NÃO podem importar outras `molecules` (para evitar dependências circulares)
+
+**Quando criar uma Molecule**:
+- Componente combina 2-3 atoms de forma simples
+- Tem propósito funcional específico (ex: campo de formulário)
+- Ainda é relativamente genérico e reutilizável
+
+### 5. Organisms
+
+**O que são**: Combinações complexas de molecules e atoms que formam seções completas de UI.
+
+**Localização**: `src/design-system/organisms/`
+
+**Exemplos** (a serem implementados):
+- `Navbar` - Barra de navegação com logo, links, actions
+- `ShoppingListCard` - Card completo de lista de compras
+- `FilterPanel` - Painel com múltiplos filtros
+
+**Import rules**:
+- ✅ Organisms podem importar: `atoms`, `molecules`, `tokens`, `theme`, `utils`
+- ❌ Organisms NÃO podem importar: `templates`, `pages`
+- ⚠️ Organisms podem importar outros `organisms` com cautela (evitar dependências circulares)
+
+**Quando criar um Organism**:
+- Componente combina múltiplos molecules/atoms
+- Representa seção distinta de interface (navbar, card complexo, form completo)
+- Pode ter lógica de estado complexa
+
+### 6. Templates
+
+**O que são**: Layouts de página sem conteúdo específico, apenas estrutura.
+
+**Localização**: `src/design-system/templates/`
+
+**Exemplos**:
+- `AuthTemplate` - Layout para páginas de autenticação
+- `DashboardTemplate` - Layout com sidebar + content area
+
+**Import rules**:
+- ✅ Templates podem importar: `atoms`, `molecules`, `organisms`, `tokens`, `theme`, `utils`
+- ❌ Templates NÃO podem importar: `pages`
+
+**Quando criar um Template**:
+- Define estrutura de layout reutilizável
+- Sem conteúdo específico (apenas placeholders)
+- Múltiplas páginas compartilham o mesmo layout
+
+### 7. Pages
+
+**O que são**: Instâncias de templates com conteúdo real e dados específicos.
+
+**Localização**: `src/design-system/pages/`
+
+**Import rules**:
+- ✅ Pages podem importar qualquer coisa
+
+**Nota**: No Listify, pages residem em `src/app/` (Expo Router), não neste Design System.
+
+## Regras Importantes
+
+### 1. Zero Hard-Coded Values
+
+❌ **NUNCA** faça isso:
+```typescript
+const styles = StyleSheet.create({
+  button: {
+    backgroundColor: '#06b6d4',  // Hard-coded!
+    padding: 16,                  // Hard-coded!
+    borderRadius: 8,              // Hard-coded!
+  }
+});
+```
+
+✅ **SEMPRE** use tokens via theme:
+```typescript
+const styles = (theme: Theme) => StyleSheet.create({
+  button: {
+    backgroundColor: theme.colors.primary,
+    padding: theme.spacing.lg,
+    borderRadius: theme.radii.lg,
+  }
+});
+```
+
+**Enforcement**: ESLint custom rule `local-rules/no-hardcoded-values` detecta violações.
+
+### 2. Use useTheme() Hook
+
+❌ **NUNCA** importe theme diretamente:
+```typescript
+import { darkTheme } from '@design-system/theme/theme';
+// ❌ Ignora preferência do usuário!
+```
+
+✅ **SEMPRE** use o hook:
+```typescript
+import { useTheme } from '@design-system/theme';
+
+function MyComponent() {
+  const { theme } = useTheme();  // ✅ Respeita tema atual
+  const styles = createStyles(theme);
+}
+```
+
+**Enforcement**: ESLint custom rule `local-rules/theme-provider-usage` detecta violações.
+
+### 3. Respeite Hierarquia Atomic Design
+
+❌ **NUNCA** quebre a hierarquia:
+```typescript
+// Em um Atom
+import { SearchBar } from '../molecules/SearchBar';  // ❌ Atom não pode importar Molecule!
+
+// Em uma Molecule
+import { Navbar } from '../organisms/Navbar';  // ❌ Molecule não pode importar Organism!
+```
+
+✅ **SEMPRE** respeite a ordem:
+```typescript
+// Em uma Molecule
+import { Button, Input } from '../atoms';  // ✅ Molecule pode importar Atoms
+
+// Em um Organism
+import { FormField } from '../molecules';  // ✅ Organism pode importar Molecules
+import { Button } from '../atoms';         // ✅ Organism pode importar Atoms
+```
+
+**Enforcement**: ESLint custom rule `local-rules/atomic-design-imports` detecta violações.
+
+## Design Tokens Específicos
+
+### Paleta de Cores
+
+**Cyan Theme**: Cor primária vibrante
+- Base: `#06b6d4` (cyan-500)
+- Variações: cyan-50 até cyan-950
+
+**Gray "Chumbo"**: Base neutra com undertones azulados
+- Base: `#6c757d` (gray-600)
+- Variações: gray-50 (#f8f9fa) até gray-950 (#16191d)
+
+**Tokens Shadcn completos**:
+- background, foreground, card, popover, primary, secondary, muted, accent, destructive, border, input, ring
+
+**Tokens customizados para topbar**:
+- topbar, topbar-foreground, topbar-primary, topbar-accent, topbar-border, topbar-ring
+
+### Tipografia
+
+**Fira Sans**: Font família principal para body text
+- Pesos: Regular (400), Medium (500), SemiBold (600), Bold (700)
+
+**Fira Code**: Font monospace para código
+- Pesos: Regular (400), Medium (500)
+
+**Tamanhos**:
+- xs: 12, sm: 14, base: 16, md: 18, lg: 20, xl: 24, 2xl: 30, 3xl: 36, 4xl: 48
+
+### Espaçamento (Compact Scale)
+
+Valores **menores** que padrão Shadcn para densidade maior:
+- xs: 4, sm: 8, md: 12, lg: 16, xl: 24, xxl: 32, 3xl: 48, 4xl: 64
+
+### Border Radius (Large Scale)
+
+Valores **maiores** que padrão Shadcn para visual mais suave:
+- sm: 8, md: 12, lg: 16, xl: 24, full: 9999
+
+## Importando do Design System
+
+### Forma recomendada (via barrel export)
+
+```typescript
+// ✅ Importar do index principal
+import { Button, Input, Card, useTheme, colors } from '@design-system';
+
+function MyScreen() {
+  const { theme } = useTheme();
+
+  return (
+    <Card>
+      <Input placeholder="Enter text" />
+      <Button>Submit</Button>
+    </Card>
+  );
+}
+```
+
+### Importações diretas (quando necessário)
+
+```typescript
+// ✅ Import direto de componente específico
+import { Button } from '@design-system/atoms/Button/Button';
+import type { ButtonProps } from '@design-system/atoms/Button/Button.types';
+```
+
+## Criando Novos Componentes
+
+### Estrutura de arquivos padrão
+
+Para cada componente, crie:
+```
+ComponentName/
+├── ComponentName.tsx        # Componente principal
+├── ComponentName.styles.ts  # Styles factory (theme → StyleSheet)
+├── ComponentName.types.ts   # TypeScript interfaces
+└── ComponentName.stories.tsx # Storybook stories
+```
+
+### Template de Atom
+
+```typescript
+// Button.types.ts
+import type { TouchableOpacityProps } from 'react-native';
+
+export interface ButtonProps extends Omit<TouchableOpacityProps, 'style'> {
+  children: React.ReactNode;
+  variant?: 'default' | 'outline';
+}
+
+// Button.styles.ts
+import { StyleSheet } from 'react-native';
+import type { Theme } from '@design-system/theme/theme';
+
+export const createButtonStyles = (theme: Theme) => {
+  return StyleSheet.create({
+    button: {
+      backgroundColor: theme.colors.primary,
+      padding: theme.spacing.md,
+      borderRadius: theme.radii.lg,
+    },
+    text: {
+      fontFamily: theme.typography.families.body,
+      fontSize: theme.typography.sizes.base,
+      color: theme.colors['primary-foreground'],
+    },
+  });
+};
+
+// Button.tsx
+import React, { type ReactElement } from 'react';
+import { TouchableOpacity, Text } from 'react-native';
+import { useTheme } from '@design-system/theme';
+import { createButtonStyles } from './Button.styles';
+import type { ButtonProps } from './Button.types';
+
+export function Button({ children, ...props }: ButtonProps): ReactElement {
+  const { theme } = useTheme();
+  const styles = createButtonStyles(theme);
+
+  return (
+    <TouchableOpacity style={styles.button} {...props}>
+      <Text style={styles.text}>{children}</Text>
+    </TouchableOpacity>
+  );
+}
+
+// Button.stories.tsx
+import type { Meta, StoryObj } from '@storybook/react';
+import { ThemeProvider } from '@design-system/theme';
+import { Button } from './Button';
+
+const meta: Meta<typeof Button> = {
+  title: 'Atoms/Button',
+  component: Button,
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <Story />
+      </ThemeProvider>
+    ),
+  ],
+};
+
+export default meta;
+```
+
+### Testes
+
+Todos os componentes devem ter testes em `tests/design-system/`:
+
+```typescript
+// tests/design-system/atoms/Button.test.tsx
+import { render } from '@testing-library/react-native';
+import { ThemeProvider } from '@design-system/theme';
+import { Button } from '@design-system/atoms/Button/Button';
+
+const renderWithTheme = (component: React.ReactElement) => {
+  return render(<ThemeProvider>{component}</ThemeProvider>);
+};
+
+describe('Button Atom', () => {
+  it('should render with text', () => {
+    const { getByText } = renderWithTheme(<Button>Click me</Button>);
+    expect(getByText('Click me')).toBeTruthy();
+  });
+});
+```
+
+## Coexistência com Design System Legado
+
+O Design System legado foi renomeado para `@legacy-design-system/*` e coexiste com o novo DS:
+
+```typescript
+// ✅ Novo Design System
+import { Button } from '@design-system';
+
+// ✅ Design System Legado (para migração gradual)
+import { Button as LegacyButton } from '@legacy-design-system';
+```
+
+**Estratégia de migração**:
+1. Novos componentes usam `@design-system`
+2. Componentes existentes podem permanecer com `@legacy-design-system` temporariamente
+3. Migrar gradualmente componente por componente
+
+## Recursos
+
+- **Storybook**: Documentação visual de todos os componentes
+- **ESLint Rules**: Enforcement automático de regras do DS
+- **TypeScript**: Type-safety completo em todos os componentes
+- **Tests**: Cobertura de testes para atoms, molecules e organisms
+
+## Comandos Úteis
+
+```bash
+# Visualizar componentes no Storybook
+npm run storybook
+
+# Executar linter (deve passar com zero warnings)
+npm run lint
+
+# Executar testes
+npm test
+
+# Gerar novo componente (CLI - será implementado na Fase 12)
+npm run generate:atom Button
+npm run generate:molecule FormField
+npm run generate:organism Navbar
+```
+
+## Referências
+
+- [Atomic Design - Brad Frost](https://atomicdesign.bradfrost.com/)
+- [Shadcn UI](https://ui.shadcn.com/)
+- [React Native StyleSheet](https://reactnative.dev/docs/stylesheet)
