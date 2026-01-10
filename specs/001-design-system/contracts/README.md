@@ -5,7 +5,9 @@ Este diretório contém os **contratos públicos** (interfaces TypeScript) do De
 ## Arquivos
 
 ### `tokens.contract.ts`
+
 Define as interfaces para todos os tokens de design:
+
 - Cores (Shadcn + topbar customizados, gray/cyan palettes)
 - Tipografia (Fira Sans/Code)
 - Spacing (compacto)
@@ -16,7 +18,9 @@ Define as interfaces para todos os tokens de design:
 **Consumidores**: Todos os componentes do DS e app
 
 ### `theme.contract.ts`
+
 Define as interfaces para o sistema de temas:
+
 - `Theme` (dark/light)
 - `ThemeProvider` component
 - `useTheme()` hook
@@ -25,7 +29,9 @@ Define as interfaces para o sistema de temas:
 **Consumidores**: Root app (ThemeProvider), todos os componentes que precisam acessar theme
 
 ### `components.contract.ts`
+
 Define as interfaces para todos os componentes atoms:
+
 - Button (variants, sizes)
 - Input (states, error handling)
 - Label (required, disabled)

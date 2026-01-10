@@ -11,9 +11,9 @@ import {
   type TextInputSubmitEditingEventData,
   View,
 } from 'react-native';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import type { CreateItemFromFreeTextResult } from '@domain/shopping/use-cases/CreateItemFromFreeText';
-import { theme } from '@legacy-design-system/theme/theme';
 
 type AddItemInputProps = {
   value: string;

@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, Text, View } from 'react-native';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import type { MonetarySummary, SummaryCounts } from '@domain/shopping/use-cases/ComputeListSummary';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@legacy-design-system/theme/theme';
 
 type ListSummaryHeaderProps = {
   totals: SummaryCounts;

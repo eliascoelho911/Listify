@@ -14,6 +14,9 @@ import {
 import CurrencyInput from 'react-native-currency-input';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { Dropdown } from '@legacy-design-system/components/Dropdown';
+import { NumberPicker } from '@legacy-design-system/components/NumberPicker';
+import { theme } from '@legacy-design-system/theme/theme';
 import getSymbolFromCurrency from 'currency-symbol-map';
 
 import { DEFAULT_CURRENCY_CODE, FALLBACK_LOCALE } from '@domain/shopping/constants';
@@ -22,9 +25,6 @@ import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListStat
 import { Money } from '@domain/shopping/value-objects/Money';
 import { Quantity } from '@domain/shopping/value-objects/Quantity';
 import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
-import { Dropdown } from '@legacy-design-system/components/Dropdown';
-import { NumberPicker } from '@legacy-design-system/components/NumberPicker';
-import { theme } from '@legacy-design-system/theme/theme';
 
 type EditItemScreenProps = {
   itemId?: string;

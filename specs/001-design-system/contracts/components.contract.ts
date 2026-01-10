@@ -18,19 +18,19 @@ import type { LucideIcon } from 'lucide-react-native';
  * Variantes visuais do Button
  */
 export type ButtonVariant =
-  | 'default'      // Filled com primary color
-  | 'destructive'  // Filled com destructive color
-  | 'outline'      // Border com background transparente
-  | 'ghost'        // Apenas text, sem border/background
-  | 'link';        // Text underlined, comportamento de link
+  | 'default' // Filled com primary color
+  | 'destructive' // Filled com destructive color
+  | 'outline' // Border com background transparente
+  | 'ghost' // Apenas text, sem border/background
+  | 'link'; // Text underlined, comportamento de link
 
 /**
  * Tamanhos do Button
  */
 export type ButtonSize =
-  | 'sm'    // Small - height 32px
-  | 'md'    // Medium - height 40px (padrão)
-  | 'lg'    // Large - height 48px
+  | 'sm' // Small - height 32px
+  | 'md' // Medium - height 40px (padrão)
+  | 'lg' // Large - height 48px
   | 'icon'; // Square - 40x40px para icon-only
 
 /**
@@ -86,10 +86,10 @@ export const Button: React.FC<ButtonProps>;
  * Estados visuais do Input
  */
 export type InputState =
-  | 'default'  // Estado padrão
-  | 'focus'    // Focado (border accent)
-  | 'error'    // Erro (border destructive)
-  | 'disabled';// Desabilitado (opacity 0.5)
+  | 'default' // Estado padrão
+  | 'focus' // Focado (border accent)
+  | 'error' // Erro (border destructive)
+  | 'disabled'; // Desabilitado (opacity 0.5)
 
 /**
  * Props do Input atom
@@ -168,10 +168,10 @@ export const Label: React.FC<LabelProps>;
  * Variantes visuais do Badge
  */
 export type BadgeVariant =
-  | 'default'      // Filled com secondary color
-  | 'secondary'    // Filled com muted color
-  | 'destructive'  // Filled com destructive color
-  | 'outline';     // Border apenas
+  | 'default' // Filled com secondary color
+  | 'secondary' // Filled com muted color
+  | 'destructive' // Filled com destructive color
+  | 'outline'; // Border apenas
 
 /**
  * Props do Badge atom
@@ -322,12 +322,7 @@ export const CardFooter: React.FC<CardFooterProps>;
 /**
  * Atomic Design level
  */
-export type AtomicLevel =
-  | 'atom'
-  | 'molecule'
-  | 'organism'
-  | 'template'
-  | 'page';
+export type AtomicLevel = 'atom' | 'molecule' | 'organism' | 'template' | 'page';
 
 /**
  * Component metadata (usado por ESLint rules)

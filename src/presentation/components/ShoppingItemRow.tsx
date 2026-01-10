@@ -3,10 +3,10 @@ import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@legacy-design-system/theme/theme';
 
 type ShoppingItemRowProps = {
   item: ShoppingItem;

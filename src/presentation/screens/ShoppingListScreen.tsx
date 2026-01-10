@@ -14,6 +14,8 @@ import {
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import { SnackBar } from '@legacy-design-system/components/SnackBar';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
@@ -23,8 +25,6 @@ import {
   type PricePromptResult,
   PricePromptSheet,
 } from '@presentation/components/PricePromptSheet';
-import { SnackBar } from '@legacy-design-system/components/SnackBar';
-import { theme } from '@legacy-design-system/theme/theme';
 
 import { AddItemInput } from '../components/AddItemInput';
 import { CategorySection } from '../components/CategorySection';

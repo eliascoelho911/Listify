@@ -52,11 +52,11 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 **⚠️ CRÍTICO**: Nenhuma user story começa até esta fase estar concluída
 
-- [ ] T009 Criar arquivo `eslint-rules/no-hardcoded-values.js` com regra customizada detectando valores hard-coded
-- [ ] T010 Criar arquivo `eslint-rules/atomic-design-imports.js` com regra validando hierarquia Atomic Design
-- [ ] T011 Criar arquivo `eslint-rules/theme-provider-usage.js` com regra enforçando uso de useTheme()
-- [ ] T012 Atualizar `.eslintrc.js` para incluir rules customizadas com severity "error"
-- [ ] T013 Configurar eslint-plugin-local-rules em package.json e .eslintrc.js
+- [x] T009 Criar arquivo `eslint-rules/no-hardcoded-values.js` com regra customizada detectando valores hard-coded
+- [x] T010 Criar arquivo `eslint-rules/atomic-design-imports.js` com regra validando hierarquia Atomic Design
+- [x] T011 Criar arquivo `eslint-rules/theme-provider-usage.js` com regra enforçando uso de useTheme()
+- [x] T012 Atualizar `.eslintrc.js` para incluir rules customizadas com severity "error"
+- [x] T013 Configurar eslint-plugin-local-rules em package.json e .eslintrc.js
 
 **Checkpoint**: ESLint pronto — implementação de user stories pode começar (em paralelo, se possível)
 

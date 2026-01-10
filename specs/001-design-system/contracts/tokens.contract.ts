@@ -137,11 +137,11 @@ export interface FontWeights {
  * Tamanhos de fonte (pixels)
  */
 export interface FontSizes {
-  xs: number;    // 12px
-  sm: number;    // 14px
-  base: number;  // 16px
-  lg: number;    // 18px
-  xl: number;    // 20px
+  xs: number; // 12px
+  sm: number; // 14px
+  base: number; // 16px
+  lg: number; // 18px
+  xl: number; // 20px
   '2xl': number; // 24px
   '3xl': number; // 30px
   '4xl': number; // 36px
@@ -151,8 +151,8 @@ export interface FontSizes {
  * Line heights
  */
 export interface LineHeights {
-  tight: number;   // 1.2
-  normal: number;  // 1.5
+  tight: number; // 1.2
+  normal: number; // 1.5
   relaxed: number; // 1.75
 }
 
@@ -175,12 +175,12 @@ export interface Typography {
  * Valores menores que Shadcn padrão para UI mais densa
  */
 export interface Spacing {
-  xs: number;   // 4px
-  sm: number;   // 8px
-  md: number;   // 12px
-  lg: number;   // 16px
-  xl: number;   // 24px
-  xxl: number;  // 32px
+  xs: number; // 4px
+  sm: number; // 8px
+  md: number; // 12px
+  lg: number; // 16px
+  xl: number; // 24px
+  xxl: number; // 32px
 }
 
 // ============================================================================
@@ -192,12 +192,12 @@ export interface Spacing {
  * Padrão é lg (16px)
  */
 export interface Radii {
-  none: number;   // 0px
-  sm: number;     // 8px (small exceptions)
-  md: number;     // 12px (medium)
-  lg: number;     // 16px (large - padrão)
-  xl: number;     // 24px (extra large)
-  full: number;   // 9999px (circular)
+  none: number; // 0px
+  sm: number; // 8px (small exceptions)
+  md: number; // 12px (medium)
+  lg: number; // 16px (large - padrão)
+  xl: number; // 24px (extra large)
+  full: number; // 9999px (circular)
 }
 
 // ============================================================================
@@ -208,19 +208,19 @@ export interface Radii {
  * Durações de animação (milliseconds)
  */
 export interface AnimationDurations {
-  fast: number;     // 150ms - micro-interactions
-  normal: number;   // 300ms - standard transitions
-  slow: number;     // 500ms - complex animations
+  fast: number; // 150ms - micro-interactions
+  normal: number; // 300ms - standard transitions
+  slow: number; // 500ms - complex animations
 }
 
 /**
  * Easing curves (cubic-bezier)
  */
 export interface AnimationEasings {
-  easeIn: string;      // cubic-bezier(0.4, 0, 1, 1)
-  easeOut: string;     // cubic-bezier(0, 0, 0.2, 1)
-  easeInOut: string;   // cubic-bezier(0.4, 0, 0.2, 1)
-  spring: string;      // cubic-bezier(0.34, 1.56, 0.64, 1) - bounce
+  easeIn: string; // cubic-bezier(0.4, 0, 1, 1)
+  easeOut: string; // cubic-bezier(0, 0, 0.2, 1)
+  easeInOut: string; // cubic-bezier(0.4, 0, 0.2, 1)
+  spring: string; // cubic-bezier(0.34, 1.56, 0.64, 1) - bounce
 }
 
 /**
@@ -251,10 +251,10 @@ export interface ShadowStyle {
  */
 export interface Shadows {
   none: ShadowStyle;
-  sm: ShadowStyle;    // Elevation 1
-  md: ShadowStyle;    // Elevation 2
-  lg: ShadowStyle;    // Elevation 3
-  xl: ShadowStyle;    // Elevation 4
+  sm: ShadowStyle; // Elevation 1
+  md: ShadowStyle; // Elevation 2
+  lg: ShadowStyle; // Elevation 3
+  xl: ShadowStyle; // Elevation 4
 }
 
 // ============================================================================
