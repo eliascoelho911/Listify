@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { MonetarySummary, SummaryCounts } from '@domain/shopping/use-cases/ComputeListSummary';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@design-system/theme/theme';
+import { theme } from '@legacy-design-system/theme/theme';
 
 type ListSummaryHeaderProps = {
   totals: SummaryCounts;

@@ -6,7 +6,7 @@ import { Swipeable } from 'react-native-gesture-handler';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@design-system/theme/theme';
+import { theme } from '@legacy-design-system/theme/theme';
 
 type ShoppingItemRowProps = {
   item: ShoppingItem;

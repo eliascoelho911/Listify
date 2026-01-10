@@ -23,8 +23,8 @@ import {
   type PricePromptResult,
   PricePromptSheet,
 } from '@presentation/components/PricePromptSheet';
-import { SnackBar } from '@design-system/components/SnackBar';
-import { theme } from '@design-system/theme/theme';
+import { SnackBar } from '@legacy-design-system/components/SnackBar';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import { AddItemInput } from '../components/AddItemInput';
 import { CategorySection } from '../components/CategorySection';

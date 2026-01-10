@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
 
 import { parsePriceInput } from '@presentation/utils/price';
-import { theme } from '@design-system/theme/theme';
+import { theme } from '@legacy-design-system/theme/theme';
 
 export type PricePromptResult = {
   unitPriceMinor?: number;

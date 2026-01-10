@@ -22,9 +22,9 @@ import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListStat
 import { Money } from '@domain/shopping/value-objects/Money';
 import { Quantity } from '@domain/shopping/value-objects/Quantity';
 import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
-import { Dropdown } from '@design-system/components/Dropdown';
-import { NumberPicker } from '@design-system/components/NumberPicker';
-import { theme } from '@design-system/theme/theme';
+import { Dropdown } from '@legacy-design-system/components/Dropdown';
+import { NumberPicker } from '@legacy-design-system/components/NumberPicker';
+import { theme } from '@legacy-design-system/theme/theme';
 
 type EditItemScreenProps = {
   itemId?: string;

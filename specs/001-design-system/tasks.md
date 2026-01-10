@@ -37,7 +37,7 @@ description: "Lista de tarefas para implementação do Design System Completo co
 
 - [x] T001 Renomear `src/design-system/` para `src/legacy-design-system/`
 - [x] T002 Atualizar tsconfig.json para adicionar path alias `@legacy-design-system/*` apontando para `src/legacy-design-system/*`
-- [ ] T003 Atualizar todos os imports em `src/presentation/` de `@design-system/*` para `@legacy-design-system/*`
+- [x] T003 Atualizar todos os imports em `src/presentation/` de `@design-system/*` para `@legacy-design-system/*`
 - [ ] T004 Criar estrutura de pastas do novo Design System em `src/design-system/`
 - [ ] T005 [P] Instalar dependência lucide-react-native
 - [ ] T006 [P] Instalar dependências do Storybook (@storybook/react-native ~7.6.x)

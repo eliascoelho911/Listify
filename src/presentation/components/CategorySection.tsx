@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@design-system/theme/theme';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import { ShoppingItemRow } from './ShoppingItemRow';
 
