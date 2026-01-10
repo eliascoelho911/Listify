@@ -1,0 +1,74 @@
+/**
+ * Input Atom Stories
+ */
+
+import type { Meta, StoryObj } from '@storybook/react-native';
+import React from 'react';
+import { View } from 'react-native';
+
+import { ThemeProvider } from '../../theme';
+import { Input } from './Input';
+
+const meta: Meta<typeof Input> = {
+  title: 'Atoms/Input',
+  component: Input,
+  decorators: [
+    (Story) => (
+      <ThemeProvider>
+        <View style={{ padding: 20 }}>
+          <Story />
+        </View>
+      </ThemeProvider>
+    ),
+  ],
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Input>;
+
+export const Default: Story = {
+  args: {
+    placeholder: 'Enter text...',
+  },
+};
+
+export const WithValue: Story = {
+  args: {
+    value: 'Sample text',
+    placeholder: 'Enter text...',
+  },
+};
+
+export const Error: Story = {
+  args: {
+    placeholder: 'Enter text...',
+    state: 'error',
+    errorMessage: 'This field is required',
+  },
+};
+
+export const WithHelper: Story = {
+  args: {
+    placeholder: 'Enter text...',
+    helperText: 'Enter your full name',
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    value: 'Disabled input',
+    editable: false,
+  },
+};
+
+export const AllStates: Story = {
+  render: () => (
+    <View style={{ gap: 16 }}>
+      <Input placeholder="Default state" />
+      <Input placeholder="Error state" state="error" errorMessage="Invalid input" />
+      <Input placeholder="With helper" helperText="This is helper text" />
+      <Input value="Disabled" editable={false} />
+    </View>
+  ),
+};

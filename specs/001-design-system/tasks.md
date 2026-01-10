@@ -118,11 +118,11 @@ description: "Lista de tarefas para implementação do Design System Completo co
 - [x] T033 [P] [US2] Criar types `src/design-system/atoms/Button/Button.types.ts` com ButtonProps interface
 - [x] T034 [P] [US2] Criar stories `src/design-system/atoms/Button/Button.stories.tsx` com todas variants/sizes
 - [x] T035 [P] [US2] Criar testes `tests/design-system/atoms/Button.test.tsx` validando variants, states (disabled, loading)
-- [ ] T036 [P] [US2] Criar atom Input em `src/design-system/atoms/Input/Input.tsx` com states (default, focus, error, disabled)
-- [ ] T037 [P] [US2] Criar styles `src/design-system/atoms/Input/Input.styles.ts` usando tokens
-- [ ] T038 [P] [US2] Criar types `src/design-system/atoms/Input/Input.types.ts` com InputProps interface
-- [ ] T039 [P] [US2] Criar stories `src/design-system/atoms/Input/Input.stories.tsx` com todos states
-- [ ] T040 [P] [US2] Criar testes `tests/design-system/atoms/Input.test.tsx` validando states e error handling
+- [x] T036 [P] [US2] Criar atom Input em `src/design-system/atoms/Input/Input.tsx` com states (default, focus, error, disabled)
+- [x] T037 [P] [US2] Criar styles `src/design-system/atoms/Input/Input.styles.ts` usando tokens
+- [x] T038 [P] [US2] Criar types `src/design-system/atoms/Input/Input.types.ts` com InputProps interface
+- [x] T039 [P] [US2] Criar stories `src/design-system/atoms/Input/Input.stories.tsx` com todos states
+- [x] T040 [P] [US2] Criar testes `tests/design-system/atoms/Input.test.tsx` validando states e error handling
 - [ ] T041 [P] [US2] Criar atom Label em `src/design-system/atoms/Label/Label.tsx` com suporte a required/disabled
 - [ ] T042 [P] [US2] Criar styles `src/design-system/atoms/Label/Label.styles.ts` usando typography tokens
 - [ ] T043 [P] [US2] Criar types `src/design-system/atoms/Label/Label.types.ts`

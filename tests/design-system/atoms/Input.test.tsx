@@ -1,0 +1,49 @@
+/**
+ * Input Atom Tests
+ */
+
+import { render } from '@testing-library/react-native';
+import React from 'react';
+
+import { Input } from '@design-system/atoms/Input/Input';
+import { ThemeProvider } from '@design-system/theme';
+
+const renderWithTheme = (component: React.ReactElement) => {
+  return render(<ThemeProvider>{component}</ThemeProvider>);
+};
+
+describe('Input Atom', () => {
+  it('should render with placeholder', () => {
+    const { getByPlaceholderText } = renderWithTheme(<Input placeholder="Enter text" />);
+    expect(getByPlaceholderText('Enter text')).toBeTruthy();
+  });
+
+  it('should render with value', () => {
+    const { getByDisplayValue } = renderWithTheme(<Input value="Test value" />);
+    expect(getByDisplayValue('Test value')).toBeTruthy();
+  });
+
+  it('should show error message when in error state', () => {
+    const { getByText } = renderWithTheme(<Input state="error" errorMessage="Error message" />);
+    expect(getByText('Error message')).toBeTruthy();
+  });
+
+  it('should show helper text', () => {
+    const { getByText } = renderWithTheme(<Input helperText="Helper text" />);
+    expect(getByText('Helper text')).toBeTruthy();
+  });
+
+  it('should prioritize error message over helper text', () => {
+    const { getByText, queryByText } = renderWithTheme(
+      <Input state="error" errorMessage="Error" helperText="Helper" />,
+    );
+    expect(getByText('Error')).toBeTruthy();
+    expect(queryByText('Helper')).toBeNull();
+  });
+
+  it('should be disabled when editable is false', () => {
+    const { getByDisplayValue } = renderWithTheme(<Input value="Disabled" editable={false} />);
+    const input = getByDisplayValue('Disabled');
+    expect(input.props.editable).toBe(false);
+  });
+});
