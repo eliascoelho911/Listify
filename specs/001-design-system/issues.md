@@ -1,0 +1,1 @@
+- [ ] O mode (light, dark) não está sincronizado com a configuração do aparelho android.
