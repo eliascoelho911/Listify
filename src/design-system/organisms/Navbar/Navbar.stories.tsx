@@ -6,7 +6,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { ArrowLeft, History, MoreVertical, Plus, Settings } from 'lucide-react-native';
 
 import { Navbar } from './Navbar';

@@ -2,7 +2,7 @@
  * Text Atom Types
  */
 
-import type { TextProps as RNTextProps, TextStyle, StyleProp } from 'react-native';
+import type { StyleProp, TextProps as RNTextProps, TextStyle } from 'react-native';
 
 export type TextVariant =
   | 'h1'

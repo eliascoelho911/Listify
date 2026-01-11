@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { Animated, Modal, View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import { Button } from '../../atoms/Button/Button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../atoms/Card/Card';

@@ -32,10 +32,14 @@ SplashScreen.preventAutoHideAsync();
 
 interface ThemeProviderProps {
   children: React.ReactNode;
+  initialMode?: ThemeMode;
 }
 
-export function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
-  const [mode, setMode] = useState<ThemeMode>('dark'); // Dark como padrão
+export function ThemeProvider({
+  children,
+  initialMode = 'dark',
+}: ThemeProviderProps): ReactElement {
+  const [mode, setMode] = useState<ThemeMode>(initialMode);
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   // Load fonts and theme preference

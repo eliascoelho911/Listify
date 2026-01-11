@@ -1,6 +1,7 @@
 const { getDefaultConfig } = require('expo/metro-config');
 const { withStorybook } = require('@storybook/react-native/metro/withStorybook');
 
+// eslint-disable-next-line no-undef
 const defaultConfig = getDefaultConfig(__dirname);
 
 module.exports = withStorybook(defaultConfig, {

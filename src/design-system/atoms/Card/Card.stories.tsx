@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import { Button } from '../Button/Button';
 import { Text } from '../Text/Text';
