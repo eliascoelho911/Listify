@@ -6,7 +6,6 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ThemeProvider } from '../../theme';
 import { Badge } from './Badge';
 
 const meta: Meta<typeof Badge> = {
@@ -14,11 +13,9 @@ const meta: Meta<typeof Badge> = {
   component: Badge,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20, gap: 16 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20, gap: 16 }}>
+        <Story />
+      </View>
     ),
   ],
 };

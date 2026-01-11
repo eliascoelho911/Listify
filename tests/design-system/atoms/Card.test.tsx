@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
-import { Text } from 'react-native';
 import { render } from '@testing-library/react-native';
 
+import { Text } from '@design-system/atoms';
 import {
   Card,
   CardContent,

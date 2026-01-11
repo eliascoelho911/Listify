@@ -3,9 +3,9 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { Text } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createLabelStyles } from './Label.styles';
 import type { LabelProps } from './Label.types';
 

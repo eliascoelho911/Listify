@@ -29,7 +29,7 @@ export const createShoppingListCardStyles = (theme: Theme) => {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.lg,
       fontWeight: theme.typography.weights.semibold,
-      color: theme.colors['card-foreground'],
+      color: theme.colors.cardForeground,
     },
     statsRow: {
       flexDirection: 'row',
@@ -45,7 +45,7 @@ export const createShoppingListCardStyles = (theme: Theme) => {
     statText: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.sm,
-      color: theme.colors['muted-foreground'],
+      color: theme.colors.mutedForeground,
     },
     footer: {
       flexDirection: 'row',
@@ -58,7 +58,7 @@ export const createShoppingListCardStyles = (theme: Theme) => {
     lastUpdated: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.xs,
-      color: theme.colors['muted-foreground'],
+      color: theme.colors.mutedForeground,
     },
     totalValue: {
       fontFamily: theme.typography.families.body,

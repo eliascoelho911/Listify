@@ -1,13 +1,14 @@
 /**
  * Navbar Organism Stories
+ *
+ * Demonstrates Neo-Minimal Dark navbar with animated accent line
  */
 
 import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
-import { Bell, Menu, Search, Settings } from 'lucide-react-native';
+import { ArrowLeft, History, MoreVertical, Plus, Settings } from 'lucide-react-native';
 
-import { ThemeProvider } from '../../theme';
 import { Navbar } from './Navbar';
 
 const meta: Meta<typeof Navbar> = {
@@ -15,11 +16,9 @@ const meta: Meta<typeof Navbar> = {
   component: Navbar,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ flex: 1 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ flex: 1 }}>
+        <Story />
+      </View>
     ),
   ],
 };
@@ -30,80 +29,159 @@ type Story = StoryObj<typeof Navbar>;
 
 export const Default: Story = {
   args: {
-    title: 'Listify',
-  },
-};
-
-export const WithMenuButton: Story = {
-  args: {
-    title: 'Shopping Lists',
-    leftActions: [
-      {
-        icon: Menu,
-        onPress: () => console.log('Menu pressed'),
-        label: 'Menu',
-      },
-    ],
-  },
-};
-
-export const WithActions: Story = {
-  args: {
-    title: 'My Lists',
-    leftActions: [
-      {
-        icon: Menu,
-        onPress: () => console.log('Menu'),
-        label: 'Menu',
-      },
-    ],
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
     rightActions: [
       {
-        icon: Search,
-        onPress: () => console.log('Search'),
-        label: 'Search',
+        icon: History,
+        onPress: () => console.debug('History pressed'),
+        label: 'History',
       },
       {
-        icon: Bell,
-        onPress: () => console.log('Notifications'),
-        label: 'Notifications',
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
       },
     ],
   },
 };
 
-export const WithMultipleActions: Story = {
+export const WithTitle: Story = {
   args: {
-    title: 'Settings',
+    title: 'Shopping List',
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
     rightActions: [
       {
-        icon: Search,
-        onPress: () => console.log('Search'),
-        label: 'Search',
+        icon: History,
+        onPress: () => console.debug('History pressed'),
+        label: 'History',
       },
       {
-        icon: Bell,
-        onPress: () => console.log('Notifications'),
-        label: 'Notifications',
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
+      },
+    ],
+  },
+};
+
+export const WithActiveAction: Story = {
+  args: {
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
+    rightActions: [
+      {
+        icon: History,
+        onPress: () => console.debug('History pressed'),
+        label: 'History',
+        isActive: true,
+      },
+      {
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
+      },
+    ],
+  },
+};
+
+export const WithVariants: Story = {
+  args: {
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+      variant: 'ghost',
+    },
+    rightActions: [
+      {
+        icon: Plus,
+        onPress: () => console.debug('Add pressed'),
+        label: 'Add',
+        variant: 'accent',
       },
       {
         icon: Settings,
-        onPress: () => console.log('Settings'),
+        onPress: () => console.debug('Settings pressed'),
         label: 'Settings',
+        variant: 'outline',
       },
     ],
   },
 };
 
-export const WithoutBorder: Story = {
+export const WithoutAccentLine: Story = {
   args: {
-    title: 'Clean Look',
-    showBorder: false,
-    leftActions: [
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
+    rightActions: [
       {
-        icon: Menu,
-        onPress: () => console.log('Menu'),
-        label: 'Menu',
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
+      },
+    ],
+  },
+};
+
+export const WithoutAnimation: Story = {
+  args: {
+    animated: false,
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
+    rightActions: [
+      {
+        icon: History,
+        onPress: () => console.debug('History pressed'),
+        label: 'History',
+      },
+      {
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
+      },
+    ],
+  },
+};
+
+export const OnlyLeftAction: Story = {
+  args: {
+    leftAction: {
+      icon: ArrowLeft,
+      onPress: () => console.debug('Back pressed'),
+      label: 'Back',
+    },
+  },
+};
+
+export const OnlyRightActions: Story = {
+  args: {
+    rightActions: [
+      {
+        icon: History,
+        onPress: () => console.debug('History pressed'),
+        label: 'History',
+      },
+      {
+        icon: MoreVertical,
+        onPress: () => console.debug('More pressed'),
+        label: 'More options',
       },
     ],
   },

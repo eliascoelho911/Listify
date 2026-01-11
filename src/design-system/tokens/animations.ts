@@ -15,12 +15,13 @@ export const durations = {
 
 /**
  * Easing curves for animations
- * Using standard easing functions
+ * Using cubic-bezier functions for web and Storybook
  */
 export const easings = {
-  easeIn: 'ease-in',
-  easeOut: 'ease-out',
-  easeInOut: 'ease-in-out',
+  easeIn: 'cubic-bezier(0.4, 0, 1, 1)',
+  easeOut: 'cubic-bezier(0, 0, 0.2, 1)',
+  easeInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  spring: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   linear: 'linear',
 };
 
@@ -32,6 +33,7 @@ export const reanimatedEasings = {
   easeIn: 'Easing.in(Easing.ease)',
   easeOut: 'Easing.out(Easing.ease)',
   easeInOut: 'Easing.inOut(Easing.ease)',
+  spring: 'Easing.bezier(0.34, 1.56, 0.64, 1)',
   linear: 'Easing.linear',
 };
 
@@ -42,4 +44,10 @@ export type AnimationTokens = {
   durations: typeof durations;
   easings: typeof easings;
   reanimatedEasings: typeof reanimatedEasings;
+};
+
+export const animations: AnimationTokens = {
+  durations,
+  easings,
+  reanimatedEasings,
 };

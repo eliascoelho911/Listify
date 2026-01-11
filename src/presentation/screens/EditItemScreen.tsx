@@ -7,7 +7,6 @@ import {
   Pressable,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -25,6 +24,7 @@ import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListStat
 import { Money } from '@domain/shopping/value-objects/Money';
 import { Quantity } from '@domain/shopping/value-objects/Quantity';
 import { useShoppingListVM } from '@presentation/hooks/useShoppingListVM';
+import { Text } from '@design-system/atoms';
 
 type EditItemScreenProps = {
   itemId?: string;

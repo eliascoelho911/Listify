@@ -10,4 +10,5 @@ module.exports = {
   'no-hardcoded-values': require('./eslint-rules/no-hardcoded-values'),
   'atomic-design-imports': require('./eslint-rules/atomic-design-imports'),
   'theme-provider-usage': require('./eslint-rules/theme-provider-usage'),
+  'no-raw-text-import': require('./eslint-rules/no-raw-text-import'),
 };

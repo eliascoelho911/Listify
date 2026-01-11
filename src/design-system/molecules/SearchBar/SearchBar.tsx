@@ -51,7 +51,7 @@ export function SearchBar({
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
-        <Icon icon={Search} size="md" color={theme.colors['muted-foreground']} />
+        <Icon icon={Search} size="md" color={theme.colors.mutedForeground} />
       </View>
 
       <Input
@@ -65,7 +65,7 @@ export function SearchBar({
 
       {hasValue && showClear && (
         <TouchableOpacity style={styles.clearButton} onPress={handleClear}>
-          <Icon icon={X} size="md" color={theme.colors['muted-foreground']} />
+          <Icon icon={X} size="md" color={theme.colors.mutedForeground} />
         </TouchableOpacity>
       )}
     </View>

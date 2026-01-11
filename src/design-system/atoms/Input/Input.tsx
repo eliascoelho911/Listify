@@ -3,9 +3,10 @@
  */
 
 import React, { type ReactElement, useState } from 'react';
-import { Text, TextInput, View } from 'react-native';
+import { TextInput, View } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createInputStyles } from './Input.styles';
 import type { InputProps } from './Input.types';
 

@@ -23,13 +23,13 @@ export const createCardStyles = (theme: Theme) => {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.lg,
       fontWeight: theme.typography.weights.semibold,
-      color: theme.colors['card-foreground'],
+      color: theme.colors.cardForeground,
     },
     description: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.sm,
       fontWeight: theme.typography.weights.regular,
-      color: theme.colors['muted-foreground'],
+      color: theme.colors.mutedForeground,
     },
     content: {
       gap: theme.spacing.sm,

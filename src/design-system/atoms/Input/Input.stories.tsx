@@ -6,7 +6,6 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-native';
 
-import { ThemeProvider } from '../../theme';
 import { Input } from './Input';
 
 const meta: Meta<typeof Input> = {
@@ -14,11 +13,9 @@ const meta: Meta<typeof Input> = {
   component: Input,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20 }}>
+        <Story />
+      </View>
     ),
   ],
 };

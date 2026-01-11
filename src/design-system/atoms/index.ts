@@ -12,6 +12,14 @@ export type { ButtonProps, ButtonSize, ButtonVariant } from './Button/Button.typ
 export { Icon } from './Icon/Icon';
 export type { IconProps, IconSize } from './Icon/Icon.types';
 
+// IconButton
+export { IconButton } from './IconButton/IconButton';
+export type {
+  IconButtonProps,
+  IconButtonSize,
+  IconButtonVariant,
+} from './IconButton/IconButton.types';
+
 // Input
 export { Input } from './Input/Input';
 export type { InputProps, InputState } from './Input/Input.types';
@@ -34,3 +42,7 @@ export type {
   CardProps,
   CardTitleProps,
 } from './Card/Card.types';
+
+// Text
+export { Text } from './Text/Text';
+export type { TextAlign, TextColor, TextProps, TextVariant, TextWeight } from './Text/Text.types';

@@ -8,7 +8,6 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-native';
 
-import { ThemeProvider } from '../../theme';
 import { Button } from './Button';
 
 const meta: Meta<typeof Button> = {
@@ -16,11 +15,9 @@ const meta: Meta<typeof Button> = {
   component: Button,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20 }}>
+        <Story />
+      </View>
     ),
   ],
   argTypes: {

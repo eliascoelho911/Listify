@@ -5,11 +5,12 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View } from 'react-native';
 import { Check, ShoppingCart } from 'lucide-react-native';
 
 import { Badge } from '../../atoms/Badge/Badge';
 import { Icon } from '../../atoms/Icon/Icon';
+import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createShoppingListCardStyles } from './ShoppingListCard.styles';
 import type { ShoppingListCardProps } from './ShoppingListCard.types';
@@ -51,14 +52,14 @@ export function ShoppingListCard({
           {/* Stats */}
           <View style={styles.statsRow}>
             <View style={styles.stat}>
-              <Icon icon={ShoppingCart} size="sm" color={theme.colors['muted-foreground']} />
+              <Icon icon={ShoppingCart} size="sm" color={theme.colors.mutedForeground} />
               <Text style={styles.statText}>
                 {itemCount} {itemCount === 1 ? 'item' : 'items'}
               </Text>
             </View>
 
             <View style={styles.stat}>
-              <Icon icon={Check} size="sm" color={theme.colors['muted-foreground']} />
+              <Icon icon={Check} size="sm" color={theme.colors.mutedForeground} />
               <Text style={styles.statText}>
                 {completedCount}/{itemCount} done
               </Text>

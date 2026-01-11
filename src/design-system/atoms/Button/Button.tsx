@@ -6,9 +6,10 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, StyleProp, TextStyle, TouchableOpacity, View } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createButtonStyles } from './Button.styles';
 import type { ButtonProps } from './Button.types';
 
@@ -33,7 +34,11 @@ export function Button({
     loading && styles.baseStyles.loading,
   ];
 
-  const textStyle = [styles.baseStyles.text, styles.textColorStyles[variant]];
+  const textStyle: StyleProp<TextStyle> = [
+    styles.baseStyles.text,
+    styles.textColorStyles[variant],
+    size !== 'md' && { fontSize: styles.sizeStyles[size].fontSize },
+  ];
 
   const renderContent = () => {
     if (loading) {

@@ -91,18 +91,18 @@ describe('Design Systems Coexistence', () => {
     expect(families.mono).toBe('Fira Code');
   });
 
-  it('should have new Design System with topbar custom tokens', () => {
+  it('should have new Design System with navbar custom tokens', () => {
     const { darkTheme, lightTheme } = require('@design-system/tokens');
 
-    // Validate custom topbar tokens exist in both themes
-    expect(darkTheme.topbar).toBeDefined();
-    expect(darkTheme.topbarForeground).toBeDefined();
-    expect(darkTheme.topbarPrimary).toBeDefined();
-    expect(darkTheme.topbarBorder).toBeDefined();
+    // Validate custom navbar tokens exist in both themes
+    expect(darkTheme.navbar).toBeDefined();
+    expect(darkTheme.navbarForeground).toBeDefined();
+    expect(darkTheme.navbarPrimary).toBeDefined();
+    expect(darkTheme.navbarBorder).toBeDefined();
 
-    expect(lightTheme.topbar).toBeDefined();
-    expect(lightTheme.topbarForeground).toBeDefined();
-    expect(lightTheme.topbarPrimary).toBeDefined();
-    expect(lightTheme.topbarBorder).toBeDefined();
+    expect(lightTheme.navbar).toBeDefined();
+    expect(lightTheme.navbarForeground).toBeDefined();
+    expect(lightTheme.navbarPrimary).toBeDefined();
+    expect(lightTheme.navbarBorder).toBeDefined();
   });
 });

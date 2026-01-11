@@ -6,7 +6,6 @@ import {
   type NativeSyntheticEvent,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   type TextInputSubmitEditingEventData,
   View,
@@ -14,6 +13,7 @@ import {
 import { theme } from '@legacy-design-system/theme/theme';
 
 import type { CreateItemFromFreeTextResult } from '@domain/shopping/use-cases/CreateItemFromFreeText';
+import { Text } from '@design-system/atoms';
 
 type AddItemInputProps = {
   value: string;

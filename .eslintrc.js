@@ -51,6 +51,7 @@ module.exports = {
     'local-rules/no-hardcoded-values': 'error',
     'local-rules/atomic-design-imports': 'error',
     'local-rules/theme-provider-usage': 'error',
+    'local-rules/no-raw-text-import': 'error',
   },
   overrides: [
     {

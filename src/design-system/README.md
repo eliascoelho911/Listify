@@ -2,6 +2,74 @@
 
 Design System completo do Listify seguindo princípios do **Atomic Design** e convenções do **Shadcn**.
 
+## 🚀 Quick Reference (TL;DR)
+
+### Criar Novo Componente
+
+```bash
+# Use o CLI (SEMPRE)
+npm run ds generate atom MyButton
+npm run ds generate molecule MyForm
+npm run ds generate organism MyNavbar
+```
+
+### Regras Absolutas
+
+1. ✅ SEMPRE usar tokens via `useTheme()` hook
+2. ❌ NUNCA hard-code valores (colors, spacing, fonts)
+3. ✅ SEMPRE respeitar hierarquia Atomic Design nos imports
+4. ✅ SEMPRE validar: `npm run lint && npm test`
+
+### Estrutura de Componente
+
+```typescript
+// Component.tsx
+import { useTheme } from '../../theme';
+import { createComponentStyles } from './Component.styles';
+
+export function Component(props: ComponentProps): ReactElement {
+  const { theme } = useTheme(); // ✅ Hook obrigatório
+  const styles = createComponentStyles(theme);
+  return <View style={styles.container}>{props.children}</View>;
+}
+
+// Component.styles.ts
+export const createComponentStyles = (theme: Theme) => {
+  return StyleSheet.create({
+    container: {
+      backgroundColor: theme.colors.card,    // ✅ Token
+      padding: theme.spacing.md,             // ✅ Token
+      borderRadius: theme.radii.lg,          // ✅ Token
+      // backgroundColor: '#ffffff',         // ❌ NUNCA
+    },
+  });
+};
+```
+
+### Hierarquia de Imports
+
+| Nível     | ✅ Pode importar                       | ❌ NÃO pode          |
+| --------- | -------------------------------------- | -------------------- |
+| Atoms     | tokens, theme, utils                   | molecules, organisms |
+| Molecules | atoms, tokens, theme, utils            | molecules, organisms |
+| Organisms | atoms, molecules, tokens, theme, utils | templates, pages     |
+
+### Validação Pré-Commit
+
+```bash
+npm run lint      # ESLint (zero warnings)
+npm test         # Jest tests
+npm run storybook # Validação visual
+```
+
+### Exemplos de Referência
+
+- Button: `src/design-system/atoms/Button/`
+- FormField: `src/design-system/molecules/FormField/`
+- Navbar: `src/design-system/organisms/Navbar/`
+
+---
+
 ## Arquitetura Atomic Design
 
 O Design System é organizado em cinco níveis hierárquicos:

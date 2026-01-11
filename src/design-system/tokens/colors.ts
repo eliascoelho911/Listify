@@ -96,14 +96,14 @@ export const darkTheme = {
   ring: cyan[500],
 
   // Topbar custom tokens
-  topbar: gray[900],
-  topbarForeground: gray[50],
-  topbarPrimary: cyan[500],
-  topbarPrimaryForeground: gray[950],
-  topbarAccent: cyan[700],
-  topbarAccentForeground: gray[50],
-  topbarBorder: gray[800],
-  topbarRing: cyan[500],
+  navbar: gray[950],
+  navbarForeground: gray[200],
+  navbarPrimary: cyan[500],
+  navbarPrimaryForeground: gray[950],
+  navbarAccent: cyan[500],
+  navbarAccentForeground: gray[50],
+  navbarBorder: gray[800],
+  navbarRing: cyan[500],
 };
 
 /**
@@ -151,14 +151,14 @@ export const lightTheme = {
   ring: cyan[600],
 
   // Topbar custom tokens
-  topbar: gray[100],
-  topbarForeground: gray[950],
-  topbarPrimary: cyan[600],
-  topbarPrimaryForeground: 'white',
-  topbarAccent: cyan[400],
-  topbarAccentForeground: gray[950],
-  topbarBorder: gray[300],
-  topbarRing: cyan[600],
+  navbar: gray[50],
+  navbarForeground: gray[700],
+  navbarPrimary: cyan[600],
+  navbarPrimaryForeground: 'white',
+  navbarAccent: cyan[600],
+  navbarAccentForeground: gray[950],
+  navbarBorder: gray[300],
+  navbarRing: cyan[600],
 };
 
 /**

@@ -7,7 +7,6 @@ import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-native';
 import { Check, Heart, Home, Settings, Star, User, X } from 'lucide-react-native';
 
-import { ThemeProvider } from '../../theme';
 import { Icon } from './Icon';
 
 const meta: Meta<typeof Icon> = {
@@ -15,11 +14,9 @@ const meta: Meta<typeof Icon> = {
   component: Icon,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20 }}>
+        <Story />
+      </View>
     ),
   ],
 };

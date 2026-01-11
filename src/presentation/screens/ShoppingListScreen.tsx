@@ -8,7 +8,6 @@ import {
   RefreshControl,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
   View,
 } from 'react-native';
@@ -25,6 +24,7 @@ import {
   type PricePromptResult,
   PricePromptSheet,
 } from '@presentation/components/PricePromptSheet';
+import { Text } from '@design-system/atoms';
 
 import { AddItemInput } from '../components/AddItemInput';
 import { CategorySection } from '../components/CategorySection';

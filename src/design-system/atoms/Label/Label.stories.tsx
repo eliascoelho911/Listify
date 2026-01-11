@@ -6,7 +6,6 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ThemeProvider } from '../../theme';
 import { Label } from './Label';
 
 const meta: Meta<typeof Label> = {
@@ -14,11 +13,9 @@ const meta: Meta<typeof Label> = {
   component: Label,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20, gap: 16 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20, gap: 16 }}>
+        <Story />
+      </View>
     ),
   ],
 };

@@ -54,25 +54,25 @@ export interface ShadcnColors {
 }
 
 /**
- * Tokens de cor customizados para topbar
+ * Tokens de cor customizados para navbar
  */
 export interface TopbarColors {
-  topbar: ColorValue;
-  topbarForeground: ColorValue;
+  navbar: ColorValue;
+  navbarForeground: ColorValue;
 
-  topbarPrimary: ColorValue;
-  topbarPrimaryForeground: ColorValue;
+  navbarPrimary: ColorValue;
+  navbarPrimaryForeground: ColorValue;
 
-  topbarAccent: ColorValue;
-  topbarAccentForeground: ColorValue;
+  navbarAccent: ColorValue;
+  navbarAccentForeground: ColorValue;
 
-  topbarBorder: ColorValue;
-  topbarRing: ColorValue;
+  navbarBorder: ColorValue;
+  navbarRing: ColorValue;
 }
 
 /**
  * Paleta completa de cores do Design System
- * Inclui tokens Shadcn + topbar customizados + paletas base
+ * Inclui tokens Shadcn + navbar customizados + paletas base
  */
 export interface Colors extends ShadcnColors, TopbarColors {
   /** Paleta base: Gray "chumbo" */

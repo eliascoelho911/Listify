@@ -6,7 +6,6 @@ import React from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ThemeProvider } from '../../theme';
 import { SearchBar } from './SearchBar';
 
 const meta: Meta<typeof SearchBar> = {
@@ -14,11 +13,9 @@ const meta: Meta<typeof SearchBar> = {
   component: SearchBar,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20 }}>
+        <Story />
+      </View>
     ),
   ],
 };

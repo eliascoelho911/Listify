@@ -11,9 +11,10 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createCardStyles } from './Card.styles';
 import type {
   CardContentProps,

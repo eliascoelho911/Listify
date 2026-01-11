@@ -5,30 +5,34 @@
 import type { ViewProps } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
 
+import type { IconButtonVariant } from '../../atoms/IconButton';
+
 export interface NavbarAction {
   icon: LucideIcon;
   onPress: () => void;
   label: string;
+  variant?: IconButtonVariant;
+  isActive?: boolean;
 }
 
 export interface NavbarProps extends Omit<ViewProps, 'style'> {
   /**
-   * Navbar title
+   * Navbar title (optional, centered)
    */
   title?: string;
 
   /**
-   * Left actions (typically back button or menu)
+   * Left action (typically back button)
    */
-  leftActions?: NavbarAction[];
+  leftAction?: NavbarAction;
 
   /**
-   * Right actions (typically settings, notifications, etc)
+   * Right actions (typically settings, menu, etc)
    */
   rightActions?: NavbarAction[];
 
   /**
-   * Whether to show shadow/border
+   * Whether to animate navbar entrance
    */
-  showBorder?: boolean;
+  animated?: boolean;
 }

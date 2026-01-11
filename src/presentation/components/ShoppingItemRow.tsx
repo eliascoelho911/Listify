@@ -1,12 +1,13 @@
 import type { ReactElement } from 'react';
 import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { Swipeable } from 'react-native-gesture-handler';
 import { theme } from '@legacy-design-system/theme/theme';
 
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
 import { formatMoney } from '@presentation/utils/price';
+import { Text } from '@design-system/atoms';
 
 type ShoppingItemRowProps = {
   item: ShoppingItem;

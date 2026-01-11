@@ -1,9 +1,10 @@
 import { type ReactElement, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import { theme } from '@legacy-design-system/theme/theme';
 
 import { parsePriceInput } from '@presentation/utils/price';
+import { Text } from '@design-system/atoms';
 
 export type PricePromptResult = {
   unitPriceMinor?: number;

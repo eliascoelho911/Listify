@@ -4,6 +4,8 @@
  * Dark theme (padrão) e Light theme usando tokens cyan/gray
  */
 
+import { animations, AnimationTokens } from '@design-system/tokens';
+
 import type { ColorTokens } from '../tokens/colors';
 import { darkTheme as darkColors, lightTheme as lightColors } from '../tokens/colors';
 import type { RadiiTokens } from '../tokens/radii';
@@ -24,6 +26,7 @@ export interface Theme {
   spacing: SpacingTokens;
   radii: RadiiTokens;
   shadows: ShadowTokens;
+  animations: AnimationTokens;
 }
 
 /**
@@ -40,6 +43,7 @@ export const darkTheme: Theme = {
   spacing,
   radii,
   shadows,
+  animations,
 };
 
 /**
@@ -56,6 +60,7 @@ export const lightTheme: Theme = {
   spacing,
   radii,
   shadows,
+  animations,
 };
 
 /**

@@ -3,11 +3,11 @@
  */
 
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import { ThemeProvider } from '../../theme';
 import { Button } from '../Button/Button';
+import { Text } from '../Text/Text';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './Card';
 
 const meta: Meta<typeof Card> = {
@@ -15,11 +15,9 @@ const meta: Meta<typeof Card> = {
   component: Card,
   decorators: [
     (Story) => (
-      <ThemeProvider>
-        <View style={{ padding: 20 }}>
-          <Story />
-        </View>
-      </ThemeProvider>
+      <View style={{ padding: 20 }}>
+        <Story />
+      </View>
     ),
   ],
 };

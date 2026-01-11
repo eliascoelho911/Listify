@@ -15,7 +15,7 @@ export const createButtonStyles = (theme: Theme) => {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      borderRadius: theme.radii.lg, // Large radius
+      borderRadius: theme.radii.sm,
       paddingHorizontal: theme.spacing.lg,
       paddingVertical: theme.spacing.md,
     },

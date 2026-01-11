@@ -3,9 +3,10 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createBadgeStyles } from './Badge.styles';
 import type { BadgeProps } from './Badge.types';
 

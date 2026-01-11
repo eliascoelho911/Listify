@@ -5,10 +5,11 @@ import {
   ScrollView,
   type StyleProp,
   StyleSheet,
-  Text,
   View,
   type ViewStyle,
 } from 'react-native';
+
+import { Text } from '@design-system/atoms';
 
 import { theme } from '../theme/theme';
 

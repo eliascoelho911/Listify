@@ -5,7 +5,7 @@
  * - Gray "chumbo" base palette exists
  * - Cyan theme palette exists
  * - All Shadcn tokens present in dark/light themes
- * - All topbar custom tokens present in dark/light themes
+ * - All navbar custom tokens present in dark/light themes
  */
 
 import { cyan, darkTheme, gray, lightTheme, semantic } from '@design-system/tokens';
@@ -88,15 +88,15 @@ describe('Color Tokens', () => {
       expect(darkTheme).toHaveProperty('ring');
     });
 
-    it('should have all topbar custom tokens', () => {
-      expect(darkTheme).toHaveProperty('topbar');
-      expect(darkTheme).toHaveProperty('topbarForeground');
-      expect(darkTheme).toHaveProperty('topbarPrimary');
-      expect(darkTheme).toHaveProperty('topbarPrimaryForeground');
-      expect(darkTheme).toHaveProperty('topbarAccent');
-      expect(darkTheme).toHaveProperty('topbarAccentForeground');
-      expect(darkTheme).toHaveProperty('topbarBorder');
-      expect(darkTheme).toHaveProperty('topbarRing');
+    it('should have all navbar custom tokens', () => {
+      expect(darkTheme).toHaveProperty('navbar');
+      expect(darkTheme).toHaveProperty('navbarForeground');
+      expect(darkTheme).toHaveProperty('navbarPrimary');
+      expect(darkTheme).toHaveProperty('navbarPrimaryForeground');
+      expect(darkTheme).toHaveProperty('navbarAccent');
+      expect(darkTheme).toHaveProperty('navbarAccentForeground');
+      expect(darkTheme).toHaveProperty('navbarBorder');
+      expect(darkTheme).toHaveProperty('navbarRing');
     });
 
     it('should use cyan for primary color', () => {
@@ -131,15 +131,15 @@ describe('Color Tokens', () => {
       expect(lightTheme).toHaveProperty('ring');
     });
 
-    it('should have all topbar custom tokens', () => {
-      expect(lightTheme).toHaveProperty('topbar');
-      expect(lightTheme).toHaveProperty('topbarForeground');
-      expect(lightTheme).toHaveProperty('topbarPrimary');
-      expect(lightTheme).toHaveProperty('topbarPrimaryForeground');
-      expect(lightTheme).toHaveProperty('topbarAccent');
-      expect(lightTheme).toHaveProperty('topbarAccentForeground');
-      expect(lightTheme).toHaveProperty('topbarBorder');
-      expect(lightTheme).toHaveProperty('topbarRing');
+    it('should have all navbar custom tokens', () => {
+      expect(lightTheme).toHaveProperty('navbar');
+      expect(lightTheme).toHaveProperty('navbarForeground');
+      expect(lightTheme).toHaveProperty('navbarPrimary');
+      expect(lightTheme).toHaveProperty('navbarPrimaryForeground');
+      expect(lightTheme).toHaveProperty('navbarAccent');
+      expect(lightTheme).toHaveProperty('navbarAccentForeground');
+      expect(lightTheme).toHaveProperty('navbarBorder');
+      expect(lightTheme).toHaveProperty('navbarRing');
     });
 
     it('should use cyan for primary color', () => {

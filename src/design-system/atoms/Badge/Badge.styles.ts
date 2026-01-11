@@ -33,7 +33,7 @@ export const createBadgeStyles = (theme: Theme) => {
         borderColor: theme.colors.transparent,
       },
       text: {
-        color: theme.colors['primary-foreground'],
+        color: theme.colors.primaryForeground,
       },
     },
     secondary: {
@@ -42,7 +42,7 @@ export const createBadgeStyles = (theme: Theme) => {
         borderColor: theme.colors.transparent,
       },
       text: {
-        color: theme.colors['secondary-foreground'],
+        color: theme.colors.secondaryForeground,
       },
     },
     destructive: {
@@ -51,7 +51,7 @@ export const createBadgeStyles = (theme: Theme) => {
         borderColor: theme.colors.transparent,
       },
       text: {
-        color: theme.colors['destructive-foreground'],
+        color: theme.colors.destructiveForeground,
       },
     },
     outline: {

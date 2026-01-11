@@ -3,17 +3,19 @@
  */
 
 import React, { useState } from 'react';
-import { Animated, Modal, Text, View } from 'react-native';
+import { Animated, Modal, View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../../atoms/Button/Button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../atoms/Card/Card';
-import { ThemeProvider } from '../../theme';
+import { Text } from '../../atoms/Text/Text';
+import { useTheme } from '../../theme';
 import { useModalAnimation } from './useModalAnimation';
 
 function AnimatedModalExample() {
   const [visible, setVisible] = useState(false);
   const { opacity, translateY, hide } = useModalAnimation(visible);
+  const { theme } = useTheme();
 
   const handleClose = () => {
     hide(() => setVisible(false));
@@ -27,7 +29,7 @@ function AnimatedModalExample() {
         <View
           style={{
             flex: 1,
-            backgroundColor: theme.colors.background + '80', // Add 50% opacity
+            backgroundColor: theme.colors.background + '80',
             justifyContent: 'center',
             alignItems: 'center',
             padding: 20,
@@ -67,13 +69,6 @@ function AnimatedModalExample() {
 const meta: Meta<typeof AnimatedModalExample> = {
   title: 'Utils/Animations/Modal',
   component: AnimatedModalExample,
-  decorators: [
-    (Story) => (
-      <ThemeProvider>
-        <Story />
-      </ThemeProvider>
-    ),
-  ],
 };
 
 export default meta;
