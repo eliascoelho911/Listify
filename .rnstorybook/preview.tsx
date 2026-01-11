@@ -7,22 +7,20 @@
 import React from 'react';
 import type { Preview } from '@storybook/react';
 import { View } from 'react-native';
+import { withBackgrounds } from '@storybook/addon-ondevice-backgrounds';
 
 import { ThemeProvider } from '../src/design-system/theme';
 
 const preview: Preview = {
   decorators: [
-    (Story, context) => {
-      const backgroundColor = context.globals?.backgrounds?.value || '#16191d';
-
-      return (
-        <ThemeProvider>
-          <View style={{ flex: 1, padding: 16, backgroundColor }}>
-            <Story />
-          </View>
-        </ThemeProvider>
-      );
-    },
+    withBackgrounds,
+    (Story) => (
+      <ThemeProvider>
+        <View style={{ flex: 1, padding: 16 }}>
+          <Story />
+        </View>
+      </ThemeProvider>
+    ),
   ],
   parameters: {
     backgrounds: {

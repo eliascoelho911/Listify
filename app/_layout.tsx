@@ -5,7 +5,6 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { initializeI18n } from '@app/i18n/i18n';
-import { AppProviders } from '@app/providers/AppProviders';
 import { ThemeProvider } from '@design-system/theme';
 const StorybookEnabled = process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true';
 
@@ -19,7 +18,7 @@ function NavigationStack(): ReactElement {
   return (
     <Stack>
       <Stack.Protected guard={StorybookEnabled}>
-        <Stack.Screen name="(storybook)/index" />
+        <Stack.Screen name="(storybook)/index" options={{ title: 'Storybook' }} />
       </Stack.Protected>
     </Stack>
   );
@@ -29,12 +28,10 @@ export default function RootLayout(): ReactElement {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
-        <AppProviders>
-          <SafeAreaProvider>
-            <StatusBar style="auto" />
-            <NavigationStack />
-          </SafeAreaProvider>
-        </AppProviders>
+        <SafeAreaProvider>
+          <StatusBar style="auto" />
+          <NavigationStack />
+        </SafeAreaProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
