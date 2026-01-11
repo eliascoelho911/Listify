@@ -1,0 +1,12 @@
+# Pages directory
+#
+# Pages are specific instances of templates with real content. They can import anything:
+# - Atoms
+# - Molecules
+# - Organisms
+# - Templates
+# - Tokens
+# - Theme
+# - Utils
+#
+# Examples: HomePage, ShoppingListPage, SettingsPage

@@ -20,6 +20,9 @@
       "@presentation/*": [
         "src/presentation/*"
       ],
+      "@legacy-design-system/*": [
+        "src/legacy-design-system/*"
+      ],
       "@design-system/*": [
         "src/design-system/*"
       ],

@@ -1,10 +1,11 @@
 import type { ReactElement } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
 import { formatMoney } from '@presentation/utils/price';
-import { theme } from '@design-system/theme/theme';
+import { Text } from '@design-system/atoms';
 
 import { ShoppingItemRow } from './ShoppingItemRow';
 

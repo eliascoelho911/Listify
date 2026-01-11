@@ -1,18 +1,69 @@
-import type { Colors, Radii, Shadows, Spacing, Typography } from '../tokens';
-import { colors, radii, shadows, spacing, typography } from '../tokens';
+/**
+ * Design System Themes
+ *
+ * Dark theme (padrão) e Light theme usando tokens cyan/gray
+ */
 
-export type Theme = {
-  colors: Colors;
-  spacing: Spacing;
-  radii: Radii;
-  shadows: Shadows;
-  typography: Typography;
-};
+import { animations, AnimationTokens } from '@design-system/tokens';
 
-export const theme: Theme = {
-  colors,
+import type { ColorTokens } from '../tokens/colors';
+import { darkTheme as darkColors, lightTheme as lightColors } from '../tokens/colors';
+import type { RadiiTokens } from '../tokens/radii';
+import { radii } from '../tokens/radii';
+import type { ShadowTokens } from '../tokens/shadows';
+import { shadows } from '../tokens/shadows';
+import type { SpacingTokens } from '../tokens/spacing';
+import { spacing } from '../tokens/spacing';
+import type { TypographyTokens } from '../tokens/typography';
+import { families, lineHeights, sizes, weights } from '../tokens/typography';
+
+/**
+ * Theme object structure
+ */
+export interface Theme {
+  colors: ColorTokens;
+  typography: TypographyTokens;
+  spacing: SpacingTokens;
+  radii: RadiiTokens;
+  shadows: ShadowTokens;
+  animations: AnimationTokens;
+}
+
+/**
+ * Dark Theme (padrão)
+ */
+export const darkTheme: Theme = {
+  colors: darkColors,
+  typography: {
+    families,
+    weights,
+    sizes,
+    lineHeights,
+  },
   spacing,
   radii,
   shadows,
-  typography,
+  animations,
 };
+
+/**
+ * Light Theme
+ */
+export const lightTheme: Theme = {
+  colors: lightColors,
+  typography: {
+    families,
+    weights,
+    sizes,
+    lineHeights,
+  },
+  spacing,
+  radii,
+  shadows,
+  animations,
+};
+
+/**
+ * Theme mode type
+ */
+export type ThemeMode = 'dark' | 'light';

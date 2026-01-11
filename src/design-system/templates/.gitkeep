@@ -1,0 +1,11 @@
+# Templates directory
+#
+# Templates are page-level layouts combining organisms. They can import:
+# - Atoms
+# - Molecules
+# - Organisms
+# - Tokens
+# - Theme
+# - Utils
+#
+# Examples: AuthTemplate, DashboardTemplate, ListDetailTemplate

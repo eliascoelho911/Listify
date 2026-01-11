@@ -1,144 +1,167 @@
-export type ColorScale = {
-  50: string;
-  100: string;
-  200: string;
-  300: string;
-  400: string;
-  500: string;
-  600: string;
-  700: string;
-  800: string;
-  900: string;
+/**
+ * Design System Color Tokens
+ *
+ * Paleta:
+ * - Base: Gray "chumbo" (cool gray with slightly blue tint)
+ * - Theme: Cyan (vibrant cyan for primary actions)
+ * - Shadcn tokens completos
+ * - Topbar tokens customizados
+ *
+ * Suporta dark theme (padrão) e light theme
+ */
+
+// Special values
+export const transparent = 'transparent';
+
+// Gray "chumbo" palette (cool gray with blue undertones)
+export const gray = {
+  50: '#f8f9fa',
+  100: '#f1f3f5',
+  200: '#e9ecef',
+  300: '#dee2e6',
+  400: '#ced4da',
+  500: '#adb5bd',
+  600: '#6c757d', // Base "chumbo"
+  700: '#495057',
+  800: '#343a40',
+  900: '#212529',
+  950: '#16191d',
 };
 
-export type Colors = {
-  brand: ColorScale;
-  accent: ColorScale;
-  neutral: ColorScale;
-  success: ColorScale;
-  warning: ColorScale;
-  danger: ColorScale;
-  background: {
-    canvas: string;
-    muted: string;
-    surface: string;
-    raised: string;
-    overlay: string;
-  };
-  content: {
-    primary: string;
-    secondary: string;
-    muted: string;
-    inverse: string;
-  };
-  border: {
-    subtle: string;
-    strong: string;
-    muted: string;
-  };
+// Cyan theme palette
+export const cyan = {
+  50: '#ecfeff',
+  100: '#cffafe',
+  200: '#a5f3fc',
+  300: '#67e8f9',
+  400: '#22d3ee',
+  500: '#06b6d4', // Primary cyan
+  600: '#0891b2',
+  700: '#0e7490',
+  800: '#155e75',
+  900: '#164e63',
+  950: '#083344',
 };
 
-const brand: ColorScale = {
-  50: '#e8f7f2',
-  100: '#c9ecdf',
-  200: '#9edbc5',
-  300: '#71c7a7',
-  400: '#44b38c',
-  500: '#2b9c78',
-  600: '#1d8465',
-  700: '#166b54',
-  800: '#125442',
-  900: '#0c3b2f',
+// Semantic color aliases
+export const semantic = {
+  success: '#10b981', // Green
+  warning: '#f59e0b', // Amber
+  error: '#ef4444', // Red
+  info: cyan[500],
 };
 
-const accent: ColorScale = {
-  50: '#eef2ff',
-  100: '#e0e7ff',
-  200: '#c7d2fe',
-  300: '#a5b4fc',
-  400: '#818cf8',
-  500: '#6366f1',
-  600: '#4f46e5',
-  700: '#4338ca',
-  800: '#3730a3',
-  900: '#312e81',
+/**
+ * Dark Theme Tokens (padrão)
+ */
+export const darkTheme = {
+  // Special values
+  transparent,
+
+  // Shadcn base tokens
+  background: gray[950],
+  foreground: gray[50],
+
+  // Card tokens
+  card: gray[900],
+  cardForeground: gray[50],
+
+  // Popover tokens
+  popover: gray[900],
+  popoverForeground: gray[50],
+
+  // Primary tokens (cyan theme)
+  primary: cyan[500],
+  primaryForeground: gray[950],
+
+  // Secondary tokens
+  secondary: gray[800],
+  secondaryForeground: gray[50],
+
+  // Muted tokens
+  muted: gray[800],
+  mutedForeground: gray[400],
+
+  // Accent tokens
+  accent: cyan[700],
+  accentForeground: gray[50],
+
+  // Destructive tokens
+  destructive: semantic.error,
+  destructiveForeground: gray[50],
+
+  // Border tokens
+  border: gray[800],
+  input: gray[800],
+  ring: cyan[500],
+
+  // Topbar custom tokens
+  navbar: gray[950],
+  navbarForeground: gray[200],
+  navbarPrimary: cyan[500],
+  navbarPrimaryForeground: gray[950],
+  navbarAccent: cyan[500],
+  navbarAccentForeground: gray[50],
+  navbarBorder: gray[800],
+  navbarRing: cyan[500],
 };
 
-const neutral: ColorScale = {
-  50: '#f8fafc',
-  100: '#eef2f6',
-  200: '#e2e8f0',
-  300: '#cbd5e1',
-  400: '#9aa5b8',
-  500: '#6b768e',
-  600: '#4b556b',
-  700: '#353e54',
-  800: '#232b3c',
-  900: '#161c2a',
+/**
+ * Light Theme Tokens
+ */
+export const lightTheme = {
+  // Special values
+  transparent,
+
+  // Shadcn base tokens
+  background: gray[50],
+  foreground: gray[950],
+
+  // Card tokens
+  card: 'white',
+  cardForeground: gray[950],
+
+  // Popover tokens
+  popover: 'white',
+  popoverForeground: gray[950],
+
+  // Primary tokens (cyan theme)
+  primary: cyan[600],
+  primaryForeground: 'white',
+
+  // Secondary tokens
+  secondary: gray[200],
+  secondaryForeground: gray[950],
+
+  // Muted tokens
+  muted: gray[200],
+  mutedForeground: gray[600],
+
+  // Accent tokens
+  accent: cyan[400],
+  accentForeground: gray[950],
+
+  // Destructive tokens
+  destructive: semantic.error,
+  destructiveForeground: 'white',
+
+  // Border tokens
+  border: gray[300],
+  input: gray[300],
+  ring: cyan[600],
+
+  // Topbar custom tokens
+  navbar: gray[50],
+  navbarForeground: gray[700],
+  navbarPrimary: cyan[600],
+  navbarPrimaryForeground: 'white',
+  navbarAccent: cyan[600],
+  navbarAccentForeground: gray[950],
+  navbarBorder: gray[300],
+  navbarRing: cyan[600],
 };
 
-const success: ColorScale = {
-  50: '#ecfdf3',
-  100: '#d1fadf',
-  200: '#a6f4c5',
-  300: '#72e1a4',
-  400: '#42cc85',
-  500: '#22b36d',
-  600: '#19985b',
-  700: '#167a4c',
-  800: '#125e3b',
-  900: '#0d452c',
-};
-
-const warning: ColorScale = {
-  50: '#fffbeb',
-  100: '#fef3c7',
-  200: '#fde58a',
-  300: '#f9d24d',
-  400: '#f2b533',
-  500: '#e3961a',
-  600: '#c67512',
-  700: '#9f5710',
-  800: '#7d430f',
-  900: '#65350d',
-};
-
-const danger: ColorScale = {
-  50: '#fef2f2',
-  100: '#fee2e2',
-  200: '#fdcaca',
-  300: '#fca5a5',
-  400: '#f87171',
-  500: '#ef4444',
-  600: '#dc2626',
-  700: '#b91c1c',
-  800: '#991b1b',
-  900: '#7f1d1d',
-};
-
-export const colors: Colors = {
-  brand,
-  accent,
-  neutral,
-  success,
-  warning,
-  danger,
-  background: {
-    canvas: '#f5f7fb',
-    muted: '#edf1f7',
-    surface: '#ffffff',
-    raised: '#fdfefe',
-    overlay: 'rgba(22, 27, 40, 0.16)',
-  },
-  content: {
-    primary: neutral[900],
-    secondary: neutral[700],
-    muted: neutral[500],
-    inverse: '#ffffff',
-  },
-  border: {
-    subtle: neutral[200],
-    muted: neutral[300],
-    strong: neutral[400],
-  },
-};
+/**
+ * Color tokens type for TypeScript
+ */
+export type ColorTokens = typeof darkTheme;

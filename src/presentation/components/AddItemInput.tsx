@@ -6,14 +6,14 @@ import {
   type NativeSyntheticEvent,
   Pressable,
   StyleSheet,
-  Text,
   TextInput,
   type TextInputSubmitEditingEventData,
   View,
 } from 'react-native';
+import { theme } from '@legacy-design-system/theme/theme';
 
 import type { CreateItemFromFreeTextResult } from '@domain/shopping/use-cases/CreateItemFromFreeText';
-import { theme } from '@design-system/theme/theme';
+import { Text } from '@design-system/atoms';
 
 type AddItemInputProps = {
   value: string;

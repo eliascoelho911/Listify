@@ -1,0 +1,9 @@
+# Molecules directory
+#
+# Molecules are combinations of atoms. They can import:
+# - Atoms
+# - Tokens
+# - Theme
+# - Utils
+#
+# Examples: FormField (Label + Input), SearchBar (Input + Icon)

@@ -1,3 +1,10 @@
+/**
+ * Design System Tokens
+ *
+ * Barrel export de todos os tokens
+ */
+
+export * from './animations';
 export * from './colors';
 export * from './radii';
 export * from './shadows';

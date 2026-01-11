@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['universe/native', 'universe/shared/typescript', 'plugin:prettier/recommended'],
-  plugins: ['@typescript-eslint', 'simple-import-sort'],
+  plugins: ['@typescript-eslint', 'simple-import-sort', 'eslint-plugin-local-rules'],
   ignorePatterns: [
     'node_modules/',
     'dist/',
@@ -47,6 +47,11 @@ module.exports = {
     'simple-import-sort/exports': 'warn',
     '@typescript-eslint/explicit-module-boundary-types': 'warn',
     'import/order': 'off',
+    // Design System custom rules
+    'local-rules/no-hardcoded-values': 'error',
+    'local-rules/atomic-design-imports': 'error',
+    'local-rules/theme-provider-usage': 'error',
+    'local-rules/no-raw-text-import': 'error',
   },
   overrides: [
     {
@@ -78,6 +83,12 @@ module.exports = {
       env: {
         jest: true,
         node: true,
+      },
+    },
+    {
+      files: ['**/*.stories.{ts,tsx}', '**/*.styles.ts'],
+      rules: {
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
       },
     },
   ],

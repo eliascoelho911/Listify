@@ -1,50 +1,57 @@
-export type FontWeightKey = 'regular' | 'medium' | 'semibold' | 'bold';
+/**
+ * Design System Typography Tokens
+ *
+ * Fonts:
+ * - Body: Fira Sans (sans-serif)
+ * - Monospace: Fira Code (monospace)
+ *
+ * Weights, sizes, and line heights follow a consistent scale
+ */
 
-export type Typography = {
-  families: {
-    heading: string;
-    body: string;
-    mono: string;
-  };
-  weights: Record<FontWeightKey, '400' | '500' | '600' | '700'>;
-  sizes: {
-    xs: number;
-    sm: number;
-    md: number;
-    lg: number;
-    xl: number;
-    display: number;
-  };
-  lineHeights: {
-    tight: number;
-    normal: number;
-    relaxed: number;
-  };
+export const families = {
+  body: 'Fira Sans',
+  mono: 'Fira Code',
 };
 
-export const typography: Typography = {
-  families: {
-    heading: 'System',
-    body: 'System',
-    mono: 'Menlo',
-  },
-  weights: {
-    regular: '400',
-    medium: '500',
-    semibold: '600',
-    bold: '700',
-  },
-  sizes: {
-    xs: 12,
-    sm: 14,
-    md: 16,
-    lg: 18,
-    xl: 22,
-    display: 30,
-  },
-  lineHeights: {
-    tight: 1.15,
-    normal: 1.3,
-    relaxed: 1.45,
-  },
+export const weights = {
+  regular: '400' as const,
+  medium: '500' as const,
+  semibold: '600' as const,
+  bold: '700' as const,
+};
+
+/**
+ * Font sizes (in pixels for React Native)
+ * Scale: xs, sm, base, md, lg, xl, 2xl, 3xl, 4xl
+ */
+export const sizes = {
+  xs: 12,
+  sm: 14,
+  base: 16,
+  md: 18,
+  lg: 20,
+  xl: 24,
+  '2xl': 30,
+  '3xl': 36,
+  '4xl': 48,
+};
+
+/**
+ * Line heights (relative to font size)
+ * Scale: tight, normal, relaxed
+ */
+export const lineHeights = {
+  tight: 1.2,
+  normal: 1.5,
+  relaxed: 1.75,
+};
+
+/**
+ * Typography tokens type for TypeScript
+ */
+export type TypographyTokens = {
+  families: typeof families;
+  weights: typeof weights;
+  sizes: typeof sizes;
+  lineHeights: typeof lineHeights;
 };

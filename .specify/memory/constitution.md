@@ -60,16 +60,7 @@ Sync Impact Report
 
 **Racional**: lançamentos pequenos e frequentes aceleram aprendizado e reduzem complexidade.
 
-### VI. Playful Leve, Sem Competir com a Função
-
-- O tom “playful leve” MUST ser aplicado apenas em: empty states, micro-animações de feedback,
-  ícones/ilustrações sutis e pequenas mensagens de incentivo.
-- Elementos playful MUST NOT competir com velocidade e clareza (sem mascotes permanentes, gamificação invasiva
-  ou excesso de cores/textos “engraçadinhos”).
-
-**Racional**: leveza melhora a experiência, mas não pode atrapalhar o objetivo principal.
-
-### VII. Clean Architecture e Separação Clara de Camadas
+### VI. Clean Architecture e Separação Clara de Camadas
 
 - A base do produto MUST seguir Clean Architecture (UI, domínio e dados bem separados).
 - Lógica de negócio MUST residir no domínio (ex.: use cases) e MUST NOT ficar em componentes de UI.
@@ -77,7 +68,7 @@ Sync Impact Report
 
 **Racional**: separação de responsabilidades facilita evolução, testes e manutenção.
 
-### VIII. Testes para Regras de Negócio (Obrigatório)
+### VII. Testes para Regras de Negócio (Obrigatório)
 
 - Novos requisitos de negócio MUST vir acompanhados de testes automatizados.
 - Regras de domínio SHOULD ser cobertas por testes de unidade.
@@ -85,7 +76,7 @@ Sync Impact Report
 
 **Racional**: testes protegem as regras do produto e dão segurança para evoluir rápido.
 
-### IX. Internacionalização desde o Início (pt-BR + en)
+### VIII. Internacionalização desde o Início (pt-BR + en)
 
 - O app MUST suportar **português (pt-BR)** e **inglês (en)** desde o MVP.
 - Texto visível ao usuário (títulos, botões, labels, mensagens, empty states) MUST ser internacionalizável e MUST NOT ficar hard coded em componentes.

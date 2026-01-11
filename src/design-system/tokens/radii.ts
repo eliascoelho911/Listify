@@ -1,15 +1,22 @@
-export type Radii = {
-  none: number;
-  sm: number;
-  md: number;
-  lg: number;
-  pill: number;
+/**
+ * Design System Border Radius Tokens
+ *
+ * Escala "large" (valores maiores que médio)
+ * Para visual moderno e friendly
+ *
+ * Valores em pixels (React Native)
+ */
+
+export const radii = {
+  none: 0,
+  sm: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  full: 9999,
 };
 
-export const radii: Radii = {
-  none: 0,
-  sm: 6,
-  md: 10,
-  lg: 16,
-  pill: 999,
-};
+/**
+ * Radii tokens type for TypeScript
+ */
+export type RadiiTokens = typeof radii;
