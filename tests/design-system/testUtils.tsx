@@ -36,7 +36,10 @@ interface RenderWithThemeOptions extends Omit<RenderOptions, 'wrapper'> {
  * Renders a component wrapped in ThemeProvider for testing
  * Automatically handles async font loading and theme setup
  */
-export function renderWithTheme(component: React.ReactElement, options?: RenderWithThemeOptions) {
+export function renderWithTheme(
+  component: React.ReactElement,
+  options?: RenderWithThemeOptions,
+): ReturnType<typeof render> {
   const { initialMode = 'dark', ...renderOptions } = options ?? {};
 
   return render(<ThemeProvider initialMode={initialMode}>{component}</ThemeProvider>, {
