@@ -4,27 +4,23 @@
  * Wraps all stories with ThemeProvider and provides theme switching toolbar
  */
 
-import React from 'react';
+import { withBackgrounds } from '@storybook/addon-ondevice-backgrounds';
 import type { Preview } from '@storybook/react';
 import { View } from 'react-native';
-import { withBackgrounds } from '@storybook/addon-ondevice-backgrounds';
 
-import { ThemeProvider } from '../src/design-system/theme';
 
 const preview: Preview = {
   decorators: [
     withBackgrounds,
     (Story) => (
-      <ThemeProvider>
-        <View style={{ flex: 1, padding: 16 }}>
+        <View style={{ flex: 1 }}>
           <Story />
         </View>
-      </ThemeProvider>
     ),
   ],
   parameters: {
     backgrounds: {
-      default: 'dark',
+      default: 'high-contrast',
       values: [
         { name: 'dark', value: '#16191d' },
         { name: 'light', value: '#f8f9fa' },

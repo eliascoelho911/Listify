@@ -10,6 +10,7 @@
  */
 
 import React, { createContext, type ReactElement, useCallback, useEffect, useState } from 'react';
+import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -42,8 +43,6 @@ export function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
     async function loadResources() {
       try {
         // Load fonts from assets/fonts/
-        // TODO: Uncomment when fonts are downloaded
-        /*
         await Font.loadAsync({
           'Fira Sans': require('../../../assets/fonts/FiraSans-Regular.ttf'),
           'Fira Sans Medium': require('../../../assets/fonts/FiraSans-Medium.ttf'),
@@ -52,7 +51,6 @@ export function ThemeProvider({ children }: ThemeProviderProps): ReactElement {
           'Fira Code': require('../../../assets/fonts/FiraCode-Regular.ttf'),
           'Fira Code Medium': require('../../../assets/fonts/FiraCode-Medium.ttf'),
         });
-        */
 
         // Load theme preference from AsyncStorage
         const storedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
