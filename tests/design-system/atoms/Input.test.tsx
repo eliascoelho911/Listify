@@ -5,6 +5,7 @@
 import React from 'react';
 
 import { Input } from '@design-system/atoms/Input/Input';
+
 import { renderWithTheme } from '../testUtils';
 
 describe('Input Atom', () => {

@@ -5,6 +5,7 @@
 import React from 'react';
 
 import { Label } from '@design-system/atoms/Label/Label';
+
 import { renderWithTheme } from '../testUtils';
 
 describe('Label Atom', () => {

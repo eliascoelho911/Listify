@@ -5,6 +5,7 @@
 import React from 'react';
 
 import { Badge } from '@design-system/atoms/Badge/Badge';
+
 import { renderWithTheme } from '../testUtils';
 
 describe('Badge Atom', () => {
