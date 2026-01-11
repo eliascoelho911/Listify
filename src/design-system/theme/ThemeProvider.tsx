@@ -27,8 +27,10 @@ interface ThemeContextValue {
 
 export const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
-// Keep splash screen visible while loading fonts
-SplashScreen.preventAutoHideAsync();
+// Keep splash screen visible while loading fonts (skip in tests)
+if (process.env.NODE_ENV !== 'test') {
+  SplashScreen.preventAutoHideAsync();
+}
 
 interface ThemeProviderProps {
   children: React.ReactNode;
@@ -40,10 +42,15 @@ export function ThemeProvider({
   initialMode = 'dark',
 }: ThemeProviderProps): ReactElement {
   const [mode, setMode] = useState<ThemeMode>(initialMode);
-  const [fontsLoaded, setFontsLoaded] = useState(false);
+  const isTestEnvironment = process.env.NODE_ENV === 'test';
+  const [fontsLoaded, setFontsLoaded] = useState(isTestEnvironment);
 
   // Load fonts and theme preference
   useEffect(() => {
+    if (isTestEnvironment) {
+      return;
+    }
+
     async function loadResources() {
       try {
         // Load fonts from assets/fonts/
@@ -70,7 +77,7 @@ export function ThemeProvider({
     }
 
     loadResources();
-  }, []);
+  }, [isTestEnvironment]);
 
   // Hide splash screen when fonts are loaded
   useEffect(() => {

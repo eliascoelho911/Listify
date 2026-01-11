@@ -3,38 +3,45 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
 
 import { Label } from '@design-system/atoms/Label/Label';
-import { ThemeProvider } from '@design-system/theme';
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithTheme } from '../testUtils';
 
 describe('Label Atom', () => {
   it('should render with children text', () => {
-    const { root } = renderWithTheme(<Label>Test Label</Label>);
-    expect(root).toBeTruthy();
+    const { getByText } = renderWithTheme(<Label>Test Label</Label>);
+    expect(getByText('Test Label')).toBeTruthy();
   });
 
   it('should show required asterisk when required is true', () => {
     const { getByText } = renderWithTheme(<Label required>Required</Label>);
-    expect(getByText('Required')).toBeTruthy();
-    expect(getByText('*')).toBeTruthy();
+    expect(getByText(/Required/)).toBeTruthy();
+    expect(getByText(/\*/)).toBeTruthy();
   });
 
   it('should not show asterisk when required is false', () => {
     const { getByText, queryByText } = renderWithTheme(<Label>Not Required</Label>);
     expect(getByText('Not Required')).toBeTruthy();
-    expect(queryByText('*')).toBeNull();
+    expect(queryByText(/\*/)).toBeNull();
   });
 
   it('should apply disabled styling when disabled is true', () => {
     const { getByText } = renderWithTheme(<Label disabled>Disabled</Label>);
     const label = getByText('Disabled');
     expect(label).toBeTruthy();
-    expect(label.props.style).toEqual(
+
+    // Flatten style array to handle nested arrays
+    const flattenStyles = (styles: unknown[]): unknown[] => {
+      return styles.reduce<unknown[]>((acc, style) => {
+        if (Array.isArray(style)) {
+          return [...acc, ...flattenStyles(style)];
+        }
+        return [...acc, style];
+      }, []);
+    };
+
+    const flattenedStyles = flattenStyles(label.props.style);
+    expect(flattenedStyles).toEqual(
       expect.arrayContaining([expect.objectContaining({ opacity: 0.5 })]),
     );
   });
@@ -45,7 +52,7 @@ describe('Label Atom', () => {
         Required & Disabled
       </Label>,
     );
-    expect(getByText('Required & Disabled')).toBeTruthy();
-    expect(getByText('*')).toBeTruthy();
+    expect(getByText(/Required & Disabled/)).toBeTruthy();
+    expect(getByText(/\*/)).toBeTruthy();
   });
 });

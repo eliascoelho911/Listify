@@ -5,15 +5,9 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
 
 import { Button } from '@design-system/atoms/Button/Button';
-import { ThemeProvider } from '@design-system/theme';
-
-// Helper to render with ThemeProvider
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithTheme } from '../testUtils';
 
 describe('Button Atom', () => {
   describe('Variants', () => {
@@ -67,9 +61,10 @@ describe('Button Atom', () => {
 
   describe('States', () => {
     it('should be disabled when disabled prop is true', () => {
-      const { getByText } = renderWithTheme(<Button disabled>Disabled</Button>);
-      const button = getByText('Disabled').parent?.parent;
-      expect(button?.props.disabled).toBe(true);
+      const { UNSAFE_getByType } = renderWithTheme(<Button disabled>Disabled</Button>);
+      const { TouchableOpacity } = require('react-native');
+      const button = UNSAFE_getByType(TouchableOpacity);
+      expect(button.props.disabled).toBe(true);
     });
 
     it('should show loading indicator when loading is true', () => {
@@ -84,33 +79,35 @@ describe('Button Atom', () => {
     });
 
     it('should be disabled when loading', () => {
-      const { getByText } = renderWithTheme(<Button loading>Loading</Button>);
-      const button = getByText('Loading')?.parent?.parent?.parent;
-      expect(button?.props.disabled).toBe(true);
+      const { UNSAFE_getByType } = renderWithTheme(<Button loading>Loading</Button>);
+      const { TouchableOpacity } = require('react-native');
+      const button = UNSAFE_getByType(TouchableOpacity);
+      expect(button.props.disabled).toBe(true);
     });
   });
 
   describe('Props', () => {
     it('should call onPress when pressed', () => {
       const onPress = jest.fn();
-      const { getByText } = renderWithTheme(<Button onPress={onPress}>Press Me</Button>);
+      const { UNSAFE_getByType } = renderWithTheme(<Button onPress={onPress}>Press Me</Button>);
+      const { TouchableOpacity } = require('react-native');
+      const button = UNSAFE_getByType(TouchableOpacity);
 
-      const button = getByText('Press Me').parent?.parent;
-      button?.props.onPress();
+      button.props.onPress();
 
       expect(onPress).toHaveBeenCalledTimes(1);
     });
 
     it('should not call onPress when disabled', () => {
       const onPress = jest.fn();
-      const { getByText } = renderWithTheme(
+      const { UNSAFE_getByType } = renderWithTheme(
         <Button disabled onPress={onPress}>
           Disabled
         </Button>,
       );
-
-      const button = getByText('Disabled').parent?.parent;
-      expect(button?.props.disabled).toBe(true);
+      const { TouchableOpacity } = require('react-native');
+      const button = UNSAFE_getByType(TouchableOpacity);
+      expect(button.props.disabled).toBe(true);
     });
   });
 });

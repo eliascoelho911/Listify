@@ -3,7 +3,6 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
 
 import { Text } from '@design-system/atoms';
 import {
@@ -14,11 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@design-system/atoms/Card/Card';
-import { ThemeProvider } from '@design-system/theme';
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithTheme } from '../testUtils';
 
 describe('Card Atoms', () => {
   describe('Card', () => {

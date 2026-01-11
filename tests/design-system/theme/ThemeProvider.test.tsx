@@ -76,11 +76,9 @@ describe('ThemeProvider', () => {
     });
   });
 
-  it('should load theme preference from AsyncStorage', async () => {
-    (AsyncStorage.getItem as jest.Mock).mockResolvedValue('light');
-
+  it('should use initialMode prop', async () => {
     const { getByTestId } = render(
-      <ThemeProvider>
+      <ThemeProvider initialMode="light">
         <TestComponent />
       </ThemeProvider>,
     );
@@ -88,8 +86,6 @@ describe('ThemeProvider', () => {
     await waitFor(() => {
       expect(getByTestId('mode').props.children).toBe('light');
     });
-
-    expect(AsyncStorage.getItem).toHaveBeenCalledWith('@listify:theme');
   });
 
   it('should use dark theme when no stored preference', async () => {

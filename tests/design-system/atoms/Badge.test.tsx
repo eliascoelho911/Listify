@@ -3,14 +3,9 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
 
 import { Badge } from '@design-system/atoms/Badge/Badge';
-import { ThemeProvider } from '@design-system/theme';
-
-const renderWithTheme = (component: React.ReactElement) => {
-  return render(<ThemeProvider>{component}</ThemeProvider>);
-};
+import { renderWithTheme } from '../testUtils';
 
 describe('Badge Atom', () => {
   describe('Variants', () => {
