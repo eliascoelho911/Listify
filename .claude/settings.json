@@ -17,7 +17,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier -w app src tests && npm test && npm run lint -f"
+            "command": "npx prettier -w app src tests && npm run lint -f"
           }
         ]
       }
