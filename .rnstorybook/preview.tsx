@@ -12,13 +12,17 @@ import { ThemeProvider } from '../src/design-system/theme';
 
 const preview: Preview = {
   decorators: [
-    (Story) => (
-      <ThemeProvider>
-        <View style={{ flex: 1, padding: 16, backgroundColor: '#16191d' }}>
-          <Story />
-        </View>
-      </ThemeProvider>
-    ),
+    (Story, context) => {
+      const backgroundColor = context.globals?.backgrounds?.value || '#16191d';
+
+      return (
+        <ThemeProvider>
+          <View style={{ flex: 1, padding: 16, backgroundColor }}>
+            <Story />
+          </View>
+        </ThemeProvider>
+      );
+    },
   ],
   parameters: {
     backgrounds: {
@@ -26,6 +30,10 @@ const preview: Preview = {
       values: [
         { name: 'dark', value: '#16191d' },
         { name: 'light', value: '#f8f9fa' },
+        { name: 'white', value: '#ffffff' },
+        { name: 'black', value: '#000000' },
+        { name: 'gray', value: '#808080' },
+        { name: 'high-contrast', value: '#ffff00' },
       ],
     },
     controls: {

@@ -1,9 +1,12 @@
-/**
- * Storybook Entry Point
- *
- * This file exports the Storybook component to be rendered in the app
- */
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { view } from './storybook';
+import { view } from "./storybook.requires";
 
-export default view;
+const StorybookUIRoot = view.getStorybookUI({
+  storage: {
+    getItem: AsyncStorage.getItem,
+    setItem: AsyncStorage.setItem,
+  },
+});
+
+export default StorybookUIRoot;
