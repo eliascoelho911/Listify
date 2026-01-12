@@ -255,7 +255,7 @@ export class InboxDrizzleRepo implements InboxRepository {
           },
         },
       },
-      orderBy: [desc(userInputs.updatedAt)],
+      orderBy: [desc(userInputs.createdAt)],
       limit: limit + 1,
       offset,
     });
