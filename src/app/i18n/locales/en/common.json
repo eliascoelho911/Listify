@@ -170,5 +170,62 @@
     "congelados": "Frozen",
     "pet": "Pet",
     "outros": "Other"
+  },
+  "inbox": {
+    "title": "Inbox",
+    "header": {
+      "menu": "Open navigation menu"
+    },
+    "search": {
+      "placeholder": "Search..."
+    },
+    "input": {
+      "placeholder": "Type something...",
+      "send": "Send"
+    },
+    "pinnedLists": {
+      "title": "Your top lists",
+      "empty": "No pinned lists"
+    },
+    "list": {
+      "empty": {
+        "title": "No items yet",
+        "subtitle": "Start by typing something below"
+      }
+    },
+    "actions": {
+      "edit": "Edit",
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "save": "Save"
+    },
+    "dialog": {
+      "deleteTitle": "Delete item?",
+      "deleteDescription": "This action cannot be undone.",
+      "discardDraftTitle": "Discard draft?",
+      "discardDraftDescription": "You have unsaved text. Do you want to discard it?"
+    },
+    "dates": {
+      "today": "Today",
+      "yesterday": "Yesterday"
+    },
+    "errors": {
+      "createFailed": "Failed to create item",
+      "updateFailed": "Failed to update",
+      "deleteFailed": "Failed to delete",
+      "loadFailed": "Failed to load items",
+      "generic": "Something went wrong. Please try again.",
+      "dismiss": "Dismiss"
+    },
+    "editing": {
+      "indicator": "Editing",
+      "cancel": "Cancel editing"
+    },
+    "delete": {
+      "title": "Delete this item?",
+      "description": "This action cannot be undone.",
+      "confirm": "Delete",
+      "cancel": "Cancel"
+    }
   }
 }

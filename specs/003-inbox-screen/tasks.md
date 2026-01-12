@@ -26,11 +26,11 @@
 
 **Propósito**: Instalação de dependências e estrutura inicial do projeto
 
-- [ ] T001 Instalar dependências: `npx expo install @shopify/flash-list @react-navigation/drawer react-native-reanimated`
-- [ ] T002 [P] Criar estrutura de diretórios do domínio inbox em src/domain/inbox/
-- [ ] T003 [P] Criar estrutura de diretórios de data inbox em src/data/inbox/mappers/
-- [ ] T004 [P] Criar estrutura de diretórios de componentes em src/presentation/components/inbox/
-- [ ] T005 [P] Criar estrutura de diretórios de state em src/presentation/state/inbox/
+- [X] T001 Instalar dependências: `npx expo install @shopify/flash-list @react-navigation/drawer react-native-reanimated`
+- [X] T002 [P] Criar estrutura de diretórios do domínio inbox em src/domain/inbox/
+- [X] T003 [P] Criar estrutura de diretórios de data inbox em src/data/inbox/mappers/
+- [X] T004 [P] Criar estrutura de diretórios de componentes em src/presentation/components/inbox/
+- [X] T005 [P] Criar estrutura de diretórios de state em src/presentation/state/inbox/
 
 ---
 
@@ -42,59 +42,59 @@
 
 ### Entidades e Types
 
-- [ ] T006 [P] Criar entity Tag em src/domain/inbox/entities/Tag.ts conforme contracts/entities.ts
-- [ ] T007 [P] Criar entity UserInput em src/domain/inbox/entities/UserInput.ts conforme contracts/entities.ts
-- [ ] T008 [P] Criar types PaginatedUserInputs e DateGroup em src/domain/inbox/entities/types.ts
-- [ ] T009 [P] Criar barrel export em src/domain/inbox/entities/index.ts
-- [ ] T010 [P] Criar value object TagName em src/domain/inbox/value-objects/TagName.ts com validação (max 30 chars, lowercase, regex)
-- [ ] T011 Criar teste para TagName em tests/domain/inbox/TagName.test.ts
+- [X] T006 [P] Criar entity Tag em src/domain/inbox/entities/Tag.ts conforme contracts/entities.ts
+- [X] T007 [P] Criar entity UserInput em src/domain/inbox/entities/UserInput.ts conforme contracts/entities.ts
+- [X] T008 [P] Criar types PaginatedUserInputs e DateGroup em src/domain/inbox/entities/types.ts
+- [X] T009 [P] Criar barrel export em src/domain/inbox/entities/index.ts
+- [X] T010 [P] Criar value object TagName em src/domain/inbox/value-objects/TagName.ts com validação (max 30 chars, lowercase, regex)
+- [X] T011 Criar teste para TagName em tests/domain/inbox/TagName.test.ts
 
 ### Constants e Errors
 
-- [ ] T012 [P] Criar constants em src/domain/inbox/constants.ts (MAX_TEXT_LENGTH, MAX_TAG_LENGTH, DEFAULT_PAGE_SIZE, TAG_REGEX)
-- [ ] T013 [P] Criar domain errors em src/domain/inbox/use-cases/errors.ts conforme contracts/use-cases.ts (EmptyTextError, TextTooLongError, UserInputNotFoundError, InvalidTagNameError)
+- [X] T012 [P] Criar constants em src/domain/inbox/constants.ts (MAX_TEXT_LENGTH, MAX_TAG_LENGTH, DEFAULT_PAGE_SIZE, TAG_REGEX)
+- [X] T013 [P] Criar domain errors em src/domain/inbox/use-cases/errors.ts conforme contracts/use-cases.ts (EmptyTextError, TextTooLongError, UserInputNotFoundError, InvalidTagNameError)
 
 ### Repository Port
 
-- [ ] T014 Criar interface InboxRepository em src/domain/inbox/ports/InboxRepository.ts conforme contracts/InboxRepository.ts
+- [X] T014 Criar interface InboxRepository em src/domain/inbox/ports/InboxRepository.ts conforme contracts/InboxRepository.ts
 
 ### Migration SQLite
 
-- [ ] T015 Criar Migration #2 (0002_inbox) em src/infra/storage/sqlite/migrations/index.ts com tabelas user_inputs, tags, input_tags
+- [X] T015 Criar Migration #2 (0002_inbox) em src/infra/storage/sqlite/migrations/index.ts com tabelas user_inputs, tags, input_tags
 
 ### Mappers (Data Layer)
 
-- [ ] T016 [P] Criar SQLite row types em src/data/inbox/mappers/types.ts (UserInputRow, TagRow, InputTagRow)
-- [ ] T017 Criar mappers em src/data/inbox/mappers/sqliteMappers.ts (mapUserInputRowToEntity, mapTagRowToEntity, mapEntityToRow)
-- [ ] T018 Criar teste para mappers em tests/data/inbox/sqliteMappers.test.ts
+- [X] T016 [P] Criar SQLite row types em src/data/inbox/mappers/types.ts (UserInputRow, TagRow, InputTagRow)
+- [X] T017 Criar mappers em src/data/inbox/mappers/sqliteMappers.ts (mapUserInputRowToEntity, mapTagRowToEntity, mapEntityToRow)
+- [X] T018 Criar teste para mappers em tests/data/inbox/sqliteMappers.test.ts
 
 ### Repository Implementation
 
-- [ ] T019 Implementar InboxSqliteRepo em src/infra/storage/sqlite/InboxSqliteRepo.ts seguindo padrão do ShoppingSqliteRepo
-- [ ] T019b Criar teste de integração para InboxSqliteRepo em tests/infra/storage/sqlite/InboxSqliteRepo.test.ts
+- [X] T019 Implementar InboxSqliteRepo em src/infra/storage/sqlite/InboxSqliteRepo.ts seguindo padrão do ShoppingSqliteRepo
+- [X] T019b Criar teste de integração para InboxSqliteRepo em tests/infra/storage/sqlite/InboxSqliteRepo.test.ts
 
 ### DI Container
 
-- [ ] T020 [P] Adicionar InboxRepository type em src/app/di/types.ts
-- [ ] T021 Atualizar container em src/app/di/container.ts para criar InboxSqliteRepo
-- [ ] T022 Criar AppDependenciesProvider em src/app/di/AppDependenciesProvider.tsx com loading/error states
-- [ ] T023 Criar hook useInboxRepository em src/app/di/AppDependenciesProvider.tsx
+- [X] T020 [P] Adicionar InboxRepository type em src/app/di/types.ts
+- [X] T021 Atualizar container em src/app/di/container.ts para criar InboxSqliteRepo
+- [X] T022 Criar AppDependenciesProvider em src/app/di/AppDependenciesProvider.tsx com loading/error states
+- [X] T023 Criar hook useInboxRepository em src/app/di/AppDependenciesProvider.tsx
 
 ### Testes DI
 
-- [ ] T024 [P] Criar estrutura de testes DI em tests/app/di/
-- [ ] T025 [P] Criar teste para AppDependenciesProvider em tests/app/di/AppDependenciesProvider.test.tsx
-- [ ] T026 Criar teste para container (buildDependencies) em tests/app/di/container.test.ts
+- [X] T024 [P] Criar estrutura de testes DI em tests/app/di/
+- [X] T025 [P] Criar teste para AppDependenciesProvider em tests/app/di/AppDependenciesProvider.test.tsx
+- [X] T026 Criar teste para container (buildDependencies) em tests/app/di/container.test.ts
 
 ### i18n (Adicionar ao common.json existente)
 
-- [ ] T027 [P] Adicionar chaves inbox.* em src/app/i18n/locale/pt-BR/common.json
-- [ ] T028 [P] Adicionar chaves inbox.* em src/app/i18n/locale/en/common.json
+- [X] T027 [P] Adicionar chaves inbox.* em src/app/i18n/locale/pt-BR/common.json
+- [X] T028 [P] Adicionar chaves inbox.* em src/app/i18n/locale/en/common.json
 
 ### Use Cases Core
 
-- [ ] T029 Criar função extractTags (pure function) em src/domain/inbox/use-cases/extractTags.ts
-- [ ] T030 Criar teste para extractTags em tests/domain/inbox/extractTags.test.ts
+- [X] T029 Criar função extractTags (pure function) em src/domain/inbox/use-cases/extractTags.ts
+- [X] T030 Criar teste para extractTags em tests/domain/inbox/extractTags.test.ts
 
 **Checkpoint**: Base pronta — implementação de user stories pode começar
 
@@ -110,47 +110,47 @@
 
 > **InputBar**: Molecule que combina Input + IconButton para entrada de dados com ação de envio. Reutilizável em qualquer contexto que precise de input com botão de ação.
 
-- [ ] T031 [US1] Criar InputBar molecule via CLI: `npm run ds generate molecule InputBar`
-- [ ] T032 [US1] Implementar InputBar.types.ts com props: placeholder, value, onChangeText, onSubmit, isSubmitting, disabled, submitIcon
-- [ ] T033 [US1] Implementar InputBar.styles.ts usando tokens do theme (Input + IconButton layout)
-- [ ] T034 [US1] Implementar InputBar.tsx combinando Input atom + IconButton atom
-- [ ] T035 [US1] Criar InputBar.stories.tsx com casos: Default, WithValue, Submitting, Disabled, CustomIcon
-- [ ] T036 [US1] Criar teste InputBar em tests/design-system/molecules/InputBar.test.tsx
+- [X] T031 [US1] Criar InputBar molecule via CLI: `npm run ds generate molecule InputBar`
+- [X] T032 [US1] Implementar InputBar.types.ts com props: placeholder, value, onChangeText, onSubmit, isSubmitting, disabled, submitIcon
+- [X] T033 [US1] Implementar InputBar.styles.ts usando tokens do theme (Input + IconButton layout)
+- [X] T034 [US1] Implementar InputBar.tsx combinando Input atom + IconButton atom
+- [X] T035 [US1] Criar InputBar.stories.tsx com casos: Default, WithValue, Submitting, Disabled, CustomIcon
+- [X] T036 [US1] Criar teste InputBar em tests/design-system/molecules/InputBar.test.tsx
 
 ### Design System - SuggestionsPopUp Molecule
 
 > **SuggestionsPopUp**: Molecule inspirada no Command do Shadcn para exibir lista de sugestões acima de um input. Pode ser usada para autocomplete de tags, comandos, etc.
 
-- [ ] T037 [US1] Criar SuggestionsPopUp molecule via CLI: `npm run ds generate molecule SuggestionsPopUp`
-- [ ] T038 [US1] Implementar SuggestionsPopUp.types.ts com props: items[], onSelect, visible, position, renderItem?, emptyMessage
-- [ ] T039 [US1] Implementar SuggestionsPopUp.styles.ts usando tokens (Card-like container, list items)
-- [ ] T040 [US1] Implementar SuggestionsPopUp.tsx com FlatList de sugestões e animação de entrada
-- [ ] T041 [US1] Criar SuggestionsPopUp.stories.tsx com casos: Default, Empty, Loading, ManyItems, CustomRender
-- [ ] T042 [US1] Criar teste SuggestionsPopUp em tests/design-system/molecules/SuggestionsPopUp.test.tsx
+- [X] T037 [US1] Criar SuggestionsPopUp molecule via CLI: `npm run ds generate molecule SuggestionsPopUp`
+- [X] T038 [US1] Implementar SuggestionsPopUp.types.ts com props: items[], onSelect, visible, position, renderItem?, emptyMessage
+- [X] T039 [US1] Implementar SuggestionsPopUp.styles.ts usando tokens (Card-like container, list items)
+- [X] T040 [US1] Implementar SuggestionsPopUp.tsx com FlatList de sugestões e animação de entrada
+- [X] T041 [US1] Criar SuggestionsPopUp.stories.tsx com casos: Default, Empty, Loading, ManyItems, CustomRender
+- [X] T042 [US1] Criar teste SuggestionsPopUp em tests/design-system/molecules/SuggestionsPopUp.test.tsx
 
 ### Testes para User Story 1 ⚠️
 
-- [ ] T043 [P] [US1] Criar teste CreateUserInput em tests/domain/inbox/CreateUserInput.test.ts
-- [ ] T044 [P] [US1] Criar testUtils com factories em tests/domain/inbox/testUtils.ts
+- [X] T043 [P] [US1] Criar teste CreateUserInput em tests/domain/inbox/CreateUserInput.test.ts
+- [X] T044 [P] [US1] Criar testUtils com factories em tests/domain/inbox/testUtils.ts
 
 ### Implementação Use Case
 
-- [ ] T045 [US1] Implementar CreateUserInput use case em src/domain/inbox/use-cases/CreateUserInput.ts
+- [X] T045 [US1] Implementar CreateUserInput use case em src/domain/inbox/use-cases/CreateUserInput.ts
 
 ### Store (State Management)
 
-- [ ] T046 [US1] Criar inboxStore com Zustand em src/presentation/state/inbox/inboxStore.ts (state: inputs, inputText, isSubmitting, tagSuggestions)
-- [ ] T047 [US1] Criar InboxStoreProvider em src/presentation/state/inbox/InboxStoreProvider.tsx
-- [ ] T048 [US1] Criar hook useInboxVM em src/presentation/hooks/useInboxVM.ts
+- [X] T046 [US1] Criar inboxStore com Zustand em src/presentation/state/inbox/inboxStore.ts (state: inputs, inputText, isSubmitting, tagSuggestions)
+- [X] T047 [US1] Criar InboxStoreProvider em src/presentation/state/inbox/InboxStoreProvider.tsx
+- [X] T048 [US1] Criar hook useInboxVM em src/presentation/hooks/useInboxVM.ts
 
 ### Componentes UI Inbox (usam DS molecules)
 
-- [ ] T049 [US1] Criar InboxBottomBar em src/presentation/components/inbox/InboxBottomBar.tsx usando InputBar molecule + lógica de detecção de tags
-- [ ] T050 [US1] Criar InboxTagSuggestions em src/presentation/components/inbox/InboxTagSuggestions.tsx usando SuggestionsPopUp molecule + dados do store
+- [X] T049 [US1] Criar InboxBottomBar em src/presentation/components/inbox/InboxBottomBar.tsx usando InputBar molecule + lógica de detecção de tags
+- [X] T050 [US1] Criar InboxTagSuggestions em src/presentation/components/inbox/InboxTagSuggestions.tsx usando SuggestionsPopUp molecule + dados do store
 
 ### Integração na Tela
 
-- [ ] T051 [US1] Criar InboxScreen básica em src/presentation/screens/InboxScreen.tsx com InboxBottomBar funcional
+- [X] T051 [US1] Criar InboxScreen básica em src/presentation/screens/InboxScreen.tsx com InboxBottomBar funcional
 
 **Checkpoint**: User Story 1 funcional - usuário pode criar inputs com tags
 
@@ -166,29 +166,29 @@
 
 > **DateBadge**: Atom para exibir badges de data como separadores (sticky headers). Variante visual do Badge para contexto temporal.
 
-- [ ] T052 [US2] Criar DateBadge atom via CLI: `npm run ds generate atom DateBadge`
-- [ ] T053 [US2] Implementar DateBadge.types.ts com props: label (string), variant?: 'today' | 'yesterday' | 'default'
-- [ ] T054 [US2] Implementar DateBadge.styles.ts com estilo de badge de data (muted background, centered)
-- [ ] T055 [US2] Implementar DateBadge.tsx
-- [ ] T056 [US2] Criar DateBadge.stories.tsx com casos: Today, Yesterday, OtherDate, AllVariants
-- [ ] T057 [US2] Criar teste DateBadge em tests/design-system/atoms/DateBadge.test.tsx
+- [X] T052 [US2] Criar DateBadge atom via CLI: `npm run ds generate atom DateBadge`
+- [X] T053 [US2] Implementar DateBadge.types.ts com props: label (string), variant?: 'today' | 'yesterday' | 'default'
+- [X] T054 [US2] Implementar DateBadge.styles.ts com estilo de badge de data (muted background, centered)
+- [X] T055 [US2] Implementar DateBadge.tsx
+- [X] T056 [US2] Criar DateBadge.stories.tsx com casos: Today, Yesterday, OtherDate, AllVariants
+- [X] T057 [US2] Criar teste DateBadge em tests/design-system/atoms/DateBadge.test.tsx
 
 ### Testes para User Story 2 ⚠️
 
-- [ ] T058 [P] [US2] Criar teste GetUserInputs em tests/domain/inbox/GetUserInputs.test.ts
-- [ ] T059 [P] [US2] Criar teste GetUserInputsGrouped em tests/domain/inbox/GetUserInputsGrouped.test.ts
+- [X] T058 [P] [US2] Criar teste GetUserInputs em tests/domain/inbox/GetUserInputs.test.ts
+- [X] T059 [P] [US2] Criar teste GetUserInputsGrouped em tests/domain/inbox/GetUserInputsGrouped.test.ts
 
 ### Implementação Use Cases
 
-- [ ] T060 [US2] Implementar GetUserInputs use case em src/domain/inbox/use-cases/GetUserInputs.ts
-- [ ] T061 [US2] Implementar GetUserInputsGrouped use case em src/domain/inbox/use-cases/GetUserInputsGrouped.ts (agrupa por data com labels)
+- [X] T060 [US2] Implementar GetUserInputs use case em src/domain/inbox/use-cases/GetUserInputs.ts
+- [X] T061 [US2] Implementar GetUserInputsGrouped use case em src/domain/inbox/use-cases/GetUserInputsGrouped.ts (agrupa por data com labels)
 
 ### Componentes UI para US2
 
-- [ ] T062 [US2] Criar componente UserInputCard em src/presentation/components/inbox/UserInputCard.tsx (text, tags badges, horário)
-- [ ] T063 [US2] Implementar FlashList com sticky headers (DateBadge) em InboxScreen.tsx
-- [ ] T064 [US2] Adicionar empty state quando lista vazia em InboxScreen.tsx
-- [ ] T065 [US2] Implementar scroll infinito (loadMore) no inboxStore e InboxScreen
+- [X] T062 [US2] Criar componente UserInputCard em src/presentation/components/inbox/UserInputCard.tsx (text, tags badges, horário)
+- [X] T063 [US2] Implementar FlashList com sticky headers (DateBadge) em InboxScreen.tsx
+- [X] T064 [US2] Adicionar empty state quando lista vazia em InboxScreen.tsx
+- [X] T065 [US2] Implementar scroll infinito (loadMore) no inboxStore e InboxScreen
 
 **Checkpoint**: User Stories 1 e 2 funcionais - criar e visualizar inputs
 
@@ -204,41 +204,41 @@
 
 > **ContextMenu**: Molecule para menu de opções contextual (long press). Inspirado no DropdownMenu do Shadcn.
 
-- [ ] T066 [US3] Criar ContextMenu molecule via CLI: `npm run ds generate molecule ContextMenu`
-- [ ] T067 [US3] Implementar ContextMenu.types.ts com props: items[], visible, onClose, anchorPosition
-- [ ] T068 [US3] Implementar ContextMenu.styles.ts usando tokens (Card elevated, list items with icons)
-- [ ] T069 [US3] Implementar ContextMenu.tsx com overlay + menu posicionado
-- [ ] T070 [US3] Criar ContextMenu.stories.tsx com casos: Default, WithIcons, Destructive, ManyItems
-- [ ] T071 [US3] Criar teste ContextMenu em tests/design-system/molecules/ContextMenu.test.tsx
+- [X] T066 [US3] Criar ContextMenu molecule via CLI: `npm run ds generate molecule ContextMenu`
+- [X] T067 [US3] Implementar ContextMenu.types.ts com props: items[], visible, onClose, anchorPosition
+- [X] T068 [US3] Implementar ContextMenu.styles.ts usando tokens (Card elevated, list items with icons)
+- [X] T069 [US3] Implementar ContextMenu.tsx com overlay + menu posicionado
+- [X] T070 [US3] Criar ContextMenu.stories.tsx com casos: Default, WithIcons, Destructive, ManyItems
+- [X] T071 [US3] Criar teste ContextMenu em tests/design-system/molecules/ContextMenu.test.tsx
 
 ### Design System - AlertDialog Molecule
 
 > **AlertDialog**: Molecule para diálogos de confirmação. Baseado no AlertDialog do Shadcn.
 
-- [ ] T072 [US3] Criar AlertDialog molecule via CLI: `npm run ds generate molecule AlertDialog`
-- [ ] T073 [US3] Implementar AlertDialog.types.ts com props: visible, title, description, confirmLabel, cancelLabel, onConfirm, onCancel, variant
-- [ ] T074 [US3] Implementar AlertDialog.styles.ts usando tokens (Modal overlay, Card content)
-- [ ] T075 [US3] Implementar AlertDialog.tsx com Modal + Card + Buttons
-- [ ] T076 [US3] Criar AlertDialog.stories.tsx com casos: Default, Destructive, Loading, CustomLabels
-- [ ] T077 [US3] Criar teste AlertDialog em tests/design-system/molecules/AlertDialog.test.tsx
+- [X] T072 [US3] Criar AlertDialog molecule via CLI: `npm run ds generate molecule AlertDialog`
+- [X] T073 [US3] Implementar AlertDialog.types.ts com props: visible, title, description, confirmLabel, cancelLabel, onConfirm, onCancel, variant
+- [X] T074 [US3] Implementar AlertDialog.styles.ts usando tokens (Modal overlay, Card content)
+- [X] T075 [US3] Implementar AlertDialog.tsx com Modal + Card + Buttons
+- [X] T076 [US3] Criar AlertDialog.stories.tsx com casos: Default, Destructive, Loading, CustomLabels
+- [X] T077 [US3] Criar teste AlertDialog em tests/design-system/molecules/AlertDialog.test.tsx
 
 ### Testes para User Story 3 ⚠️
 
-- [ ] T078 [P] [US3] Criar teste UpdateUserInput em tests/domain/inbox/UpdateUserInput.test.ts
-- [ ] T079 [P] [US3] Criar teste DeleteUserInput em tests/domain/inbox/DeleteUserInput.test.ts
+- [X] T078 [P] [US3] Criar teste UpdateUserInput em tests/domain/inbox/UpdateUserInput.test.ts
+- [X] T079 [P] [US3] Criar teste DeleteUserInput em tests/domain/inbox/DeleteUserInput.test.ts
 
 ### Implementação Use Cases
 
-- [ ] T080 [US3] Implementar UpdateUserInput use case em src/domain/inbox/use-cases/UpdateUserInput.ts
-- [ ] T081 [US3] Implementar DeleteUserInput use case em src/domain/inbox/use-cases/DeleteUserInput.ts
+- [X] T080 [US3] Implementar UpdateUserInput use case em src/domain/inbox/use-cases/UpdateUserInput.ts
+- [X] T081 [US3] Implementar DeleteUserInput use case em src/domain/inbox/use-cases/DeleteUserInput.ts
 
 ### Componentes UI para US3
 
-- [ ] T082 [US3] Criar InputOptionsMenu em src/presentation/components/inbox/InputOptionsMenu.tsx usando ContextMenu molecule
-- [ ] T083 [US3] Criar DeleteConfirmDialog em src/presentation/components/inbox/DeleteConfirmDialog.tsx usando AlertDialog molecule
-- [ ] T084 [US3] Adicionar long press handler no UserInputCard para abrir InputOptionsMenu
-- [ ] T085 [US3] Implementar modo de edição na InputBar: carregar texto/tags do input selecionado, indicador visual de edição, botão cancelar, diálogo de confirmação se houver rascunho
-- [ ] T086 [US3] Adicionar actions update/delete no inboxStore com optimistic updates
+- [X] T082 [US3] Criar InputOptionsMenu em src/presentation/components/inbox/InputOptionsMenu.tsx usando ContextMenu molecule
+- [X] T083 [US3] Criar DeleteConfirmDialog em src/presentation/components/inbox/DeleteConfirmDialog.tsx usando AlertDialog molecule
+- [X] T084 [US3] Adicionar long press handler no UserInputCard para abrir InputOptionsMenu
+- [X] T085 [US3] Implementar modo de edição na InputBar: carregar texto/tags do input selecionado, indicador visual de edição, botão cancelar, diálogo de confirmação se houver rascunho
+- [X] T086 [US3] Adicionar actions update/delete no inboxStore com optimistic updates
 
 **Checkpoint**: User Stories 1, 2 e 3 funcionais - CRUD completo de inputs
 
@@ -252,40 +252,40 @@
 
 ### Design System - Logo Atom
 
-- [ ] T087 [US4] Criar Logo atom via CLI: `npm run ds generate atom Logo`
-- [ ] T088 [US4] Implementar Logo.types.ts com props: size?: 'sm' | 'md' | 'lg'
-- [ ] T089 [US4] Implementar Logo.styles.ts usando tokens (Fira Sans Bold, primary color)
-- [ ] T090 [US4] Implementar Logo.tsx com Text estilizado "Listify"
-- [ ] T091 [US4] Criar Logo.stories.tsx com casos: Small, Medium, Large, AllSizes
-- [ ] T092 [US4] Criar teste Logo em tests/design-system/atoms/Logo.test.tsx
+- [X] T087 [US4] Criar Logo atom via CLI: `npm run ds generate atom Logo`
+- [X] T088 [US4] Implementar Logo.types.ts com props: size?: 'sm' | 'md' | 'lg'
+- [X] T089 [US4] Implementar Logo.styles.ts usando tokens (Fira Sans Bold, primary color)
+- [X] T090 [US4] Implementar Logo.tsx com Text estilizado "Listify"
+- [X] T091 [US4] Criar Logo.stories.tsx com casos: Small, Medium, Large, AllSizes
+- [X] T092 [US4] Criar teste Logo em tests/design-system/atoms/Logo.test.tsx
 
 ### Design System - EmptyState Molecule
 
 > **EmptyState**: Molecule para estados vazios com ícone, título e descrição opcional.
 
-- [ ] T093 [US4] Criar EmptyState molecule via CLI: `npm run ds generate molecule EmptyState`
-- [ ] T094 [US4] Implementar EmptyState.types.ts com props: icon?, title, description?, action?
-- [ ] T095 [US4] Implementar EmptyState.styles.ts usando tokens (centered layout, muted colors)
-- [ ] T096 [US4] Implementar EmptyState.tsx
-- [ ] T097 [US4] Criar EmptyState.stories.tsx com casos: Default, WithIcon, WithAction, Minimal
-- [ ] T098 [US4] Criar teste EmptyState em tests/design-system/molecules/EmptyState.test.tsx
+- [X] T093 [US4] Criar EmptyState molecule via CLI: `npm run ds generate molecule EmptyState`
+- [X] T094 [US4] Implementar EmptyState.types.ts com props: icon?, title, description?, action?
+- [X] T095 [US4] Implementar EmptyState.styles.ts usando tokens (centered layout, muted colors)
+- [X] T096 [US4] Implementar EmptyState.tsx
+- [X] T097 [US4] Criar EmptyState.stories.tsx com casos: Default, WithIcon, WithAction, Minimal
+- [X] T098 [US4] Criar teste EmptyState em tests/design-system/molecules/EmptyState.test.tsx
 
 ### Drawer Navigation
 
-- [ ] T099 [US4] Criar drawer layout em app/(drawer)/_layout.tsx com Expo Router Drawer
-- [ ] T100 [US4] Criar CustomDrawerContent em src/presentation/components/navigation/CustomDrawerContent.tsx
-- [ ] T101 [US4] Criar rota inbox em app/(drawer)/inbox/index.tsx
-- [ ] T102 [US4] Criar rota settings placeholder em app/(drawer)/settings/index.tsx
+- [X] T099 [US4] Criar drawer layout em app/(drawer)/_layout.tsx com Expo Router Drawer
+- [X] T100 [US4] Criar CustomDrawerContent em src/presentation/components/navigation/CustomDrawerContent.tsx
+- [X] T101 [US4] Criar rota inbox em app/(drawer)/inbox/index.tsx
+- [X] T102 [US4] Criar rota settings placeholder em app/(drawer)/settings/index.tsx
 
 ### Integração Root Layout
 
-- [ ] T103 [US4] Atualizar app/_layout.tsx para incluir AppDependenciesProvider
-- [ ] T104 [US4] Adicionar Navbar com Logo e IconButton menu no InboxScreen
+- [X] T103 [US4] Atualizar app/_layout.tsx para incluir AppDependenciesProvider
+- [X] T104 [US4] Adicionar Navbar com Logo e IconButton menu no InboxScreen
 
 ### Componentes Visuais
 
-- [ ] T105 [US4] Criar PinnedListsSection em src/presentation/components/inbox/PinnedListsSection.tsx usando EmptyState molecule
-- [ ] T106 [US4] Adicionar SearchBar visual (não funcional) no InboxScreen usando molecule existente
+- [X] T105 [US4] Criar PinnedListsSection em src/presentation/components/inbox/PinnedListsSection.tsx usando EmptyState molecule
+- [X] T106 [US4] Adicionar SearchBar visual (não funcional) no InboxScreen usando molecule existente
 
 **Checkpoint**: User Stories 1-4 funcionais - interface completa
 
@@ -299,17 +299,17 @@
 
 ### Testes para User Story 5 ⚠️
 
-- [ ] T107 [P] [US5] Criar teste SearchTags em tests/domain/inbox/SearchTags.test.ts
+- [X] T107 [P] [US5] Criar teste SearchTags em tests/domain/inbox/SearchTags.test.ts
 
 ### Implementação Use Case
 
-- [ ] T108 [US5] Implementar SearchTags use case em src/domain/inbox/use-cases/SearchTags.ts
+- [X] T108 [US5] Implementar SearchTags use case em src/domain/inbox/use-cases/SearchTags.ts
 
 ### Integração de Tags
 
-- [ ] T109 [US5] Integrar SearchTags no InboxTagSuggestions com debounce
-- [ ] T110 [US5] Implementar seleção de tag no InboxTagSuggestions (inserir no texto)
-- [ ] T111 [US5] Exibir tags como badges no UserInputCard usando Badge atom existente
+- [X] T109 [US5] Integrar SearchTags no InboxTagSuggestions com debounce
+- [X] T110 [US5] Implementar seleção de tag no InboxTagSuggestions (inserir no texto)
+- [X] T111 [US5] Exibir tags como badges no UserInputCard usando Badge atom existente
 
 **Checkpoint**: Todas as user stories funcionais - feature completa
 
@@ -321,32 +321,32 @@
 
 ### Barrel Exports
 
-- [ ] T112 [P] Criar barrel exports em src/domain/inbox/index.ts
-- [ ] T113 [P] Criar barrel exports em src/domain/inbox/use-cases/index.ts
-- [ ] T114 [P] Atualizar barrel exports do Design System em src/design-system/molecules/index.ts
-- [ ] T115 [P] Atualizar barrel exports do Design System em src/design-system/atoms/index.ts
+- [X] T112 [P] Criar barrel exports em src/domain/inbox/index.ts
+- [X] T113 [P] Criar barrel exports em src/domain/inbox/use-cases/index.ts
+- [X] T114 [P] Atualizar barrel exports do Design System em src/design-system/molecules/index.ts
+- [X] T115 [P] Atualizar barrel exports do Design System em src/design-system/atoms/index.ts
 
 ### UI Polish
 
-- [ ] T116 Adicionar loading states durante operações (criar, editar, excluir)
-- [ ] T117 Implementar error handling com Toast/Snackbar para erros de domínio
+- [X] T116 Adicionar loading states durante operações (criar, editar, excluir)
+- [X] T117 Implementar error handling com Toast/Snackbar para erros de domínio
 
 ### Performance
 
-- [ ] T118 Testar performance com 500+ inputs (verificar FlashList fluido)
-- [ ] T119 [P] Adicionar estimatedItemSize no FlashList para otimização
+- [X] T118 Testar performance com 500+ inputs (verificar FlashList fluido)
+- [X] T119 [P] Adicionar estimatedItemSize no FlashList para otimização
 
 ### Validação Final
 
-- [ ] T120 Rodar `npm run lint` e corrigir warnings
-- [ ] T121 Rodar `npm test -- inbox` e garantir todos testes passando
-- [ ] T122 Rodar `npm run storybook` e validar todos os componentes DS criados
-- [ ] T123 Validar checklist de quickstart.md manualmente
+- [X] T120 Rodar `npm run lint` e corrigir warnings
+- [X] T121 Rodar `npm test -- inbox` e garantir todos testes passando
+- [X] T122 Rodar `npm run storybook` e validar todos os componentes DS criados
+- [X] T123 Validar checklist de quickstart.md manualmente
 
 ### Validação Offline (Princípio IV da Constituição)
 
-- [ ] T124 Validar funcionamento offline: criar input, editar, excluir com airplane mode ativo
-- [ ] T125 Validar persistência após restart: criar inputs, fechar app completamente, reabrir e verificar dados
+- [X] T124 Validar funcionamento offline: criar input, editar, excluir com airplane mode ativo
+- [X] T125 Validar persistência após restart: criar inputs, fechar app completamente, reabrir e verificar dados
 
 ---
 

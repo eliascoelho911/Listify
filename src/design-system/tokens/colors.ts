@@ -104,6 +104,11 @@ export const darkTheme = {
   navbarAccentForeground: gray[50],
   navbarBorder: gray[800],
   navbarRing: cyan[500],
+
+  // Overlay and shadow base colors
+  overlay: 'rgba(0, 0, 0, 0.6)',
+  overlayLight: 'rgba(0, 0, 0, 0.5)',
+  shadowBase: '#000',
 };
 
 /**
@@ -159,6 +164,11 @@ export const lightTheme = {
   navbarAccentForeground: gray[950],
   navbarBorder: gray[300],
   navbarRing: cyan[600],
+
+  // Overlay and shadow base colors
+  overlay: 'rgba(0, 0, 0, 0.4)',
+  overlayLight: 'rgba(0, 0, 0, 0.3)',
+  shadowBase: '#000',
 };
 
 /**
