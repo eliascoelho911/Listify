@@ -31,9 +31,13 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 1. **Parse $ARGUMENTS**:
    - If empty: SET interactive_mode = true, GO TO Phase 3
-   - If not empty: Parse as "[branch-name] [base-branch?]"
-   - Extract branch_name (first arg)
-   - Extract base_branch (second arg, default to DEFAULT_BASE_BRANCH)
+   - If not empty: Parse as "[branch-name] [base-branch?] [flags?]"
+   - Extract branch_name (first arg, ignoring flags starting with --)
+   - Extract base_branch (second arg if not a flag, default to DEFAULT_BASE_BRANCH)
+   - Extract flags:
+     - `--no-sync`: Skip sync prompt
+     - `--rebase`: Auto rebase with main (no prompt)
+     - `--merge`: Auto merge with main (no prompt)
 
 2. **Validate branch_name**:
    - Must not be empty in non-interactive mode
@@ -88,13 +92,56 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Check if existing_worktree_path exists and is accessible
    - If not: ERROR "❌ Erro: worktree path não existe: {path}"
 
-2. **Navigate to worktree**
-   - Output: `ℹ️ Switching to existing worktree: {existing_worktree_path}`
-   - Output: `cd "{existing_worktree_path}"`
-   - IMPORTANT: Output the cd command so user can execute it in their shell
-   - Success message: `✅ Worktree: {branch_name}`
+2. **Navigate to worktree (CD AUTOMÁTICO)**
+   - Execute: `cd "{existing_worktree_path}"`
+   - This changes the working directory for all subsequent commands
+   - Output: `✅ Navegado para: {existing_worktree_path}`
+   - Output: `📍 Branch: {branch_name}`
 
-3. **STOP** (do not continue to Phase 6)
+3. **Sync with main (Phase 5.1)**
+   - GO TO Phase 5.1 for sync options
+
+### Phase 5.1: Sync with Main
+
+1. **Check flags first**:
+   - If `--no-sync` flag: SKIP sync, GO TO Phase 7
+   - If `--rebase` flag: GO TO step 3 (auto rebase)
+   - If `--merge` flag: GO TO step 4 (auto merge)
+
+2. **Ask user about sync** (default behavior):
+   - Use AskUserQuestion:
+     - Question: "Deseja atualizar com origin/{DEFAULT_BASE_BRANCH}?"
+     - Options:
+       - "Sim, fazer rebase" (Recommended)
+       - "Sim, fazer merge"
+       - "Não, pular"
+
+3. **If rebase selected/flagged:**
+   - Output: `⬇️ Atualizando com origin/{DEFAULT_BASE_BRANCH}...`
+   - Run: `git fetch origin {DEFAULT_BASE_BRANCH}`
+   - Run: `git rebase origin/{DEFAULT_BASE_BRANCH}`
+   - If conflicts:
+     - Output: `⚠️ Conflitos encontrados no rebase`
+     - Output: `ℹ️ Resolva os conflitos e execute: git rebase --continue`
+     - Output: `ℹ️ Ou para abortar: git rebase --abort`
+   - If success:
+     - Output: `✅ Rebase com {DEFAULT_BASE_BRANCH} concluído`
+
+4. **If merge selected/flagged:**
+   - Output: `⬇️ Atualizando com origin/{DEFAULT_BASE_BRANCH}...`
+   - Run: `git fetch origin {DEFAULT_BASE_BRANCH}`
+   - Run: `git merge origin/{DEFAULT_BASE_BRANCH}`
+   - If conflicts:
+     - Output: `⚠️ Conflitos encontrados no merge`
+     - Output: `ℹ️ Resolva os conflitos e execute: git add . && git commit`
+     - Output: `ℹ️ Ou para abortar: git merge --abort`
+   - If success:
+     - Output: `✅ Merge com {DEFAULT_BASE_BRANCH} concluído`
+
+5. **If skip selected:**
+   - Output: `ℹ️ Sync pulado`
+
+6. **Continue to Phase 7** (do not continue to Phase 6)
 
 ### Phase 6: Create New Worktree
 
@@ -121,17 +168,17 @@ You **MUST** consider the user input before proceeding (if not empty).
    - Check if worktree_path exists
    - If not: ERROR "❌ Erro: falha ao criar worktree"
 
-5. **Push branch to remote automatically**
+5. **Navigate to new worktree (CD AUTOMÁTICO)**
+   - Execute: `cd "{worktree_path}"`
+   - This changes the working directory for all subsequent commands
+   - Output: `✅ Worktree criado e navegado: {worktree_path}`
+
+6. **Push branch to remote automatically**
    - Output: `🚀 Pushing branch to origin...`
-   - Run: `cd "{worktree_path}" && git push -u origin {branch_name}`
+   - Run: `git push -u origin {branch_name}`
    - If push fails:
      - Output warning: `⚠️ Aviso: falha ao fazer push para origin. Execute manualmente: git push -u origin {branch_name}`
      - Continue (don't fail)
-
-6. **Navigate to new worktree**
-   - Output: `✅ Created and switched to worktree: {worktree_path}`
-   - Output: `cd "{worktree_path}"`
-   - IMPORTANT: Output the cd command so user can execute it in their shell
 
 ### Phase 7: Final Report
 
@@ -147,10 +194,12 @@ You **MUST** consider the user input before proceeding (if not empty).
 
 - **ALWAYS** use absolute paths for worktree operations
 - **ALWAYS** sanitize branch names before use
+- **ALWAYS** execute `cd` automatically (don't just output the command)
+- **ALWAYS** ask about sync with main when navigating (unless --no-sync flag)
 - **NEVER** delete or modify existing worktrees
 - Default worktree location: `../{branch-name}` (parallel to current repo)
 - Auto-push to remote after creating new worktree
 - Provide clear error messages in Portuguese
-- Use emoji prefixes for output: ✅ ❌ ℹ️ 📋 🚀 📍 📂 ⚠️
-- Output `cd` commands explicitly for user to execute
+- Use emoji prefixes for output: ✅ ❌ ℹ️ 📋 🚀 📍 📂 ⚠️ ⬇️
 - Handle both existing and new branches gracefully
+- Support flags: `--no-sync`, `--rebase`, `--merge`
