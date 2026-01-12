@@ -45,6 +45,15 @@ export default function DrawerLayout(): ReactElement {
             title: 'Settings',
           }}
         />
+        {__DEV__ && (
+          <Drawer.Screen
+            name="debug/index"
+            options={{
+              drawerLabel: 'Debug',
+              title: 'Debug',
+            }}
+          />
+        )}
       </Drawer>
     </GestureHandlerRootView>
   );
