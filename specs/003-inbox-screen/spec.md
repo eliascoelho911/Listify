@@ -79,12 +79,13 @@ Como usuário do Listify, quero poder editar ou excluir inputs existentes, para 
 **Cenários de Aceite**:
 
 1. **Given** um input existe na lista, **When** o usuário toca e segura (long press) no input, **Then** um menu de opções aparece com "Editar" e "Excluir"
-2. **Given** o menu de opções está aberto, **When** o usuário seleciona "Editar", **Then** o input entra em modo de edição com texto e tags editáveis
-3. **Given** o input está em modo de edição, **When** o usuário modifica o texto e confirma, **Then** as alterações são salvas e exibidas
-4. **Given** o input está em modo de edição, **When** o usuário cancela, **Then** as alterações são descartadas
-5. **Given** o menu de opções está aberto, **When** o usuário seleciona "Excluir", **Then** um diálogo de confirmação aparece
-6. **Given** o diálogo de confirmação está aberto, **When** o usuário confirma a exclusão, **Then** o input é removido permanentemente da lista
-7. **Given** o diálogo de confirmação está aberto, **When** o usuário cancela, **Then** o input permanece na lista
+2. **Given** o menu de opções está aberto e a InputBar está vazia, **When** o usuário seleciona "Editar", **Then** o texto e tags do input são carregados na InputBar em modo de edição (com indicador visual de edição)
+3. **Given** o menu de opções está aberto e a InputBar contém texto não enviado, **When** o usuário seleciona "Editar", **Then** um diálogo pergunta "Descartar rascunho atual?" com opções "Continuar editando" (cancela) e "Descartar" (prossegue com edição)
+4. **Given** a InputBar está em modo de edição, **When** o usuário modifica o texto e pressiona enviar, **Then** as alterações são salvas no input original e a InputBar volta ao modo normal (vazia)
+5. **Given** a InputBar está em modo de edição, **When** o usuário pressiona o botão cancelar (X), **Then** as alterações são descartadas e a InputBar volta ao modo normal (vazia)
+6. **Given** o menu de opções está aberto, **When** o usuário seleciona "Excluir", **Then** um diálogo de confirmação aparece
+7. **Given** o diálogo de confirmação está aberto, **When** o usuário confirma a exclusão, **Then** o input é removido permanentemente da lista
+8. **Given** o diálogo de confirmação está aberto, **When** o usuário cancela, **Then** o input permanece na lista
 
 ---
 
