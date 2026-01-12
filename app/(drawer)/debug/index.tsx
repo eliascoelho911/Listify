@@ -1,15 +1,15 @@
 import { type ReactElement, useState } from 'react';
 import { ActivityIndicator, ScrollView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useDrizzle } from '@drizzle/DrizzleProvider';
 
-import { seedInbox } from '@presentation/debug/seedInbox';
+import { seedInbox } from '@app/debug/seedInbox';
+import { useAppDependencies } from '@app/di/AppDependenciesProvider';
 import { Button, Text } from '@design-system/atoms';
 import { useTheme } from '@design-system/theme';
 
 export default function DebugRoute(): ReactElement {
   const { theme } = useTheme();
-  const db = useDrizzle();
+  const { drizzleDb } = useAppDependencies();
 
   const [loading, setLoading] = useState(false);
   const [progress, setProgress] = useState<string[]>([]);
@@ -37,9 +37,13 @@ export default function DebugRoute(): ReactElement {
         tags: options.tags ?? true,
       };
 
-      const { totalRecords, uniqueTags, timeMs } = await seedInbox(db, fullOptions, (message) => {
-        setProgress((prev) => [...prev, message]);
-      });
+      const { totalRecords, uniqueTags, timeMs } = await seedInbox(
+        drizzleDb,
+        fullOptions,
+        (message: string) => {
+          setProgress((prev) => [...prev, message]);
+        },
+      );
 
       setResult(
         `✅ Seed concluído!\n\n` +
