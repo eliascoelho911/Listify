@@ -28,6 +28,9 @@
       ],
       "@tests/*": [
         "tests/*"
+      ],
+      "@drizzle/*": [
+        "src/infra/drizzle/*"
       ]
     },
     "types": [
@@ -42,5 +45,9 @@
     "**/*.tsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
+  ],
+  "exclude": [
+    "scripts/ds-cli/templates/*",
+    "specs/**"
   ]
 }
