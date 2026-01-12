@@ -4,7 +4,10 @@ export const MAX_TEXT_LENGTH = 5000;
 /** Maximum length for tag names */
 export const MAX_TAG_LENGTH = 30;
 
-/** Default page size for pagination */
+/** Initial page size for reactive window (first load) */
+export const INITIAL_PAGE_SIZE = 50;
+
+/** Default page size for pagination (subsequent loads) */
 export const DEFAULT_PAGE_SIZE = 20;
 
 /** Regex to extract tags from text (matches #tag pattern) */

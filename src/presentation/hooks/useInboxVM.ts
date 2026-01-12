@@ -2,7 +2,7 @@
  * Inbox View Model Hook (Reactive Version with Clean Architecture)
  *
  * Provides a clean interface for the inbox screen combining:
- * - useLiveQuery for reactive data (inputs)
+ * - useUserInputsPaginated for reactive data with pagination
  * - Zustand store for UI state (inputText, isSubmitting, etc.)
  * - UseCase hooks for business operations (with injected repository)
  */
@@ -19,10 +19,10 @@ import {
   useSearchTags,
   useUpdateUserInput,
 } from './use-cases';
-import { useUserInputsLive } from './useUserInputsLive';
+import { useUserInputsPaginated } from './useUserInputsPaginated';
 
 export type UseInboxVMReturn = {
-  /** List of user inputs (reactive - auto-updates on DB changes) */
+  /** List of user inputs (reactive for first 50, then on-demand) */
   inputs: UserInput[];
 
   /** Current input text */
@@ -33,6 +33,12 @@ export type UseInboxVMReturn = {
 
   /** Whether inputs are being loaded (initial load) */
   isLoading: boolean;
+
+  /** Whether more inputs are being loaded (pagination) */
+  isLoadingMore: boolean;
+
+  /** Whether there are more inputs to load */
+  hasMore: boolean;
 
   /** Last error that occurred */
   lastError: Error | null;
@@ -75,12 +81,15 @@ export type UseInboxVMReturn = {
 
   /** Select a tag suggestion (insert into text) */
   handleSelectTag: (tag: Tag) => void;
+
+  /** Load more inputs (pagination) */
+  handleLoadMore: () => Promise<void>;
 };
 
 /**
  * View model hook for the inbox screen (reactive version).
  *
- * Data comes from useLiveQuery (auto-updates on DB changes).
+ * Data comes from useUserInputsPaginated (reactive for first 50, then on-demand).
  * UI state is managed by the Zustand store.
  * Business operations go through UseCase hooks.
  */
@@ -93,8 +102,15 @@ export function useInboxVM(): UseInboxVMReturn {
   const deleteInput = useDeleteUserInput();
   const searchTagsFn = useSearchTags();
 
-  // Reactive data from useLiveQuery
-  const { inputs, isLoading: isLoadingInputs, error: liveQueryError } = useUserInputsLive();
+  // Paginated data (reactive for first 50, then on-demand)
+  const {
+    inputs,
+    isLoading: isLoadingInputs,
+    isLoadingMore,
+    hasMore,
+    loadMore,
+    error: paginatedError,
+  } = useUserInputsPaginated();
 
   // UI state from Zustand store
   const inputText = useStore(store, (state) => state.inputText);
@@ -116,8 +132,8 @@ export function useInboxVM(): UseInboxVMReturn {
   const cancelEditing = useStore(store, (state) => state.cancelEditing);
   const resetAfterMutation = useStore(store, (state) => state.resetAfterMutation);
 
-  // Combine errors from live query and UI
-  const combinedError = useMemo(() => liveQueryError ?? lastError, [liveQueryError, lastError]);
+  // Combine errors from paginated query and UI
+  const combinedError = useMemo(() => paginatedError ?? lastError, [paginatedError, lastError]);
 
   const handleSubmit = useCallback(async () => {
     const trimmedText = inputText.trim();
@@ -222,6 +238,8 @@ export function useInboxVM(): UseInboxVMReturn {
     inputText,
     isSubmitting,
     isLoading: isLoadingInputs,
+    isLoadingMore,
+    hasMore,
     lastError: combinedError,
     tagSuggestions,
     isLoadingTags,
@@ -236,5 +254,6 @@ export function useInboxVM(): UseInboxVMReturn {
     handleCancelEditing,
     handleDelete,
     handleSelectTag,
+    handleLoadMore: loadMore,
   };
 }

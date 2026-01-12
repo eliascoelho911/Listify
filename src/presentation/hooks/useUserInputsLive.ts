@@ -23,9 +23,10 @@ export type UseUserInputsLiveResult = {
  * This hook uses Drizzle's useLiveQuery to automatically re-render
  * when the database changes. No manual refresh needed.
  *
+ * @param limit - Optional limit for the number of inputs to fetch
  * @returns Live user inputs data with loading and error states
  */
-export function useUserInputsLive(): UseUserInputsLiveResult {
+export function useUserInputsLive(limit?: number): UseUserInputsLiveResult {
   const db = useDrizzle();
 
   const {
@@ -42,6 +43,7 @@ export function useUserInputsLive(): UseUserInputsLiveResult {
         },
       },
       orderBy: [desc(userInputs.updatedAt)],
+      ...(limit !== undefined ? { limit } : {}),
     }),
   );
 

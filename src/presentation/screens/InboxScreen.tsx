@@ -7,7 +7,7 @@
 
 import React, { type ReactElement, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
@@ -148,6 +148,22 @@ function InboxScreenContent(): ReactElement {
 
   const getItemType = (item: ListItem): string => item.type;
 
+  const renderFooter = useCallback((): ReactElement | null => {
+    if (!vm.hasMore) {
+      return null;
+    }
+
+    if (vm.isLoadingMore) {
+      return (
+        <View style={styles.loadingFooter}>
+          <ActivityIndicator size="small" color={theme.colors.primary} />
+        </View>
+      );
+    }
+
+    return null;
+  }, [vm.hasMore, vm.isLoadingMore, styles, theme]);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.header}>
@@ -188,6 +204,9 @@ function InboxScreenContent(): ReactElement {
           estimatedItemSize={80}
           contentContainerStyle={styles.listContent}
           stickyHeaderIndices={stickyHeaderIndices}
+          onEndReached={vm.handleLoadMore}
+          onEndReachedThreshold={0.5}
+          ListFooterComponent={renderFooter}
         />
       )}
 
@@ -289,5 +308,10 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
       color: theme.colors.destructiveForeground,
       fontWeight: theme.typography.weights.semibold as '600',
       marginLeft: theme.spacing.sm,
+    },
+    loadingFooter: {
+      paddingVertical: theme.spacing.lg,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
