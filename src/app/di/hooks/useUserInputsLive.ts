@@ -1,10 +1,19 @@
+/**
+ * Reactive hook for user inputs - encapsulates Drizzle useLiveQuery.
+ *
+ * This hook lives in the DI layer because:
+ * 1. It needs access to DrizzleDB (infrastructure detail)
+ * 2. useLiveQuery must be called within React component tree
+ * 3. Keeps presentation layer decoupled from ORM
+ */
 import { useMemo } from 'react';
-import { useDrizzle } from '@drizzle/DrizzleProvider';
-import { userInputs } from '@drizzle/schema';
 import { desc } from 'drizzle-orm';
 import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
 
 import type { UserInput } from '@domain/inbox/entities';
+import { userInputs } from '@infra/drizzle/schema';
+
+import { useAppDependencies } from '../AppDependenciesProvider';
 
 export type UseUserInputsLiveResult = {
   /** List of user inputs with their tags, sorted by updatedAt descending */
@@ -27,14 +36,14 @@ export type UseUserInputsLiveResult = {
  * @returns Live user inputs data with loading and error states
  */
 export function useUserInputsLive(limit?: number): UseUserInputsLiveResult {
-  const db = useDrizzle();
+  const { drizzleDb } = useAppDependencies();
 
   const {
     data: rawInputs,
     error,
     updatedAt,
   } = useLiveQuery(
-    db.query.userInputs.findMany({
+    drizzleDb.query.userInputs.findMany({
       with: {
         inputTags: {
           with: {

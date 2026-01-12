@@ -3,7 +3,6 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import { DrizzleProvider } from '@drizzle/DrizzleProvider';
 
 import { AppDependenciesProvider } from '@app/di/AppDependenciesProvider';
 import { initializeI18n } from '@app/i18n/i18n';
@@ -34,10 +33,8 @@ export default function RootLayout(): ReactElement {
       <ThemeProvider>
         <SafeAreaProvider>
           <AppDependenciesProvider>
-            <DrizzleProvider>
-              <StatusBar style="light" />
-              <NavigationStack />
-            </DrizzleProvider>
+            <StatusBar style="light" />
+            <NavigationStack />
           </AppDependenciesProvider>
         </SafeAreaProvider>
       </ThemeProvider>

@@ -134,3 +134,6 @@ export function useInboxUseCases(): InboxUseCases {
 export function useShoppingUseCases(): ShoppingUseCases {
   return useAppDependencies().shoppingUseCases;
 }
+
+// Re-export live query hooks from hooks directory
+export { useUserInputsLive, type UseUserInputsLiveResult } from './hooks';

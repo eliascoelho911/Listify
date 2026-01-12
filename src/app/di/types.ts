@@ -1,3 +1,5 @@
+import type { ExpoSQLiteDatabase } from 'drizzle-orm/expo-sqlite';
+
 import type { PaginatedUserInputs, Tag, UserInput } from '@domain/inbox/entities';
 import type { InboxRepository } from '@domain/inbox/ports/InboxRepository';
 import type { CreateUserInputInput, SearchTagsInput } from '@domain/inbox/use-cases';
@@ -9,7 +11,14 @@ import type {
 } from '@domain/shopping/ports/ShoppingRepository';
 import type { GetActiveListStateResult } from '@domain/shopping/use-cases/GetActiveListState';
 import type { UpdateItemInput } from '@domain/shopping/use-cases/UpdateItem';
+import type * as schema from '@infra/drizzle/schema';
 import type { SqliteDatabase } from '@infra/storage/sqlite/SqliteDatabase';
+
+/**
+ * Type for the Drizzle database instance.
+ * Used internally by the DI container for live queries.
+ */
+export type DrizzleDB = ExpoSQLiteDatabase<typeof schema>;
 
 /**
  * Inbox domain use cases centralizados no container.
@@ -37,6 +46,7 @@ export type ShoppingUseCases = {
 
 export type AppDependencies = {
   database: SqliteDatabase;
+  drizzleDb: DrizzleDB;
   shoppingRepository: ShoppingRepository;
   inboxRepository: InboxRepository;
   inboxUseCases: InboxUseCases;

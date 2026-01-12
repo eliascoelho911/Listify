@@ -5,7 +5,7 @@
  * Tests all CRUD operations with mocked database.
  */
 
-import type { DrizzleDB } from '@drizzle/DrizzleProvider';
+import type { DrizzleDB } from '@app/di/types';
 import { InboxDrizzleRepo } from '@drizzle/InboxDrizzleRepo';
 
 import { UserInputNotFoundError } from '@domain/inbox/use-cases/errors';

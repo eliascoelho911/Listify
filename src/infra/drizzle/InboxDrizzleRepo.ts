@@ -8,6 +8,7 @@
 
 import { desc, eq, sql } from 'drizzle-orm';
 
+import { DrizzleDB } from '@app/di/types';
 import type { PaginatedUserInputs, Tag, UserInput } from '@domain/inbox/entities';
 import type {
   CreateUserInputParams,
@@ -19,7 +20,6 @@ import type {
 import { UserInputNotFoundError } from '@domain/inbox/use-cases/errors';
 import { extractTags } from '@domain/inbox/use-cases/extractTags';
 
-import type { DrizzleDB } from './DrizzleProvider';
 import { inputTags, tags, userInputs } from './schema';
 
 const DEFAULT_LIMIT = 20;

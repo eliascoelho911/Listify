@@ -23,14 +23,11 @@ let mockLiveResult: {
   updatedAt: undefined,
 };
 
-jest.mock('@presentation/hooks/useUserInputsLive', () => ({
-  useUserInputsLive: jest.fn(() => mockLiveResult),
-}));
-
 // Mock useInboxRepository
 const mockGetUserInputs = jest.fn();
 
-jest.mock('@presentation/hooks/useInboxRepository', () => ({
+jest.mock('@app/di/AppDependenciesProvider', () => ({
+  useUserInputsLive: jest.fn(() => mockLiveResult),
   useInboxRepository: jest.fn(() => ({
     getUserInputs: mockGetUserInputs,
   })),
@@ -38,7 +35,7 @@ jest.mock('@presentation/hooks/useInboxRepository', () => ({
 
 // Import after mocking
 // eslint-disable-next-line import/first
-import { useUserInputsLive } from '@presentation/hooks/useUserInputsLive';
+import { useUserInputsLive } from '@app/di/AppDependenciesProvider';
 // eslint-disable-next-line import/first
 import { useUserInputsPaginated } from '@presentation/hooks/useUserInputsPaginated';
 

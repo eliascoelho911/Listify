@@ -72,6 +72,7 @@ export async function buildDependencies(
 
   return {
     database,
+    drizzleDb,
     shoppingRepository,
     inboxRepository,
     inboxUseCases,

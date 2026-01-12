@@ -1,8 +1,8 @@
-import type { DrizzleDB } from '@drizzle/DrizzleProvider';
-import { inputTags, tags, userInputs } from '@drizzle/schema';
 import { eq, sql } from 'drizzle-orm';
 
+import type { DrizzleDB } from '@app/di/types';
 import { extractTags } from '@domain/inbox/use-cases/extractTags';
+import { inputTags, tags, userInputs } from '@infra/drizzle/schema';
 
 import type { SeedOptions } from './seedInbox.types';
 

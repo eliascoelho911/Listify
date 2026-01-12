@@ -49,17 +49,20 @@ jest.mock('drizzle-orm/expo-sqlite', () => ({
   useLiveQuery: jest.fn(() => mockUseLiveQueryResult),
 }));
 
-jest.mock('@drizzle/DrizzleProvider', () => ({
-  useDrizzle: jest.fn(() => ({
-    query: {
-      userInputs: {
-        findMany: jest.fn(() => ({})),
+// Mock useAppDependencies to provide drizzleDb
+jest.mock('@app/di/AppDependenciesProvider', () => ({
+  useAppDependencies: jest.fn(() => ({
+    drizzleDb: {
+      query: {
+        userInputs: {
+          findMany: jest.fn(() => ({})),
+        },
       },
     },
   })),
 }));
 
-jest.mock('@drizzle/schema', () => ({
+jest.mock('@infra/drizzle/schema', () => ({
   userInputs: {
     updatedAt: 'updated_at',
   },
@@ -67,7 +70,7 @@ jest.mock('@drizzle/schema', () => ({
 
 // Import after mocking - must be after jest.mock() calls
 // eslint-disable-next-line import/first
-import { useUserInputsLive } from '@presentation/hooks/useUserInputsLive';
+import { useUserInputsLive } from '@app/di/hooks/useUserInputsLive';
 
 describe('useUserInputsLive', () => {
   beforeEach(() => {
