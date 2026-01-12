@@ -1,6 +1,44 @@
 # Listify Design System
 
-Design System completo do Listify seguindo princípios do **Atomic Design** e convenções do **Shadcn**.
+Design System do Listify baseado em princípios de **Atomic Design**, inspirado na filosofia e estrutura de tokens do **Shadcn UI**.
+
+> **Importante**: Este não é uma implementação completa do Shadcn, mas sim um **remix customizado** para React Native com identidade visual própria, otimizações mobile-first e componentes adaptados ao ecossistema React Native.
+
+## 🎨 Filosofia: Shadcn como Inspiração
+
+O Listify adota a **estrutura de tokens** e **convenções de nomenclatura** do Shadcn UI como base, mas com customizações significativas:
+
+**O que mantemos do Shadcn**:
+
+- ✅ Estrutura de tokens (background, foreground, card, primary, secondary, etc.)
+- ✅ Sistema de variants (default, destructive, outline, ghost, link)
+- ✅ Filosofia de components compostos (ex: Card, CardHeader, CardTitle...)
+- ✅ Atomic Design como metodologia organizacional
+
+**O que customizamos**:
+
+- 🎨 **Tipografia**: Fira Sans/Code (em vez de system fonts)
+- 📐 **Espaçamento**: Escala compacta - 25-33% menor que Shadcn (mobile-first)
+- 🔲 **Border Radius**: Escala large - 50-100% maior que Shadcn (identidade playful)
+- 🌈 **Paleta**: Cyan primary + Gray "chumbo" customizados
+- 🌓 **Temas**: Dark como padrão (não segue system preference)
+- 📱 **Componentes**: Adaptados para React Native, não são ports diretos do Shadcn Web
+
+**Por que essa abordagem?**
+
+O Shadcn UI é um design system consolidado com decisões bem fundamentadas. Usar sua estrutura como **inspiração** nos dá:
+
+- Base sólida e padrões testados
+- Velocidade nas decisões de design
+- Menor curva de aprendizado para desenvolvedores familiarizados com Shadcn
+
+Ao mesmo tempo, **customizar** permite:
+
+- Identidade visual única e moderna
+- Otimizações específicas para mobile
+- Liberdade criativa onde necessário
+
+---
 
 ## 🚀 Quick Reference (TL;DR)
 

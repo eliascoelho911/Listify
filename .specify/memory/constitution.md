@@ -84,7 +84,21 @@ Sync Impact Report
 - Conteúdo do usuário (ex.: nomes de itens e categorias customizadas) MUST permanecer como dado (não traduzido automaticamente).
 - Categorias/unidades pré-definidas SHOULD ter identificadores estáveis (ex.: `categoryCode`, `unitCode`) e exibir rótulos localizados via i18n (evitar persistir nomes localizados no banco).
 
-**Racional**: o Listify precisa ser utilizável por usuários em pt-BR e en sem rework estrutural; i18n é uma decisão de arquitetura e de UX, não “polimento”.
+**Racional**: o Listify precisa ser utilizável por usuários em pt-BR e en sem rework estrutural; i18n é uma decisão de arquitetura e de UX, não "polimento".
+
+### IX. Design System: Remix Inspirado no Shadcn
+
+- O Design System do Listify MUST seguir princípios de **Atomic Design** (atoms → molecules → organisms).
+- O Design System MUST ser inspirado na filosofia e tokens do **Shadcn UI**, mas NÃO é uma implementação completa ou cópia exata.
+- Customizações significativas incluem:
+  - **Tipografia**: Fira Sans/Code em vez de system fonts
+  - **Espaçamento**: Escala compacta (25-33% menor que Shadcn)
+  - **Border Radius**: Escala large (50-100% maior que Shadcn)
+  - **Cores**: Tokens Shadcn customizados com cyan primary e gray "chumbo"
+  - **Temas**: Dark theme como padrão (não system preference)
+- Componentes SHOULD ter API semelhante ao Shadcn quando aplicável, mas com liberdade para adaptações ao React Native.
+
+**Racional**: inspiração em design systems consolidados acelera decisões e garante qualidade, mas customizações são necessárias para identidade única e otimização mobile-first.
 
 ## Diretrizes de Documentação e Linguagem
 

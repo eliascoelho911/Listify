@@ -68,6 +68,15 @@ src/
 
 **CRITICAL**: Follow Atomic Design methodology with strict hierarchy and token-based styling.
 
+**Design Philosophy**: O Design System do Listify é um **remix inspirado no Shadcn UI** - usamos a filosofia e estrutura de tokens do Shadcn como base, mas com customizações significativas para atender a identidade visual e requisitos mobile-first do Listify. Não é uma implementação completa do Shadcn, mas sim uma adaptação com componentes e tokens próprios.
+
+**Principais diferenças em relação ao Shadcn**:
+- Tipografia customizada (Fira Sans/Code vs system fonts)
+- Espaçamento compacto (25-33% menor para otimização mobile)
+- Border radius large (50-100% maior para identidade playful)
+- Dark theme como padrão (não segue system preference)
+- Componentes adaptados para React Native (não são ports diretos do Shadcn Web)
+
 #### Component Creation Workflow
 
 **ALWAYS use CLI to create components** (NEVER create manually):
