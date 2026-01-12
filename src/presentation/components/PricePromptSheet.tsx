@@ -182,8 +182,8 @@ const styles = StyleSheet.create({
   },
   sheet: {
     backgroundColor: theme.colors.background.surface,
-    borderTopLeftRadius: theme.radii.xl ?? theme.radii.lg,
-    borderTopRightRadius: theme.radii.xl ?? theme.radii.lg,
+    borderTopLeftRadius: theme.radii.lg,
+    borderTopRightRadius: theme.radii.lg,
     padding: theme.spacing.lg,
     gap: theme.spacing.md,
   },

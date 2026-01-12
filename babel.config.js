@@ -15,6 +15,7 @@ module.exports = function (api) {
             '@presentation': './src/presentation',
             '@design-system': './src/design-system',
             '@tests': './tests',
+            '@drizzle': './src/infra/drizzle',
           },
         },
       ],

@@ -46,3 +46,11 @@ export type {
 // Text
 export { Text } from './Text/Text';
 export type { TextAlign, TextColor, TextProps, TextVariant, TextWeight } from './Text/Text.types';
+
+// DateBadge
+export { DateBadge } from './DateBadge/DateBadge';
+export type { DateBadgeProps, DateBadgeVariant } from './DateBadge/DateBadge.types';
+
+// Logo
+export { Logo } from './Logo/Logo';
+export type { LogoProps, LogoSize } from './Logo/Logo.types';

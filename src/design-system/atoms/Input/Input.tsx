@@ -15,6 +15,7 @@ export function Input({
   errorMessage,
   helperText,
   editable = true,
+  style,
   ...textInputProps
 }: InputProps): ReactElement {
   const { theme } = useTheme();
@@ -29,7 +30,7 @@ export function Input({
         ? 'focus'
         : 'default';
 
-  const inputStyle = [styles.baseStyles.input, styles.stateStyles[currentState]];
+  const inputStyle = [styles.baseStyles.input, styles.stateStyles[currentState], style];
 
   return (
     <View>

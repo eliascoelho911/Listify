@@ -5,8 +5,8 @@
  * A implementação fica em src/domain/inbox/use-cases/.
  */
 
-import type { InboxRepository } from './InboxRepository';
 import type { DateGroup, PaginatedUserInputs, Tag, UserInput } from './entities';
+import type { InboxRepository } from './InboxRepository';
 
 // =============================================================================
 // SHARED TYPES
@@ -54,7 +54,7 @@ export type CreateUserInputOutput = UserInput;
  */
 export type CreateUserInputFn = (
   input: CreateUserInputInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<CreateUserInputOutput>;
 
 // =============================================================================
@@ -95,7 +95,7 @@ export type UpdateUserInputOutput = UserInput;
  */
 export type UpdateUserInputFn = (
   input: UpdateUserInputInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<UpdateUserInputOutput>;
 
 // =============================================================================
@@ -125,7 +125,7 @@ export type DeleteUserInputInput = {
  */
 export type DeleteUserInputFn = (
   input: DeleteUserInputInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<void>;
 
 // =============================================================================
@@ -163,7 +163,7 @@ export type GetUserInputsOutput = PaginatedUserInputs;
  */
 export type GetUserInputsFn = (
   input: GetUserInputsInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<GetUserInputsOutput>;
 
 // =============================================================================
@@ -209,7 +209,7 @@ export type GetUserInputsGroupedOutput = {
  */
 export type GetUserInputsGroupedFn = (
   input: GetUserInputsGroupedInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<GetUserInputsGroupedOutput>;
 
 // =============================================================================
@@ -246,7 +246,7 @@ export type SearchTagsOutput = Tag[];
  */
 export type SearchTagsFn = (
   input: SearchTagsInput,
-  deps: InboxUseCaseDeps
+  deps: InboxUseCaseDeps,
 ) => Promise<SearchTagsOutput>;
 
 // =============================================================================

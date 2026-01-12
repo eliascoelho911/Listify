@@ -3,6 +3,7 @@ import { createShoppingListStore } from '@presentation/state/shopping-list/shopp
 import {
   createCategory,
   createInMemoryRepository,
+  createMockUseCases,
   createShoppingItem,
   createShoppingList,
 } from '../domain/shopping/testUtils';
@@ -16,7 +17,8 @@ describe('shoppingListStore filters', () => {
         createShoppingItem({ id: 'item-2', name: 'Banana', categoryId: 'cat-1' }),
       ],
     });
-    const store = createShoppingListStore({ repository });
+    const useCases = createMockUseCases(repository);
+    const store = createShoppingListStore({ repository, useCases });
 
     await store.getState().actions.load();
     expect(store.getState().visibleCategories[0].items.pending).toHaveLength(2);
@@ -36,7 +38,8 @@ describe('shoppingListStore filters', () => {
         createShoppingItem({ id: 'item-2', status: 'pending', categoryId: 'cat-1' }),
       ],
     });
-    const store = createShoppingListStore({ repository });
+    const useCases = createMockUseCases(repository);
+    const store = createShoppingListStore({ repository, useCases });
 
     await store.getState().actions.load();
     expect(store.getState().visibleCategories[0].items.purchased).toHaveLength(1);

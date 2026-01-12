@@ -13,13 +13,17 @@
     "storybook:ios": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start --ios",
     "storybook:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start --android",
     "storybook:generate": "sb-rn-get-stories",
-    "ds": "tsx scripts/ds-cli/index.ts"
+    "ds": "tsx scripts/ds-cli/index.ts",
+    "type-check": "node scripts/type-check.js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
+    "@react-navigation/drawer": "^7.7.10",
+    "@shopify/flash-list": "^2.2.0",
     "@types/jest": "29.5.14",
     "babel-preset-expo": "~54.0.9",
     "currency-symbol-map": "^5.1.0",
+    "drizzle-orm": "^0.45.1",
     "expo": "~54.0.31",
     "expo-localization": "~17.0.8",
     "expo-router": "~6.0.21",
@@ -57,6 +61,7 @@
     "babel-plugin-module-resolver": "^5.0.2",
     "commander": "^14.0.2",
     "cross-env": "^10.1.0",
+    "drizzle-kit": "^0.31.8",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-config-universe": "^15.0.3",

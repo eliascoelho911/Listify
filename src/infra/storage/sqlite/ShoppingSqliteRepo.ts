@@ -326,8 +326,8 @@ export class ShoppingSqliteRepo implements ShoppingRepository {
     return {
       run: (sql, ...params) => txn.runAsync(sql, ...params),
       getAll: (sql, ...params) => txn.getAllAsync(sql, ...params),
-      getFirst: async (sql, ...params) => {
-        const result = await txn.getFirstAsync(sql, ...params);
+      getFirst: async <T>(sql: string, ...params: SQLiteVariadicBindParams): Promise<T | null> => {
+        const result = await txn.getFirstAsync<T>(sql, ...params);
         return result ?? null;
       },
     };

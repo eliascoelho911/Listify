@@ -52,7 +52,6 @@ export function ShoppingItemRow({
   return (
     <Swipeable
       ref={swipeableRef}
-      style={styles.swipeContainer}
       overshootRight={false}
       renderRightActions={() => (
         <View style={styles.deleteActionContainer}>

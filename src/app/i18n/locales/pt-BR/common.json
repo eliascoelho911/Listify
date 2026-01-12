@@ -170,5 +170,62 @@
     "congelados": "Congelados",
     "pet": "Pet",
     "outros": "Outros"
+  },
+  "inbox": {
+    "title": "Inbox",
+    "header": {
+      "menu": "Abrir menu de navegação"
+    },
+    "search": {
+      "placeholder": "Buscar..."
+    },
+    "input": {
+      "placeholder": "Digite algo...",
+      "send": "Enviar"
+    },
+    "pinnedLists": {
+      "title": "Suas principais listas",
+      "empty": "Nenhuma lista fixada"
+    },
+    "list": {
+      "empty": {
+        "title": "Nenhum item ainda",
+        "subtitle": "Comece digitando algo abaixo"
+      }
+    },
+    "actions": {
+      "edit": "Editar",
+      "delete": "Excluir",
+      "cancel": "Cancelar",
+      "save": "Salvar"
+    },
+    "dialog": {
+      "deleteTitle": "Excluir item?",
+      "deleteDescription": "Esta ação não pode ser desfeita.",
+      "discardDraftTitle": "Descartar rascunho?",
+      "discardDraftDescription": "Você tem um texto não salvo. Deseja descartá-lo?"
+    },
+    "dates": {
+      "today": "Hoje",
+      "yesterday": "Ontem"
+    },
+    "errors": {
+      "createFailed": "Falha ao criar item",
+      "updateFailed": "Falha ao atualizar",
+      "deleteFailed": "Falha ao excluir",
+      "loadFailed": "Falha ao carregar itens",
+      "generic": "Ocorreu um erro. Tente novamente.",
+      "dismiss": "Fechar"
+    },
+    "editing": {
+      "indicator": "Editando",
+      "cancel": "Cancelar edição"
+    },
+    "delete": {
+      "title": "Excluir este item?",
+      "description": "Esta ação não pode ser desfeita.",
+      "confirm": "Excluir",
+      "cancel": "Cancelar"
+    }
   }
 }
