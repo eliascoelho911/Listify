@@ -16,7 +16,7 @@ if (filesIndex !== -1 && filesIndex < args.length - 1) {
 
 const tsc = spawn('tsc', tscArgs, {
   stdio: 'inherit',
-  shell: true
+  shell: true,
 });
 
 tsc.on('exit', (code) => {

@@ -1,6 +1,7 @@
 import type { StoreApi, UseBoundStore } from 'zustand';
 import { create } from 'zustand';
 
+import type { ShoppingUseCases } from '@app/di/types';
 import { DEFAULT_CATEGORY_CODE, FALLBACK_LOCALE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem, ShoppingItemStatus } from '@domain/shopping/entities/ShoppingItem';
@@ -15,17 +16,8 @@ import {
   type CreateItemFromFreeTextResult,
   EmptyItemNameError,
 } from '@domain/shopping/use-cases/CreateItemFromFreeText';
-import { deleteItem as deleteItemUseCase } from '@domain/shopping/use-cases/DeleteItem';
-import {
-  type CategoryItems,
-  getActiveListState,
-} from '@domain/shopping/use-cases/GetActiveListState';
-import { toggleItemPurchased } from '@domain/shopping/use-cases/ToggleItemPurchased';
-import {
-  updateItem as updateItemUseCase,
-  type UpdateItemInput,
-} from '@domain/shopping/use-cases/UpdateItem';
-import { updatePreferences } from '@domain/shopping/use-cases/UpdatePreferences';
+import type { CategoryItems } from '@domain/shopping/use-cases/GetActiveListState';
+import type { UpdateItemInput } from '@domain/shopping/use-cases/UpdateItem';
 
 type StoreError = {
   type: 'load' | 'write';
@@ -76,11 +68,13 @@ export type ShoppingListStoreApi = UseBoundStore<StoreApi<ShoppingListStore>>;
 
 export type ShoppingListStoreDeps = {
   repository: ShoppingRepository;
+  useCases: ShoppingUseCases;
   getLocale?: () => string;
 };
 
 export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingListStoreApi {
   const repository = deps.repository;
+  const useCases = deps.useCases;
   const resolveLocale = (): string => deps.getLocale?.() ?? FALLBACK_LOCALE;
 
   const refreshFromRepository = async (): Promise<{
@@ -89,7 +83,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
     totals: ShoppingListState['totals'];
     monetaryTotals?: MonetarySummary;
   }> => {
-    const result = await getActiveListState({ repository });
+    const result = await useCases.getActiveListState();
     return {
       list: result.list,
       categories: result.categories,
@@ -329,7 +323,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }));
 
         try {
-          const saved = await toggleItemPurchased(itemId, { repository });
+          const saved = await useCases.toggleItemPurchased(itemId);
           set((state) => {
             const categoriesAfterSave = replaceItem(state.categories, saved);
             const derivedAfterSave = deriveStateFromCategories(
@@ -367,7 +361,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }
 
         try {
-          const updated = await updateItemUseCase(input, { repository });
+          const updated = await useCases.updateItem(input);
           set((state) => {
             const categoriesAfterUpdate = replaceItem(state.categories, updated);
             const derivedAfterUpdate = deriveStateFromCategories(
@@ -422,7 +416,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }));
 
         try {
-          await deleteItemUseCase(itemId, { repository });
+          await useCases.deleteItem(itemId);
         } catch (error) {
           console.debug('shoppingListStore.delete_item_failed', { error });
           set((state) => ({
@@ -513,10 +507,10 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
         }));
 
         try {
-          const updatedList = await updatePreferences(
-            { listId: current.list.id, hidePurchasedByDefault: nextHidePurchased },
-            { repository },
-          );
+          const updatedList = await useCases.updatePreferences({
+            listId: current.list.id,
+            hidePurchasedByDefault: nextHidePurchased,
+          });
           const syncedFilters = resolveFiltersFromList(updatedList, optimisticFilters);
           const derived = deriveStateFromCategories(get().categories, updatedList, syncedFilters);
           set((state) => ({

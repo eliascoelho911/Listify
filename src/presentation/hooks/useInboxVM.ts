@@ -10,15 +10,10 @@
 import { useCallback, useMemo } from 'react';
 import { useStore } from 'zustand';
 
+import { useInboxUseCases } from '@app/di/AppDependenciesProvider';
 import type { Tag, UserInput } from '@domain/inbox/entities';
 
 import { useInboxUIStore } from '../state/inbox/InboxUIStoreProvider';
-import {
-  useCreateUserInput,
-  useDeleteUserInput,
-  useSearchTags,
-  useUpdateUserInput,
-} from './use-cases';
 import { useUserInputsPaginated } from './useUserInputsPaginated';
 
 export type UseInboxVMReturn = {
@@ -96,11 +91,8 @@ export type UseInboxVMReturn = {
 export function useInboxVM(): UseInboxVMReturn {
   const store = useInboxUIStore();
 
-  // UseCase hooks (with injected repository)
-  const createInput = useCreateUserInput();
-  const updateInput = useUpdateUserInput();
-  const deleteInput = useDeleteUserInput();
-  const searchTagsFn = useSearchTags();
+  // UseCases from DI container
+  const { createUserInput, updateUserInput, deleteUserInput, searchTags } = useInboxUseCases();
 
   // Paginated data (reactive for first 50, then on-demand)
   const {
@@ -144,9 +136,9 @@ export function useInboxVM(): UseInboxVMReturn {
 
     try {
       if (editingInput) {
-        await updateInput(editingInput.id, trimmedText);
+        await updateUserInput(editingInput.id, trimmedText);
       } else {
-        await createInput({ text: trimmedText });
+        await createUserInput({ text: trimmedText });
       }
       resetAfterMutation();
     } catch (error) {
@@ -156,8 +148,8 @@ export function useInboxVM(): UseInboxVMReturn {
   }, [
     inputText,
     editingInput,
-    createInput,
-    updateInput,
+    createUserInput,
+    updateUserInput,
     setIsSubmitting,
     clearError,
     setError,
@@ -174,13 +166,13 @@ export function useInboxVM(): UseInboxVMReturn {
       setIsLoadingTags(true);
 
       try {
-        const tags = await searchTagsFn({ query, limit: 5 });
+        const tags = await searchTags({ query, limit: 5 });
         setTagSuggestions(tags);
       } catch {
         clearTagSuggestions();
       }
     },
-    [searchTagsFn, setIsLoadingTags, setTagSuggestions, clearTagSuggestions],
+    [searchTags, setIsLoadingTags, setTagSuggestions, clearTagSuggestions],
   );
 
   const handleClearTagSuggestions = useCallback(() => {
@@ -207,12 +199,12 @@ export function useInboxVM(): UseInboxVMReturn {
       clearError();
 
       try {
-        await deleteInput(id);
+        await deleteUserInput(id);
       } catch (error) {
         setError(error instanceof Error ? error : new Error('Failed to delete input'));
       }
     },
-    [deleteInput, clearError, setError],
+    [deleteUserInput, clearError, setError],
   );
 
   const handleSelectTag = useCallback(

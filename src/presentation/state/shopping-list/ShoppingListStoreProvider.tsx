@@ -15,11 +15,12 @@ type ShoppingListStoreProps = {
 export function ShoppingListStoreProvider({
   children,
   repository,
+  useCases,
   getLocale,
 }: ShoppingListStoreProps): ReactElement {
   const store = useMemo(
-    () => createShoppingListStore({ repository, getLocale }),
-    [repository, getLocale],
+    () => createShoppingListStore({ repository, useCases, getLocale }),
+    [repository, useCases, getLocale],
   );
 
   return (

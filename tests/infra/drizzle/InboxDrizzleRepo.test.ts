@@ -85,6 +85,9 @@ const createMockDb = (mockTx?: MockTransaction): DrizzleDB => {
     delete: jest.fn().mockReturnValue({
       where: jest.fn().mockResolvedValue(undefined),
     }),
+    select: jest.fn().mockReturnValue({
+      from: jest.fn().mockResolvedValue([{ count: 0 }]),
+    }),
   } as unknown as DrizzleDB;
 };
 

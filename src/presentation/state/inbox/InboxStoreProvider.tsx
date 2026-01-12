@@ -4,14 +4,7 @@
  * Context provider for the inbox store using Zustand vanilla store pattern.
  */
 
-import {
-  createContext,
-  type ReactElement,
-  type ReactNode,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { createContext, type ReactElement, type ReactNode, useContext, useState } from 'react';
 import { useStore } from 'zustand';
 
 import type { InboxRepository } from '@domain/inbox/ports/InboxRepository';

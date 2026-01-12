@@ -1,3 +1,4 @@
+import type { ShoppingUseCases } from '@app/di/types';
 import { DEFAULT_CURRENCY_CODE } from '@domain/shopping/constants';
 import type { Category } from '@domain/shopping/entities/Category';
 import type { ShoppingItem } from '@domain/shopping/entities/ShoppingItem';
@@ -6,6 +7,11 @@ import type {
   ShoppingRepository,
   UpdateListPreferencesInput,
 } from '@domain/shopping/ports/ShoppingRepository';
+import { deleteItem } from '@domain/shopping/use-cases/DeleteItem';
+import { getActiveListState } from '@domain/shopping/use-cases/GetActiveListState';
+import { toggleItemPurchased } from '@domain/shopping/use-cases/ToggleItemPurchased';
+import { updateItem } from '@domain/shopping/use-cases/UpdateItem';
+import { updatePreferences } from '@domain/shopping/use-cases/UpdatePreferences';
 import { Quantity } from '@domain/shopping/value-objects/Quantity';
 
 type InMemoryState = {
@@ -143,4 +149,16 @@ export function createShoppingItem(overrides: Partial<ShoppingItem> = {}): Shopp
 
 export function buildClock(fixed: Date): () => Date {
   return () => new Date(fixed);
+}
+
+export function createMockUseCases(repository: ShoppingRepository): ShoppingUseCases {
+  const clock = () => new Date();
+
+  return {
+    getActiveListState: () => getActiveListState({ repository }),
+    toggleItemPurchased: (itemId) => toggleItemPurchased(itemId, { repository, clock }),
+    updateItem: (input) => updateItem(input, { repository, clock }),
+    deleteItem: (itemId) => deleteItem(itemId, { repository }),
+    updatePreferences: (preferences) => updatePreferences(preferences, { repository }),
+  };
 }
