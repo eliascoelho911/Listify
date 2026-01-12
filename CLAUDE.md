@@ -40,6 +40,7 @@ src/
 - **DI**: Container in `src/app/di/container.ts` with async bootstrap
 - **Repository**: `ShoppingRepository` interface in domain, SQLite impl in infra
 - **Path aliases**: `@domain/*`, `@presentation/*`, `@infra/*`, `@data/*`, `@app/*`, `@design-system/*`
+- **Reactive Clean Architecture**: Pattern for features with reactive data - see [`docs/REACTIVE_CLEAN_ARCHITECTURE.md`](./docs/REACTIVE_CLEAN_ARCHITECTURE.md)
 
 ## Coding Guidelines
 

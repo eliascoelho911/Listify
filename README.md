@@ -113,6 +113,17 @@ npm run storybook   # Visualizar componentes no Storybook
 app → presentation → domain ← data → infra
 ```
 
+### Reactive Clean Architecture
+
+Para features com dados reativos (useLiveQuery + Zustand + UseCase Hooks), seguimos um padrão documentado em [`docs/REACTIVE_CLEAN_ARCHITECTURE.md`](./docs/REACTIVE_CLEAN_ARCHITECTURE.md).
+
+**Componentes do padrão:**
+- `useFeatureLive()` - Dados reativos via Drizzle useLiveQuery
+- `useFeatureRepository()` - DI do repository
+- `use*UseCase()` hooks - Encapsulam use cases com DI
+- `featureUIStore` - Estado de UI (Zustand vanilla)
+- `useFeatureVM()` - ViewModel que orquestra tudo
+
 ## Internacionalização
 
 - **i18next** + react-i18next
