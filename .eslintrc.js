@@ -79,6 +79,28 @@ module.exports = {
       },
     },
     {
+      files: ['src/presentation/**/*.{ts,tsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              {
+                group: ['drizzle-orm', 'drizzle-orm/*'],
+                message:
+                  'Presentation layer cannot import from drizzle-orm. Use hooks from @app/di/AppDependenciesProvider instead.',
+              },
+              {
+                group: ['@drizzle/*', '@infra/drizzle/*'],
+                message:
+                  'Presentation layer cannot import from Drizzle infrastructure. Use hooks from @app/di/AppDependenciesProvider instead.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
       files: ['tests/**/*.{ts,tsx}'],
       env: {
         jest: true,
