@@ -13,7 +13,6 @@ import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
 import { Menu } from 'lucide-react-native';
 
-import { useInboxRepository } from '@app/di/AppDependenciesProvider';
 import type { UserInput } from '@domain/inbox/entities';
 import type { DateGroup } from '@domain/inbox/entities/types';
 import { GetUserInputsGrouped } from '@domain/inbox/use-cases/GetUserInputsGrouped';
@@ -26,7 +25,7 @@ import { InboxBottomBar } from '../components/inbox/InboxBottomBar';
 import { InputOptionsMenu } from '../components/inbox/InputOptionsMenu';
 import { UserInputCard } from '../components/inbox/UserInputCard';
 import { useInboxVM } from '../hooks/useInboxVM';
-import { InboxStoreProvider } from '../state/inbox/InboxStoreProvider';
+import { InboxUIStoreProvider } from '../state/inbox/InboxUIStoreProvider';
 
 type ListItem = { type: 'header'; group: DateGroup } | { type: 'input'; input: UserInput };
 
@@ -189,10 +188,6 @@ function InboxScreenContent(): ReactElement {
           estimatedItemSize={80}
           contentContainerStyle={styles.listContent}
           stickyHeaderIndices={stickyHeaderIndices}
-          onEndReached={vm.handleLoadMore}
-          onEndReachedThreshold={0.5}
-          refreshing={vm.isLoading}
-          onRefresh={vm.handleRefresh}
         />
       )}
 
@@ -217,12 +212,10 @@ function InboxScreenContent(): ReactElement {
 }
 
 export function InboxScreen(): ReactElement {
-  const inboxRepository = useInboxRepository();
-
   return (
-    <InboxStoreProvider repository={inboxRepository}>
+    <InboxUIStoreProvider>
       <InboxScreenContent />
-    </InboxStoreProvider>
+    </InboxUIStoreProvider>
   );
 }
 
