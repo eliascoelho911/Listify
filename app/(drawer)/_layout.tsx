@@ -26,7 +26,7 @@ export default function DrawerLayout(): ReactElement {
           },
           drawerActiveTintColor: theme.colors.primary,
           drawerInactiveTintColor: theme.colors.mutedForeground,
-          sceneContainerStyle: {
+          sceneStyle: {
             backgroundColor: theme.colors.background,
           },
         }}

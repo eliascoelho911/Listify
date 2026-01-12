@@ -23,7 +23,7 @@ export function InboxBottomBar(): ReactElement {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const vm = useInboxVM();
-  const debounceRef = useRef<NodeJS.Timeout | null>(null);
+  const debounceRef = useRef<number | null>(null);
 
   const handleTextChange = useCallback(
     (text: string) => {

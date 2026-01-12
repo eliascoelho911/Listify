@@ -3,8 +3,8 @@
  */
 
 // Use Cases
-export type { CreateUserInputResult } from './CreateUserInput';
-export { CreateUserInput } from './CreateUserInput';
+export type { CreateUserInputInput, CreateUserInputResult } from './CreateUserInput';
+export { createUserInput } from './CreateUserInput';
 export { DeleteUserInput } from './DeleteUserInput';
 export { GetUserInputs } from './GetUserInputs';
 export { GetUserInputsGrouped } from './GetUserInputsGrouped';

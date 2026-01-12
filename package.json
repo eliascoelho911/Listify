@@ -14,7 +14,7 @@
     "storybook:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start --android",
     "storybook:generate": "sb-rn-get-stories",
     "ds": "tsx scripts/ds-cli/index.ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "node scripts/type-check.js"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",

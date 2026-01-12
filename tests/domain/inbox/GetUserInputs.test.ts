@@ -9,15 +9,14 @@ import { createMockUserInput } from './testUtils';
 
 describe('GetUserInputs', () => {
   const mockRepository: InboxRepository = {
-    create: jest.fn(),
-    getById: jest.fn(),
-    getAll: jest.fn(),
-    update: jest.fn(),
-    delete: jest.fn(),
+    createUserInput: jest.fn(),
+    updateUserInput: jest.fn(),
+    deleteUserInput: jest.fn(),
+    getUserInputById: jest.fn(),
+    getUserInputs: jest.fn(),
     searchTags: jest.fn(),
-    getOrCreateTag: jest.fn(),
-    deleteUnusedTags: jest.fn(),
-    countInputs: jest.fn(),
+    getAllTags: jest.fn(),
+    transaction: jest.fn(),
   };
 
   beforeEach(() => {
@@ -30,12 +29,17 @@ describe('GetUserInputs', () => {
       createMockUserInput({ id: '2', text: 'Second input' }),
     ];
 
-    (mockRepository.getAll as jest.Mock).mockResolvedValue(mockInputs);
-    (mockRepository.countInputs as jest.Mock).mockResolvedValue(2);
+    (mockRepository.getUserInputs as jest.Mock).mockResolvedValue({
+      items: mockInputs,
+      total: 2,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    });
 
     const result = await GetUserInputs(mockRepository);
 
-    expect(mockRepository.getAll).toHaveBeenCalledWith(0, 20);
+    expect(mockRepository.getUserInputs).toHaveBeenCalledWith({ page: 0, limit: 20 });
     expect(result).toEqual({
       items: mockInputs,
       total: 2,
@@ -45,19 +49,24 @@ describe('GetUserInputs', () => {
     });
   });
 
-  it('should return paginated inputs with custom offset and limit', async () => {
+  it('should return paginated inputs with custom page and limit', async () => {
     const mockInputs = [createMockUserInput({ id: '3', text: 'Third input' })];
 
-    (mockRepository.getAll as jest.Mock).mockResolvedValue(mockInputs);
-    (mockRepository.countInputs as jest.Mock).mockResolvedValue(10);
+    (mockRepository.getUserInputs as jest.Mock).mockResolvedValue({
+      items: mockInputs,
+      total: 10,
+      offset: 25,
+      limit: 5,
+      hasMore: true,
+    });
 
     const result = await GetUserInputs(mockRepository, 5, 5);
 
-    expect(mockRepository.getAll).toHaveBeenCalledWith(5, 5);
+    expect(mockRepository.getUserInputs).toHaveBeenCalledWith({ page: 5, limit: 5 });
     expect(result).toEqual({
       items: mockInputs,
       total: 10,
-      offset: 5,
+      offset: 25,
       limit: 5,
       hasMore: true,
     });
@@ -68,8 +77,13 @@ describe('GetUserInputs', () => {
       createMockUserInput({ id: `${i}`, text: `Input ${i}` }),
     );
 
-    (mockRepository.getAll as jest.Mock).mockResolvedValue(mockInputs);
-    (mockRepository.countInputs as jest.Mock).mockResolvedValue(25);
+    (mockRepository.getUserInputs as jest.Mock).mockResolvedValue({
+      items: mockInputs,
+      total: 25,
+      offset: 0,
+      limit: 20,
+      hasMore: true,
+    });
 
     const result = await GetUserInputs(mockRepository, 0, 20);
 
@@ -77,8 +91,13 @@ describe('GetUserInputs', () => {
   });
 
   it('should return empty array when no inputs exist', async () => {
-    (mockRepository.getAll as jest.Mock).mockResolvedValue([]);
-    (mockRepository.countInputs as jest.Mock).mockResolvedValue(0);
+    (mockRepository.getUserInputs as jest.Mock).mockResolvedValue({
+      items: [],
+      total: 0,
+      offset: 0,
+      limit: 20,
+      hasMore: false,
+    });
 
     const result = await GetUserInputs(mockRepository);
 

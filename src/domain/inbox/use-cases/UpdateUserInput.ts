@@ -8,6 +8,8 @@ import type { UserInput } from '../entities/UserInput';
 import type { InboxRepository } from '../ports/InboxRepository';
 import { EmptyTextError, UserInputNotFoundError } from './errors';
 
+export type UpdateUserInputResult = UserInput;
+
 /**
  * Updates an existing user input.
  *

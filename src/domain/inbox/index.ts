@@ -31,7 +31,7 @@ export type {
   UpdateUserInputResult,
 } from './use-cases';
 export {
-  CreateUserInput,
+  createUserInput,
   DeleteUserInput,
   EmptyTextError,
   extractTags,

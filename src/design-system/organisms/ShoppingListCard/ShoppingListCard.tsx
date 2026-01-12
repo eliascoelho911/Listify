@@ -23,7 +23,6 @@ export function ShoppingListCard({
   lastUpdated,
   status = 'active',
   onPress,
-  ...viewProps
 }: ShoppingListCardProps): ReactElement {
   const { theme } = useTheme();
   const styles = createShoppingListCardStyles(theme);
@@ -40,7 +39,6 @@ export function ShoppingListCard({
       onPress={onPress}
       accessible={!!onPress}
       accessibilityRole={onPress ? 'button' : 'none'}
-      {...viewProps}
     >
       {/* Header */}
       <View style={styles.header}>

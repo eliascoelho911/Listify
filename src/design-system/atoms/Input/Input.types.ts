@@ -2,7 +2,7 @@
  * Input Atom Types
  */
 
-import type { TextInputProps } from 'react-native';
+import type { StyleProp, TextInputProps, TextStyle } from 'react-native';
 
 export type InputState = 'default' | 'focus' | 'error' | 'disabled';
 
@@ -21,4 +21,9 @@ export interface InputProps extends Omit<TextInputProps, 'style'> {
    * Helper text
    */
   helperText?: string;
+
+  /**
+   * Custom style for the input (use sparingly, prefer design tokens)
+   */
+  style?: StyleProp<TextStyle>;
 }

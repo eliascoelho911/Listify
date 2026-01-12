@@ -6,7 +6,7 @@
  * implementation separate from the domain layer.
  */
 
-import { desc, eq } from 'drizzle-orm';
+import { desc, eq, sql } from 'drizzle-orm';
 
 import type { PaginatedUserInputs, Tag, UserInput } from '@domain/inbox/entities';
 import type {
@@ -247,19 +247,23 @@ export class InboxDrizzleRepo implements InboxRepository {
     const limit = params.limit ?? DEFAULT_LIMIT;
     const offset = params.page * limit;
 
-    const results = await this.db.query.userInputs.findMany({
-      with: {
-        inputTags: {
-          with: {
-            tag: true,
+    const [results, totalResult] = await Promise.all([
+      this.db.query.userInputs.findMany({
+        with: {
+          inputTags: {
+            with: {
+              tag: true,
+            },
           },
         },
-      },
-      orderBy: [desc(userInputs.createdAt)],
-      limit: limit + 1,
-      offset,
-    });
+        orderBy: [desc(userInputs.createdAt)],
+        limit: limit + 1,
+        offset,
+      }),
+      this.db.select({ count: sql<number>`count(*)` }).from(userInputs),
+    ]);
 
+    const total = totalResult[0]?.count ?? 0;
     const hasMore = results.length > limit;
     const items = results.slice(0, limit);
 
@@ -277,7 +281,9 @@ export class InboxDrizzleRepo implements InboxRepository {
         })),
       })),
       hasMore,
-      page: params.page,
+      total,
+      offset,
+      limit,
     };
   }
 

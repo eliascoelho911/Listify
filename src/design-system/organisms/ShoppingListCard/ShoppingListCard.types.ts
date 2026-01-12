@@ -2,9 +2,7 @@
  * ShoppingListCard Organism Types
  */
 
-import type { ViewProps } from 'react-native';
-
-export interface ShoppingListCardProps extends Omit<ViewProps, 'style'> {
+export interface ShoppingListCardProps {
   /**
    * List title
    */

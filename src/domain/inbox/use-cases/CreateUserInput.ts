@@ -12,6 +12,8 @@ export type CreateUserInputDeps = {
   repository: InboxRepository;
 };
 
+export type CreateUserInputResult = UserInput;
+
 /**
  * Creates a new UserInput in the system.
  *

@@ -462,7 +462,8 @@ describe('InboxDrizzleRepo', () => {
       const result = await repo.getUserInputs({ page: 0, limit: 10 });
 
       expect(result.items).toHaveLength(2);
-      expect(result.page).toBe(0);
+      expect(result.offset).toBe(0);
+      expect(result.limit).toBe(10);
       expect(result.hasMore).toBe(false);
     });
 

@@ -40,10 +40,6 @@ export function InboxStoreProvider({
 }: InboxStoreProviderProps): ReactElement {
   const [store] = useState(() => createInboxStore());
 
-  useEffect(() => {
-    store.getState().loadInputs(repository);
-  }, [store, repository]);
-
   return (
     <InboxStoreContext.Provider value={{ store, repository }}>
       {children}

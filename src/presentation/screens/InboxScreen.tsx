@@ -201,7 +201,6 @@ function InboxScreenContent(): ReactElement {
           }
           renderItem={renderItem}
           getItemType={getItemType}
-          estimatedItemSize={80}
           contentContainerStyle={styles.listContent}
           stickyHeaderIndices={stickyHeaderIndices}
           onEndReached={vm.handleLoadMore}
