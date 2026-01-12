@@ -67,7 +67,7 @@ function formatDateLabel(date: Date, variant: DateBadgeVariant, locale: string =
  * @returns Array of date groups, ordered by most recent first
  */
 export function GetUserInputsGrouped(inputs: UserInput[], locale: string = 'pt-BR'): DateGroup[] {
-  if (inputs.length === 0) {
+  if (!inputs || inputs.length === 0) {
     return [];
   }
 

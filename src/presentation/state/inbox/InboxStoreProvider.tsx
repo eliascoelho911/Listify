@@ -1,17 +1,25 @@
 /**
  * Inbox Store Provider
  *
- * Context provider for the inbox store.
+ * Context provider for the inbox store using Zustand vanilla store pattern.
  */
 
-import { createContext, type ReactElement, type ReactNode, useContext, useEffect } from 'react';
+import {
+  createContext,
+  type ReactElement,
+  type ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { useStore } from 'zustand';
 
 import type { InboxRepository } from '@domain/inbox/ports/InboxRepository';
 
-import { type InboxStore, useInboxStore } from './inboxStore';
+import { createInboxStore, type InboxStore, type InboxStoreApi } from './inboxStore';
 
 type InboxStoreContextValue = {
-  store: InboxStore;
+  store: InboxStoreApi;
   repository: InboxRepository;
 };
 
@@ -30,11 +38,11 @@ export function InboxStoreProvider({
   children,
   repository,
 }: InboxStoreProviderProps): ReactElement {
-  const store = useInboxStore();
+  const [store] = useState(() => createInboxStore());
 
   useEffect(() => {
-    store.loadInputs(repository);
-  }, [repository]);
+    store.getState().loadInputs(repository);
+  }, [store, repository]);
 
   return (
     <InboxStoreContext.Provider value={{ store, repository }}>
@@ -54,4 +62,13 @@ export function useInboxStoreContext(): InboxStoreContextValue {
     throw new Error('useInboxStoreContext must be used within an InboxStoreProvider');
   }
   return context;
+}
+
+/**
+ * Hook to select state from the inbox store.
+ * Use this for accessing store state with proper React subscriptions.
+ */
+export function useInboxStoreSelector<T>(selector: (state: InboxStore) => T): T {
+  const { store } = useInboxStoreContext();
+  return useStore(store, selector);
 }

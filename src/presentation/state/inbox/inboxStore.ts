@@ -4,7 +4,7 @@
  * Zustand store for managing inbox state with optimistic updates.
  */
 
-import { create } from 'zustand';
+import { createStore, type StoreApi } from 'zustand';
 
 import type { Tag, UserInput } from '@domain/inbox/entities';
 import type { InboxRepository } from '@domain/inbox/ports/InboxRepository';
@@ -100,202 +100,205 @@ const initialState: InboxState = {
   editingInput: null,
 };
 
-export const useInboxStore = create<InboxStore>((set, get) => ({
-  ...initialState,
+export type InboxStoreApi = StoreApi<InboxStore>;
 
-  setInputText: (text) => {
-    set({ inputText: text });
-  },
+export const createInboxStore = (): InboxStoreApi =>
+  createStore<InboxStore>()((set, get) => ({
+    ...initialState,
 
-  submitInput: async (repository) => {
-    const { inputText, inputs, editingInput } = get();
-    const trimmedText = inputText.trim();
+    setInputText: (text) => {
+      set({ inputText: text });
+    },
 
-    if (trimmedText.length === 0) return;
+    submitInput: async (repository) => {
+      const { inputText, inputs, editingInput } = get();
+      const trimmedText = inputText.trim();
 
-    if (editingInput) {
-      await get().updateInput(repository, editingInput.id, trimmedText);
-      return;
-    }
+      if (trimmedText.length === 0) return;
 
-    set({ isSubmitting: true, lastError: null });
+      if (editingInput) {
+        await get().updateInput(repository, editingInput.id, trimmedText);
+        return;
+      }
 
-    const optimisticInput: UserInput = {
-      id: `temp-${Date.now()}`,
-      text: trimmedText,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      tags: extractTags({ text: trimmedText }).tagNames.map((name, index) => ({
-        id: `temp-tag-${index}`,
-        name,
-        usageCount: 1,
+      set({ isSubmitting: true, lastError: null });
+
+      const optimisticInput: UserInput = {
+        id: `temp-${Date.now()}`,
+        text: trimmedText,
         createdAt: new Date(),
-      })),
-    };
+        updatedAt: new Date(),
+        tags: extractTags({ text: trimmedText }).tagNames.map((name, index) => ({
+          id: `temp-tag-${index}`,
+          name,
+          usageCount: 1,
+          createdAt: new Date(),
+        })),
+      };
 
-    const snapshot = [...inputs];
-    set({
-      inputs: [...inputs, optimisticInput],
-      inputText: '',
-    });
+      const snapshot = [...inputs];
+      set({
+        inputs: [...inputs, optimisticInput],
+        inputText: '',
+      });
 
-    try {
-      const newInput = await createUserInput({ text: trimmedText }, { repository });
+      try {
+        const newInput = await createUserInput({ text: trimmedText }, { repository });
+
+        set((state) => ({
+          inputs: state.inputs.map((input) => (input.id === optimisticInput.id ? newInput : input)),
+          isSubmitting: false,
+          total: state.total + 1,
+        }));
+      } catch (error) {
+        set({
+          inputs: snapshot,
+          inputText: trimmedText,
+          isSubmitting: false,
+          lastError: error instanceof Error ? error : new Error('Failed to create input'),
+        });
+      }
+    },
+
+    loadInputs: async (repository, page = 0) => {
+      set({ isLoading: true, lastError: null });
+
+      try {
+        const result = await repository.getUserInputs({ page, limit: 20 });
+
+        set({
+          inputs: page === 0 ? result.items : [...get().inputs, ...result.items],
+          isLoading: false,
+          currentPage: page,
+          hasMore: result.hasMore,
+          total: result.total,
+        });
+      } catch (error) {
+        set({
+          isLoading: false,
+          lastError: error instanceof Error ? error : new Error('Failed to load inputs'),
+        });
+      }
+    },
+
+    loadMore: async (repository) => {
+      const { isLoading, hasMore, currentPage } = get();
+
+      if (isLoading || !hasMore) return;
+
+      await get().loadInputs(repository, currentPage + 1);
+    },
+
+    searchTags: async (repository, query) => {
+      if (query.length === 0) {
+        set({ tagSuggestions: [], isLoadingTags: false });
+        return;
+      }
+
+      set({ isLoadingTags: true });
+
+      try {
+        const tags = await repository.searchTags({ query, limit: 5 });
+        set({ tagSuggestions: tags, isLoadingTags: false });
+      } catch {
+        set({ tagSuggestions: [], isLoadingTags: false });
+      }
+    },
+
+    clearTagSuggestions: () => {
+      set({ tagSuggestions: [], isLoadingTags: false });
+    },
+
+    clearError: () => {
+      set({ lastError: null });
+    },
+
+    startEditing: (input) => {
+      set({
+        editingInput: input,
+        inputText: input.text,
+      });
+    },
+
+    cancelEditing: () => {
+      set({
+        editingInput: null,
+        inputText: '',
+      });
+    },
+
+    updateInput: async (repository, id, text) => {
+      const { inputs, editingInput } = get();
+      const trimmedText = text.trim();
+
+      if (trimmedText.length === 0) return;
+
+      set({ isSubmitting: true, lastError: null });
+
+      const snapshot = [...inputs];
 
       set((state) => ({
-        inputs: state.inputs.map((input) => (input.id === optimisticInput.id ? newInput : input)),
-        isSubmitting: false,
-        total: state.total + 1,
+        inputs: state.inputs.map((input) =>
+          input.id === id
+            ? {
+                ...input,
+                text: trimmedText,
+                updatedAt: new Date(),
+                tags: extractTags({ text: trimmedText }).tagNames.map((name, index) => ({
+                  id: `temp-tag-${index}`,
+                  name,
+                  usageCount: 1,
+                  createdAt: new Date(),
+                })),
+              }
+            : input,
+        ),
+        inputText: '',
+        editingInput: null,
       }));
-    } catch (error) {
-      set({
-        inputs: snapshot,
-        inputText: trimmedText,
-        isSubmitting: false,
-        lastError: error instanceof Error ? error : new Error('Failed to create input'),
-      });
-    }
-  },
 
-  loadInputs: async (repository, page = 0) => {
-    set({ isLoading: true, lastError: null });
+      try {
+        const updatedInput = await repository.updateUserInput({ id, text: trimmedText });
 
-    try {
-      const result = await repository.getUserInputs({ page, limit: 20 });
+        set((state) => ({
+          inputs: state.inputs.map((input) => (input.id === id ? updatedInput : input)),
+          isSubmitting: false,
+        }));
+      } catch (error) {
+        set({
+          inputs: snapshot,
+          inputText: editingInput?.text ?? '',
+          editingInput,
+          isSubmitting: false,
+          lastError: error instanceof Error ? error : new Error('Failed to update input'),
+        });
+      }
+    },
 
-      set({
-        inputs: page === 0 ? result.items : [...get().inputs, ...result.items],
-        isLoading: false,
-        currentPage: page,
-        hasMore: result.hasMore,
-        total: result.total,
-      });
-    } catch (error) {
-      set({
-        isLoading: false,
-        lastError: error instanceof Error ? error : new Error('Failed to load inputs'),
-      });
-    }
-  },
+    deleteInput: async (repository, id) => {
+      const { inputs } = get();
 
-  loadMore: async (repository) => {
-    const { isLoading, hasMore, currentPage } = get();
+      set({ lastError: null });
 
-    if (isLoading || !hasMore) return;
-
-    await get().loadInputs(repository, currentPage + 1);
-  },
-
-  searchTags: async (repository, query) => {
-    if (query.length === 0) {
-      set({ tagSuggestions: [], isLoadingTags: false });
-      return;
-    }
-
-    set({ isLoadingTags: true });
-
-    try {
-      const tags = await repository.searchTags({ query, limit: 5 });
-      set({ tagSuggestions: tags, isLoadingTags: false });
-    } catch {
-      set({ tagSuggestions: [], isLoadingTags: false });
-    }
-  },
-
-  clearTagSuggestions: () => {
-    set({ tagSuggestions: [], isLoadingTags: false });
-  },
-
-  clearError: () => {
-    set({ lastError: null });
-  },
-
-  startEditing: (input) => {
-    set({
-      editingInput: input,
-      inputText: input.text,
-    });
-  },
-
-  cancelEditing: () => {
-    set({
-      editingInput: null,
-      inputText: '',
-    });
-  },
-
-  updateInput: async (repository, id, text) => {
-    const { inputs, editingInput } = get();
-    const trimmedText = text.trim();
-
-    if (trimmedText.length === 0) return;
-
-    set({ isSubmitting: true, lastError: null });
-
-    const snapshot = [...inputs];
-
-    set((state) => ({
-      inputs: state.inputs.map((input) =>
-        input.id === id
-          ? {
-              ...input,
-              text: trimmedText,
-              updatedAt: new Date(),
-              tags: extractTags({ text: trimmedText }).tagNames.map((name, index) => ({
-                id: `temp-tag-${index}`,
-                name,
-                usageCount: 1,
-                createdAt: new Date(),
-              })),
-            }
-          : input,
-      ),
-      inputText: '',
-      editingInput: null,
-    }));
-
-    try {
-      const updatedInput = await repository.updateUserInput({ id, text: trimmedText });
+      const snapshot = [...inputs];
 
       set((state) => ({
-        inputs: state.inputs.map((input) => (input.id === id ? updatedInput : input)),
-        isSubmitting: false,
+        inputs: state.inputs.filter((input) => input.id !== id),
+        total: state.total - 1,
       }));
-    } catch (error) {
-      set({
-        inputs: snapshot,
-        inputText: editingInput?.text ?? '',
-        editingInput,
-        isSubmitting: false,
-        lastError: error instanceof Error ? error : new Error('Failed to update input'),
-      });
-    }
-  },
 
-  deleteInput: async (repository, id) => {
-    const { inputs } = get();
+      try {
+        await repository.deleteUserInput(id);
+      } catch (error) {
+        set({
+          inputs: snapshot,
+          total: get().total + 1,
+          lastError: error instanceof Error ? error : new Error('Failed to delete input'),
+        });
+      }
+    },
 
-    set({ lastError: null });
-
-    const snapshot = [...inputs];
-
-    set((state) => ({
-      inputs: state.inputs.filter((input) => input.id !== id),
-      total: state.total - 1,
-    }));
-
-    try {
-      await repository.deleteUserInput(id);
-    } catch (error) {
-      set({
-        inputs: snapshot,
-        total: get().total + 1,
-        lastError: error instanceof Error ? error : new Error('Failed to delete input'),
-      });
-    }
-  },
-
-  reset: () => {
-    set(initialState);
-  },
-}));
+    reset: () => {
+      set(initialState);
+    },
+  }));

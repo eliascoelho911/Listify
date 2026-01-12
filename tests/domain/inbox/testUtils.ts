@@ -123,9 +123,11 @@ export function createMockInboxRepository(): MockInboxRepository {
       const offset = params.page * limit;
       const pageInputs = inputs.slice(offset, offset + limit);
       return {
-        inputs: pageInputs,
+        items: pageInputs,
         hasMore: inputs.length > offset + limit,
         total: inputs.length,
+        offset,
+        limit,
       };
     },
 

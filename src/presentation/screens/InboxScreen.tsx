@@ -150,7 +150,7 @@ function InboxScreenContent(): ReactElement {
   const getItemType = (item: ListItem): string => item.type;
 
   return (
-    <SafeAreaView style={styles.container} edges={['top']}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <IconButton
           icon={Menu}

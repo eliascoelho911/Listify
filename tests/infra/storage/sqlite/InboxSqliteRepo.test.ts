@@ -108,7 +108,7 @@ describe('InboxSqliteRepo', () => {
 
       const result = await repo.getUserInputs({ page: 0 });
 
-      expect(result.inputs).toEqual([]);
+      expect(result.items).toEqual([]);
       expect(result.hasMore).toBe(false);
       expect(result.total).toBe(0);
     });
@@ -135,7 +135,7 @@ describe('InboxSqliteRepo', () => {
 
       const result = await repo.getUserInputs({ page: 0, limit: 20 });
 
-      expect(result.inputs).toHaveLength(2);
+      expect(result.items).toHaveLength(2);
       expect(result.hasMore).toBe(false);
       expect(result.total).toBe(2);
     });
@@ -154,7 +154,7 @@ describe('InboxSqliteRepo', () => {
 
       const result = await repo.getUserInputs({ page: 0, limit: 20 });
 
-      expect(result.inputs).toHaveLength(20);
+      expect(result.items).toHaveLength(20);
       expect(result.hasMore).toBe(true);
     });
   });

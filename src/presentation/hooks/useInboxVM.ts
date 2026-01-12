@@ -5,6 +5,7 @@
  */
 
 import { useCallback, useMemo } from 'react';
+import { useStore } from 'zustand';
 
 import type { Tag, UserInput } from '@domain/inbox/entities';
 
@@ -86,82 +87,104 @@ export type UseInboxVMReturn = {
 export function useInboxVM(): UseInboxVMReturn {
   const { store, repository } = useInboxStoreContext();
 
+  const inputs = useStore(store, (state) => state.inputs);
+  const inputText = useStore(store, (state) => state.inputText);
+  const isSubmitting = useStore(store, (state) => state.isSubmitting);
+  const isLoading = useStore(store, (state) => state.isLoading);
+  const lastError = useStore(store, (state) => state.lastError);
+  const tagSuggestions = useStore(store, (state) => state.tagSuggestions);
+  const isLoadingTags = useStore(store, (state) => state.isLoadingTags);
+  const hasMore = useStore(store, (state) => state.hasMore);
+  const total = useStore(store, (state) => state.total);
+  const editingInput = useStore(store, (state) => state.editingInput);
+
+  const setInputText = useStore(store, (state) => state.setInputText);
+  const submitInput = useStore(store, (state) => state.submitInput);
+  const loadInputs = useStore(store, (state) => state.loadInputs);
+  const loadMore = useStore(store, (state) => state.loadMore);
+  const searchTags = useStore(store, (state) => state.searchTags);
+  const clearTagSuggestions = useStore(store, (state) => state.clearTagSuggestions);
+  const clearError = useStore(store, (state) => state.clearError);
+  const startEditing = useStore(store, (state) => state.startEditing);
+  const cancelEditing = useStore(store, (state) => state.cancelEditing);
+  const deleteInput = useStore(store, (state) => state.deleteInput);
+
   const handleSubmit = useCallback(async () => {
-    await store.submitInput(repository);
-  }, [store, repository]);
+    await submitInput(repository);
+  }, [submitInput, repository]);
 
   const handleLoadMore = useCallback(async () => {
-    await store.loadMore(repository);
-  }, [store, repository]);
+    await loadMore(repository);
+  }, [loadMore, repository]);
 
   const handleRefresh = useCallback(async () => {
-    await store.loadInputs(repository, 0);
-  }, [store, repository]);
+    await loadInputs(repository, 0);
+  }, [loadInputs, repository]);
 
   const handleSearchTags = useCallback(
     async (query: string) => {
-      await store.searchTags(repository, query);
+      await searchTags(repository, query);
     },
-    [store, repository],
+    [searchTags, repository],
   );
 
   const handleClearTagSuggestions = useCallback(() => {
-    store.clearTagSuggestions();
-  }, [store]);
+    clearTagSuggestions();
+  }, [clearTagSuggestions]);
 
   const handleClearError = useCallback(() => {
-    store.clearError();
-  }, [store]);
+    clearError();
+  }, [clearError]);
 
   const handleStartEditing = useCallback(
     (input: UserInput) => {
-      store.startEditing(input);
+      startEditing(input);
     },
-    [store],
+    [startEditing],
   );
 
   const handleCancelEditing = useCallback(() => {
-    store.cancelEditing();
-  }, [store]);
+    cancelEditing();
+  }, [cancelEditing]);
 
   const handleDelete = useCallback(
     async (id: string) => {
-      await store.deleteInput(repository, id);
+      await deleteInput(repository, id);
     },
-    [store, repository],
+    [deleteInput, repository],
   );
 
   const handleSelectTag = useCallback(
     (tag: Tag) => {
-      const { inputText } = store;
-      const hashIndex = inputText.lastIndexOf('#');
+      const currentText = store.getState().inputText;
+      const hashIndex = currentText.lastIndexOf('#');
 
       if (hashIndex >= 0) {
-        const beforeHash = inputText.substring(0, hashIndex);
+        const beforeHash = currentText.substring(0, hashIndex);
         const newText = `${beforeHash}#${tag.name} `;
-        store.setInputText(newText);
+        setInputText(newText);
       }
 
-      store.clearTagSuggestions();
+      clearTagSuggestions();
     },
-    [store],
+    [store, setInputText, clearTagSuggestions],
   );
 
-  const isEditing = useMemo(() => store.editingInput !== null, [store.editingInput]);
+  const isEditing = useMemo(() => editingInput !== null, [editingInput]);
 
   return {
-    inputs: store.inputs,
-    inputText: store.inputText,
-    isSubmitting: store.isSubmitting,
-    isLoading: store.isLoading,
-    lastError: store.lastError,
-    tagSuggestions: store.tagSuggestions,
-    isLoadingTags: store.isLoadingTags,
-    hasMore: store.hasMore,
-    total: store.total,
-    editingInput: store.editingInput,
+    inputs,
+    inputText,
+    isSubmitting,
+    isLoading,
+    lastError,
+    tagSuggestions,
+    isLoadingTags,
+    hasMore,
+    total,
+    editingInput,
     isEditing,
-    setInputText: store.setInputText,
+    setInputText,
     handleSubmit,
     handleLoadMore,
     handleRefresh,

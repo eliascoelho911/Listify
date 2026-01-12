@@ -32,7 +32,7 @@ export function UserInputCard({ input, onPress, onLongPress }: UserInputCardProp
   const { theme } = useTheme();
   const styles = createStyles(theme);
 
-  const formattedTime = input.createdAt.toLocaleTimeString([], {
+  const formattedTime = input.updatedAt.toLocaleTimeString([], {
     hour: '2-digit',
     minute: '2-digit',
   });

@@ -198,16 +198,18 @@ export class InboxSqliteRepo implements InboxRepository {
   }
 
   async getUserInputs(params: GetUserInputsParams): Promise<{
-    inputs: UserInput[];
+    items: UserInput[];
     hasMore: boolean;
-    total?: number;
+    total: number;
+    offset: number;
+    limit: number;
   }> {
     const limit = params.limit ?? DEFAULT_PAGE_SIZE;
     const offset = params.page * limit;
 
     const rows = await this.executor.getAll<UserInputRow>(
       `SELECT * FROM user_inputs
-       ORDER BY created_at ASC
+       ORDER BY updated_at ASC
        LIMIT ? OFFSET ?`,
       limit + 1,
       offset,
@@ -216,10 +218,10 @@ export class InboxSqliteRepo implements InboxRepository {
     const hasMore = rows.length > limit;
     const pageRows = hasMore ? rows.slice(0, limit) : rows;
 
-    const inputs: UserInput[] = [];
+    const items: UserInput[] = [];
     for (const row of pageRows) {
       const tags = await this.getTagsForInput(row.id);
-      inputs.push(mapUserInputRowToEntity(row, tags));
+      items.push(mapUserInputRowToEntity(row, tags));
     }
 
     const totalResult = await this.executor.getFirst<{ count: number }>(
@@ -227,9 +229,11 @@ export class InboxSqliteRepo implements InboxRepository {
     );
 
     return {
-      inputs,
+      items,
       hasMore,
-      total: totalResult?.count,
+      total: totalResult?.count ?? 0,
+      offset,
+      limit,
     };
   }
 

@@ -98,7 +98,7 @@ export function createShoppingListStore(deps: ShoppingListStoreDeps): ShoppingLi
     };
   };
 
-  return create<ShoppingListStore>((set, get) => ({
+  return create<ShoppingListStore>()((set, get) => ({
     list: null,
     categories: [],
     visibleCategories: [],
