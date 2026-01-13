@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier -w app src tests && npm run lint -f && npx tsc --noEmit"
+            "command": "npm run lint:fix && npm run type-check"
           }
         ]
       }
@@ -18,7 +18,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "npx prettier -w app src tests && npm run lint -f && npx tsc --noEmit"
+            "command": "npm run lint:fix && npm run type-check"
           }
         ]
       }
