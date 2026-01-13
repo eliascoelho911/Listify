@@ -51,7 +51,7 @@ export function createMockInboxRepository(
   } = options;
 
   let currentInputs = [...initialInputs];
-  let currentTags = [...initialTags];
+  const currentTags = [...initialTags];
   const subscribers: Map<SubscriptionCallback, { limit?: number }> = new Map();
 
   const notifySubscribers = (): void => {

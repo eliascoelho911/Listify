@@ -12,8 +12,8 @@ import type { Meta, StoryObj } from '@storybook/react-native';
 import { ThemeProvider } from '@design-system/theme';
 
 import { InboxUIStoreProvider } from '../../state/inbox/InboxUIStoreProvider';
+import { emptyTags, mockTags } from './__mocks__/inboxMocks';
 import { MockAppDependenciesProvider } from './__mocks__/MockAppDependenciesProvider';
-import { mockTags, emptyTags } from './__mocks__/inboxMocks';
 import { InboxTagSuggestions } from './InboxTagSuggestions';
 
 /**

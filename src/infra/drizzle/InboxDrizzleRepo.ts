@@ -38,14 +38,14 @@ export function mapRawToUserInput(raw: {
   text: string;
   createdAt: string;
   updatedAt: string;
-  inputTags: Array<{
+  inputTags: {
     tag: {
       id: string;
       name: string;
       usageCount: number;
       createdAt: string;
     };
-  }>;
+  }[];
 }): UserInput {
   return {
     id: raw.id,
@@ -210,7 +210,7 @@ export class InboxDrizzleRepo implements InboxRepository {
     });
 
     // Notify subscribers after successful mutation
-    void this.notifySubscribers();
+    this.notifySubscribers();
 
     return result;
   }
@@ -296,7 +296,7 @@ export class InboxDrizzleRepo implements InboxRepository {
     });
 
     // Notify subscribers after successful mutation
-    void this.notifySubscribers();
+    this.notifySubscribers();
 
     return result;
   }
@@ -327,7 +327,7 @@ export class InboxDrizzleRepo implements InboxRepository {
     });
 
     // Notify subscribers after successful mutation
-    void this.notifySubscribers();
+    this.notifySubscribers();
   }
 
   async getUserInputById(id: string): Promise<UserInput | null> {

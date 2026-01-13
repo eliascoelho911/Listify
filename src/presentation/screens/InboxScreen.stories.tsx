@@ -7,20 +7,20 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react-native';
 import { NavigationContainer } from '@react-navigation/native';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import { ThemeProvider } from '@design-system/theme';
 
-import {
-  MockAppDependenciesProvider,
-  type MockAppDependenciesProviderProps,
-} from '../components/inbox/__mocks__/MockAppDependenciesProvider';
 import {
   emptyUserInputs,
   mockTags,
   mockUserInputs,
 } from '../components/inbox/__mocks__/inboxMocks';
+import {
+  MockAppDependenciesProvider,
+  type MockAppDependenciesProviderProps,
+} from '../components/inbox/__mocks__/MockAppDependenciesProvider';
 import { InboxScreen } from './InboxScreen';
 
 /**

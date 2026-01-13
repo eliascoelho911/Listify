@@ -4,7 +4,7 @@
  * Storybook stories for the input options context menu component.
  */
 
-import React, { useState, type ReactElement } from 'react';
+import React, { type ReactElement, useState } from 'react';
 import { View } from 'react-native';
 import type { Meta, StoryObj } from '@storybook/react-native';
 
