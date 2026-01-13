@@ -9,6 +9,7 @@ import { createMockUserInput } from './testUtils';
 
 describe('GetUserInputs', () => {
   const mockRepository: InboxRepository = {
+    subscribeToInputs: jest.fn(),
     createUserInput: jest.fn(),
     updateUserInput: jest.fn(),
     deleteUserInput: jest.fn(),

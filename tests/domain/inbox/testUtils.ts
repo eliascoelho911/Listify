@@ -95,6 +95,11 @@ export function createMockInboxRepository(): MockInboxRepository {
     inputs,
     tags,
 
+    subscribeToInputs(callback: (inputs: UserInput[]) => void): () => void {
+      callback(inputs);
+      return () => {};
+    },
+
     async createUserInput(params: { text: string }): Promise<UserInput> {
       const input = createMockUserInput({ text: params.text });
       inputs.push(input);

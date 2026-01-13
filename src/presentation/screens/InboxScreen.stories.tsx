@@ -27,7 +27,7 @@ import { InboxScreen } from './InboxScreen';
  * Navigation mock wrapper
  */
 function NavigationWrapper({ children }: { children: React.ReactNode }): React.ReactElement {
-  return <NavigationContainer independent>{children}</NavigationContainer>;
+  return <NavigationContainer>{children}</NavigationContainer>;
 }
 
 /**

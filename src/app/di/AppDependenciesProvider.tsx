@@ -24,10 +24,6 @@ type AppDependenciesState = {
   error: Error | null;
 };
 
-/**
- * Context for app dependencies.
- * Exported for use in mock providers (Storybook).
- */
 export const AppDependenciesContext = createContext<AppDependencies | null>(null);
 
 type AppDependenciesProviderProps = {
