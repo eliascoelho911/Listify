@@ -54,6 +54,15 @@ export default function DrawerLayout(): ReactElement {
             }}
           />
         )}
+        {__DEV__ && (
+          <Drawer.Screen
+            name="storybook/index"
+            options={{
+              drawerLabel: 'Storybook',
+              title: 'Storybook',
+            }}
+          />
+        )}
       </Drawer>
     </GestureHandlerRootView>
   );

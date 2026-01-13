@@ -15,6 +15,7 @@ import type {
   GetUserInputsParams,
   InboxRepository,
   SearchTagsParams,
+  SubscribeToInputsOptions,
   UpdateUserInputParams,
 } from '@domain/inbox/ports/InboxRepository';
 import { UserInputNotFoundError } from '@domain/inbox/use-cases/errors';
@@ -23,6 +24,42 @@ import { extractTags } from '@domain/inbox/use-cases/extractTags';
 import { inputTags, tags, userInputs } from './schema';
 
 const DEFAULT_LIMIT = 20;
+
+/**
+ * Type for subscription callback.
+ */
+type SubscriptionCallback = (inputs: UserInput[]) => void;
+
+/**
+ * Maps raw database result to UserInput entity.
+ */
+export function mapRawToUserInput(raw: {
+  id: string;
+  text: string;
+  createdAt: string;
+  updatedAt: string;
+  inputTags: Array<{
+    tag: {
+      id: string;
+      name: string;
+      usageCount: number;
+      createdAt: string;
+    };
+  }>;
+}): UserInput {
+  return {
+    id: raw.id,
+    text: raw.text,
+    createdAt: new Date(raw.createdAt),
+    updatedAt: new Date(raw.updatedAt),
+    tags: raw.inputTags.map((it) => ({
+      id: it.tag.id,
+      name: it.tag.name,
+      usageCount: it.tag.usageCount,
+      createdAt: new Date(it.tag.createdAt),
+    })),
+  };
+}
 
 /**
  * Generates a UUID v4 string.
@@ -41,16 +78,83 @@ function generateId(): string {
  * - CRUD operations for UserInputs
  * - Tag management (create, search, usage tracking)
  * - Transactional operations
+ * - Reactive subscriptions for data changes
  */
 export class InboxDrizzleRepo implements InboxRepository {
+  private subscribers: Map<SubscriptionCallback, { limit?: number }> = new Map();
+
   constructor(private db: DrizzleDB) {}
+
+  /**
+   * Notifies all subscribers with fresh data.
+   * Called after any mutation (create, update, delete).
+   */
+  private async notifySubscribers(): Promise<void> {
+    if (this.subscribers.size === 0) return;
+
+    for (const [callback, options] of this.subscribers) {
+      try {
+        const results = await this.db.query.userInputs.findMany({
+          with: {
+            inputTags: {
+              with: {
+                tag: true,
+              },
+            },
+          },
+          orderBy: [desc(userInputs.updatedAt)],
+          ...(options.limit !== undefined ? { limit: options.limit } : {}),
+        });
+
+        const inputs = results.map(mapRawToUserInput);
+        callback(inputs);
+      } catch {
+        // Silently ignore errors in notification
+      }
+    }
+  }
+
+  subscribeToInputs(
+    callback: SubscriptionCallback,
+    options?: SubscribeToInputsOptions,
+  ): () => void {
+    this.subscribers.set(callback, { limit: options?.limit });
+
+    // Emit initial data
+    this.db.query.userInputs
+      .findMany({
+        with: {
+          inputTags: {
+            with: {
+              tag: true,
+            },
+          },
+        },
+        orderBy: [desc(userInputs.updatedAt)],
+        ...(options?.limit !== undefined ? { limit: options.limit } : {}),
+      })
+      .then((results) => {
+        if (this.subscribers.has(callback)) {
+          const inputs = results.map(mapRawToUserInput);
+          callback(inputs);
+        }
+      })
+      .catch(() => {
+        // Silently ignore errors in initial fetch
+      });
+
+    // Return unsubscribe function
+    return () => {
+      this.subscribers.delete(callback);
+    };
+  }
 
   async createUserInput(params: CreateUserInputParams): Promise<UserInput> {
     const now = new Date();
     const inputId = generateId();
     const { tagNames } = extractTags({ text: params.text });
 
-    return this.db.transaction(async (tx) => {
+    const result = await this.db.transaction(async (tx) => {
       await tx.insert(userInputs).values({
         id: inputId,
         text: params.text,
@@ -104,6 +208,11 @@ export class InboxDrizzleRepo implements InboxRepository {
         tags: resultTags,
       };
     });
+
+    // Notify subscribers after successful mutation
+    void this.notifySubscribers();
+
+    return result;
   }
 
   async updateUserInput(params: UpdateUserInputParams): Promise<UserInput> {
@@ -111,7 +220,7 @@ export class InboxDrizzleRepo implements InboxRepository {
     const newText = params.text ?? '';
     const { tagNames: newTagNames } = extractTags({ text: newText });
 
-    return this.db.transaction(async (tx) => {
+    const result = await this.db.transaction(async (tx) => {
       const existing = await tx.query.userInputs.findFirst({
         where: eq(userInputs.id, params.id),
       });
@@ -185,10 +294,15 @@ export class InboxDrizzleRepo implements InboxRepository {
         tags: resultTags,
       };
     });
+
+    // Notify subscribers after successful mutation
+    void this.notifySubscribers();
+
+    return result;
   }
 
   async deleteUserInput(id: string): Promise<void> {
-    return this.db.transaction(async (tx) => {
+    await this.db.transaction(async (tx) => {
       const existing = await tx.query.userInputs.findFirst({
         where: eq(userInputs.id, id),
       });
@@ -211,6 +325,9 @@ export class InboxDrizzleRepo implements InboxRepository {
 
       await tx.delete(userInputs).where(eq(userInputs.id, id));
     });
+
+    // Notify subscribers after successful mutation
+    void this.notifySubscribers();
   }
 
   async getUserInputById(id: string): Promise<UserInput | null> {

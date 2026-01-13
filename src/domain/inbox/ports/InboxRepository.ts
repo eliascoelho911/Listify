@@ -45,6 +45,14 @@ export type SearchTagsParams = {
 };
 
 /**
+ * Opções para subscription de inputs.
+ */
+export type SubscribeToInputsOptions = {
+  /** Limite máximo de inputs a observar */
+  limit?: number;
+};
+
+/**
  * Contrato do repositório Inbox.
  *
  * Responsabilidades:
@@ -52,8 +60,23 @@ export type SearchTagsParams = {
  * - Gerenciamento de Tags (criação automática, busca)
  * - Paginação de resultados
  * - Transações para operações complexas
+ * - Subscriptions reativas para mudanças de dados
  */
 export interface InboxRepository {
+  /**
+   * Subscribe para mudanças reativas nos inputs.
+   *
+   * O callback é chamado imediatamente com os dados atuais
+   * e sempre que houver mudanças no banco de dados.
+   *
+   * @param callback - Função chamada quando os dados mudam
+   * @param options - Opções como limite de itens
+   * @returns Função para cancelar a subscription
+   */
+  subscribeToInputs(
+    callback: (inputs: UserInput[]) => void,
+    options?: SubscribeToInputsOptions,
+  ): () => void;
   /**
    * Cria um novo UserInput.
    *

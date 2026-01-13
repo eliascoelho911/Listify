@@ -53,6 +53,30 @@ const normalizedStories = [
       true,
       /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/
     ),
+  },
+  {
+    titlePrefix: "",
+    directory: "./src/presentation/components",
+    files: "**/*.stories.?(ts|tsx|js|jsx)",
+    importPathMatcher: /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/,
+    // @ts-ignore
+    req: require.context(
+      '../src/presentation/components',
+      true,
+      /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/
+    ),
+  },
+  {
+    titlePrefix: "",
+    directory: "./src/presentation/screens",
+    files: "**/*.stories.?(ts|tsx|js|jsx)",
+    importPathMatcher: /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/,
+    // @ts-ignore
+    req: require.context(
+      '../src/presentation/screens',
+      true,
+      /^\.(?:(?:^|\/|(?:(?:(?!(?:^|\/)\.).)*?)\/)(?!\.)(?=.)[^/]*?\.stories\.(?:ts|tsx|js|jsx)?)$/
+    ),
   }
 ];
 

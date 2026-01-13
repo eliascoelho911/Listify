@@ -24,7 +24,11 @@ type AppDependenciesState = {
   error: Error | null;
 };
 
-const AppDependenciesContext = createContext<AppDependencies | null>(null);
+/**
+ * Context for app dependencies.
+ * Exported for use in mock providers (Storybook).
+ */
+export const AppDependenciesContext = createContext<AppDependencies | null>(null);
 
 type AppDependenciesProviderProps = {
   children: ReactNode;
@@ -134,6 +138,3 @@ export function useInboxUseCases(): InboxUseCases {
 export function useShoppingUseCases(): ShoppingUseCases {
   return useAppDependencies().shoppingUseCases;
 }
-
-// Re-export live query hooks from hooks directory
-export { useUserInputsLive, type UseUserInputsLiveResult } from './hooks';
