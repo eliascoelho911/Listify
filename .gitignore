@@ -55,3 +55,6 @@ Thumbs.db
 
 *storybook.log
 storybook-static
+
+# Worktrees
+.worktrees/**
