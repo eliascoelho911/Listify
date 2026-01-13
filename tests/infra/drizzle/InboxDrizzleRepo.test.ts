@@ -5,9 +5,9 @@
  * Tests all CRUD operations with mocked database.
  */
 
-import type { DrizzleDB } from '@app/di/types';
 import { InboxDrizzleRepo } from '@drizzle/InboxDrizzleRepo';
 
+import type { DrizzleDB } from '@app/di/types';
 import { UserInputNotFoundError } from '@domain/inbox/use-cases/errors';
 
 type MockTransaction = {

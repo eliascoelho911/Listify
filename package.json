@@ -9,9 +9,6 @@
     "web": "EXPO_ROUTER_APP_ROOT=app expo start --web",
     "lint": "eslint . --ext .js,.ts,.tsx --report-unused-disable-directives --max-warnings=0",
     "test": "jest",
-    "storybook": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start",
-    "storybook:ios": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start --ios",
-    "storybook:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED=true expo start --android",
     "storybook:generate": "sb-rn-get-stories",
     "ds": "tsx scripts/ds-cli/index.ts",
     "type-check": "node scripts/type-check.js"
@@ -40,7 +37,18 @@
     "react-native-reanimated": "~4.1.1",
     "react-native-screens": "~4.16.0",
     "react-native-worklets": "^0.5.1",
-    "zustand": "^5.0.9"
+    "zustand": "^5.0.9",
+    "@babel/core": "^7.28.6",
+    "babel-loader": "^8.4.1",
+    "@react-native-community/datetimepicker": "^8.6.0",
+    "@react-native-community/slider": "^5.1.1",
+    "@gorhom/bottom-sheet": "^5.2.8",
+    "react-native-svg": "^15.15.1",
+    "@storybook/addon-ondevice-controls": "^10.1.11",
+    "@storybook/addon-ondevice-actions": "^10.1.11",
+    "@storybook/react-native": "^10.1.11",
+    "storybook": "^10.1.11",
+    "react-dom": "19.1.0"
   },
   "overrides": {
     "react": "19.1.0",

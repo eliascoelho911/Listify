@@ -12,9 +12,11 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import { useInboxRepository, useUserInputsLive } from '@app/di/AppDependenciesProvider';
+import { useInboxRepository } from '@app/di/AppDependenciesProvider';
 import { DEFAULT_PAGE_SIZE, INITIAL_PAGE_SIZE } from '@domain/inbox/constants';
 import type { UserInput } from '@domain/inbox/entities';
+
+import { useUserInputsLive } from './useUserInputsLive';
 
 export type UseUserInputsPaginatedResult = {
   /** Combined list of user inputs (live + older) */

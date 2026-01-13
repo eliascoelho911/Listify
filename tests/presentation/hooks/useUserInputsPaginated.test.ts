@@ -9,6 +9,17 @@ import { act, renderHook } from '@testing-library/react-native';
 
 import { DEFAULT_PAGE_SIZE, INITIAL_PAGE_SIZE } from '@domain/inbox/constants';
 import type { UserInput } from '@domain/inbox/entities';
+import { useUserInputsLive } from '@presentation/hooks/useUserInputsLive';
+import { useUserInputsPaginated } from '@presentation/hooks/useUserInputsPaginated';
+
+// Mock useInboxRepository
+const mockGetUserInputs = jest.fn();
+
+jest.mock('@app/di/AppDependenciesProvider', () => ({
+  useInboxRepository: jest.fn(() => ({
+    getUserInputs: mockGetUserInputs,
+  })),
+}));
 
 // Mock useUserInputsLive
 let mockLiveResult: {
@@ -23,21 +34,9 @@ let mockLiveResult: {
   updatedAt: undefined,
 };
 
-// Mock useInboxRepository
-const mockGetUserInputs = jest.fn();
-
-jest.mock('@app/di/AppDependenciesProvider', () => ({
+jest.mock('@presentation/hooks/useUserInputsLive', () => ({
   useUserInputsLive: jest.fn(() => mockLiveResult),
-  useInboxRepository: jest.fn(() => ({
-    getUserInputs: mockGetUserInputs,
-  })),
 }));
-
-// Import after mocking
-// eslint-disable-next-line import/first
-import { useUserInputsLive } from '@app/di/AppDependenciesProvider';
-// eslint-disable-next-line import/first
-import { useUserInputsPaginated } from '@presentation/hooks/useUserInputsPaginated';
 
 // Helper to create mock UserInput
 const createMockInput = (id: string, text: string): UserInput => ({
