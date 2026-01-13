@@ -7,12 +7,12 @@
     "android": "EXPO_ROUTER_APP_ROOT=app expo start --android",
     "ios": "EXPO_ROUTER_APP_ROOT=app expo start --ios",
     "web": "EXPO_ROUTER_APP_ROOT=app expo start --web",
-    "lint": "eslint \"app/**/*.{js,ts,tsx}\" \"src/**/*.{js,ts,tsx}\" \"tests/**/*.{js,ts,tsx}\" --report-unused-disable-directives --max-warnings=0",
-    "lint:fix": "npx prettier -w app src tests && eslint \"app/**/*.{js,ts,tsx}\" \"src/**/*.{js,ts,tsx}\" \"tests/**/*.{js,ts,tsx}\" --report-unused-disable-directives --max-warnings=0 --fix",
+    "lint": "eslint \"app/**/*.{js,ts,tsx}\" \"src/**/*.{js,ts,tsx}\" \"tests/**/*.{js,ts,tsx}\" --report-unused-disable-directives --max-warnings=0 --quiet",
+    "lint:fix": "prettier -w app src tests --log-level=warn && eslint \"app/**/*.{js,ts,tsx}\" \"src/**/*.{js,ts,tsx}\" \"tests/**/*.{js,ts,tsx}\" --report-unused-disable-directives --max-warnings=0 --fix --quiet",
+    "type-check": "tsc --noEmit --pretty false",
     "test": "jest",
     "storybook:generate": "sb-rn-get-stories",
-    "ds": "tsx scripts/ds-cli/index.ts",
-    "type-check": "node scripts/type-check.js"
+    "ds": "tsx scripts/ds-cli/index.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
