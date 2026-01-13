@@ -206,25 +206,28 @@ function InboxScreenContent(): ReactElement {
 
         {errorBanner}
 
-        {listData.length === 0 && !vm.isLoading ? (
-          renderEmptyState()
-        ) : (
-          <FlashList
-            data={listData}
-            keyExtractor={(item) =>
-              item.type === 'header'
-                ? `header-${item.group.date.toISOString()}`
-                : `input-${item.input.id}`
-            }
-            renderItem={renderItem}
-            getItemType={getItemType}
-            contentContainerStyle={styles.listContent}
-            stickyHeaderIndices={stickyHeaderIndices}
-            onEndReached={vm.handleLoadMore}
-            onEndReachedThreshold={0.5}
-            ListFooterComponent={renderFooter}
-          />
-        )}
+        <View style={styles.listContainer}>
+          {listData.length === 0 && !vm.isLoading ? (
+            renderEmptyState()
+          ) : (
+            <FlashList
+              data={listData}
+              keyExtractor={(item) =>
+                item.type === 'header'
+                  ? `header-${item.group.date.toISOString()}`
+                  : `input-${item.input.id}`
+              }
+              renderItem={renderItem}
+              getItemType={getItemType}
+              contentContainerStyle={styles.listContent}
+              stickyHeaderIndices={stickyHeaderIndices}
+              stickyHeaderConfig={{ hideRelatedCell: true }}
+              onEndReached={vm.handleLoadMore}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={renderFooter}
+            />
+          )}
+        </View>
 
         <InboxBottomBar />
       </KeyboardAvoidingView>
@@ -264,6 +267,9 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
     keyboardAvoidingView: {
       flex: 1,
     },
+    listContainer: {
+      flex: 1,
+    },
     searchContainer: {
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
@@ -274,7 +280,7 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
     },
     stickyHeader: {
       paddingVertical: theme.spacing.sm,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.transparent,
     },
     emptyContainer: {
       flex: 1,
