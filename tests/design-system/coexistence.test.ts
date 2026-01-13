@@ -94,12 +94,11 @@ describe('Design Systems Coexistence', () => {
   it('should have new Design System with navbar custom tokens', () => {
     const { darkTheme, lightTheme } = require('@design-system/tokens');
 
-    // Validate custom navbar tokens exist in both themes
-    expect(darkTheme.navbar).toBeDefined();
-    expect(darkTheme.navbarForeground).toBeDefined();
-    expect(darkTheme.navbarPrimary).toBeDefined();
-    expect(darkTheme.navbarBorder).toBeDefined();
+    // Validate surface tokens exist in dark theme (used by Navbar component)
+    expect(darkTheme.surface).toBeDefined();
+    expect(darkTheme.surfaceForeground).toBeDefined();
 
+    // Validate navbar tokens exist in light theme
     expect(lightTheme.navbar).toBeDefined();
     expect(lightTheme.navbarForeground).toBeDefined();
     expect(lightTheme.navbarPrimary).toBeDefined();

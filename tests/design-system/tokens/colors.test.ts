@@ -88,15 +88,9 @@ describe('Color Tokens', () => {
       expect(darkTheme).toHaveProperty('ring');
     });
 
-    it('should have all navbar custom tokens', () => {
-      expect(darkTheme).toHaveProperty('navbar');
-      expect(darkTheme).toHaveProperty('navbarForeground');
-      expect(darkTheme).toHaveProperty('navbarPrimary');
-      expect(darkTheme).toHaveProperty('navbarPrimaryForeground');
-      expect(darkTheme).toHaveProperty('navbarAccent');
-      expect(darkTheme).toHaveProperty('navbarAccentForeground');
-      expect(darkTheme).toHaveProperty('navbarBorder');
-      expect(darkTheme).toHaveProperty('navbarRing');
+    it('should have surface tokens for navbar styling', () => {
+      expect(darkTheme).toHaveProperty('surface');
+      expect(darkTheme).toHaveProperty('surfaceForeground');
     });
 
     it('should use cyan for primary color', () => {
