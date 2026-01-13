@@ -4,24 +4,28 @@
  * Modern navbar with Neo-Minimal Dark design and animated cyan accent line
  */
 
-import React, { type ReactElement, useEffect, useRef } from 'react';
+import React, { type ReactElement, useEffect, useMemo, useRef } from 'react';
 import { Animated, View } from 'react-native';
 
+import { Text } from '@design-system/atoms';
+
 import { IconButton } from '../../atoms/IconButton';
-import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createNavbarStyles } from './Navbar.styles';
 import type { NavbarProps } from './Navbar.types';
 
 export function Navbar({
+  variant = 'default',
   title,
+  titleContent,
   leftAction,
   rightActions = [],
   animated = true,
   ...viewProps
 }: NavbarProps): ReactElement {
   const { theme } = useTheme();
-  const styles = createNavbarStyles(theme);
+  const styles = useMemo(() => createNavbarStyles(theme), [theme]);
+  const variantConfig = styles.variantStyles[variant];
 
   const slideAnim = useRef(new Animated.Value(animated ? -64 : 0)).current;
   const fadeAnim = useRef(new Animated.Value(animated ? 0 : 1)).current;
@@ -50,39 +54,42 @@ export function Navbar({
 
   return (
     <Animated.View style={animatedContainerStyle} {...viewProps}>
-      <View style={styles.container}>
+      <View
+        style={[styles.baseStyles.container, { backgroundColor: variantConfig.backgroundColor }]}
+      >
         {/* Left Action */}
-        <View style={styles.actionsContainer}>
+        <View style={styles.baseStyles.actionsContainer}>
           {leftAction && (
             <IconButton
               icon={leftAction.icon}
               onPress={leftAction.onPress}
               variant={leftAction.variant || 'ghost'}
-              size="md"
+              size={variantConfig.iconSize}
               isActive={leftAction.isActive}
               accessibilityLabel={leftAction.label}
             />
           )}
         </View>
 
-        {/* Title */}
-        {title && (
-          <View style={styles.centerContent}>
-            <Text style={styles.title} numberOfLines={1}>
+        {/* Title Content */}
+        <View style={styles.baseStyles.titleContainer}>
+          {title && !titleContent && (
+            <Text style={[styles.baseStyles.titleText, { color: variantConfig.foregroundColor }]}>
               {title}
             </Text>
-          </View>
-        )}
+          )}
+          {titleContent}
+        </View>
 
         {/* Right Actions */}
-        <View style={styles.actionsContainer}>
+        <View style={styles.baseStyles.actionsContainer}>
           {rightActions.map((action, index) => (
             <IconButton
               key={index}
               icon={action.icon}
               onPress={action.onPress}
               variant={action.variant || 'ghost'}
-              size="md"
+              size={variantConfig.iconSize}
               isActive={action.isActive}
               accessibilityLabel={action.label}
             />

@@ -16,8 +16,9 @@ import { Menu } from 'lucide-react-native';
 import type { UserInput } from '@domain/inbox/entities';
 import type { DateGroup } from '@domain/inbox/entities/types';
 import { GetUserInputsGrouped } from '@domain/inbox/use-cases/GetUserInputsGrouped';
-import { DateBadge, IconButton, Logo, Text } from '@design-system/atoms';
+import { DateBadge, Logo, Text } from '@design-system/atoms';
 import { SearchBar } from '@design-system/molecules';
+import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 import { DeleteConfirmDialog } from '../components/inbox/DeleteConfirmDialog';
@@ -166,17 +167,15 @@ function InboxScreenContent(): ReactElement {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.header}>
-        <IconButton
-          icon={Menu}
-          size="md"
-          variant="ghost"
-          onPress={handleOpenDrawer}
-          accessibilityLabel={t('inbox.header.menu')}
-        />
-        <Logo size="md" />
-        <View style={styles.headerSpacer} />
-      </View>
+      <Navbar
+        leftAction={{
+          icon: Menu,
+          onPress: handleOpenDrawer,
+          label: t('inbox.header.menu'),
+        }}
+        centerContent={<Logo size="md" />}
+        animated={false}
+      />
 
       <View style={styles.searchContainer}>
         <SearchBar
@@ -242,18 +241,6 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
     container: {
       flex: 1,
       backgroundColor: theme.colors.background,
-    },
-    header: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      paddingHorizontal: theme.spacing.sm,
-      paddingVertical: theme.spacing.sm,
-      borderBottomWidth: 1,
-      borderBottomColor: theme.colors.border,
-    },
-    headerSpacer: {
-      width: 40,
     },
     searchContainer: {
       paddingHorizontal: theme.spacing.md,

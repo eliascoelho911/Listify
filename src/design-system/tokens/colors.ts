@@ -95,15 +95,9 @@ export const darkTheme = {
   input: gray[800],
   ring: cyan[500],
 
-  // Topbar custom tokens
-  navbar: gray[950],
-  navbarForeground: gray[200],
-  navbarPrimary: cyan[500],
-  navbarPrimaryForeground: gray[950],
-  navbarAccent: cyan[500],
-  navbarAccentForeground: gray[50],
-  navbarBorder: gray[800],
-  navbarRing: cyan[500],
+  // Surface tokens
+  surface: gray[900],
+  surfaceForeground: gray[200],
 
   // Overlay and shadow base colors
   overlay: 'rgba(0, 0, 0, 0.6)',

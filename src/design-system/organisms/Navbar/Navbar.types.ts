@@ -2,10 +2,15 @@
  * Navbar Organism Types
  */
 
+import type { ReactNode } from 'react';
 import type { ViewProps } from 'react-native';
 import type { LucideIcon } from 'lucide-react-native';
 
-import type { IconButtonVariant } from '../../atoms/IconButton';
+import type { IconButtonSize, IconButtonVariant } from '@design-system/atoms';
+
+export type NavbarVariant = 'default';
+
+export type NavbarIconSize = IconButtonSize;
 
 export interface NavbarAction {
   icon: LucideIcon;
@@ -17,9 +22,19 @@ export interface NavbarAction {
 
 export interface NavbarProps extends Omit<ViewProps, 'style'> {
   /**
-   * Navbar title (optional, centered)
+   * Navbar variant
+   */
+  variant?: NavbarVariant;
+
+  /**
+   * Navbar title as string (optional, centered)
    */
   title?: string;
+
+  /**
+   * Navbar title (optional, centered)
+   */
+  titleContent?: ReactNode;
 
   /**
    * Left action (typically back button)

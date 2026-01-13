@@ -4,7 +4,12 @@
 
 // Navbar
 export { Navbar } from './Navbar/Navbar';
-export type { NavbarAction, NavbarProps } from './Navbar/Navbar.types';
+export type {
+  NavbarAction,
+  NavbarIconSize,
+  NavbarProps,
+  NavbarVariant,
+} from './Navbar/Navbar.types';
 
 // ShoppingListCard
 export { ShoppingListCard } from './ShoppingListCard/ShoppingListCard';
