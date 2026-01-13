@@ -7,11 +7,12 @@
     "android": "EXPO_ROUTER_APP_ROOT=app expo start --android",
     "ios": "EXPO_ROUTER_APP_ROOT=app expo start --ios",
     "web": "EXPO_ROUTER_APP_ROOT=app expo start --web",
-    "lint": "eslint . --ext .js,.ts,.tsx --report-unused-disable-directives --max-warnings=0",
+    "lint": "bash scripts/lint.sh",
+    "lint:fix": "bash scripts/lint-fix.sh",
+    "type-check": "bash scripts/type-check.sh",
     "test": "jest",
     "storybook:generate": "sb-rn-get-stories",
-    "ds": "tsx scripts/ds-cli/index.ts",
-    "type-check": "node scripts/type-check.js"
+    "ds": "tsx scripts/ds-cli/index.ts"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
