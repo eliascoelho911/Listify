@@ -58,8 +58,8 @@ export const createIconButtonStyles = (theme: Theme) => {
 
   // Icon colors per variant
   const iconColorStyles: Record<IconButtonVariant, string> = {
-    ghost: theme.colors.navbarForeground,
-    outline: theme.colors.navbarForeground,
+    ghost: theme.colors.surfaceForeground,
+    outline: theme.colors.surfaceForeground,
     filled: theme.colors.secondaryForeground,
     accent: theme.colors.primaryForeground,
   };

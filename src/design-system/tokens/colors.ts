@@ -97,7 +97,7 @@ export const darkTheme = {
 
   // Surface tokens
   surface: gray[900],
-  surfaceForeground: gray[200],
+  surfaceForeground: gray[50],
 
   // Overlay and shadow base colors
   overlay: 'rgba(0, 0, 0, 0.6)',
@@ -149,15 +149,9 @@ export const lightTheme = {
   input: gray[300],
   ring: cyan[600],
 
-  // Topbar custom tokens
-  navbar: gray[50],
-  navbarForeground: gray[700],
-  navbarPrimary: cyan[600],
-  navbarPrimaryForeground: 'white',
-  navbarAccent: cyan[600],
-  navbarAccentForeground: gray[950],
-  navbarBorder: gray[300],
-  navbarRing: cyan[600],
+  // Surface tokens
+  surface: 'white',
+  surfaceForeground: gray[950],
 
   // Overlay and shadow base colors
   overlay: 'rgba(0, 0, 0, 0.4)',

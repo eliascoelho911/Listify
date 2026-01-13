@@ -173,7 +173,7 @@ function InboxScreenContent(): ReactElement {
           onPress: handleOpenDrawer,
           label: t('inbox.header.menu'),
         }}
-        centerContent={<Logo size="md" />}
+        titleContent={<Logo size="md" />}
         animated={false}
       />
 

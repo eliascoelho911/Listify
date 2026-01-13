@@ -9,6 +9,7 @@
  */
 
 export const families = {
+  logo: 'MarkaziText SemiBold',
   body: 'Fira Sans',
   mono: 'Fira Code',
 };
