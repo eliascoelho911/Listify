@@ -5,9 +5,9 @@
  * Displays user inputs grouped by date with sticky headers.
  */
 
-import React, { type ReactElement, useCallback, useMemo, useState } from 'react';
+import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Keyboard, KeyboardAvoidingView, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { DrawerActions, useNavigation } from '@react-navigation/native';
 import { FlashList } from '@shopify/flash-list';
@@ -44,6 +44,23 @@ function InboxScreenContent(): ReactElement {
   const [menuVisible, setMenuVisible] = useState(false);
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
+
+  // FIXME: https://github.com/facebook/react-native/issues/52596
+  const [keyboardBehavior, setKeyboardBehavior] = useState<'padding' | undefined>('padding');
+
+  useEffect(() => {
+    const showListener = Keyboard.addListener('keyboardDidShow', () => {
+      setKeyboardBehavior('padding');
+    });
+    const hideListener = Keyboard.addListener('keyboardDidHide', () => {
+      setKeyboardBehavior(undefined);
+    });
+
+    return () => {
+      showListener.remove();
+      hideListener.remove();
+    };
+  }, []);
 
   const styles = createStyles(theme);
 
@@ -167,48 +184,53 @@ function InboxScreenContent(): ReactElement {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Navbar
-        leftAction={{
-          icon: Menu,
-          onPress: handleOpenDrawer,
-          label: t('inbox.header.menu'),
-        }}
-        centerContent={<Logo size="md" />}
-        animated={false}
-      />
-
-      <View style={styles.searchContainer}>
-        <SearchBar
-          value=""
-          onChangeText={() => {}}
-          placeholder={t('inbox.search.placeholder')}
-          editable={false}
+      <KeyboardAvoidingView style={styles.keyboardAvoidingView} behavior={keyboardBehavior}>
+        <Navbar
+          leftAction={{
+            icon: Menu,
+            onPress: handleOpenDrawer,
+            label: t('inbox.header.menu'),
+          }}
+          titleContent={<Logo size="md" />}
+          animated={false}
         />
-      </View>
 
-      {errorBanner}
+        <View style={styles.searchContainer}>
+          <SearchBar
+            value=""
+            onChangeText={() => {}}
+            placeholder={t('inbox.search.placeholder')}
+            editable={false}
+          />
+        </View>
 
-      {listData.length === 0 && !vm.isLoading ? (
-        renderEmptyState()
-      ) : (
-        <FlashList
-          data={listData}
-          keyExtractor={(item) =>
-            item.type === 'header'
-              ? `header-${item.group.date.toISOString()}`
-              : `input-${item.input.id}`
-          }
-          renderItem={renderItem}
-          getItemType={getItemType}
-          contentContainerStyle={styles.listContent}
-          stickyHeaderIndices={stickyHeaderIndices}
-          onEndReached={vm.handleLoadMore}
-          onEndReachedThreshold={0.5}
-          ListFooterComponent={renderFooter}
-        />
-      )}
+        {errorBanner}
 
-      <InboxBottomBar />
+        <View style={styles.listContainer}>
+          {listData.length === 0 && !vm.isLoading ? (
+            renderEmptyState()
+          ) : (
+            <FlashList
+              data={listData}
+              keyExtractor={(item) =>
+                item.type === 'header'
+                  ? `header-${item.group.date.toISOString()}`
+                  : `input-${item.input.id}`
+              }
+              renderItem={renderItem}
+              getItemType={getItemType}
+              contentContainerStyle={styles.listContent}
+              stickyHeaderIndices={stickyHeaderIndices}
+              stickyHeaderConfig={{ hideRelatedCell: true }}
+              onEndReached={vm.handleLoadMore}
+              onEndReachedThreshold={0.5}
+              ListFooterComponent={renderFooter}
+            />
+          )}
+        </View>
+
+        <InboxBottomBar />
+      </KeyboardAvoidingView>
 
       <InputOptionsMenu
         input={selectedInput}
@@ -242,6 +264,12 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
       flex: 1,
       backgroundColor: theme.colors.background,
     },
+    keyboardAvoidingView: {
+      flex: 1,
+    },
+    listContainer: {
+      flex: 1,
+    },
     searchContainer: {
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.sm,
@@ -252,7 +280,7 @@ const createStyles = (theme: typeof import('@design-system/theme/theme').darkThe
     },
     stickyHeader: {
       paddingVertical: theme.spacing.sm,
-      backgroundColor: theme.colors.background,
+      backgroundColor: theme.colors.transparent,
     },
     emptyContainer: {
       flex: 1,

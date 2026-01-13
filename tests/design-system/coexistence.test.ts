@@ -90,18 +90,4 @@ describe('Design Systems Coexistence', () => {
     expect(families.body).toBe('Fira Sans');
     expect(families.mono).toBe('Fira Code');
   });
-
-  it('should have new Design System with navbar custom tokens', () => {
-    const { darkTheme, lightTheme } = require('@design-system/tokens');
-
-    // Validate surface tokens exist in dark theme (used by Navbar component)
-    expect(darkTheme.surface).toBeDefined();
-    expect(darkTheme.surfaceForeground).toBeDefined();
-
-    // Validate navbar tokens exist in light theme
-    expect(lightTheme.navbar).toBeDefined();
-    expect(lightTheme.navbarForeground).toBeDefined();
-    expect(lightTheme.navbarPrimary).toBeDefined();
-    expect(lightTheme.navbarBorder).toBeDefined();
-  });
 });

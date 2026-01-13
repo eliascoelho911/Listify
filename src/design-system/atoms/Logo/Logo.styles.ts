@@ -10,9 +10,9 @@ import type { Theme } from '../../theme/theme';
 import type { LogoSize } from './Logo.types';
 
 const sizeMap: Record<LogoSize, number> = {
-  sm: 18,
-  md: 24,
-  lg: 32,
+  sm: 24,
+  md: 32,
+  lg: 40,
 };
 
 export const createLogoStyles = (theme: Theme, size: LogoSize) => {
@@ -25,9 +25,9 @@ export const createLogoStyles = (theme: Theme, size: LogoSize) => {
     },
     text: {
       fontSize,
-      fontFamily: theme.typography.families.body,
-      fontWeight: theme.typography.weights.bold as '700',
-      color: theme.colors.primary,
+      fontFamily: theme.typography.families.logo,
+      fontWeight: theme.typography.weights.semibold,
+      color: theme.colors.foreground,
     },
   });
 };

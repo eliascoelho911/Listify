@@ -61,6 +61,7 @@ export function ThemeProvider({
           'Fira Sans Bold': require('../../../assets/fonts/FiraSans-Bold.ttf'),
           'Fira Code': require('../../../assets/fonts/FiraCode-Regular.ttf'),
           'Fira Code Medium': require('../../../assets/fonts/FiraCode-Medium.ttf'),
+          'MarkaziText SemiBold': require('../../../assets/fonts/MarkaziText-SemiBold.ttf'),
         });
 
         // Load theme preference from AsyncStorage
