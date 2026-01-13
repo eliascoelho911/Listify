@@ -6,11 +6,11 @@ Este documento descreve o padrao de arquitetura usado no Listify para features c
 
 O padrao combina:
 - **Clean Architecture** para separacao de responsabilidades
-- **Drizzle useLiveQuery** para reatividade de dados (encapsulado no Container DI)
+- **Subscriber Pattern** no Repository para reatividade de dados
 - **Zustand** para estado de UI
 - **Container Centralizado de DI** para injecao de dependencias via Context
 
-**Principio fundamental:** A camada de presentation NAO deve importar diretamente do Drizzle. Todas as dependencias do ORM ficam encapsuladas no Container DI (`app/di/`).
+**Principio fundamental:** A camada de presentation NAO deve importar diretamente do Drizzle. A reatividade e implementada no Repository (infra) via padrao Observer/Subscriber, e consumida na presentation via hooks.
 
 ---
 
@@ -25,9 +25,9 @@ O padrao combina:
 │       │                                                                 │
 │       ├── buildDependencies() ← inicializa DB, repos, use cases        │
 │       │                                                                 │
-│       ├── Expoe hooks: useInboxUseCases(), useShoppingUseCases()       │
+│       ├── Expoe hooks: useFeatureUseCases()                            │
 │       │                                                                 │
-│       └── Expoe hooks reativos: useUserInputsLive() (encapsula Drizzle)│
+│       └── Expoe hooks: useFeatureRepository()                          │
 │                                                                         │
 └─────────────────────────────┬───────────────────────────────────────────┘
                               │
@@ -40,14 +40,18 @@ O padrao combina:
 │       ↓                                                                 │
 │  useFeatureVM.ts (ViewModel Hook)                                       │
 │       │                                                                 │
-│       ├── useUserInputsLive() ← dados reativos (do Container DI)       │
+│       ├── useFeatureLive() ← hook reativo (usa repository.subscribe)   │
 │       │                                                                 │
-│       ├── useFeatureUIStore() ← estado de UI (Zustand)                  │
+│       ├── useFeatureUIStore() ← estado de UI (Zustand)                 │
 │       │                                                                 │
-│       └── useInboxUseCases() ← operations (do Container)                │
-│              { createUserInput, updateUserInput, deleteUserInput }      │
+│       └── useFeatureUseCases() ← operations (do Container)             │
+│              { create, update, delete }                                 │
 │                                                                         │
-│  ⚠️  NENHUM IMPORT de @drizzle/* ou drizzle-orm/* na presentation!     │
+│  useFeatureLive.ts (Hook Reativo)                                       │
+│       │                                                                 │
+│       └── useFeatureRepository().subscribeToFeature(callback)          │
+│                                                                         │
+│  NENHUM IMPORT de @drizzle/* ou drizzle-orm/* na presentation!         │
 │                                                                         │
 └──────────────────────────────┬──────────────────────────────────────────┘
                                │
@@ -56,10 +60,12 @@ O padrao combina:
 ├──────────────────────────────┼──────────────────────────────────────────┤
 │                              ↓                                          │
 │  Use Cases (funcoes puras)                                              │
-│      createX(), updateX(), deleteX()                                    │
+│      create(), update(), delete()                                       │
 │                            │                                            │
 │                            ↓                                            │
 │  Repository Interface (Port)                                            │
+│      subscribeToFeature(callback, options): unsubscribe                 │
+│      create(), update(), delete(), getById(), getAll()                  │
 │                            ↑                                            │
 │                            │ implements                                 │
 └────────────────────────────┼────────────────────────────────────────────┘
@@ -69,6 +75,14 @@ O padrao combina:
 ├────────────────────────────┼────────────────────────────────────────────┤
 │                            ↓                                            │
 │  FeatureDrizzleRepo (implements Repository)                             │
+│       │                                                                 │
+│       ├── subscribers: Map<callback, options>  ← Subscriber Pattern    │
+│       │                                                                 │
+│       ├── subscribeToFeature() ← registra callback, emite inicial      │
+│       │                                                                 │
+│       ├── notifySubscribers() ← chamado apos cada mutacao              │
+│       │                                                                 │
+│       └── create/update/delete → executa + notifySubscribers()         │
 │                            │                                            │
 │                            ↓                                            │
 │  DrizzleDB (Drizzle ORM)                                                │
@@ -82,83 +96,292 @@ O padrao combina:
 
 ## Camadas e Responsabilidades
 
-### 1. Hook de Dados Reativos (`app/di/hooks/useFeatureLive.ts`)
+### 1. Subscriber Pattern no Repository (`infra/`)
 
-**Proposito:** Fornecer dados reativos que atualizam automaticamente quando o DB muda.
+**Proposito:** Implementar reatividade diretamente no Repository, notificando subscribers apos cada mutacao.
 
-**IMPORTANTE:** Este hook fica no Container DI (`app/di/hooks/`), NAO na presentation. Isso garante que o Drizzle fica encapsulado e a presentation nao conhece detalhes do ORM.
+**IMPORTANTE:** O padrao Subscriber fica na camada de infra, encapsulando o ORM. A presentation consome via interface do domain.
 
 ```typescript
-// src/app/di/hooks/useUserInputsLive.ts
-import { useMemo } from 'react';
-import { desc } from 'drizzle-orm';
-import { useLiveQuery } from 'drizzle-orm/expo-sqlite';
+// src/infra/drizzle/FeatureDrizzleRepo.ts
+export class FeatureDrizzleRepo implements FeatureRepository {
+  private subscribers: Map<SubscriptionCallback, SubscribeOptions> = new Map();
 
-import type { UserInput } from '@domain/inbox/entities';
-import { userInputs } from '@infra/drizzle/schema';
+  constructor(private db: DrizzleDB) {}
 
-import { useAppDependencies } from '../AppDependenciesProvider';
+  /**
+   * Registra um callback para receber dados atualizados
+   */
+  subscribeToFeature(
+    callback: (items: FeatureEntity[]) => void,
+    options?: { limit?: number },
+  ): () => void {
+    // 1. Registra o subscriber
+    this.subscribers.set(callback, { limit: options?.limit });
 
-export type UseUserInputsLiveResult = {
-  inputs: UserInput[];
+    // 2. Emite dados iniciais imediatamente
+    this.db.query.featureTable
+      .findMany({
+        orderBy: [desc(featureTable.updatedAt)],
+        ...(options?.limit ? { limit: options.limit } : {}),
+      })
+      .then((results) => {
+        if (this.subscribers.has(callback)) {
+          callback(results.map(mapRawToEntity));
+        }
+      });
+
+    // 3. Retorna funcao de unsubscribe
+    return () => {
+      this.subscribers.delete(callback);
+    };
+  }
+
+  /**
+   * Notifica todos os subscribers com dados atualizados
+   * Chamado internamente apos cada mutacao
+   */
+  private async notifySubscribers(): Promise<void> {
+    for (const [callback, options] of this.subscribers) {
+      try {
+        const results = await this.db.query.featureTable.findMany({
+          orderBy: [desc(featureTable.updatedAt)],
+          ...(options.limit ? { limit: options.limit } : {}),
+        });
+        callback(results.map(mapRawToEntity));
+      } catch {
+        // Silently ignore errors in notification
+      }
+    }
+  }
+
+  async create(params: CreateParams): Promise<FeatureEntity> {
+    const result = await this.db.transaction(async (tx) => {
+      // ... logica de criacao ...
+    });
+
+    // Notifica apos mutacao bem-sucedida
+    this.notifySubscribers();
+
+    return result;
+  }
+
+  async update(params: UpdateParams): Promise<FeatureEntity> {
+    const result = await this.db.transaction(async (tx) => {
+      // ... logica de atualizacao ...
+    });
+
+    this.notifySubscribers();
+    return result;
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.db.transaction(async (tx) => {
+      // ... logica de delecao ...
+    });
+
+    this.notifySubscribers();
+  }
+}
+```
+
+**Caracteristicas:**
+- Map de subscribers com opcoes (ex: limit)
+- Emissao inicial imediata ao registrar
+- Notificacao automatica apos cada mutacao
+- Funcao de unsubscribe para cleanup
+
+---
+
+### 2. Interface do Repository com Subscription (`domain/ports/`)
+
+**Proposito:** Definir contrato que inclui metodo de subscription.
+
+```typescript
+// src/domain/feature/ports/FeatureRepository.ts
+export type SubscriptionCallback = (items: FeatureEntity[]) => void;
+export type SubscribeOptions = { limit?: number };
+
+export interface FeatureRepository {
+  // === Subscription (Reatividade) ===
+  subscribeToFeature(
+    callback: SubscriptionCallback,
+    options?: SubscribeOptions,
+  ): () => void;  // Retorna unsubscribe function
+
+  // === CRUD ===
+  create(params: CreateParams): Promise<FeatureEntity>;
+  update(params: UpdateParams): Promise<FeatureEntity>;
+  delete(id: string): Promise<void>;
+  getById(id: string): Promise<FeatureEntity | null>;
+
+  // === Paginacao ===
+  getAll(params: GetAllParams): Promise<PaginatedResult>;
+}
+```
+
+---
+
+### 3. Hook de Dados Reativos (`presentation/hooks/`)
+
+**Proposito:** Fornecer dados reativos que atualizam automaticamente quando o Repository notifica mudancas.
+
+**IMPORTANTE:** Este hook fica na presentation, mas NAO importa do Drizzle. Usa o Repository via DI.
+
+```typescript
+// src/presentation/hooks/useFeatureLive.ts
+import { useCallback, useEffect, useState } from 'react';
+
+import type { FeatureEntity } from '@domain/feature/entities';
+import { useFeatureRepository } from '@app/di/AppDependenciesProvider';
+
+export type UseFeatureLiveResult = {
+  items: FeatureEntity[];
   isLoading: boolean;
   error: Error | null;
   updatedAt: Date | undefined;
 };
 
-export function useUserInputsLive(limit?: number): UseUserInputsLiveResult {
-  const { drizzleDb } = useAppDependencies();
+export function useFeatureLive(limit?: number): UseFeatureLiveResult {
+  const repository = useFeatureRepository();
 
-  const { data: rawInputs, error, updatedAt } = useLiveQuery(
-    drizzleDb.query.userInputs.findMany({
-      with: { inputTags: { with: { tag: true } } },
-      orderBy: [desc(userInputs.updatedAt)],
-      ...(limit !== undefined ? { limit } : {}),
-    }),
-  );
+  const [items, setItems] = useState<FeatureEntity[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const [updatedAt, setUpdatedAt] = useState<Date | undefined>(undefined);
 
-  // Mapeia dados raw para entidades de dominio
-  const inputs = useMemo((): UserInput[] => {
-    if (!rawInputs) return [];
-    return rawInputs.map((raw) => ({
-      id: raw.id,
-      text: raw.text,
-      createdAt: new Date(raw.createdAt),
-      updatedAt: new Date(raw.updatedAt),
-      tags: raw.inputTags.map((it) => ({
-        id: it.tag.id,
-        name: it.tag.name,
-        usageCount: it.tag.usageCount,
-        createdAt: new Date(it.tag.createdAt),
-      })),
-    }));
-  }, [rawInputs]);
+  const handleUpdate = useCallback((newItems: FeatureEntity[]) => {
+    setItems(newItems);
+    setIsLoading(false);
+    setUpdatedAt(new Date());
+  }, []);
+
+  useEffect(() => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      // Subscribe ao repository - recebe dados iniciais e atualizacoes
+      const unsubscribe = repository.subscribeToFeature(handleUpdate, {
+        limit,
+      });
+
+      // Cleanup: unsubscribe quando o componente desmonta
+      return () => {
+        unsubscribe();
+      };
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Failed to subscribe'));
+      setIsLoading(false);
+      return undefined;
+    }
+  }, [repository, limit, handleUpdate]);
 
   return {
-    inputs,
-    isLoading: rawInputs === undefined && !error,
-    error: error ?? null,
+    items,
+    isLoading,
+    error,
     updatedAt,
   };
 }
 ```
 
 **Caracteristicas:**
-- Fica em `app/di/hooks/`, NAO em `presentation/hooks/`
-- Usa `useAppDependencies()` para obter `drizzleDb`
-- Encapsula `useLiveQuery` do Drizzle
-- Mapeia dados raw (strings) para entidades de dominio (Date objects)
-- Re-exportado via `AppDependenciesProvider.tsx`
+- Fica em `presentation/hooks/`, NAO em `app/di/hooks/`
+- Usa `useFeatureRepository()` do Container DI
+- NAO importa nada do Drizzle
+- Gerencia estados: items, isLoading, error, updatedAt
+- Cleanup automatico via unsubscribe
 
 ---
 
-### 2. Container Centralizado de DI (`app/di/`)
+### 4. Hook de Paginacao Hibrida (Opcional)
 
-**Proposito:** Centralizar toda a injecao de dependencias da aplicacao em um unico ponto, incluindo hooks reativos.
+**Proposito:** Combinar reatividade com paginacao on-demand para listas grandes.
+
+**Estrategia:**
+- Primeiros N itens (ex: 50): Via subscription reativa
+- Itens mais antigos: Carregados sob demanda
+- Deduplicacao automatica entre as duas fontes
+
+```typescript
+// src/presentation/hooks/useFeaturePaginated.ts
+import { useCallback, useMemo, useState } from 'react';
+
+import type { FeatureEntity } from '@domain/feature/entities';
+import { useFeatureRepository } from '@app/di/AppDependenciesProvider';
+import { useFeatureLive } from './useFeatureLive';
+
+const INITIAL_PAGE_SIZE = 50;  // Itens reativos
+const DEFAULT_PAGE_SIZE = 20;  // Itens paginados
+
+export function useFeaturePaginated(): UseFeaturePaginatedResult {
+  const repository = useFeatureRepository();
+
+  // Dados reativos para os primeiros N itens
+  const { items: liveItems, isLoading, error: liveError } =
+    useFeatureLive(INITIAL_PAGE_SIZE);
+
+  // Estado para itens mais antigos (carregados sob demanda)
+  const [olderItems, setOlderItems] = useState<FeatureEntity[]>([]);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+
+  // Merge com deduplicacao automatica
+  const items = useMemo((): FeatureEntity[] => {
+    if (olderItems.length === 0) {
+      return liveItems;
+    }
+
+    // Remove itens que ja estao na lista reativa
+    const liveIds = new Set(liveItems.map((item) => item.id));
+    const uniqueOlder = olderItems.filter((item) => !liveIds.has(item.id));
+
+    return [...liveItems, ...uniqueOlder];
+  }, [liveItems, olderItems]);
+
+  const loadMore = useCallback(async (): Promise<void> => {
+    if (!hasMore || isLoadingMore || isLoading) {
+      return;
+    }
+
+    setIsLoadingMore(true);
+
+    try {
+      const result = await repository.getAll({
+        page,
+        limit: DEFAULT_PAGE_SIZE,
+      });
+
+      setOlderItems((prev) => [...prev, ...result.items]);
+      setHasMore(result.hasMore);
+      setPage((prev) => prev + 1);
+    } finally {
+      setIsLoadingMore(false);
+    }
+  }, [hasMore, isLoadingMore, isLoading, repository, page]);
+
+  return {
+    items,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    loadMore,
+    error: liveError,
+  };
+}
+```
+
+---
+
+### 5. Container Centralizado de DI (`app/di/`)
+
+**Proposito:** Centralizar toda a injecao de dependencias da aplicacao.
 
 #### Estrutura
 
-O Container DI e composto por 4 arquivos:
+O Container DI e composto por 3 arquivos:
 
 **1. `types.ts` - Definicao de Tipos**
 
@@ -168,21 +391,18 @@ import type * as schema from '@infra/drizzle/schema';
 
 export type DrizzleDB = ExpoSQLiteDatabase<typeof schema>;
 
-export type InboxUseCases = {
-  createUserInput: (input: CreateUserInputInput) => Promise<UserInput>;
-  updateUserInput: (id: string, text: string) => Promise<UserInput>;
-  deleteUserInput: (id: string) => Promise<void>;
-  getUserInputs: (page?: number, limit?: number) => Promise<PaginatedUserInputs>;
-  searchTags: (input: SearchTagsInput) => Promise<Tag[]>;
+export type FeatureUseCases = {
+  create: (input: CreateInput) => Promise<FeatureEntity>;
+  update: (id: string, data: UpdateData) => Promise<FeatureEntity>;
+  delete: (id: string) => Promise<void>;
+  getAll: (page?: number, limit?: number) => Promise<PaginatedResult>;
 };
 
 export type AppDependencies = {
   database: SqliteDatabase;
-  drizzleDb: DrizzleDB;  // Exposto para hooks reativos
-  inboxRepository: InboxRepository;
-  shoppingRepository: ShoppingRepository;
-  inboxUseCases: InboxUseCases;
-  shoppingUseCases: ShoppingUseCases;
+  drizzleDb: DrizzleDB;
+  featureRepository: FeatureRepository;
+  featureUseCases: FeatureUseCases;
 };
 ```
 
@@ -190,37 +410,39 @@ export type AppDependencies = {
 
 ```typescript
 export async function buildDependencies(): Promise<AppDependencies> {
-  // 1. Inicializa DB (unica vez!)
-  const rawDb = openDatabaseSync('listify.db', { enableChangeListener: true });
+  // 1. Inicializa DB
+  const rawDb = openDatabaseSync('app.db', { enableChangeListener: true });
   rawDb.execSync('PRAGMA foreign_keys = ON;');
   const drizzleDb = drizzle(rawDb, { schema });
-  const inboxRepository = new InboxDrizzleRepo(drizzleDb);
 
-  // 2. Cria use cases com closure (repository ja injetado)
-  const inboxUseCases: InboxUseCases = {
-    createUserInput: (input) =>
-      createUserInput(input, { repository: inboxRepository }),
-    // ...
+  // 2. Cria repositories
+  const featureRepository = new FeatureDrizzleRepo(drizzleDb);
+
+  // 3. Cria use cases com closure (repository ja injetado)
+  const featureUseCases: FeatureUseCases = {
+    create: (input) =>
+      createFeature(input, { repository: featureRepository }),
+    update: (id, data) =>
+      updateFeature(featureRepository, id, data),
+    delete: (id) =>
+      deleteFeature(featureRepository, id),
+    getAll: (page = 0, limit = 20) =>
+      getAllFeatures(featureRepository, page, limit),
   };
 
   return {
     database,
-    drizzleDb,  // Exposto para hooks reativos
-    inboxRepository,
-    inboxUseCases,
-    // ...
+    drizzleDb,
+    featureRepository,
+    featureUseCases,
   };
 }
 ```
 
-**3. `hooks/useUserInputsLive.ts` - Hook Reativo**
-
-Encapsula `useLiveQuery` do Drizzle (ver secao anterior).
-
-**4. `AppDependenciesProvider.tsx` - Context Provider**
+**3. `AppDependenciesProvider.tsx` - Context Provider**
 
 ```typescript
-export function AppDependenciesProvider({ children }) {
+export function AppDependenciesProvider({ children, fallback }) {
   // ... inicializacao assincrona ...
   return (
     <AppDependenciesContext.Provider value={state.dependencies}>
@@ -231,77 +453,144 @@ export function AppDependenciesProvider({ children }) {
 
 // Hooks expostos
 export function useAppDependencies(): AppDependencies { /* ... */ }
-export function useInboxUseCases(): InboxUseCases { /* ... */ }
-export function useInboxRepository(): InboxRepository { /* ... */ }
-
-// Re-export hooks reativos
-export { useUserInputsLive, type UseUserInputsLiveResult } from './hooks';
+export function useFeatureRepository(): FeatureRepository { /* ... */ }
+export function useFeatureUseCases(): FeatureUseCases { /* ... */ }
 ```
 
 ---
 
-### 3. Store de UI (`FeatureUIStore.ts`)
+### 6. Store de UI (`presentation/state/`)
 
 **Proposito:** Gerenciar estado de UI apenas (nao dados de dominio).
 
 ```typescript
+// src/presentation/state/feature/featureUIStore.ts
 import { createStore } from 'zustand/vanilla';
 
 export type FeatureUIState = {
   inputText: string;
   isSubmitting: boolean;
   lastError: Error | null;
-  editingItem: DomainEntity | null;
-  // Actions...
+  editingItem: FeatureEntity | null;
+};
+
+export type FeatureUIActions = {
+  setInputText: (text: string) => void;
+  setIsSubmitting: (isSubmitting: boolean) => void;
+  setError: (error: Error | null) => void;
+  clearError: () => void;
+  startEditing: (item: FeatureEntity) => void;
+  cancelEditing: () => void;
+  resetAfterMutation: () => void;
 };
 
 export const createFeatureUIStore = () =>
-  createStore<FeatureUIState>((set) => ({
+  createStore<FeatureUIState & FeatureUIActions>((set) => ({
     inputText: '',
     isSubmitting: false,
-    // ...
+    lastError: null,
+    editingItem: null,
+
+    setInputText: (text) => set({ inputText: text }),
+    setIsSubmitting: (isSubmitting) => set({ isSubmitting }),
+    setError: (error) => set({ lastError: error }),
+    clearError: () => set({ lastError: null }),
+    startEditing: (item) => set({ editingItem: item, inputText: item.text }),
+    cancelEditing: () => set({ editingItem: null, inputText: '' }),
+    resetAfterMutation: () => set({ inputText: '', editingItem: null, isSubmitting: false }),
   }));
 ```
 
 ---
 
-### 4. ViewModel Hook (`useFeatureVM.ts`)
+### 7. ViewModel Hook (`presentation/hooks/`)
 
 **Proposito:** Orquestrar dados reativos, estado de UI e operacoes.
 
 ```typescript
-// src/presentation/hooks/useInboxVM.ts
-import { useCallback } from 'react';
+// src/presentation/hooks/useFeatureVM.ts
+import { useCallback, useMemo } from 'react';
 import { useStore } from 'zustand';
-import { useInboxUseCases, useUserInputsLive } from '@app/di/AppDependenciesProvider';
-import { useInboxUIStore } from '../state/inbox/InboxUIStoreProvider';
 
-export function useInboxVM() {
-  const store = useInboxUIStore();
+import { useFeatureUseCases } from '@app/di/AppDependenciesProvider';
+import { useFeatureUIStore } from '../state/feature/FeatureUIStoreProvider';
+import { useFeaturePaginated } from './useFeaturePaginated';
+
+export function useFeatureVM() {
+  const store = useFeatureUIStore();
 
   // UseCases do Container (repository ja injetado)
-  const { createUserInput, updateUserInput, deleteUserInput } = useInboxUseCases();
+  const { create, update, delete: deleteItem } = useFeatureUseCases();
 
-  // Dados reativos (do Container DI)
-  const { inputs, isLoading, error: liveQueryError } = useUserInputsLive();
+  // Dados reativos + paginacao
+  const {
+    items,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    loadMore,
+    error: dataError,
+  } = useFeaturePaginated();
 
   // Estado de UI via Zustand
   const inputText = useStore(store, (s) => s.inputText);
-  // ...
+  const isSubmitting = useStore(store, (s) => s.isSubmitting);
+  const editingItem = useStore(store, (s) => s.editingItem);
+  const lastError = useStore(store, (s) => s.lastError);
+
+  // Actions do Zustand
+  const setInputText = useStore(store, (s) => s.setInputText);
+  const setIsSubmitting = useStore(store, (s) => s.setIsSubmitting);
+  const setError = useStore(store, (s) => s.setError);
+  const resetAfterMutation = useStore(store, (s) => s.resetAfterMutation);
+
+  // Combina erros
+  const combinedError = useMemo(
+    () => dataError ?? lastError,
+    [dataError, lastError]
+  );
+
+  // Handler de submit
+  const handleSubmit = useCallback(async () => {
+    const trimmedText = inputText.trim();
+    if (trimmedText.length === 0) return;
+
+    setIsSubmitting(true);
+
+    try {
+      if (editingItem) {
+        await update(editingItem.id, { text: trimmedText });
+      } else {
+        await create({ text: trimmedText });
+      }
+      resetAfterMutation();
+    } catch (error) {
+      setError(error instanceof Error ? error : new Error('Failed to save'));
+      setIsSubmitting(false);
+    }
+  }, [inputText, editingItem, create, update, resetAfterMutation, setError, setIsSubmitting]);
 
   return {
-    inputs,
-    isLoading,
+    items,
     inputText,
+    isSubmitting,
+    isLoading,
+    isLoadingMore,
+    hasMore,
+    lastError: combinedError,
+    editingItem,
+    isEditing: editingItem !== null,
+    // Actions
+    setInputText,
     handleSubmit,
-    // ...
+    handleLoadMore: loadMore,
+    // ... outros handlers
   };
 }
 ```
 
 **Caracteristicas:**
 - **Nao importa de @drizzle/***: Todo DI vem do Container
-- **Usa hooks do Container**: `useInboxUseCases()`, `useUserInputsLive()`
 - **Combina 3 fontes**: Dados reativos + Estado UI + Operacoes
 - **Expoe interface limpa**: Screen nao conhece arquitetura interna
 
@@ -313,30 +602,28 @@ export function useInboxVM() {
 src/
 ├── app/
 │   └── di/                              # Container de DI
-│       ├── types.ts                     # DrizzleDB, InboxUseCases, AppDependencies
+│       ├── types.ts                     # DrizzleDB, FeatureUseCases, AppDependencies
 │       ├── container.ts                 # buildDependencies() factory
-│       ├── AppDependenciesProvider.tsx  # Context provider + hooks
-│       └── hooks/                       # Hooks reativos (encapsulam Drizzle)
-│           ├── index.ts                 # Barrel export
-│           └── useUserInputsLive.ts     # Hook reativo com useLiveQuery
+│       └── AppDependenciesProvider.tsx  # Context provider + hooks
 │
 ├── domain/feature/
 │   ├── entities/
 │   │   └── FeatureEntity.ts
 │   ├── ports/
-│   │   └── FeatureRepository.ts         # Interface
+│   │   └── FeatureRepository.ts         # Interface com subscribeToFeature()
 │   └── use-cases/
 │       └── *.ts                         # Pure functions
 │
 ├── infra/drizzle/
-│   ├── FeatureDrizzleRepo.ts            # Implementacao
+│   ├── FeatureDrizzleRepo.ts            # Implementa Repository + Subscriber Pattern
 │   ├── schema.ts
-│   └── index.ts                         # Exports (SEM DrizzleProvider)
+│   └── index.ts
 │
 └── presentation/
     ├── hooks/
-    │   ├── useFeatureVM.ts              # ViewModel (usa hooks do Container)
-    │   └── useUserInputsPaginated.ts    # Paginacao (usa hooks do Container)
+    │   ├── useFeatureLive.ts            # Hook reativo (usa repository.subscribe)
+    │   ├── useFeaturePaginated.ts       # Paginacao hibrida (opcional)
+    │   └── useFeatureVM.ts              # ViewModel
     │
     ├── state/feature/
     │   ├── featureUIStore.ts            # Store definition
@@ -347,8 +634,9 @@ src/
 ```
 
 **Notas importantes:**
-- `app/di/hooks/` - Hooks reativos ficam AQUI, nao em presentation
-- `presentation/` - NAO importa de `@drizzle/*` ou `drizzle-orm/*`
+- Hooks reativos ficam em `presentation/hooks/`, NAO em `app/di/`
+- Reatividade e implementada no Repository via Subscriber Pattern
+- `presentation/` NAO importa de `@drizzle/*` ou `drizzle-orm/*`
 - Use cases no domain continuam sendo **pure functions**
 
 ---
@@ -358,9 +646,9 @@ src/
 | Camada | Pode importar de | NAO pode importar de |
 |--------|------------------|----------------------|
 | Screen | presentation/* | domain/*, infra/*, @drizzle/* |
-| VM Hook | @app/di/AppDependenciesProvider, presentation/* | infra/*, @drizzle/* |
+| VM Hook | @app/di/*, presentation/* | infra/*, @drizzle/* |
+| Live Hook | @app/di/*, @domain/entities | infra/*, @drizzle/* |
 | Container (DI) | domain/*, infra/*, drizzle-orm/* | presentation/* |
-| Live Hook (DI) | @app/di/*, @infra/drizzle/*, drizzle-orm/* | presentation/* |
 | UI Store | domain/entities (tipos apenas) | infra/*, @drizzle/* |
 | Domain Use Cases | domain/ports, domain/entities | infra/*, presentation/* |
 | Drizzle Repo | domain/ports, @drizzle/* | presentation/* |
@@ -369,25 +657,36 @@ src/
 
 ---
 
-## Exemplo de Implementacao: Inbox
+## Fluxo de Dados e Mutacoes
 
-| Componente | Arquivo |
-|------------|---------|
-| **Domain** | |
-| Entidade | `src/domain/inbox/entities/UserInput.ts` |
-| Port | `src/domain/inbox/ports/InboxRepository.ts` |
-| Use Cases | `src/domain/inbox/use-cases/*.ts` |
-| **Infra** | |
-| Repo Impl | `src/infra/drizzle/InboxDrizzleRepo.ts` |
-| **DI Container** | |
-| Types | `src/app/di/types.ts` |
-| Factory | `src/app/di/container.ts` |
-| Provider | `src/app/di/AppDependenciesProvider.tsx` |
-| Live Hook | `src/app/di/hooks/useUserInputsLive.ts` |
-| **Presentation** | |
-| UI Store | `src/presentation/state/inbox/inboxUIStore.ts` |
-| ViewModel | `src/presentation/hooks/useInboxVM.ts` |
-| Paginated Hook | `src/presentation/hooks/useUserInputsPaginated.ts` |
+```
+1. Usuario interage com Screen
+       ↓
+2. useFeatureVM().handleSubmit()
+       ↓
+3. useFeatureUseCases().create()
+       ↓
+4. createFeature(input, { repository })  ← Use Case puro
+       ↓
+5. repository.create()
+       ↓
+6. FeatureDrizzleRepo.create():
+   - Executa transacao no DB
+   - Retorna entidade criada
+   - Chama this.notifySubscribers()
+       ↓
+7. notifySubscribers() itera todos os callbacks registrados
+       ↓
+8. Cada callback recebe: callback(updatedItemsArray)
+       ↓
+9. useFeatureLive() recebe callback → setItems(newItems)
+       ↓
+10. useFeaturePaginated() ve nova data → useMemo deduplica
+       ↓
+11. useFeatureVM() retorna items atualizados
+       ↓
+12. Screen re-renderiza com novos dados
+```
 
 ---
 
@@ -395,37 +694,62 @@ src/
 
 1. [ ] **Domain**: Criar entidades em `domain/feature/entities/`
 2. [ ] **Domain**: Criar interface em `domain/feature/ports/FeatureRepository.ts`
+   - Incluir metodo `subscribeToFeature(callback, options): unsubscribe`
 3. [ ] **Domain**: Criar use cases em `domain/feature/use-cases/` (pure functions)
 4. [ ] **Infra**: Criar `infra/drizzle/FeatureDrizzleRepo.ts`
+   - Implementar Subscriber Pattern (Map de subscribers + notifySubscribers)
 5. [ ] **DI Container**: Adicionar tipo `FeatureUseCases` em `app/di/types.ts`
 6. [ ] **DI Container**: Criar use cases com closure em `app/di/container.ts`
-7. [ ] **DI Container**: Adicionar hook `useFeatureUseCases()` em `AppDependenciesProvider.tsx`
-8. [ ] **DI Container**: Se precisar de dados reativos, criar `app/di/hooks/useFeatureLive.ts`
-9. [ ] **Presentation**: Criar UI store em `state/feature/`
-10. [ ] **Presentation**: Criar `useFeatureVM.ts` usando hooks do Container
-11. [ ] **Presentation**: Criar Screen
-12. [ ] **Tests**: Testar use cases, mappers, ViewModel
+7. [ ] **DI Container**: Adicionar hooks em `AppDependenciesProvider.tsx`:
+   - `useFeatureRepository()`
+   - `useFeatureUseCases()`
+8. [ ] **Presentation**: Criar hook reativo `presentation/hooks/useFeatureLive.ts`
+9. [ ] **Presentation**: (Opcional) Criar `useFeaturePaginated.ts` se precisar de paginacao
+10. [ ] **Presentation**: Criar UI store em `state/feature/`
+11. [ ] **Presentation**: Criar `useFeatureVM.ts` combinando dados + UI + operacoes
+12. [ ] **Presentation**: Criar Screen
+13. [ ] **Tests**: Testar use cases, repository, ViewModel
 
-**Exemplo de hook reativo no Container:**
+**Exemplo de implementacao do Subscriber no Repository:**
 
 ```typescript
-// 1. Criar hook em app/di/hooks/useFeatureLive.ts
-export function useFeatureLive(): UseFeatureLiveResult {
-  const { drizzleDb } = useAppDependencies();
-
-  const { data, error, updatedAt } = useLiveQuery(
-    drizzleDb.query.featureTable.findMany({ /* ... */ })
-  );
-
-  // Mapear e retornar...
+// 1. Adicionar metodo na interface (domain)
+interface FeatureRepository {
+  subscribeToFeature(
+    callback: (items: FeatureEntity[]) => void,
+    options?: { limit?: number }
+  ): () => void;
+  // ... outros metodos
 }
 
-// 2. Exportar em app/di/hooks/index.ts
-export { useFeatureLive } from './useFeatureLive';
+// 2. Implementar no FeatureDrizzleRepo (infra)
+class FeatureDrizzleRepo implements FeatureRepository {
+  private subscribers = new Map<Function, { limit?: number }>();
 
-// 3. Re-exportar em AppDependenciesProvider.tsx
-export { useFeatureLive } from './hooks';
+  subscribeToFeature(callback, options) {
+    this.subscribers.set(callback, options ?? {});
+    // Emitir dados iniciais...
+    return () => this.subscribers.delete(callback);
+  }
 
-// 4. Usar no ViewModel (presentation)
-import { useFeatureLive } from '@app/di/AppDependenciesProvider';
+  private async notifySubscribers() {
+    for (const [callback, opts] of this.subscribers) {
+      const data = await this.db.query.featureTable.findMany({ limit: opts.limit });
+      callback(data.map(mapRawToEntity));
+    }
+  }
+}
+
+// 3. Criar hook na presentation
+function useFeatureLive(limit?: number) {
+  const repo = useFeatureRepository();
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    const unsub = repo.subscribeToFeature(setItems, { limit });
+    return unsub;
+  }, [repo, limit]);
+
+  return { items };
+}
 ```
