@@ -6,6 +6,7 @@
 
 import type { ReactElement } from 'react';
 import { StyleSheet, View } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import type { DrawerContentComponentProps } from '@react-navigation/drawer';
 import {
   DrawerContentScrollView as DrawerScrollView,
@@ -42,13 +43,13 @@ export function CustomDrawerContent(props: DrawerContentComponentProps): ReactEl
   });
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.header}>
         <Logo size="lg" />
       </View>
       <DrawerScrollView {...props} contentContainerStyle={styles.content} scrollEnabled={false}>
         <DrawerItemList {...props} />
       </DrawerScrollView>
-    </View>
+    </SafeAreaView>
   );
 }
