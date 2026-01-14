@@ -462,12 +462,12 @@ describe('InboxDrizzleRepo', () => {
 
       const repo = new InboxDrizzleRepo(mockDb);
 
-      const result = await repo.getUserInputs({ page: 0, limit: 10 });
+      const result = await repo.getUserInputs({ limit: 10 });
 
       expect(result.items).toHaveLength(2);
-      expect(result.offset).toBe(0);
       expect(result.limit).toBe(10);
       expect(result.hasMore).toBe(false);
+      expect(result.nextCursor).not.toBeNull();
     });
 
     it('should indicate hasMore when more items exist', async () => {
@@ -500,7 +500,7 @@ describe('InboxDrizzleRepo', () => {
 
       const repo = new InboxDrizzleRepo(mockDb);
 
-      const result = await repo.getUserInputs({ page: 0, limit: 2 });
+      const result = await repo.getUserInputs({ limit: 2 });
 
       expect(result.items).toHaveLength(2);
       expect(result.hasMore).toBe(true);

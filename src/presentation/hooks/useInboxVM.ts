@@ -1,8 +1,8 @@
 /**
- * Inbox View Model Hook (Reactive Version with Clean Architecture)
+ * Inbox View Model Hook (Clean Architecture)
  *
  * Provides a clean interface for the inbox screen combining:
- * - useUserInputsPaginated for reactive data with pagination
+ * - useUserInputsCursor for cursor-based pagination
  * - Zustand store for UI state (inputText, isSubmitting, etc.)
  * - UseCase hooks for business operations (with injected repository)
  */
@@ -16,10 +16,10 @@ import type { DateGroup } from '@domain/inbox/entities/types';
 import { GetUserInputsGrouped } from '@domain/inbox/use-cases/GetUserInputsGrouped';
 
 import { useInboxUIStore } from '../state/inbox/InboxUIStoreProvider';
-import { useUserInputsPaginated } from './useUserInputsPaginated';
+import { useUserInputsCursor } from './useUserInputsCursor';
 
 export type UseInboxVMReturn = {
-  /** List of user inputs (reactive for first 50, then on-demand) */
+  /** List of user inputs */
   inputs: UserInput[];
 
   /** User inputs grouped by date */
@@ -87,9 +87,9 @@ export type UseInboxVMReturn = {
 };
 
 /**
- * View model hook for the inbox screen (reactive version).
+ * View model hook for the inbox screen.
  *
- * Data comes from useUserInputsPaginated (reactive for first 50, then on-demand).
+ * Data comes from useUserInputsCursor (cursor-based pagination).
  * UI state is managed by the Zustand store.
  * Business operations go through UseCase hooks.
  */
@@ -99,15 +99,16 @@ export function useInboxVM(): UseInboxVMReturn {
   // UseCases from DI container
   const { createUserInput, updateUserInput, deleteUserInput, searchTags } = useInboxUseCases();
 
-  // Paginated data (reactive for first 50, then on-demand)
+  // Paginated data with cursor-based pagination
   const {
     inputs,
     isLoading: isLoadingInputs,
     isLoadingMore,
     hasMore,
     loadMore,
+    refetch,
     error: paginatedError,
-  } = useUserInputsPaginated();
+  } = useUserInputsCursor();
 
   // Group inputs by date
   const groupedInputs = useMemo(() => {
@@ -151,6 +152,7 @@ export function useInboxVM(): UseInboxVMReturn {
         await createUserInput({ text: trimmedText });
       }
       resetAfterMutation();
+      await refetch();
     } catch (error) {
       setError(error instanceof Error ? error : new Error('Failed to save input'));
       setIsSubmitting(false);
@@ -164,6 +166,7 @@ export function useInboxVM(): UseInboxVMReturn {
     clearError,
     setError,
     resetAfterMutation,
+    refetch,
   ]);
 
   const handleSearchTags = useCallback(
@@ -210,11 +213,12 @@ export function useInboxVM(): UseInboxVMReturn {
 
       try {
         await deleteUserInput(id);
+        await refetch();
       } catch (error) {
         setError(error instanceof Error ? error : new Error('Failed to delete input'));
       }
     },
-    [deleteUserInput, clearError, setError],
+    [deleteUserInput, clearError, setError, refetch],
   );
 
   const handleSelectTag = useCallback(

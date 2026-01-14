@@ -1,4 +1,4 @@
-import type { PaginatedUserInputs, Tag, UserInput } from '../entities';
+import type { PaginatedUserInputs, PaginationCursor, Tag, UserInput } from '../entities';
 
 /**
  * Parâmetros para criar um novo UserInput.
@@ -23,11 +23,11 @@ export type UpdateUserInputParams = {
 };
 
 /**
- * Parâmetros para listar UserInputs com paginação.
+ * Parâmetros para listar UserInputs com paginação baseada em cursor.
  */
 export type GetUserInputsParams = {
-  /** Número da página (0-indexed) */
-  page: number;
+  /** Cursor para a próxima página (undefined para primeira página) */
+  cursor?: PaginationCursor;
 
   /** Itens por página (default: 20) */
   limit?: number;
@@ -45,38 +45,15 @@ export type SearchTagsParams = {
 };
 
 /**
- * Opções para subscription de inputs.
- */
-export type SubscribeToInputsOptions = {
-  /** Limite máximo de inputs a observar */
-  limit?: number;
-};
-
-/**
  * Contrato do repositório Inbox.
  *
  * Responsabilidades:
  * - CRUD de UserInputs
  * - Gerenciamento de Tags (criação automática, busca)
- * - Paginação de resultados
+ * - Paginação de resultados (cursor-based)
  * - Transações para operações complexas
- * - Subscriptions reativas para mudanças de dados
  */
 export interface InboxRepository {
-  /**
-   * Subscribe para mudanças reativas nos inputs.
-   *
-   * O callback é chamado imediatamente com os dados atuais
-   * e sempre que houver mudanças no banco de dados.
-   *
-   * @param callback - Função chamada quando os dados mudam
-   * @param options - Opções como limite de itens
-   * @returns Função para cancelar a subscription
-   */
-  subscribeToInputs(
-    callback: (inputs: UserInput[]) => void,
-    options?: SubscribeToInputsOptions,
-  ): () => void;
   /**
    * Cria um novo UserInput.
    *
@@ -120,13 +97,14 @@ export interface InboxRepository {
   getUserInputById(id: string): Promise<UserInput | null>;
 
   /**
-   * Lista UserInputs com paginação.
+   * Lista UserInputs com paginação baseada em cursor.
    *
    * Retorna em ordem cronológica crescente (mais antigo primeiro).
+   * Usa cursor (createdAt + id) para paginação estável.
    * Inclui tags associadas em cada input.
    *
-   * @param params - Parâmetros de paginação
-   * @returns Página de resultados com hasMore flag
+   * @param params - Parâmetros de paginação (cursor opcional, limit)
+   * @returns Página de resultados com hasMore flag e nextCursor
    */
   getUserInputs(params: GetUserInputsParams): Promise<PaginatedUserInputs>;
 

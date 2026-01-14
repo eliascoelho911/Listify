@@ -13,6 +13,15 @@ export type InputTag = {
 };
 
 /**
+ * Cursor para paginação baseada em cursor.
+ * Usa createdAt + id para garantir unicidade e estabilidade.
+ */
+export type PaginationCursor = {
+  readonly createdAt: string;
+  readonly id: string;
+};
+
+/**
  * Resultado paginado de UserInputs.
  * Usado pelo use case GetUserInputs para scroll infinito.
  */
@@ -23,11 +32,8 @@ export type PaginatedUserInputs = {
   /** Indica se há mais itens para carregar */
   readonly hasMore: boolean;
 
-  /** Total de itens */
-  readonly total: number;
-
-  /** Offset usado na query */
-  readonly offset: number;
+  /** Cursor para a próxima página (null se não houver mais) */
+  readonly nextCursor: PaginationCursor | null;
 
   /** Limite usado na query */
   readonly limit: number;

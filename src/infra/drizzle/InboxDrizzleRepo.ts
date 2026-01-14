@@ -6,7 +6,7 @@
  * implementation separate from the domain layer.
  */
 
-import { desc, eq, sql } from 'drizzle-orm';
+import { and, asc, desc, eq, gt, or } from 'drizzle-orm';
 
 import { DrizzleDB } from '@app/di/types';
 import type { PaginatedUserInputs, Tag, UserInput } from '@domain/inbox/entities';
@@ -15,7 +15,6 @@ import type {
   GetUserInputsParams,
   InboxRepository,
   SearchTagsParams,
-  SubscribeToInputsOptions,
   UpdateUserInputParams,
 } from '@domain/inbox/ports/InboxRepository';
 import { UserInputNotFoundError } from '@domain/inbox/use-cases/errors';
@@ -24,11 +23,6 @@ import { extractTags } from '@domain/inbox/use-cases/extractTags';
 import { inputTags, tags, userInputs } from './schema';
 
 const DEFAULT_LIMIT = 20;
-
-/**
- * Type for subscription callback.
- */
-type SubscriptionCallback = (inputs: UserInput[]) => void;
 
 /**
  * Maps raw database result to UserInput entity.
@@ -78,76 +72,10 @@ function generateId(): string {
  * - CRUD operations for UserInputs
  * - Tag management (create, search, usage tracking)
  * - Transactional operations
- * - Reactive subscriptions for data changes
+ * - Cursor-based pagination
  */
 export class InboxDrizzleRepo implements InboxRepository {
-  private subscribers: Map<SubscriptionCallback, { limit?: number }> = new Map();
-
   constructor(private db: DrizzleDB) {}
-
-  /**
-   * Notifies all subscribers with fresh data.
-   * Called after any mutation (create, update, delete).
-   */
-  private async notifySubscribers(): Promise<void> {
-    if (this.subscribers.size === 0) return;
-
-    for (const [callback, options] of this.subscribers) {
-      try {
-        const results = await this.db.query.userInputs.findMany({
-          with: {
-            inputTags: {
-              with: {
-                tag: true,
-              },
-            },
-          },
-          orderBy: [desc(userInputs.updatedAt)],
-          ...(options.limit !== undefined ? { limit: options.limit } : {}),
-        });
-
-        const inputs = results.map(mapRawToUserInput);
-        callback(inputs);
-      } catch {
-        // Silently ignore errors in notification
-      }
-    }
-  }
-
-  subscribeToInputs(
-    callback: SubscriptionCallback,
-    options?: SubscribeToInputsOptions,
-  ): () => void {
-    this.subscribers.set(callback, { limit: options?.limit });
-
-    // Emit initial data
-    this.db.query.userInputs
-      .findMany({
-        with: {
-          inputTags: {
-            with: {
-              tag: true,
-            },
-          },
-        },
-        orderBy: [desc(userInputs.updatedAt)],
-        ...(options?.limit !== undefined ? { limit: options.limit } : {}),
-      })
-      .then((results) => {
-        if (this.subscribers.has(callback)) {
-          const inputs = results.map(mapRawToUserInput);
-          callback(inputs);
-        }
-      })
-      .catch(() => {
-        // Silently ignore errors in initial fetch
-      });
-
-    // Return unsubscribe function
-    return () => {
-      this.subscribers.delete(callback);
-    };
-  }
 
   async createUserInput(params: CreateUserInputParams): Promise<UserInput> {
     const now = new Date();
@@ -208,9 +136,6 @@ export class InboxDrizzleRepo implements InboxRepository {
         tags: resultTags,
       };
     });
-
-    // Notify subscribers after successful mutation
-    this.notifySubscribers();
 
     return result;
   }
@@ -295,9 +220,6 @@ export class InboxDrizzleRepo implements InboxRepository {
       };
     });
 
-    // Notify subscribers after successful mutation
-    this.notifySubscribers();
-
     return result;
   }
 
@@ -325,9 +247,6 @@ export class InboxDrizzleRepo implements InboxRepository {
 
       await tx.delete(userInputs).where(eq(userInputs.id, id));
     });
-
-    // Notify subscribers after successful mutation
-    this.notifySubscribers();
   }
 
   async getUserInputById(id: string): Promise<UserInput | null> {
@@ -362,27 +281,29 @@ export class InboxDrizzleRepo implements InboxRepository {
 
   async getUserInputs(params: GetUserInputsParams): Promise<PaginatedUserInputs> {
     const limit = params.limit ?? DEFAULT_LIMIT;
-    const offset = params.page * limit;
+    const cursor = params.cursor;
 
-    const [results, totalResult] = await Promise.all([
-      this.db.query.userInputs.findMany({
-        with: {
-          inputTags: {
-            with: {
-              tag: true,
-            },
+    const results = await this.db.query.userInputs.findMany({
+      with: {
+        inputTags: {
+          with: {
+            tag: true,
           },
         },
-        orderBy: [desc(userInputs.createdAt)],
-        limit: limit + 1,
-        offset,
-      }),
-      this.db.select({ count: sql<number>`count(*)` }).from(userInputs),
-    ]);
+      },
+      where: cursor
+        ? or(
+            gt(userInputs.createdAt, cursor.createdAt),
+            and(eq(userInputs.createdAt, cursor.createdAt), gt(userInputs.id, cursor.id)),
+          )
+        : undefined,
+      orderBy: [asc(userInputs.createdAt), asc(userInputs.id)],
+      limit: limit + 1,
+    });
 
-    const total = totalResult[0]?.count ?? 0;
     const hasMore = results.length > limit;
-    const items = results.slice(0, limit);
+    const items = hasMore ? results.slice(0, limit) : results;
+    const lastItem = items[items.length - 1];
 
     return {
       items: items.map((result) => ({
@@ -398,8 +319,7 @@ export class InboxDrizzleRepo implements InboxRepository {
         })),
       })),
       hasMore,
-      total,
-      offset,
+      nextCursor: lastItem ? { createdAt: lastItem.createdAt, id: lastItem.id } : null,
       limit,
     };
   }
