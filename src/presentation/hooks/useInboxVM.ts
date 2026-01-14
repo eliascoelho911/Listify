@@ -12,6 +12,8 @@ import { useStore } from 'zustand';
 
 import { useInboxUseCases } from '@app/di/AppDependenciesProvider';
 import type { Tag, UserInput } from '@domain/inbox/entities';
+import type { DateGroup } from '@domain/inbox/entities/types';
+import { GetUserInputsGrouped } from '@domain/inbox/use-cases/GetUserInputsGrouped';
 
 import { useInboxUIStore } from '../state/inbox/InboxUIStoreProvider';
 import { useUserInputsPaginated } from './useUserInputsPaginated';
@@ -19,6 +21,9 @@ import { useUserInputsPaginated } from './useUserInputsPaginated';
 export type UseInboxVMReturn = {
   /** List of user inputs (reactive for first 50, then on-demand) */
   inputs: UserInput[];
+
+  /** User inputs grouped by date */
+  groupedInputs: DateGroup[];
 
   /** Current input text */
   inputText: string;
@@ -103,6 +108,11 @@ export function useInboxVM(): UseInboxVMReturn {
     loadMore,
     error: paginatedError,
   } = useUserInputsPaginated();
+
+  // Group inputs by date
+  const groupedInputs = useMemo(() => {
+    return GetUserInputsGrouped(inputs);
+  }, [inputs]);
 
   // UI state from Zustand store
   const inputText = useStore(store, (state) => state.inputText);
@@ -227,6 +237,7 @@ export function useInboxVM(): UseInboxVMReturn {
 
   return {
     inputs,
+    groupedInputs,
     inputText,
     isSubmitting,
     isLoading: isLoadingInputs,

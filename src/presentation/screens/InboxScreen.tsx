@@ -15,7 +15,6 @@ import { Menu } from 'lucide-react-native';
 
 import type { UserInput } from '@domain/inbox/entities';
 import type { DateGroup } from '@domain/inbox/entities/types';
-import { GetUserInputsGrouped } from '@domain/inbox/use-cases/GetUserInputsGrouped';
 import { DateBadge, Logo, Text } from '@design-system/atoms';
 import { SearchBar } from '@design-system/molecules';
 import { Navbar } from '@design-system/organisms';
@@ -79,16 +78,11 @@ function InboxScreenContent(): ReactElement {
     );
   }, [vm.lastError, vm.handleClearError, t, styles]);
 
-  // Group inputs by date
-  const groupedData = useMemo(() => {
-    return GetUserInputsGrouped(vm.inputs);
-  }, [vm.inputs]);
-
   // Flatten grouped data for FlashList
   const listData = useMemo((): ListItem[] => {
     const items: ListItem[] = [];
 
-    for (const group of groupedData) {
+    for (const group of vm.groupedInputs) {
       items.push({ type: 'header', group });
       for (const input of group.inputs) {
         items.push({ type: 'input', input });
@@ -96,7 +90,7 @@ function InboxScreenContent(): ReactElement {
     }
 
     return items;
-  }, [groupedData]);
+  }, [vm.groupedInputs]);
 
   const handleLongPress = useCallback((input: UserInput) => {
     setSelectedInput(input);
@@ -225,6 +219,9 @@ function InboxScreenContent(): ReactElement {
               onEndReached={vm.handleLoadMore}
               onEndReachedThreshold={0.5}
               ListFooterComponent={renderFooter}
+              maintainVisibleContentPosition={{
+                startRenderingFromBottom: true,
+              }}
             />
           )}
         </View>
