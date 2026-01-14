@@ -64,7 +64,7 @@ function formatDateLabel(date: Date, variant: DateBadgeVariant, locale: string =
  *
  * @param inputs - Array of user inputs to group
  * @param locale - Locale for date formatting (default: pt-BR)
- * @returns Array of date groups, ordered by most recent first
+ * @returns Array of date groups, ordered by oldest first
  */
 export function GetUserInputsGrouped(inputs: UserInput[], locale: string = 'pt-BR'): DateGroup[] {
   if (!inputs || inputs.length === 0) {
@@ -91,9 +91,9 @@ export function GetUserInputsGrouped(inputs: UserInput[], locale: string = 'pt-B
     groupsMap.get(dateKey)!.inputs.push(input);
   }
 
-  // Convert to DateGroup array and sort by date (most recent first)
+  // Convert to DateGroup array and sort by date (oldest first)
   const groups: DateGroup[] = Array.from(groupsMap.values())
-    .sort((a, b) => b.date.getTime() - a.date.getTime())
+    .sort((a, b) => a.date.getTime() - b.date.getTime())
     .map(({ date, inputs: groupInputs }) => {
       const variant = getDateVariant(date, today, yesterday);
       return {

@@ -27,9 +27,9 @@ describe('GetUserInputsGrouped', () => {
     const result = GetUserInputsGrouped(inputs);
 
     expect(result).toHaveLength(3);
-    expect(result[0].inputs).toHaveLength(2);
-    expect(result[1].inputs).toHaveLength(1);
-    expect(result[2].inputs).toHaveLength(1);
+    expect(result[0].inputs).toHaveLength(1); // Two days ago
+    expect(result[1].inputs).toHaveLength(1); // Yesterday
+    expect(result[2].inputs).toHaveLength(2); // Today
   });
 
   it('should use "today" variant for today\'s inputs', () => {
@@ -66,7 +66,7 @@ describe('GetUserInputsGrouped', () => {
     expect(result).toHaveLength(0);
   });
 
-  it('should order groups by most recent first', () => {
+  it('should order groups by oldest first', () => {
     const inputs: UserInput[] = [
       createMockUserInput({ id: '1', text: 'Yesterday', createdAt: yesterday }),
       createMockUserInput({ id: '2', text: 'Today', createdAt: today }),
@@ -75,9 +75,9 @@ describe('GetUserInputsGrouped', () => {
 
     const result = GetUserInputsGrouped(inputs);
 
-    expect(result[0].variant).toBe('today');
+    expect(result[0].variant).toBe('default'); // Last week (oldest)
     expect(result[1].variant).toBe('yesterday');
-    expect(result[2].variant).toBe('default');
+    expect(result[2].variant).toBe('today'); // Today (newest)
   });
 
   it('should generate proper labels for dates', () => {
