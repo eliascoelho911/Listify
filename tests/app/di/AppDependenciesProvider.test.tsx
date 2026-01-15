@@ -8,19 +8,10 @@ import React from 'react';
 import { View } from 'react-native';
 import { render, waitFor } from '@testing-library/react-native';
 
-import {
-  AppDependenciesProvider,
-  useAppDependencies,
-  useInboxRepository,
-  useShoppingRepository,
-} from '@app/di/AppDependenciesProvider';
+import { AppDependenciesProvider, useAppDependencies } from '@app/di/AppDependenciesProvider';
 
 // Mock buildDependencies
-const mockDependencies = {
-  database: { name: 'test-db' },
-  shoppingRepository: { name: 'shopping-repo' },
-  inboxRepository: { name: 'inbox-repo' },
-};
+const mockDependencies = {};
 
 jest.mock('@app/di/container', () => ({
   buildDependencies: jest.fn(),
@@ -128,57 +119,5 @@ describe('useAppDependencies', () => {
     );
 
     consoleError.mockRestore();
-  });
-});
-
-describe('useInboxRepository', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    buildDependencies.mockResolvedValue(mockDependencies);
-  });
-
-  it('should return inbox repository', async () => {
-    let result: ReturnType<typeof useInboxRepository> | null = null;
-
-    function TestComponent() {
-      result = useInboxRepository();
-      return <View testID="test" />;
-    }
-
-    render(
-      <AppDependenciesProvider>
-        <TestComponent />
-      </AppDependenciesProvider>,
-    );
-
-    await waitFor(() => {
-      expect(result).toEqual(mockDependencies.inboxRepository);
-    });
-  });
-});
-
-describe('useShoppingRepository', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-    buildDependencies.mockResolvedValue(mockDependencies);
-  });
-
-  it('should return shopping repository', async () => {
-    let result: ReturnType<typeof useShoppingRepository> | null = null;
-
-    function TestComponent() {
-      result = useShoppingRepository();
-      return <View testID="test" />;
-    }
-
-    render(
-      <AppDependenciesProvider>
-        <TestComponent />
-      </AppDependenciesProvider>,
-    );
-
-    await waitFor(() => {
-      expect(result).toEqual(mockDependencies.shoppingRepository);
-    });
   });
 });

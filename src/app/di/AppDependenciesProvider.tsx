@@ -7,16 +7,8 @@ import React, {
   useState,
 } from 'react';
 
-import type { InboxRepository } from '@domain/inbox/ports/InboxRepository';
-import type { ShoppingRepository } from '@domain/shopping/ports/ShoppingRepository';
-
 import { buildDependencies } from './container';
-import type {
-  AppDependencies,
-  BuildDependenciesOptions,
-  InboxUseCases,
-  ShoppingUseCases,
-} from './types';
+import type { AppDependencies, BuildDependenciesOptions } from './types';
 
 type AppDependenciesState = {
   dependencies: AppDependencies | null;
@@ -97,40 +89,4 @@ export function useAppDependencies(): AppDependencies {
     throw new Error('useAppDependencies must be used within an AppDependenciesProvider');
   }
   return context;
-}
-
-/**
- * Hook para acessar o InboxRepository.
- *
- * @throws Error se usado fora do AppDependenciesProvider
- */
-export function useInboxRepository(): InboxRepository {
-  return useAppDependencies().inboxRepository;
-}
-
-/**
- * Hook para acessar o ShoppingRepository.
- *
- * @throws Error se usado fora do AppDependenciesProvider
- */
-export function useShoppingRepository(): ShoppingRepository {
-  return useAppDependencies().shoppingRepository;
-}
-
-/**
- * Hook para acessar os Inbox UseCases.
- *
- * @throws Error se usado fora do AppDependenciesProvider
- */
-export function useInboxUseCases(): InboxUseCases {
-  return useAppDependencies().inboxUseCases;
-}
-
-/**
- * Hook para acessar os Shopping UseCases.
- *
- * @throws Error se usado fora do AppDependenciesProvider
- */
-export function useShoppingUseCases(): ShoppingUseCases {
-  return useAppDependencies().shoppingUseCases;
 }

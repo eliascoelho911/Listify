@@ -8,7 +8,7 @@ import type { ReactElement } from 'react';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Drawer } from 'expo-router/drawer';
 
-import { CustomDrawerContent } from '@presentation/components/navigation/CustomDrawerContent';
+// import { CustomDrawerContent } from '@presentation/components/navigation/CustomDrawerContent'; TODO: Develop this component in Design System
 import { useTheme } from '@design-system/theme';
 
 export default function DrawerLayout(): ReactElement {
@@ -17,7 +17,7 @@ export default function DrawerLayout(): ReactElement {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <Drawer
-        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        // drawerContent={(props) => <CustomDrawerContent {...props} />}
         screenOptions={{
           headerShown: false,
           drawerStyle: {
