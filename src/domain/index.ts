@@ -29,14 +29,33 @@ export type {
   UpdateListInput,
 } from './list';
 
-// Note domain
+// Item domain
 export type {
-  CheckableNote,
-  CreateNoteInput,
-  Note,
-  NoteFilterCriteria,
-  NoteGroupCriteria,
-  NoteRepository,
-  UncheckableNote,
-  UpdateNoteInput,
-} from './note';
+  BookMetadata,
+  CreateInterestItemInput,
+  CreateItemInput,
+  CreateNoteItemInput,
+  CreateShoppingItemInput,
+  ExternalMetadata,
+  GameMetadata,
+  InterestItem,
+  InterestItemFilterCriteria,
+  InterestItemRepository,
+  Item,
+  ItemFilterCriteria,
+  ItemGroupCriteria,
+  ItemSortField,
+  ItemType,
+  MetadataCategory,
+  MovieMetadata,
+  NoteItem,
+  NoteItemFilterCriteria,
+  NoteItemRepository,
+  ShoppingItem,
+  ShoppingItemFilterCriteria,
+  ShoppingItemRepository,
+  UpdateInterestItemInput,
+  UpdateItemInput,
+  UpdateNoteItemInput,
+  UpdateShoppingItemInput,
+} from './item';
