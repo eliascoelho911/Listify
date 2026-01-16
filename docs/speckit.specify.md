@@ -62,10 +62,10 @@ Sessão Configurações e Ajuda
     Exemplo: Digitar "Comprar leite e pão #compras" preenche o título como "Comprar leite e pão" e adiciona a tag "compras".
     - Ao digitar "@" seguido com qualquer letra, surge o dropdown de listas.
     Exemplo: Digitar "Comprar leite e pão @Supermercado" preenche o título como "Comprar leite e pão" e associa a nota à lista "Supermercado".
-3. Opção para adicionar tags à nota (abre Dropdown de tags).
-4. Opção para associar a nota a uma lista (abre Dropdown de listas).
+2. Opção para adicionar tags à nota (abre Dropdown de tags).
+3. Opção para associar a nota a uma lista (abre Dropdown de listas).
     - Dependendo da lista selecionada, o modal se adapta para permitir o registro de itens específicos (ex: itens de lista de compras, itens de lista de interesse).
-3. Botão para salvar o item na lista correspondente e adicionar outro item ou salvar e abrir a tela de detalhes do item.
+4. Botão para salvar o item na lista correspondente e adicionar outro item ou salvar e abrir a tela de detalhes do item.
 
 ### [x] 3.1 Dropdown de tags
 **Pontos de entrada**
@@ -86,25 +86,25 @@ Sessão Configurações e Ajuda
 2. Permitir criar uma nova lista se a lista digitada não existir.
 3. Permitir selecionar uma lista para associar à nota.
 
-### [x] 3.3 Registro de nota item de lista de shopping (Modal)
+### [x] 3.3 Registro de item de lista de shopping (Modal)
 **Pontos de entrada**
 1. No modal de registro de nota, ao selecionar uma lista do tipo "Shopping", o modal se adapta para permitir o registro de itens de lista de compras.
 
 **Funcionalidades**
 Exibe a "Barra de registro global de notas / listas" no topo do modal, com campos específicos para itens de lista de compras:
-1. Campo de texto inteligente para adicionar todos os detalhes do item em uma única linha (nome, quantidade, categoria, valor).
-    - Exemplo de entrada: "Leite 2L #laticínios R$8,50"
+1. Campo de texto inteligente para adicionar todos os detalhes do item em uma única linha (nome, quantidade, valor).
+    - Exemplo de entrada: "Leite 2L R$8,50 #laticínios"
     - O campo deve interpretar a entrada e preencher os outros campos automaticamente.
     - Nome do item: "Leite"
     - Quantidade: "2L"
-    - Categoria: "laticínios"
     - Valor: "R$8,50"
-2. Abaixo do campo de texto inteligente deve exibir Badges com os detalhes extraídos (quantidade, categoria, valor) para confirmação e edição rápida.
+    - Tags: "laticínios"
+2. Abaixo do campo de texto inteligente deve exibir Badges com os detalhes extraídos (quantidade, valor, tags) para confirmação e edição rápida.
     - Se o dado ainda não tiver sido extraído, o badge correspondente ainda deve ser exibido. 
     - Ao clicar no badge, abre um dialogo para editar o valor manualmente, e depois volta para o modal de registro de nota com o dado atualizado no campo inteligente.
 3. Botão para salvar o item na lista de compras.
 
-### [x] 3.4 Registro de nota item de lista de interesse (Modal)
+### [x] 3.4 Registro de item de lista de interesse (Modal)
 **Pontos de entrada**
 1. No modal de registro de nota, ao selecionar uma lista do tipo "Interest", o modal se adapta para permitir o registro de itens de lista de interesse (ex: filmes, livros, jogos).
 
@@ -114,6 +114,7 @@ Exibe a "Barra de registro global de notas / listas" no topo do modal, com campo
 2. Campo de texto para a categoria do item (ex: filme, série, livro, jogo) (já preenchido com base na lista selecionada).
 3. Botão para buscar o item em provedores externos (ex: TMDb, Google Books, IGDB). Abre uma tela de busca integrada ao provedor externo. (Talvez usar a tela de busca global reutilizando o componente de lista de resultados).
 4. Ao selecionar o item nos resultados da busca, preencher automaticamente o nome do item e exibir um resumo com informações relevantes (ex: sinopse, autor, avaliações, etc.) e adicionar automaticamente o item à lista de interesse.
+5. Opção para marcar o item como "visto/lido/jogado" (isChecked).
 
 ### [x] 3.4.1. Integração das listas com provedores externos
 **Filmes e séries**
@@ -128,7 +129,7 @@ Exibe a "Barra de registro global de notas / listas" no topo do modal, com campo
 - Integrar com APIs como IGDB para permitir que os usuários pesquisem e adicionem jogos diretamente às suas listas.
 - No detalhe do jogo, exibir informações como sinopse, desenvolvedor, avaliações e trailers.
 
-### [x] 3.5 Tela de edição / detalhes da Nota
+### [x] 3.5 Tela de edição / detalhes do Item
 
 **Pontos de entrada**
 1. Clicar em uma nota na tela principal (Inbox).
@@ -147,6 +148,9 @@ Exibe a "Barra de registro global de notas / listas" no topo do modal, com campo
 4. Exibição da lista associada à nota, com link para abrir a tela de detalhes da lista.
 5. Toolbar inferior com:
     - Botões para formatar o texto (negrito, itálico, listas).
+6. Suporte a sub-itens:
+    - Um item pode ter sub-itens (hierarquia de um nível).
+    - Sub-itens são exibidos abaixo do item pai de forma indentada.
 
 **Componentes**
 - Scafold reutilizável entre a Inbox, Detalhes da Nota e Detalhes da Lista, com a Bottombar fixa exibindo a Toolbar inferior.
@@ -173,17 +177,17 @@ Exibe a "Barra de registro global de notas / listas" no topo do modal, com campo
     - Botão de voltar para a tela anterior.
 2. Exibição do nome da lista.
 3. Configurações de layout para exibição dos itens:
-    - Agrupamento por categoria ou nenhum.
+    - Agrupamento por tag ou nenhum.
     - Ordenação: ascendente ou descendente.
 4. Exibição dos itens da lista em uma lista vertical, com:
     - Drag and drop para reordenar os itens.
     - Nome do item.
     - Quantidade.
-    - Categoria (se caso não estiver agrupado por categoria).
-    - Checkbox para marcar o item como comprado.
+    - Tags associadas.
+    - Checkbox para marcar o item (isChecked).
     - Valor do item.
 5. Clicar no item leva leva ao modal de edição do item. ITENS DA LISTA DE SHOPPING NÃO TEM TELA DE DETALHES, APENAS MODAL DE EDIÇÃO.
-6. Barra inferior de total gasto na lista, exibindo o valor total dos itens marcados como comprados.
+6. Barra inferior de total gasto na lista, exibindo o valor total dos itens marcados.
 7. Botão flutuante de "Adicionar item" que abre o modal de registro de nota adaptado para itens de lista de compras.
 
 ### [x] 5. Busca global
