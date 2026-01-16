@@ -34,6 +34,7 @@ type BaseItemRepository<T extends Item> = ReadUseCase<T> &
     getByListId(listId: string): Promise<T[]>;
     getByTagId(tagId: string): Promise<T[]>;
     getSubItems(parentId: string): Promise<T[]>;
+    removeTagFromItems(tagId: string): Promise<number>;
   };
 
 // Repository específico para NoteItem
