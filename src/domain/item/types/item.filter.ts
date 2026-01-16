@@ -29,7 +29,7 @@ export type ItemFilterCriteria =
   | InterestItemFilterCriteria;
 
 // Agrupamentos
-export type ItemGroupCriteria = 'listId' | 'tagId' | 'isChecked';
+export type ItemGroupCriteria = 'listId' | 'tagId' | 'isChecked' | 'createdAt' | 'updatedAt';
 
 // Ordenação
 export type ItemSortField = BaseSortField | 'title';

@@ -1,9 +1,10 @@
 import type {
   CreateUseCase,
   DeleteUseCase,
-  FilterUseCase,
   GroupUseCase,
   ReadUseCase,
+  SearchUseCase,
+  UpdateSortOrderUseCase,
   UpdateUseCase,
 } from '../../common';
 import type {
@@ -25,6 +26,7 @@ import type {
   NoteItemFilterCriteria,
   ShoppingItemFilterCriteria,
 } from '../types/item.filter';
+import type { ShoppingListSummary } from '../value-objects';
 
 // Repository base com operações comuns
 type BaseItemRepository<T extends Item> = ReadUseCase<T> &
@@ -38,19 +40,22 @@ type BaseItemRepository<T extends Item> = ReadUseCase<T> &
 export type NoteItemRepository = BaseItemRepository<NoteItem> &
   CreateUseCase<NoteItem, CreateNoteItemInput> &
   UpdateUseCase<NoteItem, UpdateNoteItemInput> &
-  FilterUseCase<NoteItem, NoteItemFilterCriteria, ItemSortField> &
+  SearchUseCase<NoteItem, NoteItemFilterCriteria, ItemSortField> &
   GroupUseCase<NoteItem, ItemGroupCriteria>;
 
 // Repository específico para ShoppingItem
 export type ShoppingItemRepository = BaseItemRepository<ShoppingItem> &
   CreateUseCase<ShoppingItem, CreateShoppingItemInput> &
   UpdateUseCase<ShoppingItem, UpdateShoppingItemInput> &
-  FilterUseCase<ShoppingItem, ShoppingItemFilterCriteria, ItemSortField> &
-  GroupUseCase<ShoppingItem, ItemGroupCriteria>;
+  SearchUseCase<ShoppingItem, ShoppingItemFilterCriteria, ItemSortField> &
+  GroupUseCase<ShoppingItem, ItemGroupCriteria> &
+  UpdateSortOrderUseCase & {
+    getSummary(listId: string): Promise<ShoppingListSummary>;
+  };
 
 // Repository específico para InterestItem
 export type InterestItemRepository = BaseItemRepository<InterestItem> &
   CreateUseCase<InterestItem, CreateInterestItemInput> &
   UpdateUseCase<InterestItem, UpdateInterestItemInput> &
-  FilterUseCase<InterestItem, InterestItemFilterCriteria, ItemSortField> &
+  SearchUseCase<InterestItem, InterestItemFilterCriteria, ItemSortField> &
   GroupUseCase<InterestItem, ItemGroupCriteria>;

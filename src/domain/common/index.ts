@@ -1,17 +1,23 @@
 export type {
   CreateUseCase,
   DeleteUseCase,
-  FilterUseCase,
+  GetAllUseCase,
+  GetByIdUseCase,
   GroupUseCase,
   ReadUseCase,
+  SearchUseCase,
+  UpdateSortOrderUseCase,
   UpdateUseCase,
 } from './ports';
 export type {
   BaseFilterCriteria,
   BaseSortField,
   DateRange,
-  FilterResult,
   GroupResult,
+  LayoutConfig,
+  PaginatedResult,
+  PaginationParams,
   SortCriteria,
   SortDirection,
+  SortOrderUpdate,
 } from './types';

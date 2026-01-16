@@ -3,13 +3,28 @@ export type DateRange = {
   to: Date;
 };
 
-export type FilterResult<T> = {
+export type PaginationParams = {
+  offset: number;
+  limit: number;
+};
+
+export type PaginatedResult<T> = {
   items: T[];
   totalCount: number;
+  pagination: {
+    offset: number;
+    limit: number;
+    hasMore: boolean;
+  };
 };
 
 export type GroupResult<T, K extends string> = {
   [key in K]?: T[];
+};
+
+export type SortOrderUpdate = {
+  id: string;
+  sortOrder: number;
 };
 
 export type SortDirection = 'asc' | 'desc';
@@ -26,4 +41,10 @@ export type SortCriteria<SortField extends BaseSortField | string> = {
 // Critério de filtro base - deve ser estendido por cada domínio
 export type BaseFilterCriteria = {
   query?: string;
+};
+
+// Configuração de layout reutilizável
+export type LayoutConfig<GroupCriteria extends string = string> = {
+  groupBy: GroupCriteria;
+  sortDirection: SortDirection;
 };

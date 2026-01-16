@@ -5,18 +5,31 @@ export type {
   CreateUseCase,
   DateRange,
   DeleteUseCase,
-  FilterResult,
-  FilterUseCase,
+  GetAllUseCase,
+  GetByIdUseCase,
   GroupResult,
   GroupUseCase,
+  LayoutConfig,
+  PaginatedResult,
+  PaginationParams,
   ReadUseCase,
+  SearchUseCase,
   SortCriteria,
   SortDirection,
+  SortOrderUpdate,
+  UpdateSortOrderUseCase,
   UpdateUseCase,
 } from './common';
 
 // Tag domain
-export type { CreateTagInput, Tag, TagRepository, UpdateTagInput } from './tag';
+export type {
+  CreateTagInput,
+  Tag,
+  TagFilterCriteria,
+  TagRepository,
+  TagSortField,
+  UpdateTagInput,
+} from './tag';
 
 // List domain
 export type {
@@ -38,12 +51,16 @@ export type {
 // Item domain
 export type {
   BookMetadata,
+  BookProviderRepository,
+  BookSearchResult,
   CreateInterestItemInput,
   CreateItemInput,
   CreateNoteItemInput,
   CreateShoppingItemInput,
   ExternalMetadata,
   GameMetadata,
+  GameProviderRepository,
+  GameSearchResult,
   InterestItem,
   InterestItemFilterCriteria,
   InterestItemRepository,
@@ -54,12 +71,15 @@ export type {
   ItemType,
   MetadataCategory,
   MovieMetadata,
+  MovieProviderRepository,
+  MovieSearchResult,
   NoteItem,
   NoteItemFilterCriteria,
   NoteItemRepository,
   ShoppingItem,
   ShoppingItemFilterCriteria,
   ShoppingItemRepository,
+  ShoppingListSummary,
   UpdateInterestItemInput,
   UpdateItemInput,
   UpdateNoteItemInput,
@@ -67,4 +87,16 @@ export type {
 } from './item';
 
 // User domain
-export type { CreateUserInput, UpdateUserInput, User, UserRepository } from './user';
+export type {
+  CreateUserInput,
+  CreateUserPreferencesInput,
+  LayoutConfigs,
+  SpecialLayoutKey,
+  Theme,
+  UpdateUserInput,
+  UpdateUserPreferencesInput,
+  User,
+  UserPreferences,
+  UserPreferencesRepository,
+  UserRepository,
+} from './user';
