@@ -25,6 +25,7 @@ export type {
   ListRepository,
   ListType,
   ListTypeConfig,
+  NotesListType,
   ShoppingListType,
   UpdateListInput,
 } from './list';
@@ -59,3 +60,6 @@ export type {
   UpdateNoteItemInput,
   UpdateShoppingItemInput,
 } from './item';
+
+// User domain
+export type { User, CreateUserInput, UpdateUserInput, UserRepository } from './user';
