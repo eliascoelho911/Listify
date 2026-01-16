@@ -1,7 +1,7 @@
 export type ListCategory = 'notes' | 'interest' | 'shopping';
 
 export type NotesListType = 'notes';
-export type InterestListType = 'movies' | 'books' | 'games' | 'custom';
+export type InterestListType = 'movies' | 'books' | 'games';
 export type ShoppingListType = 'shopping';
 
 export type ListType = NotesListType | InterestListType | ShoppingListType;
