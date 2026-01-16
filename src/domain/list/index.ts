@@ -1,13 +1,13 @@
 export type {
-  ListCategory,
-  NotesListType,
+  CreateListInput,
   InterestListType,
-  ShoppingListType,
+  List,
+  ListCategory,
   ListType,
   ListTypeConfig,
-  List,
-  CreateListInput,
+  NotesListType,
+  ShoppingListType,
   UpdateListInput,
 } from './entities/list.entity';
-export type { ListFilterCriteria, ListGroupCriteria } from './types/list.filter';
 export type { ListRepository } from './ports/list.repository';
+export type { ListFilterCriteria, ListGroupCriteria, ListSortField } from './types/list.filter';

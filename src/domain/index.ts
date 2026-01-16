@@ -1,5 +1,7 @@
 // Common domain types and interfaces
 export type {
+  BaseFilterCriteria,
+  BaseSortField,
   CreateUseCase,
   DateRange,
   DeleteUseCase,
@@ -8,6 +10,8 @@ export type {
   GroupResult,
   GroupUseCase,
   ReadUseCase,
+  SortCriteria,
+  SortDirection,
   UpdateUseCase,
 } from './common';
 
@@ -23,6 +27,7 @@ export type {
   ListFilterCriteria,
   ListGroupCriteria,
   ListRepository,
+  ListSortField,
   ListType,
   ListTypeConfig,
   NotesListType,
@@ -62,4 +67,4 @@ export type {
 } from './item';
 
 // User domain
-export type { User, CreateUserInput, UpdateUserInput, UserRepository } from './user';
+export type { CreateUserInput, UpdateUserInput, User, UserRepository } from './user';

@@ -1,12 +1,13 @@
-import type { DateRange } from '../../common';
+import type { BaseFilterCriteria, BaseSortField } from '@domain/common';
+
 import type { ListCategory, ListType } from '../entities/list.entity';
 
-export type ListFilterCriteria = {
-  query?: string;
+export type ListFilterCriteria = BaseFilterCriteria & {
   category?: ListCategory;
   listType?: ListType;
-  createdDateRange?: DateRange;
-  updatedDateRange?: DateRange;
 };
 
 export type ListGroupCriteria = 'category' | 'listType';
+
+// Ordenação
+export type ListSortField = BaseSortField | 'name';

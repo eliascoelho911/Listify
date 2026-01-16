@@ -73,9 +73,15 @@ export type CreateItemInput =
   | CreateInterestItemInput;
 
 // Update input types
-export type UpdateNoteItemInput = Partial<Omit<NoteItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>>;
-export type UpdateShoppingItemInput = Partial<Omit<ShoppingItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>>;
-export type UpdateInterestItemInput = Partial<Omit<InterestItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>>;
+export type UpdateNoteItemInput = Partial<
+  Omit<NoteItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+>;
+export type UpdateShoppingItemInput = Partial<
+  Omit<ShoppingItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+>;
+export type UpdateInterestItemInput = Partial<
+  Omit<InterestItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+>;
 
 export type UpdateItemInput =
   | UpdateNoteItemInput

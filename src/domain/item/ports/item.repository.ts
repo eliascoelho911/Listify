@@ -1,28 +1,29 @@
 import type {
   CreateUseCase,
-  ReadUseCase,
-  UpdateUseCase,
   DeleteUseCase,
   FilterUseCase,
   GroupUseCase,
+  ReadUseCase,
+  UpdateUseCase,
 } from '../../common';
 import type {
+  CreateInterestItemInput,
+  CreateNoteItemInput,
+  CreateShoppingItemInput,
+  InterestItem,
   Item,
   NoteItem,
   ShoppingItem,
-  InterestItem,
-  CreateNoteItemInput,
-  CreateShoppingItemInput,
-  CreateInterestItemInput,
+  UpdateInterestItemInput,
   UpdateNoteItemInput,
   UpdateShoppingItemInput,
-  UpdateInterestItemInput,
 } from '../entities/item.entity';
 import type {
-  NoteItemFilterCriteria,
-  ShoppingItemFilterCriteria,
   InterestItemFilterCriteria,
   ItemGroupCriteria,
+  ItemSortField,
+  NoteItemFilterCriteria,
+  ShoppingItemFilterCriteria,
 } from '../types/item.filter';
 
 // Repository base com operações comuns
@@ -37,19 +38,19 @@ type BaseItemRepository<T extends Item> = ReadUseCase<T> &
 export type NoteItemRepository = BaseItemRepository<NoteItem> &
   CreateUseCase<NoteItem, CreateNoteItemInput> &
   UpdateUseCase<NoteItem, UpdateNoteItemInput> &
-  FilterUseCase<NoteItem, NoteItemFilterCriteria> &
+  FilterUseCase<NoteItem, NoteItemFilterCriteria, ItemSortField> &
   GroupUseCase<NoteItem, ItemGroupCriteria>;
 
 // Repository específico para ShoppingItem
 export type ShoppingItemRepository = BaseItemRepository<ShoppingItem> &
   CreateUseCase<ShoppingItem, CreateShoppingItemInput> &
   UpdateUseCase<ShoppingItem, UpdateShoppingItemInput> &
-  FilterUseCase<ShoppingItem, ShoppingItemFilterCriteria> &
+  FilterUseCase<ShoppingItem, ShoppingItemFilterCriteria, ItemSortField> &
   GroupUseCase<ShoppingItem, ItemGroupCriteria>;
 
 // Repository específico para InterestItem
 export type InterestItemRepository = BaseItemRepository<InterestItem> &
   CreateUseCase<InterestItem, CreateInterestItemInput> &
   UpdateUseCase<InterestItem, UpdateInterestItemInput> &
-  FilterUseCase<InterestItem, InterestItemFilterCriteria> &
+  FilterUseCase<InterestItem, InterestItemFilterCriteria, ItemSortField> &
   GroupUseCase<InterestItem, ItemGroupCriteria>;

@@ -1,9 +1,17 @@
-export type { DateRange, FilterResult, GroupResult } from './types';
 export type {
   CreateUseCase,
-  ReadUseCase,
-  UpdateUseCase,
   DeleteUseCase,
   FilterUseCase,
   GroupUseCase,
+  ReadUseCase,
+  UpdateUseCase,
 } from './ports';
+export type {
+  BaseFilterCriteria,
+  BaseSortField,
+  DateRange,
+  FilterResult,
+  GroupResult,
+  SortCriteria,
+  SortDirection,
+} from './types';

@@ -1,10 +1,11 @@
-import type { ItemType } from '../entities/item.entity';
+import { BaseFilterCriteria, BaseSortField, DateRange } from '@domain/common';
 
-// Filtros base
-type BaseItemFilterCriteria = {
-  query?: string;
+// Filtros base para Item
+type BaseItemFilterCriteria = BaseFilterCriteria & {
   listId?: string;
   tagIds?: string[];
+  createdDateRange?: DateRange;
+  updatedDateRange?: DateRange;
 };
 
 // Filtros por tipo
@@ -31,4 +32,4 @@ export type ItemFilterCriteria =
 export type ItemGroupCriteria = 'listId' | 'tagId' | 'isChecked';
 
 // Ordenação
-export type ItemSortField = 'createdAt' | 'updatedAt' | 'title';
+export type ItemSortField = BaseSortField | 'title';

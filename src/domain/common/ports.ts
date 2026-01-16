@@ -1,4 +1,10 @@
-import type { FilterResult, GroupResult } from './types';
+import type {
+  BaseFilterCriteria,
+  BaseSortField,
+  FilterResult,
+  GroupResult,
+  SortCriteria,
+} from './types';
 
 export interface CreateUseCase<T, Input> {
   create(input: Input): Promise<T>;
@@ -17,8 +23,12 @@ export interface DeleteUseCase {
   delete(id: string): Promise<boolean>;
 }
 
-export interface FilterUseCase<T, Criteria> {
-  filter(criteria: Criteria): Promise<FilterResult<T>>;
+export interface FilterUseCase<
+  T,
+  Criteria extends BaseFilterCriteria,
+  SortField extends BaseSortField | string = BaseSortField,
+> {
+  filter(criteria: Criteria, sort?: SortCriteria<SortField>): Promise<FilterResult<T>>;
 }
 
 export interface GroupUseCase<T, Criteria extends string> {

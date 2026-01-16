@@ -7,7 +7,7 @@ import type {
   UpdateUseCase,
 } from '../../common';
 import type { CreateListInput, List, UpdateListInput } from '../entities/list.entity';
-import type { ListFilterCriteria, ListGroupCriteria } from '../types/list.filter';
+import type { ListFilterCriteria, ListGroupCriteria, ListSortField } from '../types/list.filter';
 
 export interface ListRepository
   extends
@@ -15,5 +15,5 @@ export interface ListRepository
     ReadUseCase<List>,
     UpdateUseCase<List, UpdateListInput>,
     DeleteUseCase,
-    FilterUseCase<List, ListFilterCriteria>,
+    FilterUseCase<List, ListFilterCriteria, ListSortField>,
     GroupUseCase<List, ListGroupCriteria> {}
