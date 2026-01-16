@@ -29,7 +29,6 @@ export type MetadataCategory = ExternalMetadata['category'];
 type BaseItem = {
   id: string;
   listId?: string;
-  parentId?: string;
   title: string;
   tagIds: string[];
   isChecked?: boolean;
