@@ -168,7 +168,7 @@ Storybook config: `.rnstorybook/` (React Native specific, not `.storybook/`)
 - Specialized agent: `.claude/agents/design-system-developer.md` (use proactively!)
 - Quick start: `specs/001-design-system/quickstart.md`
 
-**Design philosophy**: Playful, Modern, Friendly - Fira Sans typography, Cyan theme, Gray base, Large radius, Compact spacing
+**Design philosophy**: Modern, Friendly - Fira Sans typography, Cyan theme, Gray base, Large radius, Compact spacing
 
 ### Exceptions
 - Exception messages must be in English

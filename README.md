@@ -113,17 +113,6 @@ npm run storybook   # Visualizar componentes no Storybook
 app → presentation → domain ← data → infra
 ```
 
-### Reactive Clean Architecture
-
-Para features com dados reativos (useLiveQuery + Zustand + UseCase Hooks), seguimos um padrão documentado em [`docs/REACTIVE_CLEAN_ARCHITECTURE.md`](./docs/REACTIVE_CLEAN_ARCHITECTURE.md).
-
-**Componentes do padrão:**
-- `useFeatureLive()` - Dados reativos via Drizzle useLiveQuery
-- `useFeatureRepository()` - DI do repository
-- `use*UseCase()` hooks - Encapsulam use cases com DI
-- `featureUIStore` - Estado de UI (Zustand vanilla)
-- `useFeatureVM()` - ViewModel que orquestra tudo
-
 ## Internacionalização
 
 - **i18next** + react-i18next
@@ -143,28 +132,6 @@ Para features com dados reativos (useLiveQuery + Zustand + UseCase Hooks), segui
 @legacy-design-system/* → src/legacy-design-system/*
 @tests/*             → tests/*
 ```
-
-## Features
-
-- ✅ CRUD de listas de compras
-- ✅ Items com nome, quantidade, unidade, preço
-- ✅ Categorias customizadas
-- ✅ Cálculo automático de totais
-- ✅ Drag & drop para reordenar
-- ✅ Dark/Light themes
-- ✅ Persistência local com SQLite
-- ✅ Internacionalização (pt-BR, en)
-- ✅ Design System completo
-
-## Migração Design System
-
-O projeto está em **fase de coexistência** entre DS legado (`@legacy-design-system/*`) e novo DS (`@design-system/*`):
-
-- **Novos componentes**: Use `@design-system`
-- **Componentes existentes**: Podem permanecer com `@legacy-design-system` temporariamente
-- **Migração**: Gradual, componente por componente
-
-Ver [Coexistence Guide](./src/design-system/README.md#coexistência-com-design-system-legado) para detalhes.
 
 ## Contribuindo
 
