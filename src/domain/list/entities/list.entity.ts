@@ -1,11 +1,13 @@
-export type ListCategory = 'interest' | 'shopping';
+export type ListCategory = 'notes' | 'interest' | 'shopping';
 
+export type NotesListType = 'notes';
 export type InterestListType = 'movies' | 'books' | 'games' | 'custom';
 export type ShoppingListType = 'shopping';
 
-export type ListType = InterestListType | ShoppingListType;
+export type ListType = NotesListType | InterestListType | ShoppingListType;
 
 export type ListTypeConfig =
+  | { category: 'notes'; listType: NotesListType }
   | { category: 'interest'; listType: InterestListType }
   | { category: 'shopping'; listType: ShoppingListType };
 
