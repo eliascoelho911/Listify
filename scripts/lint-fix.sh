@@ -9,7 +9,7 @@ if [ $# -eq 0 ]; then
   # Sem argumentos: executa no projeto inteiro
   npx prettier -w app src tests --log-level=warn
   npx eslint "app/**/*.{js,ts,tsx}" "src/**/*.{js,ts,tsx}" "tests/**/*.{js,ts,tsx}" \
-    --report-unused-disable-directives --max-warnings=0 --fix --quiet
+    --report-unused-disable-directives --fix 
 else
   # Com argumentos: filtra apenas arquivos .js, .ts, .tsx para ESLint
   JS_FILES=""
@@ -26,6 +26,6 @@ else
   fi
 
   if [ -n "$JS_FILES" ]; then
-    npx eslint $JS_FILES --report-unused-disable-directives --max-warnings=0 --fix --quiet
+    npx eslint $JS_FILES --report-unused-disable-directives --fix
   fi
 fi

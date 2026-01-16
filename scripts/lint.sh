@@ -8,7 +8,7 @@ set -e
 if [ $# -eq 0 ]; then
   # Sem argumentos: executa no projeto inteiro
   npx eslint "app/**/*.{js,ts,tsx}" "src/**/*.{js,ts,tsx}" "tests/**/*.{js,ts,tsx}" \
-    --report-unused-disable-directives --max-warnings=0 --quiet
+    --report-unused-disable-directives 
 else
   # Com argumentos: filtra apenas arquivos .js, .ts, .tsx
   FILES=""
@@ -19,6 +19,6 @@ else
   done
 
   if [ -n "$FILES" ]; then
-    npx eslint $FILES --report-unused-disable-directives --max-warnings=0 --quiet
+    npx eslint $FILES --report-unused-disable-directives
   fi
 fi
