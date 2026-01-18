@@ -2,8 +2,8 @@
  * Fab Atom Tests
  */
 
-import { render, fireEvent } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 import { Plus } from 'lucide-react-native';
 
 import { Fab } from '@design-system/atoms/Fab/Fab';
@@ -16,11 +16,7 @@ const renderWithTheme = (component: React.ReactElement) => {
 describe('Fab Atom', () => {
   it('should render with default medium size', () => {
     const { getByRole } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={() => {}}
-        accessibilityLabel="Add item"
-      />
+      <Fab icon={Plus} onPress={() => {}} accessibilityLabel="Add item" />,
     );
 
     expect(getByRole('button')).toBeTruthy();
@@ -28,12 +24,7 @@ describe('Fab Atom', () => {
 
   it('should render with small size', () => {
     const { getByRole } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        size="small"
-        onPress={() => {}}
-        accessibilityLabel="Add item"
-      />
+      <Fab icon={Plus} size="small" onPress={() => {}} accessibilityLabel="Add item" />,
     );
 
     expect(getByRole('button')).toBeTruthy();
@@ -42,11 +33,7 @@ describe('Fab Atom', () => {
   it('should call onPress when pressed', () => {
     const onPressMock = jest.fn();
     const { getByRole } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={onPressMock}
-        accessibilityLabel="Add item"
-      />
+      <Fab icon={Plus} onPress={onPressMock} accessibilityLabel="Add item" />,
     );
 
     fireEvent.press(getByRole('button'));
@@ -56,12 +43,7 @@ describe('Fab Atom', () => {
   it('should not call onPress when disabled', () => {
     const onPressMock = jest.fn();
     const { getByRole } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={onPressMock}
-        accessibilityLabel="Add item"
-        disabled
-      />
+      <Fab icon={Plus} onPress={onPressMock} accessibilityLabel="Add item" disabled />,
     );
 
     fireEvent.press(getByRole('button'));
@@ -70,11 +52,7 @@ describe('Fab Atom', () => {
 
   it('should have correct accessibility attributes', () => {
     const { getByRole, getByLabelText } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={() => {}}
-        accessibilityLabel="Add new item"
-      />
+      <Fab icon={Plus} onPress={() => {}} accessibilityLabel="Add new item" />,
     );
 
     const button = getByRole('button');
@@ -84,12 +62,7 @@ describe('Fab Atom', () => {
 
   it('should have disabled state in accessibility', () => {
     const { getByRole } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={() => {}}
-        accessibilityLabel="Add item"
-        disabled
-      />
+      <Fab icon={Plus} onPress={() => {}} accessibilityLabel="Add item" disabled />,
     );
 
     const button = getByRole('button');
@@ -98,12 +71,7 @@ describe('Fab Atom', () => {
 
   it('should render with testID when provided', () => {
     const { getByTestId } = renderWithTheme(
-      <Fab
-        icon={Plus}
-        onPress={() => {}}
-        accessibilityLabel="Add item"
-        testID="fab-test"
-      />
+      <Fab icon={Plus} onPress={() => {}} accessibilityLabel="Add item" testID="fab-test" />,
     );
 
     expect(getByTestId('fab-test')).toBeTruthy();

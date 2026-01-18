@@ -13,11 +13,7 @@ import { useTheme } from '../../theme';
 import { createBottombarStyles } from './Bottombar.styles';
 import type { BottombarProps } from './Bottombar.types';
 
-export function Bottombar({
-  items,
-  activeIndex = 0,
-  ...viewProps
-}: BottombarProps): ReactElement {
+export function Bottombar({ items, activeIndex = 0, ...viewProps }: BottombarProps): ReactElement {
   const { theme } = useTheme();
   const styles = createBottombarStyles(theme);
 

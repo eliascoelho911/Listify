@@ -2,9 +2,9 @@
  * Bottombar Organism Tests
  */
 
-import { render, fireEvent } from '@testing-library/react-native';
 import React from 'react';
-import { Home, ShoppingBag, Clock, User } from 'lucide-react-native';
+import { fireEvent, render } from '@testing-library/react-native';
+import { Clock, Home, ShoppingBag, User } from 'lucide-react-native';
 
 import { Bottombar } from '@design-system/organisms/Bottombar/Bottombar';
 import type { BottombarItem } from '@design-system/organisms/Bottombar/Bottombar.types';
@@ -67,18 +67,14 @@ describe('Bottombar Organism', () => {
   });
 
   it('should render with custom active index', () => {
-    const { getByLabelText } = renderWithTheme(
-      <Bottombar items={mockItems} activeIndex={2} />
-    );
+    const { getByLabelText } = renderWithTheme(<Bottombar items={mockItems} activeIndex={2} />);
 
     const historyButton = getByLabelText('History');
     expect(historyButton).toBeTruthy();
   });
 
   it('should have correct accessibility properties', () => {
-    const { getByLabelText } = renderWithTheme(
-      <Bottombar items={mockItems} activeIndex={1} />
-    );
+    const { getByLabelText } = renderWithTheme(<Bottombar items={mockItems} activeIndex={1} />);
 
     const shoppingButton = getByLabelText('Shopping Lists');
     expect(shoppingButton.props.accessibilityRole).toBe('button');
