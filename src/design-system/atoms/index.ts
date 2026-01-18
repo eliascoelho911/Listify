@@ -54,3 +54,7 @@ export type { DateBadgeProps, DateBadgeVariant } from './DateBadge/DateBadge.typ
 // Logo
 export { Logo } from './Logo/Logo';
 export type { LogoProps, LogoSize } from './Logo/Logo.types';
+
+// Fab
+export { Fab } from './Fab/Fab';
+export type { FabProps } from './Fab/Fab.types';
