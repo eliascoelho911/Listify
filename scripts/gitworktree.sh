@@ -351,11 +351,10 @@ else
     print_step "📂 Fase 3: Criando novo worktree"
 
     REPO_ROOT=$(git rev-parse --show-toplevel)
-    PARENT_DIR=$(dirname "$REPO_ROOT")
 
     # Substituir / por - para o path do worktree
     WORKTREE_DIR_NAME=$(echo "$BRANCH_NAME" | tr '/' '-')
-    WORKTREE_PATH=$(realpath -m "$PARENT_DIR/.worktrees/$WORKTREE_DIR_NAME")
+    WORKTREE_PATH=$(realpath -m "$REPO_ROOT/.worktrees/$WORKTREE_DIR_NAME")
 
     if [ -d "$WORKTREE_PATH" ]; then
         print_error "path já existe: $WORKTREE_PATH"
