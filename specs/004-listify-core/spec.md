@@ -34,7 +34,11 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 
 **Inclui**:
 
-- Tela Inbox com listagem de todos os itens recentes (scroll infinito paginado)
+- Tela Inbox com listagem de todos os itens recentes de todas as categorias (scroll infinito paginado)
+- Tela Buscar com campo auto-focado, filtros visíveis e histórico de buscas recentes
+- Tela Notas com itens de listas categoria "Notas" e configuração de layout (agrupamento e ordenação)
+- Tela Listas com listas ativas agrupadas por TIPO (categoria) com dropdown expansível
+- Botão central Adicionar que abre modal/sheet com campo de entrada inteligente e opções de tipo
 - Campo de entrada inteligente com parsing de texto (@lista, quantidade, valor)
 - Sistema de listas com três categorias: Notas, Compras e Interesse
 - Fluxo de criação, edição e exclusão de listas customizadas
@@ -42,11 +46,9 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 - Listas de Notas com suporte a markdown básico e drag and drop para reordenação
 - Listas de Compras com quantidade, valor, total calculado, marcação de itens e drag and drop
 - Listas de Interesse (Filmes, Livros, Games) com integração a provedores externos (TMDb, Google Books, IGDB)
-- Busca global com filtros por tipo e período
-- Sidebar com navegação e perfil do usuário
 - Tela de detalhes de notas com visualização e edição
-- Configurações de tema (claro, escuro, automático) e cores principais
-- Bottombar fixa com navegação entre Inbox, Listas e Notas
+- Configurações de tema (claro, escuro, automático) e cores principais acessíveis via ícone de Perfil na Navbar
+- Bottombar fixa com navegação entre Inbox, Buscar, Notas, Listas e botão central Adicionar
 
 **Fora de escopo (Backlog / Próximas versões)**:
 
@@ -99,13 +101,13 @@ O usuário abre o app e vê todos os seus itens recentes no Inbox. Pode agrupar 
 1. **Given** existem 50 itens no Inbox, **When** o usuário faz scroll até o final, **Then** mais itens são carregados automaticamente (scroll infinito)
 2. **Given** o usuário seleciona agrupar por "Lista", **When** a lista atualiza, **Then** os itens são exibidos agrupados por suas listas com headers separadores (itens sem lista aparecem em grupo "Sem lista")
 3. **Given** o usuário alterna ordenação para "Descendente", **When** está agrupando por data de criação, **Then** os itens mais recentes aparecem primeiro
-4. **Given** o Inbox está carregado, **When** o usuário toca no ícone de busca na navbar, **Then** navega para a tela de busca global
+4. **Given** o Inbox exibe itens de todas as categorias, **When** o usuário visualiza a lista, **Then** vê itens de Notas, Compras e Interesse misturados ordenados por data
 
 ---
 
 ### User Story 1.3 - Navegação pela BottomBar (Priority: P1)
 
-O usuário navega entre as principais seções do app (Inbox, Notas, Listas) através da barra inferior fixa.
+O usuário navega entre as principais seções do app (Inbox, Buscar, Notas, Listas) através da barra inferior fixa, com botão central para adicionar itens rapidamente.
 
 **Por que esta prioridade**: A navegação principal é essencial para a usabilidade básica do app.
 
@@ -113,29 +115,34 @@ O usuário navega entre as principais seções do app (Inbox, Notas, Listas) atr
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário está no Inbox, **When** toca na aba "Notas" na bottombar, **Then** navega para a tela de listagem de notas
-2. **Given** o usuário está na tela de Notas, **When** toca na aba "Listas" na bottombar, **Then** navega para a tela de listagem de listas
-3. **Given** o usuário está na tela de Listas, **When** toca na aba "Inbox" na bottombar, **Then** retorna para o Inbox
-4. **Given** o usuário está em qualquer tela, **When** observa a bottombar, **Then** a aba atual está destacada visualmente
-5. **Given** o usuário navega entre abas, **When** retorna a uma aba visitada anteriormente, **Then** o estado da tela é preservado (posição do scroll, filtros aplicados)
+1. **Given** o usuário está no Inbox, **When** toca na aba "Buscar" na bottombar, **Then** navega para a tela de busca com campo auto-focado
+2. **Given** o usuário está na tela de Buscar, **When** toca na aba "Notas" na bottombar, **Then** navega para a tela de notas com layout configurável
+3. **Given** o usuário está na tela de Notas, **When** toca na aba "Listas" na bottombar, **Then** navega para a tela de listas agrupadas por tipo
+4. **Given** o usuário está na tela de Listas, **When** toca na aba "Inbox" na bottombar, **Then** retorna para o Inbox
+5. **Given** o usuário está em qualquer tela, **When** observa a bottombar, **Then** a aba atual está destacada visualmente
+6. **Given** o usuário navega entre abas, **When** retorna a uma aba visitada anteriormente, **Then** o estado da tela é preservado (posição do scroll, filtros aplicados)
+7. **Given** o usuário está em qualquer tela, **When** toca no botão central "Adicionar", **Then** abre modal/sheet com campo de entrada inteligente e opções de tipo de item
 
 ---
 
-### User Story 1.4 - Busca Global com Filtros (Priority: P2)
+### User Story 1.4 - Tela de Busca (Priority: P1)
 
-Pedro lembra que anotou uma ideia há meses, mas não lembra onde. Ele usa a busca global, filtra por período e lista, e encontra a nota em segundos.
+Pedro lembra que anotou uma ideia há meses, mas não lembra onde. Ele toca na aba "Buscar" na bottombar, vê seu histórico de buscas recentes, digita no campo auto-focado, aplica filtros visíveis e encontra a nota em segundos.
 
-**Por que esta prioridade**: Busca é essencial para recuperar informações, mas o app pode ser usado sem ela inicialmente.
+**Por que esta prioridade**: Busca agora é uma aba principal da navegação, essencial para recuperação rápida de informações.
 
-**Teste Independente**: Pode ser testado criando itens diversos, usando busca com diferentes filtros, verificando resultados corretos.
+**Teste Independente**: Pode ser testado navegando para a aba Buscar, verificando auto-foco, histórico e filtros visíveis, executando busca com filtros.
 
 **Cenários de Aceite**:
 
-1. **Given** existem 100 itens no app, **When** o usuário busca por "compras", **Then** apenas itens contendo "compras" no título ou descrição são exibidos
-2. **Given** o usuário aplica filtro "última semana", **When** a busca executa, **Then** apenas itens criados nos últimos 7 dias aparecem
-3. **Given** o usuário seleciona filtro por lista "Mercado", **When** a busca executa, **Then** apenas itens dessa lista são exibidos
-4. **Given** o usuário combina múltiplos filtros (tipo + período + lista), **When** a busca executa, **Then** apenas itens que atendem TODOS os critérios aparecem
-5. **Given** resultados são exibidos, **When** o usuário toca em um resultado, **Then** navega para a tela de detalhes do item
+1. **Given** o usuário toca na aba "Buscar" na bottombar, **When** a tela abre, **Then** o campo de busca está auto-focado e teclado visível
+2. **Given** a tela de busca está aberta, **When** o usuário visualiza a tela, **Then** vê filtros visíveis (tipo, período, lista) e histórico de buscas recentes
+3. **Given** existem buscas anteriores, **When** o usuário toca em uma busca do histórico, **Then** a busca é executada automaticamente com os mesmos termos
+4. **Given** existem 100 itens no app, **When** o usuário busca por "compras", **Then** apenas itens contendo "compras" no título ou descrição são exibidos
+5. **Given** o usuário aplica filtro "última semana", **When** a busca executa, **Then** apenas itens criados nos últimos 7 dias aparecem
+6. **Given** o usuário seleciona filtro por lista "Mercado", **When** a busca executa, **Then** apenas itens dessa lista são exibidos
+7. **Given** o usuário combina múltiplos filtros (tipo + período + lista), **When** a busca executa, **Then** apenas itens que atendem TODOS os critérios aparecem
+8. **Given** resultados são exibidos, **When** o usuário toca em um resultado, **Then** navega para a tela de detalhes do item
 
 ---
 
@@ -305,25 +312,60 @@ O usuário quer organizar os itens dentro de uma lista em seções customizadas 
 
 ## Escopo 7: Navegação e Configurações
 
-### User Story 7.1 - Navegação pela Sidebar (Priority: P3)
+### User Story 7.1 - Tela Notas na Bottom Bar (Priority: P1)
 
-O usuário quer acessar rapidamente diferentes seções do app através do menu lateral.
+O usuário quer visualizar todos os seus itens de notas em uma tela dedicada com opções de agrupamento e ordenação configuráveis.
 
-**Por que esta prioridade**: A sidebar é conveniência, mas a navegação principal via bottombar já atende as necessidades básicas.
+**Por que esta prioridade**: Tela Notas é uma aba principal da navegação, essencial para acesso rápido aos itens de notas.
 
-**Teste Independente**: Pode ser testado abrindo sidebar, navegando para cada seção, verificando se a tela correta é exibida.
+**Teste Independente**: Pode ser testado navegando para a aba Notas, verificando exibição de itens, alterando agrupamento e ordenação.
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário toca no ícone de menu na navbar, **When** a sidebar abre, **Then** exibe perfil do usuário (foto, nome, email) no topo
-2. **Given** a sidebar está aberta, **When** o usuário toca em "Minhas Listas", **Then** navega para a tela de listas
-3. **Given** a sidebar está aberta, **When** o usuário toca em "Minhas Notas", **Then** navega para a tela de notas
-4. **Given** a sidebar está aberta, **When** o usuário toca em "Configurações", **Then** navega para a tela de configurações
-5. **Given** o usuário desliza para a esquerda na sidebar, **When** completa o gesto, **Then** a sidebar fecha
+1. **Given** o usuário toca na aba "Notas" na bottombar, **When** a tela abre, **Then** exibe apenas itens de listas da categoria "Notas"
+2. **Given** a tela Notas está aberta, **When** o usuário toca no controle de agrupamento, **Then** pode escolher agrupar por: lista, data de criação ou data de atualização
+3. **Given** a tela Notas está aberta, **When** o usuário toca no controle de ordenação, **Then** pode escolher ordem ascendente ou descendente
+4. **Given** o usuário configura agrupamento e ordenação, **When** navega para outra aba e retorna, **Then** as configurações são preservadas
+5. **Given** a tela Notas está aberta, **When** o usuário toca em um item, **Then** navega para a tela de detalhes da nota
 
 ---
 
-### User Story 7.2 - Configuração de Tema (Priority: P3)
+### User Story 7.2 - Tela Listas na Bottom Bar (Priority: P1)
+
+O usuário quer visualizar todas as suas listas organizadas por tipo (categoria) com dropdowns expansíveis.
+
+**Por que esta prioridade**: Tela Listas é uma aba principal da navegação, essencial para gerenciamento de listas.
+
+**Teste Independente**: Pode ser testado navegando para a aba Listas, verificando agrupamento por tipo, expandindo/colapsando dropdowns.
+
+**Cenários de Aceite**:
+
+1. **Given** o usuário toca na aba "Listas" na bottombar, **When** a tela abre, **Then** exibe listas agrupadas por tipo: Notas, Compras e Interesse
+2. **Given** a tela Listas está aberta, **When** o usuário visualiza um grupo, **Then** vê dropdown expansível com nome do tipo e contagem de listas
+3. **Given** um dropdown está colapsado, **When** o usuário toca nele, **Then** expande e mostra as listas daquele tipo
+4. **Given** um dropdown está expandido, **When** o usuário toca nele, **Then** colapsa e oculta as listas
+5. **Given** a tela Listas está aberta, **When** o usuário toca em uma lista específica, **Then** navega para a tela de conteúdo da lista
+6. **Given** a tela Listas está aberta, **When** o usuário toca no botão "Nova Lista", **Then** abre formulário de criação de lista
+
+---
+
+### User Story 7.3 - Acesso às Configurações via Perfil (Priority: P2)
+
+O usuário quer acessar as configurações do app através do ícone de perfil na navbar.
+
+**Por que esta prioridade**: Acesso rápido às configurações é importante para personalização do app.
+
+**Teste Independente**: Pode ser testado tocando no ícone de perfil na navbar e verificando se a tela de configurações é exibida.
+
+**Cenários de Aceite**:
+
+1. **Given** o usuário está em qualquer tela com navbar visível, **When** toca no ícone de perfil (esquerda da navbar), **Then** navega para a tela de configurações
+2. **Given** o usuário está na tela de configurações, **When** observa o topo da tela, **Then** vê informações do perfil (foto, nome, email)
+3. **Given** o usuário está na tela de configurações, **When** toca no botão voltar, **Then** retorna para a tela anterior
+
+---
+
+### User Story 7.4 - Configuração de Tema (Priority: P3)
 
 O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaque.
 
@@ -403,36 +445,39 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-028**: Sistema MUST preencher automaticamente: título, descrição/sinopse, capa/poster, avaliação, e metadados específicos (elenco/autor/desenvolvedor)
 
 #### Inbox e Navegação
-- **FR-029**: Inbox MUST exibir todos os itens em scroll infinito com paginação
+- **FR-029**: Inbox MUST exibir todos os itens de todas as categorias em scroll infinito com paginação
 - **FR-030**: Sistema MUST permitir agrupar itens por: data de criação, data de atualização ou lista
 - **FR-031**: Sistema MUST permitir ordenar itens de forma ascendente ou descendente
-- **FR-032**: Bottombar MUST permitir navegação entre Inbox, Listas e Notas
+- **FR-032**: Bottombar MUST permitir navegação entre Inbox, Buscar, Notas e Listas
 - **FR-033**: Bottombar MUST destacar visualmente a aba ativa
 - **FR-034**: Sistema MUST preservar estado da tela ao navegar entre abas
-- **FR-035**: Navbar MUST fornecer acesso a perfil, busca global e sidebar
+- **FR-035**: Bottombar MUST exibir botão central "Adicionar" que abre modal/sheet com entrada inteligente
+- **FR-036**: Navbar MUST fornecer acesso a configurações via ícone de perfil (esquerda)
 
 #### Busca
-- **FR-036**: Sistema MUST buscar em título e descrição de todos os itens
-- **FR-037**: Sistema MUST filtrar resultados por tipo (notas, listas ou ambos)
-- **FR-038**: Sistema MUST filtrar resultados por período (última semana, mês, ano, todo o período)
-- **FR-039**: Sistema MUST filtrar resultados por lista selecionada
-- **FR-040**: Resultados MUST ser paginados e cada item clicável para navegação
+- **FR-037**: Tela Buscar MUST exibir campo auto-focado, filtros visíveis e histórico de buscas recentes
+- **FR-038**: Sistema MUST buscar em título e descrição de todos os itens
+- **FR-039**: Sistema MUST filtrar resultados por tipo (notas, listas ou ambos)
+- **FR-040**: Sistema MUST filtrar resultados por período (última semana, mês, ano, todo o período)
+- **FR-041**: Sistema MUST filtrar resultados por lista selecionada
+- **FR-042**: Resultados MUST ser paginados e cada item clicável para navegação
 
 #### Detalhes e Edição
-- **FR-041**: Sistema MUST exibir tela de detalhes com título, descrição e lista associada (se houver)
-- **FR-042**: Sistema MUST suportar edição inline de todos os campos
-- **FR-043**: Sistema MUST permitir alterar lista associada de um item existente
-- **FR-044**: Tela de detalhes de nota MUST renderizar markdown na visualização e suportar no editor
+- **FR-043**: Sistema MUST exibir tela de detalhes com título, descrição e lista associada (se houver)
+- **FR-044**: Sistema MUST suportar edição inline de todos os campos
+- **FR-045**: Sistema MUST permitir alterar lista associada de um item existente
+- **FR-046**: Tela de detalhes de nota MUST renderizar markdown na visualização e suportar no editor
 
 #### Configurações
-- **FR-045**: Sistema MUST permitir selecionar tema: claro, escuro ou automático
-- **FR-046**: Sistema MUST permitir personalizar cor principal de destaque
-- **FR-047**: Sistema MUST exibir informações sobre o aplicativo, termos e política de privacidade
+- **FR-047**: Sistema MUST permitir selecionar tema: claro, escuro ou automático
+- **FR-048**: Sistema MUST permitir personalizar cor principal de destaque
+- **FR-049**: Sistema MUST exibir informações sobre o aplicativo, termos e política de privacidade
+- **FR-050**: Tela de configurações MUST exibir perfil do usuário (foto, nome, email) no topo
 
-#### Sidebar
-- **FR-048**: Sidebar MUST exibir perfil do usuário (foto, nome, email)
-- **FR-049**: Sidebar MUST fornecer navegação para: Inbox, Listas, Minhas Notas
-- **FR-050**: Sidebar MUST fornecer acesso a Configurações e Ajuda
+#### Telas Notas e Listas
+- **FR-051**: Tela Notas MUST exibir apenas itens de listas da categoria "Notas"
+- **FR-052**: Tela Notas MUST permitir configurar agrupamento (group) e ordenação (sort) dos itens
+- **FR-053**: Tela Listas MUST exibir listas ativas agrupadas por TIPO (categoria) com dropdown expansível
 
 ### Entidades-chave
 
@@ -468,6 +513,14 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - Q: Seções são específicas por lista ou globais? → A: Específicas por lista - cada lista tem suas próprias seções independentes
 - Q: Itens podem existir fora de seções? → A: Sim, seções são opcionais. Itens "soltos" aparecem no TOPO da lista, antes das seções
 - Q: Quais categorias suportam seções? → A: Todas - Notas, Compras e Interesse podem ter seções customizadas
+
+### Session 2026-01-19
+
+- Q: Comportamento da tela Buscar na Bottom Bar? → A: Campo auto-focado + filtros visíveis + histórico de buscas recentes
+- Q: Comportamento do botão central Adicionar? → A: Modal/sheet com campo de entrada inteligente + opções de tipo de item
+- Q: Distinção entre telas Notas e Listas? → A: Notas = itens com layout configurável (group + sort); Listas = listas ativas agrupadas por TIPO com dropdown
+- Q: Quais itens aparecem na tela Notas? → A: Apenas itens de listas da categoria "Notas"
+- Q: Conteúdo da tela Inbox? → A: Todos os itens recentes (todas as categorias) com scroll infinito
 
 ## Premissas
 
