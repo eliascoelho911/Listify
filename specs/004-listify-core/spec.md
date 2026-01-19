@@ -20,29 +20,29 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 
 - **Usuários casuais** que precisam de um lugar confiável para guardar listas de compras e lembretes do dia-a-dia
 - **Entusiastas de mídia** que mantêm listas de filmes para assistir, livros para ler e games para jogar
-- **Pessoas organizadas** que gostam de categorizar informações com tags e encontrar tudo rapidamente
+- **Pessoas organizadas** que gostam de categorizar informações em listas e seções e encontrar tudo rapidamente
 
 ### Proposta de Valor Única
 
-1. **Entrada Inteligente em Linha Única**: O diferencial principal do Listify é permitir que o usuário digite tudo em uma única linha de texto. Ao escrever "Comprar leite 2L R$8,50 #laticínios @Supermercado", o sistema automaticamente extrai o título, quantidade, valor, tag e lista de destino.
+1. **Entrada Inteligente em Linha Única**: O diferencial principal do Listify é permitir que o usuário digite tudo em uma única linha de texto. Ao escrever "Comprar leite 2L R$8,50 @Supermercado", o sistema automaticamente extrai o título, quantidade, valor e lista de destino.
 
 2. **Listas Especializadas com Contexto Rico**: Diferente de apps genéricos de notas, o Listify entende que uma lista de compras precisa de quantidades e valores (com total calculado), enquanto uma lista de filmes se beneficia de sinopses e avaliações vindas de fontes externas.
 
-3. **Organização Flexível**: O sistema de tags permite categorização transversal (uma nota pode ter múltiplas tags), enquanto listas agrupam itens por contexto de uso.
+3. **Organização Flexível com Seções**: Cada lista pode ter seções customizadas criadas pelo usuário, permitindo agrupar itens visualmente dentro de uma mesma lista (ex: "Urgente", "Pode esperar", "Ideias futuras").
 
 ## Versão & Escopo *(obrigatório)*
 
 **Inclui**:
 
 - Tela Inbox com listagem de todos os itens recentes (scroll infinito paginado)
-- Campo de entrada inteligente com parsing de texto (#tag, @lista, quantidade, valor)
+- Campo de entrada inteligente com parsing de texto (@lista, quantidade, valor)
 - Sistema de listas com três categorias: Notas, Compras e Interesse
 - Fluxo de criação, edição e exclusão de listas customizadas
-- Sistema de tags para categorização transversal
+- Seções customizadas dentro de cada lista para organização visual de itens
 - Listas de Notas com suporte a markdown básico e drag and drop para reordenação
 - Listas de Compras com quantidade, valor, total calculado, marcação de itens e drag and drop
 - Listas de Interesse (Filmes, Livros, Games) com integração a provedores externos (TMDb, Google Books, IGDB)
-- Busca global com filtros por tipo, período e tags
+- Busca global com filtros por tipo e período
 - Sidebar com navegação e perfil do usuário
 - Tela de detalhes de notas com visualização e edição
 - Configurações de tema (claro, escuro, automático) e cores principais
@@ -70,26 +70,25 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 
 ### User Story 1.1 - Captura Rápida de Item (Priority: P1)
 
-Maria está no ônibus e lembra que precisa comprar leite. Ela abre o Listify, digita "Leite @Mercado #mercearia" e fecha o app. Em 5 segundos, o item já está na lista certa com a tag certa.
+Maria está no ônibus e lembra que precisa comprar leite. Ela abre o Listify, digita "Leite @Mercado" e fecha o app. Em 5 segundos, o item já está na lista certa.
 
 **Por que esta prioridade**: Este é o diferencial principal do Listify - a captura ultra-rápida. Sem isso, o app perde sua proposta de valor central.
 
-**Teste Independente**: Pode ser testado criando um item com sintaxe especial (#, @) e verificando se o parsing cria o item na lista correta com as tags corretas.
+**Teste Independente**: Pode ser testado criando um item com sintaxe especial (@) e verificando se o parsing cria o item na lista correta.
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário está na tela Inbox, **When** digita "Leite @Mercado #mercearia" e confirma, **Then** o item "Leite" é criado na lista "Mercado" com a tag "mercearia"
+1. **Given** o usuário está na tela Inbox, **When** digita "Leite @Mercado" e confirma, **Then** o item "Leite" é criado na lista "Mercado"
 2. **Given** o usuário digita "@NovaLista", **When** a lista "NovaLista" não existe, **Then** o sistema sugere criar nova lista
-3. **Given** o usuário digita "#novatag", **When** a tag "novatag" não existe, **Then** o sistema sugere criar nova tag
-4. **Given** o usuário digita "Leite 2L R$8,50", **When** confirma a entrada, **Then** o sistema extrai quantidade (2L), valor (R$8,50) e título (Leite)
-5. **Given** o usuário está digitando "#", **When** continua digitando caracteres, **Then** o sistema mostra dropdown com tags existentes que correspondem ao filtro
-6. **Given** o usuário digita "Minha ideia importante" sem @lista, **When** confirma a entrada, **Then** o item é criado automaticamente na lista de notas padrão
+3. **Given** o usuário digita "Leite 2L R$8,50 @Mercado" (lista de compras), **When** confirma a entrada, **Then** o sistema extrai quantidade (2L), valor (R$8,50) e título (Leite)
+4. **Given** o usuário digita "Leite 2L R$8,50" sem lista de compras, **When** confirma a entrada, **Then** o sistema NÃO extrai valor (texto permanece como parte do título)
+5. **Given** o usuário digita "Minha ideia importante" sem @lista, **When** confirma a entrada, **Then** o item é criado sem lista associada e aparece na Inbox
 
 ---
 
 ### User Story 1.2 - Navegação pelo Inbox (Priority: P1)
 
-O usuário abre o app e vê todos os seus itens recentes no Inbox. Pode agrupar por data de criação, atualização, tag ou lista, e ordenar de forma ascendente ou descendente.
+O usuário abre o app e vê todos os seus itens recentes no Inbox. Pode agrupar por data de criação, atualização ou lista, e ordenar de forma ascendente ou descendente.
 
 **Por que esta prioridade**: O Inbox é a tela principal e ponto de entrada do app. Deve funcionar perfeitamente desde o início.
 
@@ -98,7 +97,7 @@ O usuário abre o app e vê todos os seus itens recentes no Inbox. Pode agrupar 
 **Cenários de Aceite**:
 
 1. **Given** existem 50 itens no Inbox, **When** o usuário faz scroll até o final, **Then** mais itens são carregados automaticamente (scroll infinito)
-2. **Given** o usuário seleciona agrupar por "Tag", **When** a lista atualiza, **Then** os itens são exibidos agrupados por suas tags com headers separadores
+2. **Given** o usuário seleciona agrupar por "Lista", **When** a lista atualiza, **Then** os itens são exibidos agrupados por suas listas com headers separadores (itens sem lista aparecem em grupo "Sem lista")
 3. **Given** o usuário alterna ordenação para "Descendente", **When** está agrupando por data de criação, **Then** os itens mais recentes aparecem primeiro
 4. **Given** o Inbox está carregado, **When** o usuário toca no ícone de busca na navbar, **Then** navega para a tela de busca global
 
@@ -124,7 +123,7 @@ O usuário navega entre as principais seções do app (Inbox, Notas, Listas) atr
 
 ### User Story 1.4 - Busca Global com Filtros (Priority: P2)
 
-Pedro lembra que anotou uma ideia há meses, mas não lembra onde. Ele usa a busca global, filtra por tags e período, e encontra a nota em segundos.
+Pedro lembra que anotou uma ideia há meses, mas não lembra onde. Ele usa a busca global, filtra por período e lista, e encontra a nota em segundos.
 
 **Por que esta prioridade**: Busca é essencial para recuperar informações, mas o app pode ser usado sem ela inicialmente.
 
@@ -134,8 +133,8 @@ Pedro lembra que anotou uma ideia há meses, mas não lembra onde. Ele usa a bus
 
 1. **Given** existem 100 itens no app, **When** o usuário busca por "compras", **Then** apenas itens contendo "compras" no título ou descrição são exibidos
 2. **Given** o usuário aplica filtro "última semana", **When** a busca executa, **Then** apenas itens criados nos últimos 7 dias aparecem
-3. **Given** o usuário seleciona filtro por tag "#trabalho", **When** a busca executa, **Then** apenas itens com essa tag são exibidos
-4. **Given** o usuário combina múltiplos filtros (tipo + período + tag), **When** a busca executa, **Then** apenas itens que atendem TODOS os critérios aparecem
+3. **Given** o usuário seleciona filtro por lista "Mercado", **When** a busca executa, **Then** apenas itens dessa lista são exibidos
+4. **Given** o usuário combina múltiplos filtros (tipo + período + lista), **When** a busca executa, **Then** apenas itens que atendem TODOS os critérios aparecem
 5. **Given** resultados são exibidos, **When** o usuário toca em um resultado, **Then** navega para a tela de detalhes do item
 
 ---
@@ -155,7 +154,7 @@ João abre sua lista "Supermercado" e vê todos os itens organizados. Conforme p
 1. **Given** o usuário está em uma lista de compras com itens, **When** marca um item como comprado, **Then** o item exibe indicação visual de marcado e o total na barra inferior é atualizado
 2. **Given** uma lista de compras com 3 itens (R$10, R$20, R$30), **When** o usuário marca todos, **Then** a barra mostra total de R$60,00
 3. **Given** o usuário está em uma lista de compras, **When** arrasta um item para cima ou baixo, **Then** o item é reordenado e a nova ordem é persistida
-4. **Given** o usuário adiciona "Pão R$5,00 #padaria", **When** confirma, **Then** o item mostra badges com valor e tag extraídos
+4. **Given** o usuário adiciona "Pão R$5,00" na lista de compras, **When** confirma, **Then** o item mostra badge com valor extraído
 
 ---
 
@@ -171,7 +170,7 @@ O usuário quer criar notas para suas ideias e organizá-las em uma ordem espec�
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário está em uma lista de notas, **When** adiciona "Ideia para projeto #trabalho", **Then** o item é criado com título e tag
+1. **Given** o usuário está em uma lista de notas, **When** adiciona "Ideia para projeto", **Then** o item é criado com título
 2. **Given** o usuário está em uma lista de notas com 5 itens, **When** arrasta um item para nova posição, **Then** o item é reordenado e a nova ordem é persistida
 3. **Given** o usuário abre uma nota, **When** adiciona descrição com markdown "**Importante**: fazer até sexta", **Then** "Importante" aparece em negrito
 
@@ -187,13 +186,11 @@ O usuário quer visualizar uma nota completa com todas as suas informações e p
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário toca em uma nota na lista, **When** a tela de detalhes abre, **Then** exibe título, descrição formatada, tags associadas e lista de origem
+1. **Given** o usuário toca em uma nota na lista, **When** a tela de detalhes abre, **Then** exibe título, descrição formatada e lista de origem (se houver)
 2. **Given** o usuário está na tela de detalhes, **When** toca no título, **Then** pode editar inline e salvar
 3. **Given** o usuário está na tela de detalhes, **When** toca na descrição, **Then** abre editor com suporte a markdown
 4. **Given** o usuário edita a descrição com "**Negrito** e _itálico_", **When** salva e visualiza, **Then** a formatação é renderizada corretamente
-5. **Given** o usuário está na tela de detalhes, **When** toca no botão de adicionar tag, **Then** exibe dropdown com tags existentes e opção de criar nova
-6. **Given** o usuário remove uma tag da nota, **When** salva, **Then** a tag é desassociada do item
-7. **Given** o usuário altera a lista associada da nota, **When** salva, **Then** a nota aparece na nova lista e some da anterior
+5. **Given** o usuário altera a lista associada do item, **When** salva, **Then** o item aparece na nova lista e some da anterior
 
 ---
 
@@ -286,21 +283,23 @@ O usuário quer renomear uma lista existente ou excluí-la quando não for mais 
 
 ---
 
-## Escopo 6: Tags e Organização
+## Escopo 6: Seções dentro de Listas
 
-### User Story 6.1 - Gerenciamento de Tags (Priority: P2)
+### User Story 6.1 - Gerenciamento de Seções (Priority: P2)
 
-O usuário quer organizar suas tags, renomeando algumas e excluindo outras não utilizadas.
+O usuário quer organizar os itens dentro de uma lista em seções customizadas para melhor visualização e agrupamento.
 
-**Por que esta prioridade**: Tags são fundamentais para organização, mas o gerenciamento avançado pode vir após a funcionalidade básica.
+**Por que esta prioridade**: Seções são fundamentais para organização dentro de listas, especialmente para listas longas.
 
-**Teste Independente**: Pode ser testado acessando tela de tags, renomeando uma tag, excluindo outra, verificando se itens associados são atualizados.
+**Teste Independente**: Pode ser testado criando seções em uma lista, movendo itens entre seções, renomeando e excluindo seções.
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário acessa "Minhas Tags" via sidebar, **When** a tela carrega, **Then** lista todas as tags com contagem de itens associados
-2. **Given** uma tag "comida" existe com 5 itens, **When** o usuário renomeia para "alimentação", **Then** todos os 5 itens passam a ter a tag "alimentação"
-3. **Given** o usuário tenta excluir uma tag com itens associados, **When** confirma exclusão, **Then** a tag é removida dos itens (itens permanecem, só perdem a tag)
+1. **Given** o usuário está em uma lista, **When** toca no botão "Nova Seção", **Then** uma nova seção é criada com nome editável
+2. **Given** uma seção existe na lista, **When** o usuário arrasta um item para dentro da seção, **Then** o item é movido para a seção
+3. **Given** uma seção existe com itens, **When** o usuário renomeia a seção, **Then** o nome é atualizado e os itens permanecem
+4. **Given** uma seção existe com itens, **When** o usuário exclui a seção, **Then** os itens são movidos para fora da seção (ficam na lista sem seção)
+5. **Given** uma lista tem múltiplas seções, **When** o usuário arrasta uma seção, **Then** a ordem das seções é alterada e persistida
 
 ---
 
@@ -318,8 +317,9 @@ O usuário quer acessar rapidamente diferentes seções do app através do menu 
 
 1. **Given** o usuário toca no ícone de menu na navbar, **When** a sidebar abre, **Then** exibe perfil do usuário (foto, nome, email) no topo
 2. **Given** a sidebar está aberta, **When** o usuário toca em "Minhas Listas", **Then** navega para a tela de listas
-3. **Given** a sidebar está aberta, **When** o usuário toca em "Configurações", **Then** navega para a tela de configurações
-4. **Given** o usuário desliza para a esquerda na sidebar, **When** completa o gesto, **Then** a sidebar fecha
+3. **Given** a sidebar está aberta, **When** o usuário toca em "Minhas Notas", **Then** navega para a tela de notas
+4. **Given** a sidebar está aberta, **When** o usuário toca em "Configurações", **Then** navega para a tela de configurações
+5. **Given** o usuário desliza para a esquerda na sidebar, **When** completa o gesto, **Then** a sidebar fecha
 
 ---
 
@@ -341,111 +341,111 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 
 ### Edge Cases
 
-- O que acontece quando o usuário digita apenas "#" ou "@" sem texto adicional?
-  - Sistema mostra dropdown com todas as tags/listas disponíveis
+- O que acontece quando o usuário digita apenas "@" sem texto adicional?
+  - Sistema mostra dropdown com todas as listas disponíveis
 - Como o sistema lida com valores monetários em diferentes formatos (R$10, 10,00, 10.00)?
-  - Sistema reconhece formatos comuns e normaliza para o padrão da localidade do dispositivo
+  - Sistema reconhece formatos comuns e normaliza para o padrão da localidade do dispositivo (apenas em listas de compras)
 - O que acontece quando o provedor externo (TMDb, Google Books, IGDB) está offline?
   - Sistema mostra mensagem de erro amigável e permite entrada manual
 - Como o sistema lida com listas vazias?
   - Exibe estado vazio com ilustração e call-to-action para adicionar primeiro item
-- O que acontece quando o usuário tenta criar tag/lista com nome duplicado?
-  - Sistema sugere a tag/lista existente em vez de criar duplicata
+- O que acontece quando o usuário tenta criar lista com nome duplicado?
+  - Sistema sugere a lista existente em vez de criar duplicata
 - Como o sistema lida com itens sem lista associada?
-  - Itens sem lista associada são automaticamente adicionados à lista de notas padrão
+  - Itens sem lista associada permanecem na Inbox sem lista
 - O que acontece quando a busca não retorna resultados?
   - Exibe mensagem "Nenhum resultado encontrado" com sugestões de ajuste nos filtros
+- O que acontece quando o usuário exclui uma seção com itens?
+  - Os itens são movidos para fora da seção (ficam na lista sem seção associada)
 
 ## Requisitos *(obrigatório)*
 
 ### Requisitos Funcionais
 
 #### Entrada Inteligente
-- **FR-001**: Sistema MUST parsear texto de entrada e extrair: título, tags (#), lista destino (@), quantidade e valor monetário
-- **FR-002**: Sistema MUST exibir dropdown de sugestões ao digitar "#" com tags existentes filtradas
-- **FR-003**: Sistema MUST exibir dropdown de sugestões ao digitar "@" com listas existentes filtradas
-- **FR-004**: Sistema MUST permitir criar nova tag inline quando o texto após "#" não corresponde a nenhuma tag existente
-- **FR-005**: Sistema MUST permitir criar nova lista inline quando o texto após "@" não corresponde a nenhuma lista existente
-- **FR-006**: Sistema MUST reconhecer padrões de valor monetário (R$X, X,XX, X.XX) e extrair para campo de valor
-- **FR-007**: Sistema MUST associar itens sem lista especificada automaticamente à lista de notas padrão
+- **FR-001**: Sistema MUST parsear texto de entrada e extrair: título, lista destino (@), quantidade e valor monetário (somente para listas de compras)
+- **FR-002**: Sistema MUST exibir dropdown de sugestões ao digitar "@" com listas existentes filtradas
+- **FR-003**: Sistema MUST permitir criar nova lista inline quando o texto após "@" não corresponde a nenhuma lista existente
+- **FR-004**: Sistema MUST reconhecer padrões de valor monetário (R$X, X,XX, X.XX) e extrair para campo de valor SOMENTE quando lista destino é do tipo compras
+- **FR-005**: Itens sem lista especificada MUST permanecer na Inbox sem lista associada
 
 #### Listas e Organização
-- **FR-008**: Sistema MUST suportar três categorias de listas: Notas, Compras e Interesse
-- **FR-009**: Sistema MUST permitir criar, renomear e excluir listas
-- **FR-010**: Listas de Interesse MUST suportar três subtipos: Filmes, Livros e Games
-- **FR-011**: Sistema MUST permitir associar múltiplas tags a um único item
-- **FR-012**: Sistema MUST persistir ordem customizada de itens em listas de compras e notas via drag and drop
-- **FR-013**: Ao excluir lista, sistema MUST oferecer opção de mover itens para notas ou excluir junto
+- **FR-006**: Sistema MUST suportar três categorias de listas: Notas, Compras e Interesse
+- **FR-007**: Sistema MUST permitir criar, renomear e excluir listas
+- **FR-008**: Listas de Interesse MUST suportar três subtipos: Filmes, Livros e Games
+- **FR-009**: Sistema MUST persistir ordem customizada de itens em listas de compras e notas via drag and drop
+- **FR-010**: Ao excluir lista, sistema MUST oferecer opção de mover itens para Inbox ou excluir junto
+
+#### Seções
+- **FR-011**: Sistema MUST permitir criar seções customizadas dentro de qualquer lista
+- **FR-012**: Sistema MUST permitir renomear e excluir seções
+- **FR-013**: Sistema MUST permitir arrastar itens entre seções dentro da mesma lista
+- **FR-014**: Sistema MUST permitir reordenar seções via drag and drop
+- **FR-015**: Ao excluir seção, sistema MUST mover itens para fora da seção (permanecem na lista)
+- **FR-016**: Itens sem seção MUST aparecer no topo da lista, antes das seções definidas
 
 #### Listas de Compras
-- **FR-014**: Itens de lista de compras MUST ter campos: título, quantidade, valor, tags
-- **FR-015**: Sistema MUST calcular e exibir soma total dos valores de itens marcados em barra inferior
-- **FR-016**: Sistema MUST atualizar total em tempo real quando item é marcado/desmarcado
-- **FR-017**: Sistema MUST exibir badges visuais para quantidade e valor extraídos automaticamente
+- **FR-017**: Itens de lista de compras MUST ter campos: título, quantidade, valor
+- **FR-018**: Sistema MUST calcular e exibir soma total dos valores de itens marcados em barra inferior
+- **FR-019**: Sistema MUST atualizar total em tempo real quando item é marcado/desmarcado
+- **FR-020**: Sistema MUST exibir badges visuais para quantidade e valor extraídos automaticamente
 
 #### Listas de Notas
-- **FR-018**: Itens de lista de notas MUST ter campos: título, descrição, tags
-- **FR-019**: Sistema MUST suportar markdown básico (negrito, itálico, listas) na descrição
-- **FR-020**: Sistema MUST permitir reordenação de itens via drag and drop
-- **FR-021**: Sistema MUST manter uma lista de notas padrão que não pode ser excluída
+- **FR-021**: Itens de lista de notas MUST ter campos: título, descrição
+- **FR-022**: Sistema MUST suportar markdown básico (negrito, itálico, listas) na descrição
+- **FR-023**: Sistema MUST permitir reordenação de itens via drag and drop
 
 #### Listas de Interesse
-- **FR-022**: Listas de Filmes MUST integrar com TMDb para busca e enriquecimento de dados
-- **FR-023**: Listas de Livros MUST integrar com Google Books para busca e enriquecimento de dados
-- **FR-024**: Listas de Games MUST integrar com IGDB para busca e enriquecimento de dados
-- **FR-025**: Sistema MUST permitir marcar itens de interesse como "consumido" (visto/lido/jogado)
-- **FR-026**: Sistema MUST preencher automaticamente: título, descrição/sinopse, capa/poster, avaliação, e metadados específicos (elenco/autor/desenvolvedor)
+- **FR-024**: Listas de Filmes MUST integrar com TMDb para busca e enriquecimento de dados
+- **FR-025**: Listas de Livros MUST integrar com Google Books para busca e enriquecimento de dados
+- **FR-026**: Listas de Games MUST integrar com IGDB para busca e enriquecimento de dados
+- **FR-027**: Sistema MUST permitir marcar itens de interesse como "consumido" (visto/lido/jogado)
+- **FR-028**: Sistema MUST preencher automaticamente: título, descrição/sinopse, capa/poster, avaliação, e metadados específicos (elenco/autor/desenvolvedor)
 
 #### Inbox e Navegação
-- **FR-027**: Inbox MUST exibir todos os itens em scroll infinito com paginação
-- **FR-028**: Sistema MUST permitir agrupar itens por: data de criação, data de atualização, tag ou lista
-- **FR-029**: Sistema MUST permitir ordenar itens de forma ascendente ou descendente
-- **FR-030**: Bottombar MUST permitir navegação entre Inbox, Listas e Notas
-- **FR-031**: Bottombar MUST destacar visualmente a aba ativa
-- **FR-032**: Sistema MUST preservar estado da tela ao navegar entre abas
-- **FR-033**: Navbar MUST fornecer acesso a perfil, busca global e sidebar
+- **FR-029**: Inbox MUST exibir todos os itens em scroll infinito com paginação
+- **FR-030**: Sistema MUST permitir agrupar itens por: data de criação, data de atualização ou lista
+- **FR-031**: Sistema MUST permitir ordenar itens de forma ascendente ou descendente
+- **FR-032**: Bottombar MUST permitir navegação entre Inbox, Listas e Notas
+- **FR-033**: Bottombar MUST destacar visualmente a aba ativa
+- **FR-034**: Sistema MUST preservar estado da tela ao navegar entre abas
+- **FR-035**: Navbar MUST fornecer acesso a perfil, busca global e sidebar
 
 #### Busca
-- **FR-034**: Sistema MUST buscar em título e descrição de todos os itens
-- **FR-035**: Sistema MUST filtrar resultados por tipo (notas, listas ou ambos)
-- **FR-036**: Sistema MUST filtrar resultados por período (última semana, mês, ano, todo o período)
-- **FR-037**: Sistema MUST filtrar resultados por tags selecionadas
-- **FR-038**: Resultados MUST ser paginados e cada item clicável para navegação
-
-#### Tags
-- **FR-039**: Sistema MUST permitir criar, renomear e excluir tags
-- **FR-040**: Sistema MUST exibir contagem de itens associados a cada tag
-- **FR-041**: Ao renomear tag, sistema MUST atualizar todos os itens associados
-- **FR-042**: Ao excluir tag, sistema MUST remover a associação dos itens (itens permanecem)
+- **FR-036**: Sistema MUST buscar em título e descrição de todos os itens
+- **FR-037**: Sistema MUST filtrar resultados por tipo (notas, listas ou ambos)
+- **FR-038**: Sistema MUST filtrar resultados por período (última semana, mês, ano, todo o período)
+- **FR-039**: Sistema MUST filtrar resultados por lista selecionada
+- **FR-040**: Resultados MUST ser paginados e cada item clicável para navegação
 
 #### Detalhes e Edição
-- **FR-043**: Sistema MUST exibir tela de detalhes com título, descrição, tags e lista associada
-- **FR-044**: Sistema MUST suportar edição inline de todos os campos
-- **FR-045**: Sistema MUST permitir alterar lista associada de um item existente
-- **FR-046**: Tela de detalhes de nota MUST renderizar markdown na visualização e suportar no editor
+- **FR-041**: Sistema MUST exibir tela de detalhes com título, descrição e lista associada (se houver)
+- **FR-042**: Sistema MUST suportar edição inline de todos os campos
+- **FR-043**: Sistema MUST permitir alterar lista associada de um item existente
+- **FR-044**: Tela de detalhes de nota MUST renderizar markdown na visualização e suportar no editor
 
 #### Configurações
-- **FR-047**: Sistema MUST permitir selecionar tema: claro, escuro ou automático
-- **FR-048**: Sistema MUST permitir personalizar cor principal de destaque
-- **FR-049**: Sistema MUST exibir informações sobre o aplicativo, termos e política de privacidade
+- **FR-045**: Sistema MUST permitir selecionar tema: claro, escuro ou automático
+- **FR-046**: Sistema MUST permitir personalizar cor principal de destaque
+- **FR-047**: Sistema MUST exibir informações sobre o aplicativo, termos e política de privacidade
 
 #### Sidebar
-- **FR-050**: Sidebar MUST exibir perfil do usuário (foto, nome, email)
-- **FR-051**: Sidebar MUST fornecer navegação para: Inbox, Listas, Minhas Tags, Minhas Notas
-- **FR-052**: Sidebar MUST fornecer acesso a Configurações e Ajuda
+- **FR-048**: Sidebar MUST exibir perfil do usuário (foto, nome, email)
+- **FR-049**: Sidebar MUST fornecer navegação para: Inbox, Listas, Minhas Notas
+- **FR-050**: Sidebar MUST fornecer acesso a Configurações e Ajuda
 
 ### Entidades-chave
 
-- **Item**: Unidade básica de informação. Possui título, descrição opcional, data de criação, data de atualização, lista associada (obrigatória - padrão: lista de notas), tags (múltiplas), ordem na lista, e campos específicos por tipo (valor, quantidade para compras; status consumido para interesse; metadados de mídia para interesse)
-- **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens, flag de lista padrão (para notas)
-- **Tag**: Etiqueta para categorização transversal. Possui nome e cor opcional. Relaciona-se com múltiplos itens (muitos-para-muitos)
+- **Item**: Unidade básica de informação. Possui título, descrição opcional, data de criação, data de atualização, lista associada (opcional - itens sem lista ficam na Inbox), seção associada (opcional - itens podem ficar "soltos" na lista), ordem na lista/seção, e campos específicos por tipo (valor, quantidade para compras; status consumido para interesse; metadados de mídia para interesse)
+- **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens
+- **Seção**: Agrupador visual de itens dentro de uma lista específica. Possui nome, ordem na lista, lista pai (obrigatória). Cada lista tem suas próprias seções independentes. Relaciona-se com uma lista (muitos-para-um) e com múltiplos itens (um-para-muitos)
 - **Usuário**: Perfil do usuário local. Possui nome, email, foto. Configurações de tema e cor principal
 
 ## Critérios de Sucesso *(obrigatório)*
 
 ### Resultados Mensuráveis
 
-- **SC-001**: Usuários conseguem adicionar um item com lista e tag em menos de 10 segundos usando a entrada inteligente
+- **SC-001**: Usuários conseguem adicionar um item com lista em menos de 10 segundos usando a entrada inteligente
 - **SC-002**: 90% dos itens adicionados via entrada inteligente são parseados corretamente na primeira tentativa
 - **SC-003**: Usuários conseguem marcar todos os itens de uma lista de compras com 10 itens em menos de 30 segundos
 - **SC-004**: Busca global retorna resultados relevantes em menos de 2 segundos para bases com até 1000 itens
@@ -457,6 +457,18 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **SC-010**: App abre e exibe Inbox com itens em menos de 3 segundos após toque no ícone
 - **SC-011**: Navegação entre abas da bottombar ocorre em menos de 300ms
 
+## Clarifications
+
+### Session 2026-01-18
+
+- Q: Como as seções dentro de uma lista devem funcionar? → A: Seções são agrupadores visuais manuais - usuário cria e nomeia livremente, arrasta itens entre seções
+- Q: Tags removidas do sistema? → A: Sim, conceito de tags removido. Organização via listas e seções
+- Q: Itens sem lista vão para onde? → A: Permanecem na Inbox sem lista associada (não mais lista de notas padrão)
+- Q: Quando extrair valor monetário? → A: Somente quando item é atribuído a lista de compras
+- Q: Seções são específicas por lista ou globais? → A: Específicas por lista - cada lista tem suas próprias seções independentes
+- Q: Itens podem existir fora de seções? → A: Sim, seções são opcionais. Itens "soltos" aparecem no TOPO da lista, antes das seções
+- Q: Quais categorias suportam seções? → A: Todas - Notas, Compras e Interesse podem ter seções customizadas
+
 ## Premissas
 
 - Usuário tem perfil local (sem autenticação cloud no MVP)
@@ -464,4 +476,4 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - Provedores externos (TMDb, Google Books, IGDB) requerem conexão com internet
 - Formato de moeda segue configuração de localidade do dispositivo
 - App suporta português brasileiro (pt-BR) como idioma principal e inglês (en) como fallback
-- Existe uma lista de notas padrão criada automaticamente que não pode ser excluída
+- Itens sem lista associada permanecem visíveis na Inbox
