@@ -33,6 +33,19 @@
 
 - Specification passed all validation checks
 - Ready for `/speckit.clarify` or `/speckit.plan`
-- 15 user stories organized in 7 escopos claros
-- 52 requisitos funcionais definidos
-- 11 critérios de sucesso mensuráveis
+
+### Revisão 2026-01-19
+
+**Estatísticas atualizadas:**
+- **22 user stories** organizadas em **10 escopos**
+- **52 requisitos funcionais** definidos
+- **11 critérios de sucesso** mensuráveis
+- **15 edge cases** documentados
+
+**Melhorias realizadas:**
+- Reorganização completa para maximizar reuso de componentes
+- Novas histórias: Campo de entrada inteligente (P0), Edição de item de compras, Conclusão de compra, Histórico de compras, Exclusão de itens
+- Cada história agora lista "Componentes Reutilizáveis" para facilitar planejamento técnico
+- Prioridades revisadas: P0 (fundação), P1 (core), P2 (importante), P3 (desejável)
+- Histórias divididas para melhor granularidade (ex: Compras dividida em 5 histórias)
+- Tabela de mapeamento antigo→novo adicionada às clarificações
