@@ -30,7 +30,7 @@ src/
 └── design-system/# Theme tokens (colors, spacing, typography), DS components
 ```
 
-**Dependency flow**: `app` → `presentation` → `domain` ← `data` → `infra`
+**Dependency flow**: `app` → `presentation` → `domain` ← `data` ← `infra`
 
 **File-based routing**: `app/` directory uses Expo Router
 

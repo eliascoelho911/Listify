@@ -1,63 +1,43 @@
 #!/bin/bash
-# Hook script para Claude Code
-# Executa lint:fix e type-check nos arquivos modificados
+# Runs lint only on modified files, blocks only if errors are in those files
 #
-# Uso:
-#   - Como hook de PreToolUse (commit): usa arquivos staged
-#   - Como hook de Stop: usa arquivos modificados (staged + unstaged)
-#
-# O hook recebe JSON via stdin com informações do contexto
-
-set -e
+# Exit codes:
+#   0 - Success, continue normally
+#   2 - Blocking - stderr sent to Claude, blocks the operation
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
 cd "$PROJECT_DIR"
 
-# Lê input JSON do stdin (se houver)
-INPUT=$(cat 2>/dev/null || echo "{}")
+# Get modified files from git (staged + unstaged)
+MODIFIED_FILES=$(git diff --name-only --diff-filter=ACMR HEAD 2>/dev/null | grep -E '\.(ts|tsx|js|jsx)$' || true)
 
-# Detecta o tipo de evento do hook (com fallback se jq não estiver disponível)
-if command -v jq &> /dev/null; then
-  HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null || echo "")
-else
-  # Fallback usando grep/sed para extrair hook_event_name do JSON
-  HOOK_EVENT=$(echo "$INPUT" | grep -o '"hook_event_name"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"hook_event_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' 2>/dev/null || echo "")
+# If no modified files from HEAD, try staged files only
+if [ -z "$MODIFIED_FILES" ]; then
+  MODIFIED_FILES=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E '\.(ts|tsx|js|jsx)$' || true)
 fi
 
-# Determina quais arquivos verificar baseado no contexto
-if [ "$HOOK_EVENT" = "PreToolUse" ]; then
-  # Para commits: usa apenas arquivos staged
-  FILES=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E '\.(js|ts|tsx)$' || true)
-else
-  # Para Stop ou outros: usa arquivos modificados (staged + unstaged)
-  FILES=$(git diff --name-only --diff-filter=ACMR HEAD 2>/dev/null | grep -E '\.(js|ts|tsx)$' || true)
-
-  # Se não houver modificações em relação ao HEAD, tenta com staged
-  if [ -z "$FILES" ]; then
-    FILES=$(git diff --cached --name-only --diff-filter=ACMR 2>/dev/null | grep -E '\.(js|ts|tsx)$' || true)
-  fi
-fi
-
-# Se não houver arquivos para verificar, sai com sucesso
-if [ -z "$FILES" ]; then
-  echo "Nenhum arquivo JS/TS modificado para verificar."
+if [ -z "$MODIFIED_FILES" ]; then
+  # No modified TS/JS files, nothing to lint
   exit 0
 fi
 
-# Converte para array
-FILES_ARRAY=($FILES)
-FILE_COUNT=${#FILES_ARRAY[@]}
+# Convert to array for counting
+MODIFIED_ARRAY=($MODIFIED_FILES)
+FILE_COUNT=${#MODIFIED_ARRAY[@]}
 
-echo "Verificando $FILE_COUNT arquivo(s) modificado(s)..."
+echo "Linting $FILE_COUNT modified file(s)..."
 
-# Executa lint:fix nos arquivos
-echo "Executando lint:fix..."
-npm run lint:fix -- "${FILES_ARRAY[@]}"
+# Run ESLint only on modified files
+LINT_OUTPUT=$(npx eslint $MODIFIED_FILES 2>&1)
+LINT_EXIT=$?
 
-# Executa type-check nos arquivos
-echo "Executando type-check..."
-npm run type-check -- "${FILES_ARRAY[@]}"
+if [ $LINT_EXIT -ne 0 ]; then
+  echo "Lint errors in modified files:" >&2
+  echo "$LINT_OUTPUT" >&2
+  exit 2
+fi
 
-echo "Verificação concluída com sucesso!"
+echo "Lint check passed."
+exit 0
