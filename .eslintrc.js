@@ -70,8 +70,24 @@ module.exports = {
                 message: 'Domain layer cannot depend on Expo packages.',
               },
               {
-                group: ['@presentation/*', '@infra/*'],
-                message: 'Domain layer cannot depend on presentation/infra.',
+                group: ['@presentation/*'],
+                message: 'Domain layer cannot depend on presentation layer.',
+              },
+              {
+                group: ['@infra/*'],
+                message: 'Domain layer cannot depend on infra layer.',
+              },
+              {
+                group: ['@data/*'],
+                message: 'Domain layer cannot depend on data layer.',
+              },
+              {
+                group: ['@app/*'],
+                message: 'Domain layer cannot depend on app layer.',
+              },
+              {
+                group: ['@design-system/*'],
+                message: 'Domain layer cannot depend on design-system.',
               },
             ],
           },
@@ -94,6 +110,111 @@ module.exports = {
                 group: ['@drizzle/*', '@infra/drizzle/*'],
                 message:
                   'Presentation layer cannot import from Drizzle infrastructure. Use hooks from @app/di/AppDependenciesProvider instead.',
+              },
+              {
+                group: ['@infra/*'],
+                message:
+                  'Presentation layer cannot import from infra directly. Use DI hooks from @app/di/AppDependenciesProvider instead.',
+              },
+              {
+                group: ['@data/*'],
+                message: 'Presentation layer cannot import from data layer directly.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['src/data/**/*.{ts,tsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: [
+              { name: 'react', message: 'Data layer cannot depend on React.' },
+              { name: 'react-native', message: 'Data layer cannot depend on React Native.' },
+            ],
+            patterns: [
+              {
+                group: ['expo*', '@expo/*'],
+                message: 'Data layer cannot depend on Expo packages.',
+              },
+              {
+                group: ['@presentation/*'],
+                message: 'Data layer cannot depend on presentation layer.',
+              },
+              {
+                group: ['@infra/*'],
+                message: 'Data layer cannot depend on infra layer.',
+              },
+              {
+                group: ['@app/*'],
+                message: 'Data layer cannot depend on app layer.',
+              },
+              {
+                group: ['@design-system/*'],
+                message: 'Data layer cannot depend on design-system.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['src/infra/**/*.{ts,tsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            paths: [
+              { name: 'react', message: 'Infra layer cannot depend on React.' },
+              { name: 'react-native', message: 'Infra layer cannot depend on React Native.' },
+            ],
+            patterns: [
+              {
+                group: ['@presentation/*'],
+                message: 'Infra layer cannot depend on presentation layer.',
+              },
+              {
+                group: ['@app/*'],
+                message: 'Infra layer cannot depend on app layer.',
+              },
+              {
+                group: ['@design-system/*'],
+                message: 'Infra layer cannot depend on design-system.',
+              },
+            ],
+          },
+        ],
+      },
+    },
+    {
+      files: ['src/design-system/**/*.{ts,tsx}'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            patterns: [
+              {
+                group: ['@domain/*'],
+                message: 'Design-system cannot depend on domain layer.',
+              },
+              {
+                group: ['@data/*'],
+                message: 'Design-system cannot depend on data layer.',
+              },
+              {
+                group: ['@infra/*'],
+                message: 'Design-system cannot depend on infra layer.',
+              },
+              {
+                group: ['@presentation/*'],
+                message: 'Design-system cannot depend on presentation layer.',
+              },
+              {
+                group: ['@app/*'],
+                message: 'Design-system cannot depend on app layer.',
               },
             ],
           },
