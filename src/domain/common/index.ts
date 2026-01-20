@@ -10,6 +10,17 @@ export type {
   UpdateUseCase,
 } from './ports';
 export type {
+  CategoryInference,
+  Highlight,
+  InferenceConfidence,
+  InferenceResult,
+  MediaProviderRepository,
+  MediaSearchResult,
+  ParseContext,
+  ParsedInput,
+  SmartInputParser,
+} from './ports/index';
+export type {
   BaseFilterCriteria,
   BaseSortField,
   DateRange,

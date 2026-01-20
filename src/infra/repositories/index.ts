@@ -1,0 +1,12 @@
+export { DrizzleBookItemRepository } from './DrizzleBookItemRepository';
+export { DrizzleGameItemRepository } from './DrizzleGameItemRepository';
+export { DrizzleGlobalSearchRepository } from './DrizzleGlobalSearchRepository';
+export { DrizzleListRepository } from './DrizzleListRepository';
+export { DrizzleMovieItemRepository } from './DrizzleMovieItemRepository';
+export { DrizzleNoteItemRepository } from './DrizzleNoteItemRepository';
+export { DrizzlePurchaseHistoryRepository } from './DrizzlePurchaseHistoryRepository';
+export { DrizzleSearchHistoryRepository } from './DrizzleSearchHistoryRepository';
+export { DrizzleSectionRepository } from './DrizzleSectionRepository';
+export { DrizzleShoppingItemRepository } from './DrizzleShoppingItemRepository';
+export { DrizzleUserPreferencesRepository } from './DrizzleUserPreferencesRepository';
+export { DrizzleUserRepository } from './DrizzleUserRepository';

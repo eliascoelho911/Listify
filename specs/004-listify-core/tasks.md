@@ -20,18 +20,18 @@
 
 **Propósito**: Inicialização do projeto e estrutura básica de persistência
 
-- [ ] T001 Criar schema Drizzle com todas as tabelas em src/infra/drizzle/schema.ts
-- [ ] T002 Criar migration SQL inicial em src/infra/drizzle/migrations/0001_initial_schema.sql
-- [ ] T003 Criar migration de seed da lista de Notas em src/infra/drizzle/migrations/0002_seed_notes_list.sql
-- [ ] T004 [P] Criar inicialização do banco de dados em src/infra/drizzle/index.ts
-- [ ] T005 [P] Criar persistence contracts em src/data/persistence/list.persistence.ts
-- [ ] T006 [P] Criar persistence contracts em src/data/persistence/item.persistence.ts
-- [ ] T007 [P] Criar persistence contracts em src/data/persistence/section.persistence.ts
-- [ ] T008 [P] Criar persistence contracts em src/data/persistence/user.persistence.ts
-- [ ] T009 [P] Criar persistence contracts em src/data/persistence/user-preferences.persistence.ts
-- [ ] T010 [P] Criar persistence contracts em src/data/persistence/purchase-history.persistence.ts
-- [ ] T011 [P] Criar persistence contracts em src/data/persistence/search-history.persistence.ts
-- [ ] T012 Criar barrel export em src/data/persistence/index.ts
+- [X] T001 Criar schema Drizzle com todas as tabelas em src/infra/drizzle/schema.ts
+- [X] T002 Criar migration SQL inicial em src/infra/drizzle/migrations/0001_initial_schema.sql
+- [X] T003 Criar migration de seed da lista de Notas em src/infra/drizzle/migrations/0002_seed_notes_list.sql
+- [X] T004 [P] Criar inicialização do banco de dados em src/infra/drizzle/index.ts
+- [X] T005 [P] Criar persistence contracts em src/data/persistence/list.persistence.ts
+- [X] T006 [P] Criar persistence contracts em src/data/persistence/item.persistence.ts
+- [X] T007 [P] Criar persistence contracts em src/data/persistence/section.persistence.ts
+- [X] T008 [P] Criar persistence contracts em src/data/persistence/user.persistence.ts
+- [X] T009 [P] Criar persistence contracts em src/data/persistence/user-preferences.persistence.ts
+- [X] T010 [P] Criar persistence contracts em src/data/persistence/purchase-history.persistence.ts
+- [X] T011 [P] Criar persistence contracts em src/data/persistence/search-history.persistence.ts
+- [X] T012 Criar barrel export em src/data/persistence/index.ts
 
 ---
 
@@ -43,72 +43,72 @@
 
 ### 2.1 Domain Entities (TDD Obrigatório)
 
-- [ ] T013 [P] Escrever testes para List entity em tests/domain/list/list.entity.test.ts
-- [ ] T014 [P] Escrever testes para Item discriminated union em tests/domain/item/item.entity.test.ts
-- [ ] T015 [P] Escrever testes para Section entity em tests/domain/section/section.entity.test.ts
-- [ ] T016 [P] Escrever testes para User entity em tests/domain/user/user.entity.test.ts
-- [ ] T017 [P] Escrever testes para UserPreferences entity em tests/domain/user-preferences/user-preferences.entity.test.ts
-- [ ] T018 [P] Escrever testes para PurchaseHistory entity em tests/domain/purchase-history/purchase-history.entity.test.ts
-- [ ] T019 [P] Escrever testes para SearchHistoryEntry entity em tests/domain/search-history/search-history.entity.test.ts
-- [ ] T020 [P] Implementar List entity e types em src/domain/list/entities/list.entity.ts
-- [ ] T021 [P] Implementar Item discriminated union em src/domain/item/entities/item.entity.ts
-- [ ] T022 [P] Implementar Section entity em src/domain/section/entities/section.entity.ts
-- [ ] T023 [P] Implementar User entity em src/domain/user/entities/user.entity.ts
-- [ ] T024 [P] Implementar UserPreferences entity em src/domain/user-preferences/entities/user-preferences.entity.ts
-- [ ] T025 [P] Implementar PurchaseHistory entity em src/domain/purchase-history/entities/purchase-history.entity.ts
-- [ ] T026 [P] Implementar SearchHistoryEntry entity em src/domain/search-history/entities/search-history.entity.ts
+- [X] T013 [P] Escrever testes para List entity em tests/domain/list/list.entity.test.ts
+- [X] T014 [P] Escrever testes para Item discriminated union em tests/domain/item/item.entity.test.ts
+- [X] T015 [P] Escrever testes para Section entity em tests/domain/section/section.entity.test.ts
+- [X] T016 [P] Escrever testes para User entity em tests/domain/user/user.entity.test.ts
+- [X] T017 [P] Escrever testes para UserPreferences entity em tests/domain/user-preferences/user-preferences.entity.test.ts
+- [X] T018 [P] Escrever testes para PurchaseHistory entity em tests/domain/purchase-history/purchase-history.entity.test.ts
+- [X] T019 [P] Escrever testes para SearchHistoryEntry entity em tests/domain/search-history/search-history.entity.test.ts
+- [X] T020 [P] Implementar List entity e types em src/domain/list/entities/list.entity.ts
+- [X] T021 [P] Implementar Item discriminated union em src/domain/item/entities/item.entity.ts
+- [X] T022 [P] Implementar Section entity em src/domain/section/entities/section.entity.ts
+- [X] T023 [P] Implementar User entity em src/domain/user/entities/user.entity.ts
+- [X] T024 [P] Implementar UserPreferences entity em src/domain/user-preferences/entities/user-preferences.entity.ts
+- [X] T025 [P] Implementar PurchaseHistory entity em src/domain/purchase-history/entities/purchase-history.entity.ts
+- [X] T026 [P] Implementar SearchHistoryEntry entity em src/domain/search-history/entities/search-history.entity.ts
 
 ### 2.2 Domain Ports
 
-- [ ] T027 [P] Criar ListRepository port em src/domain/list/ports/list.repository.ts
-- [ ] T028 [P] Criar ItemRepository port (base) em src/domain/item/ports/item.repository.ts
-- [ ] T029 [P] Criar SectionRepository port em src/domain/section/ports/section.repository.ts
-- [ ] T030 [P] Criar UserRepository port em src/domain/user/ports/user.repository.ts
-- [ ] T031 [P] Criar UserPreferencesRepository port em src/domain/user-preferences/ports/user-preferences.repository.ts
-- [ ] T032 [P] Criar PurchaseHistoryRepository port em src/domain/purchase-history/ports/purchase-history.repository.ts
-- [ ] T033 [P] Criar SearchHistoryRepository port em src/domain/search-history/ports/search-history.repository.ts
-- [ ] T034 [P] Criar GlobalSearchRepository port em src/domain/common/ports/global-search.repository.ts
-- [ ] T035 [P] Criar SmartInputParser port em src/domain/common/ports/smart-input-parser.port.ts
-- [ ] T036 [P] Criar CategoryInference port em src/domain/common/ports/category-inference.port.ts
-- [ ] T037 [P] Criar MediaProviderRepository port em src/domain/common/ports/media-provider.port.ts
+- [X] T027 [P] Criar ListRepository port em src/domain/list/ports/list.repository.ts
+- [X] T028 [P] Criar ItemRepository port (base) em src/domain/item/ports/item.repository.ts
+- [X] T029 [P] Criar SectionRepository port em src/domain/section/ports/section.repository.ts
+- [X] T030 [P] Criar UserRepository port em src/domain/user/ports/user.repository.ts
+- [X] T031 [P] Criar UserPreferencesRepository port em src/domain/user-preferences/ports/user-preferences.repository.ts
+- [X] T032 [P] Criar PurchaseHistoryRepository port em src/domain/purchase-history/ports/purchase-history.repository.ts
+- [X] T033 [P] Criar SearchHistoryRepository port em src/domain/search-history/ports/search-history.repository.ts
+- [X] T034 [P] Criar GlobalSearchRepository port em src/domain/search/ports/global-search.repository.ts
+- [X] T035 [P] Criar SmartInputParser port em src/domain/common/ports/smart-input-parser.port.ts
+- [X] T036 [P] Criar CategoryInference port em src/domain/common/ports/category-inference.port.ts
+- [X] T037 [P] Criar MediaProviderRepository port em src/domain/common/ports/media-provider.port.ts
 
 ### 2.3 Data Mappers (TDD Obrigatório)
 
-- [ ] T038 [P] Escrever testes para list.mapper em tests/data/mappers/list.mapper.test.ts
-- [ ] T039 [P] Escrever testes para item.mapper em tests/data/mappers/item.mapper.test.ts
-- [ ] T040 [P] Escrever testes para section.mapper em tests/data/mappers/section.mapper.test.ts
-- [ ] T041 [P] Escrever testes para user.mapper em tests/data/mappers/user.mapper.test.ts
-- [ ] T042 [P] Escrever testes para user-preferences.mapper em tests/data/mappers/user-preferences.mapper.test.ts
-- [ ] T043 [P] Escrever testes para purchase-history.mapper em tests/data/mappers/purchase-history.mapper.test.ts
-- [ ] T044 [P] Escrever testes para search-history.mapper em tests/data/mappers/search-history.mapper.test.ts
-- [ ] T045 [P] Implementar list.mapper em src/data/mappers/list.mapper.ts
-- [ ] T046 [P] Implementar item.mapper em src/data/mappers/item.mapper.ts
-- [ ] T047 [P] Implementar section.mapper em src/data/mappers/section.mapper.ts
-- [ ] T048 [P] Implementar user.mapper em src/data/mappers/user.mapper.ts
-- [ ] T049 [P] Implementar user-preferences.mapper em src/data/mappers/user-preferences.mapper.ts
-- [ ] T050 [P] Implementar purchase-history.mapper em src/data/mappers/purchase-history.mapper.ts
-- [ ] T051 [P] Implementar search-history.mapper em src/data/mappers/search-history.mapper.ts
+- [X] T038 [P] Escrever testes para list.mapper em tests/data/mappers/list.mapper.test.ts
+- [X] T039 [P] Escrever testes para item.mapper em tests/data/mappers/item.mapper.test.ts
+- [X] T040 [P] Escrever testes para section.mapper em tests/data/mappers/section.mapper.test.ts
+- [X] T041 [P] Escrever testes para user.mapper em tests/data/mappers/user.mapper.test.ts
+- [X] T042 [P] Escrever testes para user-preferences.mapper em tests/data/mappers/user-preferences.mapper.test.ts
+- [X] T043 [P] Escrever testes para purchase-history.mapper em tests/data/mappers/purchase-history.mapper.test.ts
+- [X] T044 [P] Escrever testes para search-history.mapper em tests/data/mappers/search-history.mapper.test.ts
+- [X] T045 [P] Implementar list.mapper em src/data/mappers/list.mapper.ts
+- [X] T046 [P] Implementar item.mapper em src/data/mappers/item.mapper.ts
+- [X] T047 [P] Implementar section.mapper em src/data/mappers/section.mapper.ts
+- [X] T048 [P] Implementar user.mapper em src/data/mappers/user.mapper.ts
+- [X] T049 [P] Implementar user-preferences.mapper em src/data/mappers/user-preferences.mapper.ts
+- [X] T050 [P] Implementar purchase-history.mapper em src/data/mappers/purchase-history.mapper.ts
+- [X] T051 [P] Implementar search-history.mapper em src/data/mappers/search-history.mapper.ts
 
 ### 2.4 Infrastructure Repositories
 
-- [ ] T052 [P] Implementar DrizzleListRepository em src/infra/repositories/DrizzleListRepository.ts
-- [ ] T053 [P] Implementar DrizzleNoteItemRepository em src/infra/repositories/DrizzleNoteItemRepository.ts
-- [ ] T054 [P] Implementar DrizzleShoppingItemRepository em src/infra/repositories/DrizzleShoppingItemRepository.ts
-- [ ] T055 [P] Implementar DrizzleMovieItemRepository em src/infra/repositories/DrizzleMovieItemRepository.ts
-- [ ] T056 [P] Implementar DrizzleBookItemRepository em src/infra/repositories/DrizzleBookItemRepository.ts
-- [ ] T057 [P] Implementar DrizzleGameItemRepository em src/infra/repositories/DrizzleGameItemRepository.ts
-- [ ] T058 [P] Implementar DrizzleSectionRepository em src/infra/repositories/DrizzleSectionRepository.ts
-- [ ] T059 [P] Implementar DrizzleUserRepository em src/infra/repositories/DrizzleUserRepository.ts
-- [ ] T060 [P] Implementar DrizzleUserPreferencesRepository em src/infra/repositories/DrizzleUserPreferencesRepository.ts
-- [ ] T061 [P] Implementar DrizzlePurchaseHistoryRepository em src/infra/repositories/DrizzlePurchaseHistoryRepository.ts
-- [ ] T062 [P] Implementar DrizzleSearchHistoryRepository em src/infra/repositories/DrizzleSearchHistoryRepository.ts
-- [ ] T063 [P] Implementar DrizzleGlobalSearchRepository em src/infra/repositories/DrizzleGlobalSearchRepository.ts
+- [X] T052 [P] Implementar DrizzleListRepository em src/infra/repositories/DrizzleListRepository.ts
+- [X] T053 [P] Implementar DrizzleNoteItemRepository em src/infra/repositories/DrizzleNoteItemRepository.ts
+- [X] T054 [P] Implementar DrizzleShoppingItemRepository em src/infra/repositories/DrizzleShoppingItemRepository.ts
+- [X] T055 [P] Implementar DrizzleMovieItemRepository em src/infra/repositories/DrizzleMovieItemRepository.ts
+- [X] T056 [P] Implementar DrizzleBookItemRepository em src/infra/repositories/DrizzleBookItemRepository.ts
+- [X] T057 [P] Implementar DrizzleGameItemRepository em src/infra/repositories/DrizzleGameItemRepository.ts
+- [X] T058 [P] Implementar DrizzleSectionRepository em src/infra/repositories/DrizzleSectionRepository.ts
+- [X] T059 [P] Implementar DrizzleUserRepository em src/infra/repositories/DrizzleUserRepository.ts
+- [X] T060 [P] Implementar DrizzleUserPreferencesRepository em src/infra/repositories/DrizzleUserPreferencesRepository.ts
+- [X] T061 [P] Implementar DrizzlePurchaseHistoryRepository em src/infra/repositories/DrizzlePurchaseHistoryRepository.ts
+- [X] T062 [P] Implementar DrizzleSearchHistoryRepository em src/infra/repositories/DrizzleSearchHistoryRepository.ts
+- [X] T063 [P] Implementar DrizzleGlobalSearchRepository em src/infra/repositories/DrizzleGlobalSearchRepository.ts
 
 ### 2.5 DI Container
 
-- [ ] T064 Atualizar AppDependencies interface em src/app/di/types.ts
-- [ ] T065 Atualizar buildDependencies em src/app/di/container.ts
-- [ ] T066 Atualizar AppDependenciesProvider com useMigrations em src/app/di/AppDependenciesProvider.tsx
+- [X] T064 Atualizar AppDependencies interface em src/app/di/types.ts
+- [X] T065 Atualizar buildDependencies em src/app/di/container.ts
+- [X] T066 Atualizar AppDependenciesProvider com useMigrations em src/app/di/AppDependenciesProvider.tsx
 
 **Checkpoint**: Base pronta — implementação de user stories pode começar
 
