@@ -418,7 +418,7 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 
 #### Listas e Organização
 - **FR-006**: Sistema MUST suportar três categorias: Notas (lista única pré-fabricada), Compras (múltiplas listas customizáveis) e Interesse (múltiplas listas customizáveis)
-- **FR-006a**: Lista de Notas é pré-fabricada e única - usuário NÃO pode criar, renomear ou excluir listas de notas adicionais
+- **FR-006a**: Lista de Notas é pré-fabricada, única e com nome fixo "Notas" - usuário NÃO pode criar, renomear ou excluir esta lista nem criar listas de notas adicionais
 - **FR-007**: Sistema MUST permitir criar, renomear e excluir listas de Compras e Interesse (não Notas)
 - **FR-008**: Listas de Interesse MUST suportar três subtipos: Filmes, Livros e Games
 - **FR-009**: Sistema MUST persistir ordem customizada de itens em listas de compras e notas via drag and drop
@@ -455,8 +455,11 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 
 #### Listas de Notas
 - **FR-021**: Itens de lista de notas MUST ter campos: título, descrição
-- **FR-022**: Sistema MUST suportar markdown básico (negrito, itálico, listas) na descrição
+- **FR-022**: Sistema MUST suportar markdown na descrição: negrito, itálico, listas (bulleted/numbered), headers (h1-h3) e links clicáveis
 - **FR-023**: Sistema MUST permitir reordenação de itens via drag and drop
+- **FR-023a**: Sistema MUST permitir criar nota sem título explícito
+- **FR-023b**: Quando nota não tem título, sistema SHOULD gerar título automaticamente via IA baseado no conteúdo da descrição
+- **FR-023c**: Fallback quando IA indisponível ou descrição vazia: exibir timestamp de criação ou "Sem título"
 
 #### Listas de Interesse
 - **FR-024**: Listas de Filmes MUST integrar com TMDb para busca e enriquecimento de dados
@@ -499,7 +502,7 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-043**: Sistema MUST exibir tela de detalhes com título, descrição e lista associada (se houver)
 - **FR-044**: Sistema MUST suportar edição inline de todos os campos
 - **FR-045**: Sistema MUST permitir alterar lista associada de um item existente
-- **FR-046**: Tela de detalhes de nota MUST renderizar markdown na visualização e suportar no editor
+- **FR-046**: Tela de detalhes de nota MUST abrir em modo visualização (markdown renderizado) por padrão, com toque explícito para entrar em modo edição
 
 #### Configurações
 - **FR-047**: Sistema MUST permitir selecionar tema: claro, escuro ou automático
@@ -510,6 +513,7 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 #### Telas Notas e Listas
 - **FR-051**: Tela Notas MUST exibir itens da lista de Notas única (pré-fabricada)
 - **FR-052**: Tela Notas MUST permitir configurar agrupamento (por seção ou data) e ordenação (asc/desc) dos itens
+- **FR-052a**: Quando agrupado por seção, itens sem seção MUST aparecer em grupo "Sem seção" no topo, acima das seções definidas
 - **FR-053**: Tela Listas MUST exibir listas ativas agrupadas por TIPO (categoria) com dropdown expansível
 
 ### Entidades-chave
@@ -576,6 +580,11 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - Q: Como reutilizar itens do histórico? → A: Duas opções: (1) "Comprar tudo novamente" adiciona todos os itens, somando quantidade se já existirem na lista; (2) Seleção individual de itens com indicação visual de quais já existem
 - Q: Como editar item de lista de compras? → A: Modal inteligente (sheet sobre a lista) com campo de entrada inteligente pré-preenchido, permitindo edição com mesmo parsing de quantidade/valor
 - Q: Como calcular total com itens sem valor? → A: Total exibe soma dos itens com valor + indicador "(X itens sem valor)" para transparência
+- Q: Comportamento padrão ao abrir nota na tela de detalhes? → A: Modo visualização primeiro (markdown renderizado), toque explícito para entrar em modo edição
+- Q: Quais elementos markdown são suportados nas notas? → A: Básico (negrito, itálico, listas) + headers (h1-h3) + links clicáveis
+- Q: Nota pode ser criada sem título? → A: Sim, título é opcional. Sistema usa IA para gerar título baseado no conteúdo da descrição (fallback: timestamp ou "Sem título")
+- Q: Exibição de itens sem seção quando agrupado por seção? → A: Grupo "Sem seção" no topo, acima das seções definidas pelo usuário
+- Q: Lista de Notas pré-fabricada pode ser renomeada? → A: Não, nome fixo "Notas" (não pode ser renomeada nem excluída)
 
 ## Premissas
 
