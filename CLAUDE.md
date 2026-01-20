@@ -165,7 +165,6 @@ Storybook config: `.rnstorybook/` (React Native specific, not `.storybook/`)
 
 - Full workflow: `src/design-system/README.md` (has Quick Reference at top)
 - Contributing guide: `src/design-system/CONTRIBUTING.md`
-- Specialized agent: `.claude/agents/design-system-developer.md` (use proactively!)
 - Quick start: `specs/001-design-system/quickstart.md`
 
 **Design philosophy**: Modern, Friendly - Fira Sans typography, Cyan theme, Gray base, Large radius, Compact spacing
