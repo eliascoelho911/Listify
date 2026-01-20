@@ -41,7 +41,7 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 - Botão central Adicionar que abre modal/sheet com campo de entrada inteligente
 - Campo de entrada inteligente com parsing de texto (@lista, quantidade, valor), inline highlighting, preview compacto e busca inline para interesse
 - Inferência de categoria com IA ao criar nova lista (baseado no conteúdo do item)
-- Sistema de listas com três categorias: Notas, Compras e Interesse
+- Sistema de listas com cinco tipos: Notas, Compras, Filmes, Livros e Games
 - Fluxo de criação, edição e exclusão de listas customizadas
 - Seções customizadas dentro de cada lista para organização visual de itens
 - Lista de Notas única (pré-fabricada) com suporte a markdown básico e drag and drop para reordenação
@@ -149,10 +149,9 @@ Quando o usuário referencia uma lista que não existe (@NovaLista), o sistema o
 **Cenários de Aceite**:
 
 1. **Given** o usuário digita "@NovaLista", **When** a lista "NovaLista" não existe, **Then** o sistema sugere criar nova lista
-2. **Given** o usuário confirma criar nova lista, **When** o conteúdo contém R$, **Then** a lista é inferida como categoria "Compras"
-3. **Given** o usuário confirma criar nova lista, **When** o conteúdo parece título de mídia (filme/livro/game), **Then** a lista é inferida como categoria "Interesse"
-4. **Given** o usuário confirma criar nova lista, **When** a inferência tem baixa confiança, **Then** exibe mini-seletor de categoria (Notas/Compras/Interesse)
-5. **Given** o usuário seleciona categoria "Interesse", **When** confirma, **Then** exibe opções de subtipo (Filmes/Livros/Games)
+2. **Given** o usuário confirma criar nova lista, **When** o conteúdo contém R$, **Then** a lista é inferida como tipo "Compras"
+3. **Given** o usuário confirma criar nova lista, **When** o conteúdo parece título de mídia (filme/livro/game), **Then** a lista é inferida como tipo correspondente (Filmes/Livros/Games)
+4. **Given** o usuário confirma criar nova lista, **When** a inferência tem baixa confiança, **Then** exibe mini-seletor de tipo (Notas/Compras/Filmes/Livros/Games)
 
 ---
 
@@ -278,8 +277,8 @@ O usuário quer criar uma nova lista para organizar um tipo específico de conte
 **Cenários de Aceite**:
 
 1. **Given** o usuário está na tela de Listas, **When** toca no botão "Nova Lista", **Then** abre formulário para criação de lista
-2. **Given** o formulário de nova lista está aberto, **When** o usuário digita nome "Compras do Mês" e seleciona categoria "Compras", **Then** a lista é criada com as configurações corretas
-3. **Given** o usuário cria lista de categoria "Interesse", **When** seleciona o subtipo "Filmes", **Then** a lista é criada com comportamento de lista de filmes
+2. **Given** o formulário de nova lista está aberto, **When** o usuário digita nome "Compras do Mês" e seleciona tipo "Compras", **Then** a lista é criada com as configurações corretas
+3. **Given** o usuário cria lista de tipo "Filmes", **When** confirma, **Then** a lista é criada com comportamento de lista de filmes
 4. **Given** o usuário tenta criar lista com nome já existente, **When** confirma, **Then** o sistema exibe mensagem de erro e não cria duplicata
 5. **Given** a lista foi criada, **When** o usuário volta para tela de Listas, **Then** a nova lista aparece na listagem ordenada alfabeticamente
 
@@ -606,18 +605,18 @@ O usuário quer remover itens que não são mais necessários de qualquer tipo d
 - **FR-001**: Sistema MUST parsear texto de entrada e extrair: título, lista destino (@), quantidade e valor monetário (somente para listas de compras)
 - **FR-002**: Sistema MUST exibir dropdown de sugestões ao digitar "@" com listas existentes filtradas
 - **FR-003**: Sistema MUST permitir criar nova lista inline quando o texto após "@" não corresponde a nenhuma lista existente
-- **FR-003a**: Ao criar lista inline, sistema MUST usar IA para inferir categoria baseado no conteúdo (R$=Compras, título de mídia=Interesse, texto genérico=Notas)
-- **FR-003b**: Quando inferência tem baixa confiança, sistema MUST exibir mini-seletor de categoria (Notas/Compras/Interesse) antes de criar
+- **FR-003a**: Ao criar lista inline, sistema MUST usar IA para inferir tipo baseado no conteúdo (R$=Compras, título de filme=Filmes, título de livro=Livros, título de game=Games, texto genérico=Notas)
+- **FR-003b**: Quando inferência tem baixa confiança, sistema MUST exibir mini-seletor de tipo (Notas/Compras/Filmes/Livros/Games) antes de criar
 - **FR-004**: Sistema MUST reconhecer padrões de valor monetário (R$X, X,XX, X.XX) e extrair para campo de valor SOMENTE quando lista destino é do tipo compras
 - **FR-005**: Itens sem lista especificada MUST permanecer na Inbox sem lista associada (tipo = nota simples)
 - **FR-005a**: Campo de entrada MUST exibir inline highlighting em tempo real (texto colorido: @lista, R$valor, quantidade)
 - **FR-005b**: Campo de entrada MUST exibir preview compacto abaixo do campo com chips/badges dos elementos extraídos
 
 #### Listas e Organização
-- **FR-006**: Sistema MUST suportar três categorias: Notas (lista única pré-fabricada), Compras (múltiplas listas customizáveis) e Interesse (múltiplas listas customizáveis)
+- **FR-006**: Sistema MUST suportar cinco tipos de lista: Notas (lista única pré-fabricada), Compras (múltiplas listas customizáveis), Filmes (múltiplas), Livros (múltiplas) e Games (múltiplas)
 - **FR-006a**: Lista de Notas é pré-fabricada, única e com nome fixo "Notas" - usuário NÃO pode criar, renomear ou excluir esta lista nem criar listas de notas adicionais
-- **FR-007**: Sistema MUST permitir criar, renomear e excluir listas de Compras e Interesse (não Notas)
-- **FR-008**: Listas de Interesse MUST suportar três subtipos: Filmes, Livros e Games
+- **FR-007**: Sistema MUST permitir criar, renomear e excluir listas de Compras, Filmes, Livros e Games (não Notas)
+- **FR-008**: [Removido - subtipos de interesse agora são tipos de lista independentes: movies, books, games]
 - **FR-009**: Sistema MUST persistir ordem customizada de itens em listas de compras e notas via drag and drop
 - **FR-010**: Ao excluir lista, sistema MUST oferecer opção de mover itens para Inbox ou excluir junto
 
@@ -715,8 +714,20 @@ O usuário quer remover itens que não são mais necessários de qualquer tipo d
 
 ### Entidades-chave
 
-- **Item**: Unidade básica de informação. Possui título, descrição opcional, data de criação, data de atualização, lista associada (opcional - itens sem lista ficam na Inbox), seção associada (opcional - itens podem ficar "soltos" na lista), ordem na lista/seção, e campos específicos por tipo (valor, quantidade para compras; status consumido para interesse; metadados de mídia para interesse)
-- **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens. Nota: categoria "notes" possui apenas UMA lista pré-fabricada; categorias "shopping" e "interest" permitem múltiplas listas customizáveis
+- **Item**: Unidade básica de informação com tipos específicos (discriminated union):
+  - `NoteItem`: título, descrição opcional, sortOrder
+  - `ShoppingItem`: título, quantidade, valor, isChecked, sortOrder
+  - `MovieItem`: título, externalId, metadata (MovieMetadata), isChecked
+  - `BookItem`: título, externalId, metadata (BookMetadata), isChecked
+  - `GameItem`: título, externalId, metadata (GameMetadata), isChecked
+  - Todos possuem: id, listId (opcional), sectionId (opcional), createdAt, updatedAt
+- **Lista**: Agrupador de itens por contexto com tipos específicos (discriminated union):
+  - `NotesList`: lista única pré-fabricada para notas
+  - `ShoppingList`: múltiplas listas customizáveis para compras
+  - `MoviesList`: múltiplas listas customizáveis para filmes
+  - `BooksList`: múltiplas listas customizáveis para livros
+  - `GamesList`: múltiplas listas customizáveis para games
+  - Todos possuem: id, name, description, isPrefabricated, createdAt, updatedAt, listType
 - **Seção**: Agrupador visual de itens dentro de uma lista específica. Possui nome, ordem na lista, lista pai (obrigatória). Cada lista tem suas próprias seções independentes. Relaciona-se com uma lista (muitos-para-um) e com múltiplos itens (um-para-muitos)
 - **Usuário**: Perfil do usuário local. Possui nome, email, foto. Configurações de tema e cor principal
 - **HistóricoCompra**: Registro de compra concluída. Possui lista de origem (referência), data da compra, snapshot dos itens (título, quantidade, valor, marcado), total da compra. Permite visualização e reutilização futura
@@ -822,6 +833,12 @@ As user stories foram reorganizadas para maximizar reuso de código e componente
 | 4.1-4.3 Interesse | 8.1-8.3 | Mantém P2-P3 |
 | 7.4 Tema | 9.1 | Mantém P3 |
 | (novo) | 10.1 | Exclusão de itens (P2) |
+
+### Session 2026-01-20
+
+- Q: Modelo de dados para tipos de lista? → A: Removido conceito de "categoria" intermediária. Agora temos discriminated unions diretas: `NotesList`, `ShoppingList`, `MoviesList`, `BooksList`, `GamesList` com discriminador `listType`
+- Q: Modelo de dados para tipos de item? → A: Removido `InterestItem` genérico. Agora temos tipos específicos: `NoteItem`, `ShoppingItem`, `MovieItem`, `BookItem`, `GameItem` com discriminador `type`
+- Q: Por que essa mudança? → A: Simplifica o modelo, elimina confusão entre "categoria" e "subtipo", e permite type-safety mais forte com TypeScript discriminated unions
 
 ## Premissas
 
