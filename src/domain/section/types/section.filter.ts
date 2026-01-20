@@ -1,3 +1,4 @@
 import type { BaseSortField } from '@domain/common';
 
-export type SectionSortField = BaseSortField | 'name' | 'sortOrder';
+// Sorting (sortOrder is already in BaseSortField)
+export type SectionSortField = BaseSortField | 'name';

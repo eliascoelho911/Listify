@@ -1,3 +1,5 @@
+import type { Sortable } from '@domain/common';
+
 // Base metadata shared by all interest categories
 type BaseMetadata = {
   coverUrl?: string;
@@ -26,12 +28,11 @@ export type ExternalMetadata = MovieMetadata | BookMetadata | GameMetadata;
 export type MetadataCategory = ExternalMetadata['category'];
 
 // Base type shared by all items
-type BaseItem = {
+type BaseItem = Sortable & {
   id: string;
   listId?: string;
   sectionId?: string;
   title: string;
-  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 };

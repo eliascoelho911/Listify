@@ -43,5 +43,5 @@ export type ItemFilterCriteria =
 // Grouping
 export type ItemGroupCriteria = 'listId' | 'sectionId' | 'isChecked' | 'createdAt' | 'updatedAt';
 
-// Sorting
-export type ItemSortField = BaseSortField | 'title' | 'sortOrder';
+// Sorting (sortOrder is already in BaseSortField)
+export type ItemSortField = BaseSortField | 'title';

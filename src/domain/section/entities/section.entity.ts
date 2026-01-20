@@ -1,8 +1,9 @@
-export type Section = {
+import type { Sortable } from '@domain/common';
+
+export type Section = Sortable & {
   id: string;
   listId: string;
   name: string;
-  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 };

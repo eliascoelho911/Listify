@@ -17,6 +17,7 @@ export type {
   LayoutConfig,
   PaginatedResult,
   PaginationParams,
+  Sortable,
   SortCriteria,
   SortDirection,
   SortOrderUpdate,
