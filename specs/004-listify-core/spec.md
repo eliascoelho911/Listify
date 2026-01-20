@@ -36,14 +36,15 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 
 - Tela Inbox com listagem de todos os itens recentes de todas as categorias (scroll infinito paginado)
 - Tela Buscar com campo auto-focado, filtros visíveis e histórico de buscas recentes
-- Tela Notas com itens de listas categoria "Notas" e configuração de layout (agrupamento e ordenação)
+- Tela Notas com itens da lista de Notas única (pré-fabricada) e configuração de layout (agrupamento por seção/data e ordenação)
 - Tela Listas com listas ativas agrupadas por TIPO (categoria) com dropdown expansível
-- Botão central Adicionar que abre modal/sheet com campo de entrada inteligente e opções de tipo
-- Campo de entrada inteligente com parsing de texto (@lista, quantidade, valor)
+- Botão central Adicionar que abre modal/sheet com campo de entrada inteligente
+- Campo de entrada inteligente com parsing de texto (@lista, quantidade, valor), inline highlighting, preview compacto e busca inline para interesse
+- Inferência de categoria com IA ao criar nova lista (baseado no conteúdo do item)
 - Sistema de listas com três categorias: Notas, Compras e Interesse
 - Fluxo de criação, edição e exclusão de listas customizadas
 - Seções customizadas dentro de cada lista para organização visual de itens
-- Listas de Notas com suporte a markdown básico e drag and drop para reordenação
+- Lista de Notas única (pré-fabricada) com suporte a markdown básico e drag and drop para reordenação
 - Listas de Compras com quantidade, valor, total calculado, marcação de itens e drag and drop
 - Listas de Interesse (Filmes, Livros, Games) com integração a provedores externos (TMDb, Google Books, IGDB)
 - Tela de detalhes de notas com visualização e edição
@@ -62,7 +63,7 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 - Histórico de compras e análise de gastos
 - Integração com assistentes de voz (Alexa, Google Assistant)
 - Autenticação de usuário e contas
-- Recursos de IA para sugerir tipo de lista baseado no conteúdo do item
+- Recursos avançados de IA além da inferência de categoria (sugestões proativas, auto-complete inteligente)
 
 ## Cenários do Usuário & Testes *(obrigatório)*
 
@@ -121,7 +122,7 @@ O usuário navega entre as principais seções do app (Inbox, Buscar, Notas, Lis
 4. **Given** o usuário está na tela de Listas, **When** toca na aba "Inbox" na bottombar, **Then** retorna para o Inbox
 5. **Given** o usuário está em qualquer tela, **When** observa a bottombar, **Then** a aba atual está destacada visualmente
 6. **Given** o usuário navega entre abas, **When** retorna a uma aba visitada anteriormente, **Then** o estado da tela é preservado (posição do scroll, filtros aplicados)
-7. **Given** o usuário está em qualquer tela, **When** toca no botão central "Adicionar", **Then** abre modal/sheet com campo de entrada inteligente e opções de tipo de item
+7. **Given** o usuário está em qualquer tela, **When** toca no botão central "Adicionar", **Then** abre modal/sheet com campo de entrada inteligente
 
 ---
 
@@ -177,8 +178,8 @@ O usuário quer criar notas para suas ideias e organizá-las em uma ordem espec�
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário está em uma lista de notas, **When** adiciona "Ideia para projeto", **Then** o item é criado com título
-2. **Given** o usuário está em uma lista de notas com 5 itens, **When** arrasta um item para nova posição, **Then** o item é reordenado e a nova ordem é persistida
+1. **Given** o usuário está na lista de Notas (única), **When** adiciona "Ideia para projeto", **Then** o item é criado com título
+2. **Given** a lista de Notas tem 5 itens, **When** arrasta um item para nova posição, **Then** o item é reordenado e a nova ordem é persistida
 3. **Given** o usuário abre uma nota, **When** adiciona descrição com markdown "**Importante**: fazer até sexta", **Then** "Importante" aparece em negrito
 
 ---
@@ -314,7 +315,7 @@ O usuário quer organizar os itens dentro de uma lista em seções customizadas 
 
 ### User Story 7.1 - Tela Notas na Bottom Bar (Priority: P1)
 
-O usuário quer visualizar todos os seus itens de notas em uma tela dedicada com opções de agrupamento e ordenação configuráveis.
+O usuário quer visualizar os itens da lista de Notas única em uma tela dedicada com opções de ordenação configuráveis.
 
 **Por que esta prioridade**: Tela Notas é uma aba principal da navegação, essencial para acesso rápido aos itens de notas.
 
@@ -322,8 +323,8 @@ O usuário quer visualizar todos os seus itens de notas em uma tela dedicada com
 
 **Cenários de Aceite**:
 
-1. **Given** o usuário toca na aba "Notas" na bottombar, **When** a tela abre, **Then** exibe apenas itens de listas da categoria "Notas"
-2. **Given** a tela Notas está aberta, **When** o usuário toca no controle de agrupamento, **Then** pode escolher agrupar por: lista, data de criação ou data de atualização
+1. **Given** o usuário toca na aba "Notas" na bottombar, **When** a tela abre, **Then** exibe itens da lista de Notas única (pré-fabricada)
+2. **Given** a tela Notas está aberta, **When** o usuário toca no controle de agrupamento, **Then** pode escolher agrupar por: seção, data de criação ou data de atualização
 3. **Given** a tela Notas está aberta, **When** o usuário toca no controle de ordenação, **Then** pode escolher ordem ascendente ou descendente
 4. **Given** o usuário configura agrupamento e ordenação, **When** navega para outra aba e retorna, **Then** as configurações são preservadas
 5. **Given** a tela Notas está aberta, **When** o usuário toca em um item, **Then** navega para a tela de detalhes da nota
@@ -408,12 +409,17 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-001**: Sistema MUST parsear texto de entrada e extrair: título, lista destino (@), quantidade e valor monetário (somente para listas de compras)
 - **FR-002**: Sistema MUST exibir dropdown de sugestões ao digitar "@" com listas existentes filtradas
 - **FR-003**: Sistema MUST permitir criar nova lista inline quando o texto após "@" não corresponde a nenhuma lista existente
+- **FR-003a**: Ao criar lista inline, sistema MUST usar IA para inferir categoria baseado no conteúdo (R$=Compras, título de mídia=Interesse, texto genérico=Notas)
+- **FR-003b**: Quando inferência tem baixa confiança, sistema MUST exibir mini-seletor de categoria (Notas/Compras/Interesse) antes de criar
 - **FR-004**: Sistema MUST reconhecer padrões de valor monetário (R$X, X,XX, X.XX) e extrair para campo de valor SOMENTE quando lista destino é do tipo compras
-- **FR-005**: Itens sem lista especificada MUST permanecer na Inbox sem lista associada
+- **FR-005**: Itens sem lista especificada MUST permanecer na Inbox sem lista associada (tipo = nota simples)
+- **FR-005a**: Campo de entrada MUST exibir inline highlighting em tempo real (texto colorido: @lista, R$valor, quantidade)
+- **FR-005b**: Campo de entrada MUST exibir preview compacto abaixo do campo com chips/badges dos elementos extraídos
 
 #### Listas e Organização
-- **FR-006**: Sistema MUST suportar três categorias de listas: Notas, Compras e Interesse
-- **FR-007**: Sistema MUST permitir criar, renomear e excluir listas
+- **FR-006**: Sistema MUST suportar três categorias: Notas (lista única pré-fabricada), Compras (múltiplas listas customizáveis) e Interesse (múltiplas listas customizáveis)
+- **FR-006a**: Lista de Notas é pré-fabricada e única - usuário NÃO pode criar, renomear ou excluir listas de notas adicionais
+- **FR-007**: Sistema MUST permitir criar, renomear e excluir listas de Compras e Interesse (não Notas)
 - **FR-008**: Listas de Interesse MUST suportar três subtipos: Filmes, Livros e Games
 - **FR-009**: Sistema MUST persistir ordem customizada de itens em listas de compras e notas via drag and drop
 - **FR-010**: Ao excluir lista, sistema MUST oferecer opção de mover itens para Inbox ou excluir junto
@@ -425,6 +431,7 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-014**: Sistema MUST permitir reordenar seções via drag and drop
 - **FR-015**: Ao excluir seção, sistema MUST mover itens para fora da seção (permanecem na lista)
 - **FR-016**: Itens sem seção MUST aparecer no topo da lista, antes das seções definidas
+- **FR-016a**: Cada seção MUST exibir botão "Adicionar nessa seção" que abre modal de entrada com `@Lista:Seção` já preenchido
 
 #### Listas de Compras
 - **FR-017**: Itens de lista de compras MUST ter campos: título, quantidade, valor
@@ -443,6 +450,8 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-026**: Listas de Games MUST integrar com IGDB para busca e enriquecimento de dados
 - **FR-027**: Sistema MUST permitir marcar itens de interesse como "consumido" (visto/lido/jogado)
 - **FR-028**: Sistema MUST preencher automaticamente: título, descrição/sinopse, capa/poster, avaliação, e metadados específicos (elenco/autor/desenvolvedor)
+- **FR-028a**: Ao detectar lista de interesse no campo de entrada, sistema MUST exibir dropdown inline com resultados do provedor externo enquanto usuário digita
+- **FR-028b**: Sistema MUST permitir criação manual (sem seleção do provedor) para casos onde item não é encontrado
 
 #### Inbox e Navegação
 - **FR-029**: Inbox MUST exibir todos os itens de todas as categorias em scroll infinito com paginação
@@ -451,7 +460,9 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-032**: Bottombar MUST permitir navegação entre Inbox, Buscar, Notas e Listas
 - **FR-033**: Bottombar MUST destacar visualmente a aba ativa
 - **FR-034**: Sistema MUST preservar estado da tela ao navegar entre abas
-- **FR-035**: Bottombar MUST exibir botão central "Adicionar" que abre modal/sheet com entrada inteligente
+- **FR-035**: Bottombar MUST exibir botão central "Adicionar" que abre modal/sheet com entrada inteligente e comportamento contextual: Inbox=neutro, Notas=pré-seleciona lista de Notas única, Lista específica=pré-seleciona lista atual. NÃO existe campo de entrada inline nas telas de lista
+- **FR-035a**: Modal de entrada MUST permanecer aberto após criar item, permitindo criação contínua até usuário fechar manualmente
+- **FR-035b**: Na tela de gerenciamento de listas, botão Adicionar MUST permitir criar listas e seções usando sintaxe `@Lista` (lista) e `:Seção` ou `@Lista:Seção` (seção). Dois-pontos é o separador de seção
 - **FR-036**: Navbar MUST fornecer acesso a configurações via ícone de perfil (esquerda)
 
 #### Busca
@@ -475,14 +486,14 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-050**: Tela de configurações MUST exibir perfil do usuário (foto, nome, email) no topo
 
 #### Telas Notas e Listas
-- **FR-051**: Tela Notas MUST exibir apenas itens de listas da categoria "Notas"
-- **FR-052**: Tela Notas MUST permitir configurar agrupamento (group) e ordenação (sort) dos itens
+- **FR-051**: Tela Notas MUST exibir itens da lista de Notas única (pré-fabricada)
+- **FR-052**: Tela Notas MUST permitir configurar agrupamento (por seção ou data) e ordenação (asc/desc) dos itens
 - **FR-053**: Tela Listas MUST exibir listas ativas agrupadas por TIPO (categoria) com dropdown expansível
 
 ### Entidades-chave
 
 - **Item**: Unidade básica de informação. Possui título, descrição opcional, data de criação, data de atualização, lista associada (opcional - itens sem lista ficam na Inbox), seção associada (opcional - itens podem ficar "soltos" na lista), ordem na lista/seção, e campos específicos por tipo (valor, quantidade para compras; status consumido para interesse; metadados de mídia para interesse)
-- **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens
+- **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens. Nota: categoria "notes" possui apenas UMA lista pré-fabricada; categorias "shopping" e "interest" permitem múltiplas listas customizáveis
 - **Seção**: Agrupador visual de itens dentro de uma lista específica. Possui nome, ordem na lista, lista pai (obrigatória). Cada lista tem suas próprias seções independentes. Relaciona-se com uma lista (muitos-para-um) e com múltiplos itens (um-para-muitos)
 - **Usuário**: Perfil do usuário local. Possui nome, email, foto. Configurações de tema e cor principal
 
@@ -517,10 +528,21 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 ### Session 2026-01-19
 
 - Q: Comportamento da tela Buscar na Bottom Bar? → A: Campo auto-focado + filtros visíveis + histórico de buscas recentes
-- Q: Comportamento do botão central Adicionar? → A: Modal/sheet com campo de entrada inteligente + opções de tipo de item
+- Q: Comportamento do botão central Adicionar? → A: Modal/sheet com campo de entrada inteligente (sem opções de tipo - tipo é inferido pela lista destino)
 - Q: Distinção entre telas Notas e Listas? → A: Notas = itens com layout configurável (group + sort); Listas = listas ativas agrupadas por TIPO com dropdown
 - Q: Quais itens aparecem na tela Notas? → A: Apenas itens de listas da categoria "Notas"
 - Q: Conteúdo da tela Inbox? → A: Todos os itens recentes (todas as categorias) com scroll infinito
+- Q: Comportamento contextual do botão Adicionar por tela? → A: Inbox=neutro; Notas=pré-seleciona lista de Notas (única); Lista específica=pré-seleciona lista atual; Tela de gerenciamento de listas=adiciona listas (`@Lista`) e seções (`:Seção` ou `@Lista:Seção`)
+- Q: Modal de entrada fecha após criar item? → A: Não, permanece aberto para criação contínua (usuário fecha manualmente)
+- Q: Sintaxe para criar seção na lista atual? → A: Usar dois-pontos como separador - `:Seção` (lista atual implícita) ou `@Lista:Seção` (lista explícita). `@Nome` SEMPRE se refere a lista, nunca seção
+- Q: Como usuário indica tipo de item (nota/compra/interesse)? → A: Inferido pela categoria da lista destino. Sem lista = nota simples na Inbox
+- Q: Feedback visual durante digitação no campo inteligente? → A: Combinação de inline highlighting (texto colorido: @lista azul, R$valor verde) + preview compacto abaixo com chips/badges dos elementos extraídos
+- Q: Fluxo de adição para listas de interesse (Filmes/Livros/Games)? → A: Busca inline - dropdown com resultados do provedor externo aparece enquanto digita. Usuário seleciona resultado ou cria manual. Revisão/edição posterior na tela de detalhes
+- Q: Fluxo quando usuário digita @ListaInexistente? → A: Inferência inteligente com IA - sistema analisa conteúdo para inferir categoria (R$=Compras, nome de filme=Interesse, etc.). Se incerto, exibe mini-seletor de categoria
+- Q: Quantas listas de Notas existem? → A: UMA ÚNICA lista de Notas pré-fabricada. Notas não permite criar listas customizadas (diferente de Compras e Interesse que são múltiplas)
+- Q: O que significa "contexto notas" no botão Adicionar? → A: Pré-seleciona a lista de Notas única. Campo já vem com destino definido
+- Q: Existem "opções de tipo" no modal do botão Adicionar? → A: NÃO. Modal contém apenas o campo de entrada inteligente. Tipo do item é inferido automaticamente pela categoria da lista destino
+- Q: Existe campo de entrada inline dentro de uma lista específica? → A: NÃO. Usuário sempre usa o modal via botão central da bottombar (pré-seleciona lista atual). Porém, cada SEÇÃO tem botão "Adicionar nessa seção" que abre o modal com `@Lista:Seção` já preenchido
 
 ## Premissas
 
