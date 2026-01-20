@@ -73,7 +73,16 @@ src/
 │   ├── purchase-history/         # Shopping completion snapshots
 │   └── search-history/           # Search history entries
 │
-├── data/                         # 🆕 Mappers (SQLite row ↔ domain)
+├── data/                         # 🆕 Mappers + Persistence contracts
+│   ├── persistence/              # 🆕 Row types (contratos de persistência)
+│   │   ├── list.persistence.ts
+│   │   ├── item.persistence.ts
+│   │   ├── section.persistence.ts
+│   │   ├── user.persistence.ts
+│   │   ├── user-preferences.persistence.ts
+│   │   ├── purchase-history.persistence.ts
+│   │   ├── search-history.persistence.ts
+│   │   └── index.ts
 │   └── mappers/
 │       ├── list.mapper.ts
 │       ├── item.mapper.ts

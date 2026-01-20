@@ -312,7 +312,58 @@ type SearchHistoryEntry = {
 
 ---
 
-## 3. Schema SQLite (Drizzle ORM)
+## 3. Persistence Contracts (Data Layer)
+
+Os tipos de row são definidos em `src/data/persistence/` como **contratos** que o Drizzle schema deve implementar. Isso segue o Dependency Inversion Principle e facilita cloud sync futuro.
+
+```typescript
+// src/data/persistence/list.persistence.ts
+export interface ListRow {
+  id: string;
+  name: string;
+  description: string | null;
+  list_type: string;
+  is_prefabricated: number; // 0 | 1
+  created_at: number;
+  updated_at: number;
+}
+
+// src/data/persistence/item.persistence.ts
+export interface ItemRow {
+  id: string;
+  list_id: string | null;
+  section_id: string | null;
+  title: string;
+  type: string;
+  sort_order: number;
+  description: string | null;
+  quantity: string | null;
+  price: number | null;
+  is_checked: number | null;
+  external_id: string | null;
+  metadata: string | null; // JSON string
+  created_at: number;
+  updated_at: number;
+}
+
+// src/data/persistence/section.persistence.ts
+export interface SectionRow {
+  id: string;
+  list_id: string;
+  name: string;
+  sort_order: number;
+  created_at: number;
+  updated_at: number;
+}
+```
+
+**Fluxo**: `domain ← data/mappers ← data/persistence ← infra/drizzle`
+
+---
+
+## 4. Schema SQLite (Drizzle ORM)
+
+O schema Drizzle deve produzir rows compatíveis com os contratos definidos em `data/persistence/`.
 
 ```typescript
 // src/infra/drizzle/schema.ts
@@ -438,7 +489,7 @@ export const searchHistory = sqliteTable('search_history', {
 
 ---
 
-## 4. Relacionamentos
+## 5. Relacionamentos
 
 ```text
 User (1) ─────────────────── (1) UserPreferences
@@ -470,7 +521,7 @@ SearchHistoryEntry (standalone)
 
 ---
 
-## 5. Índices para Performance
+## 6. Índices para Performance
 
 | Tabela | Índice | Colunas | Propósito |
 |--------|--------|---------|-----------|
@@ -490,7 +541,7 @@ SearchHistoryEntry (standalone)
 
 ---
 
-## 6. Migrações
+## 7. Migrações
 
 ### Migration 0001: Initial Schema
 
@@ -607,7 +658,7 @@ VALUES (
 
 ---
 
-## 7. Validações de Domínio
+## 8. Validações de Domínio
 
 | Regra | Tabela | Validação |
 |-------|--------|-----------|
@@ -621,7 +672,7 @@ VALUES (
 
 ---
 
-## 8. Transições de Estado
+## 9. Transições de Estado
 
 ### Item de Compras
 

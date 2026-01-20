@@ -83,6 +83,140 @@ export type DrizzleDB = ReturnType<typeof initializeDatabase>;
 
 ---
 
+## 1.1 Persistence Contracts (Data Layer)
+
+### Decisão
+Definir tipos de row (contratos de persistência) em `src/data/persistence/`, não em infra.
+
+### Racional
+- **Clean Architecture**: Data layer define o contrato, infra implementa
+- **Extensibilidade**: Facilita adicionar cloud sync no futuro
+- **ESLint enforced**: Data não pode importar de @infra/*
+- **DIP**: Dependency Inversion Principle - data define a interface
+
+### Fluxo de Dependências
+
+```
+domain ← data ← infra
+         ↑       ↑
+    (row types) (Drizzle implementa)
+```
+
+- **data/persistence/**: Define interfaces `ListRow`, `ItemRow`, etc.
+- **data/mappers/**: Importa de persistence/ e domain/
+- **infra/drizzle/**: Schema produz rows compatíveis com os contratos
+- **infra/repositories/**: Importa mappers de data/
+
+### Padrão de Implementação
+
+#### 1. Persistence Contract (Data Layer)
+
+```typescript
+// src/data/persistence/list.persistence.ts
+export interface ListRow {
+  id: string;
+  name: string;
+  description: string | null;
+  list_type: string;
+  is_prefabricated: number; // SQLite boolean = 0/1
+  created_at: number;       // timestamp ms
+  updated_at: number;
+}
+
+export interface CreateListRow {
+  id: string;
+  name: string;
+  description: string | null;
+  list_type: string;
+  is_prefabricated: number;
+  created_at: number;
+  updated_at: number;
+}
+```
+
+#### 2. Mapper (Data Layer)
+
+```typescript
+// src/data/mappers/list.mapper.ts
+import type { ListRow, CreateListRow } from '../persistence/list.persistence';
+import type { List, CreateListInput, ListType } from '@domain/list';
+
+export function toDomainList(row: ListRow): List {
+  return {
+    id: row.id,
+    name: row.name,
+    description: row.description ?? undefined,
+    listType: row.list_type as ListType,
+    isPrefabricated: row.is_prefabricated === 1,
+    createdAt: new Date(row.created_at),
+    updatedAt: new Date(row.updated_at),
+  };
+}
+
+export function toCreateListRow(input: CreateListInput, id: string): CreateListRow {
+  const now = Date.now();
+  return {
+    id,
+    name: input.name,
+    description: input.description ?? null,
+    list_type: input.listType,
+    is_prefabricated: input.isPrefabricated ? 1 : 0,
+    created_at: now,
+    updated_at: now,
+  };
+}
+```
+
+#### 3. Repository (Infra Layer)
+
+```typescript
+// src/infra/repositories/DrizzleListRepository.ts
+import { eq } from 'drizzle-orm';
+import type { ListRepository } from '@domain/list/ports';
+import type { List, CreateListInput } from '@domain/list';
+import { toDomainList, toCreateListRow } from '@data/mappers/list.mapper';
+import { lists } from '../drizzle/schema';
+import type { DrizzleDB } from '../drizzle';
+import { generateId } from '@domain/common/utils';
+
+export class DrizzleListRepository implements ListRepository {
+  constructor(private db: DrizzleDB) {}
+
+  async create(input: CreateListInput): Promise<List> {
+    const id = generateId();
+    const row = toCreateListRow(input, id);
+    await this.db.insert(lists).values(row);
+    const created = await this.db.select().from(lists).where(eq(lists.id, id)).get();
+    return toDomainList(created!);
+  }
+
+  async getById(id: string): Promise<List | null> {
+    const row = await this.db.select().from(lists).where(eq(lists.id, id)).get();
+    return row ? toDomainList(row) : null;
+  }
+}
+```
+
+### Vantagem para Cloud Sync Futuro
+
+```typescript
+// src/infra/api/CloudListRepository.ts (FUTURO)
+import type { ListRepository } from '@domain/list/ports';
+import { toDomainList } from '@data/mappers/list.mapper';
+
+export class CloudListRepository implements ListRepository {
+  async getById(id: string): Promise<List | null> {
+    const response = await fetch(`/api/lists/${id}`);
+    const row = await response.json(); // API retorna formato ListRow
+    return row ? toDomainList(row) : null;
+  }
+}
+```
+
+Ambos repositories (Drizzle e Cloud) usam os mesmos mappers porque seguem o contrato `ListRow`.
+
+---
+
 ## 2. Zustand com Optimistic Updates
 
 ### Decisão
