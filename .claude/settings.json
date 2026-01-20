@@ -11,14 +11,24 @@
         ]
       }
     ],
-    "PostToolUse": [],
-    "Stop": [
+    "PostToolUse": [
       {
         "matcher": "Edit|Write|NotebookEdit",
         "hooks": [
           {
             "type": "command",
             "command": "bash scripts/claude-hook-lint.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/claude-hook-test.sh"
           }
         ]
       }
