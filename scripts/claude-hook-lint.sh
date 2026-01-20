@@ -18,8 +18,13 @@ cd "$PROJECT_DIR"
 # Lê input JSON do stdin (se houver)
 INPUT=$(cat 2>/dev/null || echo "{}")
 
-# Detecta o tipo de evento do hook
-HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null || echo "")
+# Detecta o tipo de evento do hook (com fallback se jq não estiver disponível)
+if command -v jq &> /dev/null; then
+  HOOK_EVENT=$(echo "$INPUT" | jq -r '.hook_event_name // empty' 2>/dev/null || echo "")
+else
+  # Fallback usando grep/sed para extrair hook_event_name do JSON
+  HOOK_EVENT=$(echo "$INPUT" | grep -o '"hook_event_name"[[:space:]]*:[[:space:]]*"[^"]*"' | sed 's/.*"hook_event_name"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/' 2>/dev/null || echo "")
+fi
 
 # Determina quais arquivos verificar baseado no contexto
 if [ "$HOOK_EVENT" = "PreToolUse" ]; then
@@ -49,10 +54,10 @@ echo "Verificando $FILE_COUNT arquivo(s) modificado(s)..."
 
 # Executa lint:fix nos arquivos
 echo "Executando lint:fix..."
-npm run lint:fix -- ${FILES_ARRAY[@]}
+npm run lint:fix -- "${FILES_ARRAY[@]}"
 
 # Executa type-check nos arquivos
 echo "Executando type-check..."
-npm run type-check -- ${FILES_ARRAY[@]}
+npm run type-check -- "${FILES_ARRAY[@]}"
 
 echo "Verificação concluída com sucesso!"

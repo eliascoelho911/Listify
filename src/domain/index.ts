@@ -7,10 +7,6 @@ export type {
   DeleteUseCase,
   GetAllUseCase,
   GetByIdUseCase,
-  GlobalSearchCriteria,
-  GlobalSearchRepository,
-  GlobalSearchResultItem,
-  GlobalSearchTarget,
   GroupResult,
   GroupUseCase,
   LayoutConfig,
@@ -25,55 +21,61 @@ export type {
   UpdateUseCase,
 } from './common';
 
-// Tag domain
+// Search domain (global search)
 export type {
-  CreateTagInput,
-  Tag,
-  TagFilterCriteria,
-  TagRepository,
-  TagSortField,
-  UpdateTagInput,
-} from './tag';
+  GlobalSearchCriteria,
+  GlobalSearchRepository,
+  GlobalSearchResultItem,
+  GlobalSearchTarget,
+} from './search';
 
 // List domain
 export type {
+  BooksList,
   CreateListInput,
-  InterestListType,
+  GamesList,
   List,
-  ListCategory,
   ListFilterCriteria,
   ListGroupCriteria,
   ListRepository,
   ListSortField,
   ListType,
-  ListTypeConfig,
-  NotesListType,
-  ShoppingListType,
+  MoviesList,
+  NotesList,
+  ShoppingList,
   UpdateListInput,
 } from './list';
 
 // Item domain
 export type {
+  BookItem,
+  BookItemFilterCriteria,
+  BookItemRepository,
   BookMetadata,
   BookProviderRepository,
   BookSearchResult,
-  CreateInterestItemInput,
+  CreateBookItemInput,
+  CreateGameItemInput,
   CreateItemInput,
+  CreateMovieItemInput,
   CreateNoteItemInput,
   CreateShoppingItemInput,
   ExternalMetadata,
+  GameItem,
+  GameItemFilterCriteria,
+  GameItemRepository,
   GameMetadata,
   GameProviderRepository,
   GameSearchResult,
-  InterestItem,
-  InterestItemFilterCriteria,
-  InterestItemRepository,
   Item,
   ItemFilterCriteria,
   ItemGroupCriteria,
   ItemSortField,
   ItemType,
   MetadataCategory,
+  MovieItem,
+  MovieItemFilterCriteria,
+  MovieItemRepository,
   MovieMetadata,
   MovieProviderRepository,
   MovieSearchResult,
@@ -84,8 +86,10 @@ export type {
   ShoppingItemFilterCriteria,
   ShoppingItemRepository,
   ShoppingListSummary,
-  UpdateInterestItemInput,
+  UpdateBookItemInput,
+  UpdateGameItemInput,
   UpdateItemInput,
+  UpdateMovieItemInput,
   UpdateNoteItemInput,
   UpdateShoppingItemInput,
 } from './item';
@@ -104,3 +108,28 @@ export type {
   UserPreferencesRepository,
   UserRepository,
 } from './user';
+
+// Section domain
+export type {
+  CreateSectionInput,
+  Section,
+  SectionRepository,
+  SectionSortField,
+  UpdateSectionInput,
+} from './section';
+
+// Purchase history domain
+export type {
+  CreatePurchaseHistoryInput,
+  PurchaseHistory,
+  PurchaseHistoryItem,
+  PurchaseHistoryRepository,
+  PurchaseHistorySection,
+} from './purchase-history';
+
+// Search history domain
+export type {
+  CreateSearchHistoryEntryInput,
+  SearchHistoryEntry,
+  SearchHistoryRepository,
+} from './search-history';

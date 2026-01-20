@@ -1,4 +1,4 @@
-import type { LayoutConfig } from '../../common';
+import type { Entity, LayoutConfig, Timestamped } from '../../common';
 import type { ItemGroupCriteria } from '../../item';
 
 export type Theme = 'light' | 'dark' | 'auto';
@@ -10,15 +10,13 @@ export type SpecialLayoutKey = 'inbox' | 'notes';
 // Chaves podem ser: listId (string) | 'inbox' | 'notes'
 export type LayoutConfigs = Record<string, LayoutConfig<ItemGroupCriteria>>;
 
-export type UserPreferences = {
-  id: string;
-  userId: string;
-  theme: Theme;
-  primaryColor?: string;
-  layoutConfigs: LayoutConfigs;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export type UserPreferences = Entity &
+  Timestamped & {
+    userId: string;
+    theme: Theme;
+    primaryColor?: string;
+    layoutConfigs: LayoutConfigs;
+  };
 
 export type CreateUserPreferencesInput = Omit<UserPreferences, 'id' | 'createdAt' | 'updatedAt'>;
 

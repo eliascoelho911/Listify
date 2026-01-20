@@ -1,23 +1,20 @@
-export type ListCategory = 'notes' | 'interest' | 'shopping';
+import type { Entity, Timestamped } from '@domain/common';
 
-export type NotesListType = 'notes';
-export type InterestListType = 'movies' | 'books' | 'games';
-export type ShoppingListType = 'shopping';
+type BaseList = Entity &
+  Timestamped & {
+    name: string;
+    description?: string;
+    isPrefabricated: boolean;
+  };
 
-export type ListType = NotesListType | InterestListType | ShoppingListType;
+export type NotesList = BaseList & { listType: 'notes' };
+export type ShoppingList = BaseList & { listType: 'shopping' };
+export type MoviesList = BaseList & { listType: 'movies' };
+export type BooksList = BaseList & { listType: 'books' };
+export type GamesList = BaseList & { listType: 'games' };
 
-export type ListTypeConfig =
-  | { category: 'notes'; listType: NotesListType }
-  | { category: 'interest'; listType: InterestListType }
-  | { category: 'shopping'; listType: ShoppingListType };
-
-export type List = ListTypeConfig & {
-  id: string;
-  name: string;
-  description?: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+export type List = NotesList | ShoppingList | MoviesList | BooksList | GamesList;
+export type ListType = List['listType'];
 
 export type CreateListInput = Omit<List, 'id' | 'createdAt' | 'updatedAt'>;
 

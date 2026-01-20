@@ -1,12 +1,12 @@
 export type {
+  BooksList,
   CreateListInput,
-  InterestListType,
+  GamesList,
   List,
-  ListCategory,
   ListType,
-  ListTypeConfig,
-  NotesListType,
-  ShoppingListType,
+  MoviesList,
+  NotesList,
+  ShoppingList,
   UpdateListInput,
 } from './entities/list.entity';
 export type { ListRepository } from './ports/list.repository';

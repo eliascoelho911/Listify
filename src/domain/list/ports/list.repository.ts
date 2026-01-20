@@ -12,7 +12,7 @@ import type { ListFilterCriteria, ListGroupCriteria, ListSortField } from '../ty
 export interface ListRepository
   extends
     CreateUseCase<List, CreateListInput>,
-    ReadUseCase<List>,
+    ReadUseCase<List, ListSortField>,
     UpdateUseCase<List, UpdateListInput>,
     DeleteUseCase,
     SearchUseCase<List, ListFilterCriteria, ListSortField>,
