@@ -1,4 +1,4 @@
-// Metadados base compartilhado por todas as categorias
+// Base metadata shared by all interest categories
 type BaseMetadata = {
   coverUrl?: string;
   description?: string;
@@ -6,7 +6,7 @@ type BaseMetadata = {
   rating?: number;
 };
 
-// Metadados específicos por categoria de interesse
+// Category-specific metadata
 export type MovieMetadata = BaseMetadata & {
   category: 'movie';
   cast?: string[];
@@ -25,7 +25,7 @@ export type GameMetadata = BaseMetadata & {
 export type ExternalMetadata = MovieMetadata | BookMetadata | GameMetadata;
 export type MetadataCategory = ExternalMetadata['category'];
 
-// Tipo base compartilhado por todos os itens
+// Base type shared by all items
 type BaseItem = {
   id: string;
   listId?: string;
@@ -36,13 +36,13 @@ type BaseItem = {
   updatedAt: Date;
 };
 
-// Item de nota simples (com markdown)
+// Note item (simple with markdown)
 export type NoteItem = BaseItem & {
   type: 'note';
   description?: string;
 };
 
-// Item de lista de compras
+// Shopping list item
 export type ShoppingItem = BaseItem & {
   type: 'shopping';
   quantity?: string;
@@ -50,27 +50,47 @@ export type ShoppingItem = BaseItem & {
   isChecked?: boolean;
 };
 
-// Item de lista de interesse
-export type InterestItem = BaseItem & {
-  type: 'interest';
+// Movie list item
+export type MovieItem = BaseItem & {
+  type: 'movie';
   externalId?: string;
-  metadata?: ExternalMetadata;
+  metadata?: MovieMetadata;
   isChecked?: boolean;
 };
 
-// Union type principal
-export type Item = NoteItem | ShoppingItem | InterestItem;
+// Book list item
+export type BookItem = BaseItem & {
+  type: 'book';
+  externalId?: string;
+  metadata?: BookMetadata;
+  isChecked?: boolean;
+};
+
+// Game list item
+export type GameItem = BaseItem & {
+  type: 'game';
+  externalId?: string;
+  metadata?: GameMetadata;
+  isChecked?: boolean;
+};
+
+// Main union type
+export type Item = NoteItem | ShoppingItem | MovieItem | BookItem | GameItem;
 export type ItemType = Item['type'];
 
 // Create input types
 export type CreateNoteItemInput = Omit<NoteItem, 'id' | 'createdAt' | 'updatedAt'>;
 export type CreateShoppingItemInput = Omit<ShoppingItem, 'id' | 'createdAt' | 'updatedAt'>;
-export type CreateInterestItemInput = Omit<InterestItem, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateMovieItemInput = Omit<MovieItem, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateBookItemInput = Omit<BookItem, 'id' | 'createdAt' | 'updatedAt'>;
+export type CreateGameItemInput = Omit<GameItem, 'id' | 'createdAt' | 'updatedAt'>;
 
 export type CreateItemInput =
   | CreateNoteItemInput
   | CreateShoppingItemInput
-  | CreateInterestItemInput;
+  | CreateMovieItemInput
+  | CreateBookItemInput
+  | CreateGameItemInput;
 
 // Update input types
 export type UpdateNoteItemInput = Partial<
@@ -79,11 +99,19 @@ export type UpdateNoteItemInput = Partial<
 export type UpdateShoppingItemInput = Partial<
   Omit<ShoppingItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
 >;
-export type UpdateInterestItemInput = Partial<
-  Omit<InterestItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+export type UpdateMovieItemInput = Partial<
+  Omit<MovieItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+>;
+export type UpdateBookItemInput = Partial<
+  Omit<BookItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
+>;
+export type UpdateGameItemInput = Partial<
+  Omit<GameItem, 'id' | 'createdAt' | 'updatedAt' | 'type'>
 >;
 
 export type UpdateItemInput =
   | UpdateNoteItemInput
   | UpdateShoppingItemInput
-  | UpdateInterestItemInput;
+  | UpdateMovieItemInput
+  | UpdateBookItemInput
+  | UpdateGameItemInput;

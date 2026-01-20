@@ -1,17 +1,4 @@
-export type ListCategory = 'notes' | 'interest' | 'shopping';
-
-export type NotesListType = 'notes';
-export type InterestListType = 'movies' | 'books' | 'games';
-export type ShoppingListType = 'shopping';
-
-export type ListType = NotesListType | InterestListType | ShoppingListType;
-
-export type ListTypeConfig =
-  | { category: 'notes'; listType: NotesListType }
-  | { category: 'interest'; listType: InterestListType }
-  | { category: 'shopping'; listType: ShoppingListType };
-
-export type List = ListTypeConfig & {
+type BaseList = {
   id: string;
   name: string;
   description?: string;
@@ -19,6 +6,15 @@ export type List = ListTypeConfig & {
   createdAt: Date;
   updatedAt: Date;
 };
+
+export type NotesList = BaseList & { listType: 'notes' };
+export type ShoppingList = BaseList & { listType: 'shopping' };
+export type MoviesList = BaseList & { listType: 'movies' };
+export type BooksList = BaseList & { listType: 'books' };
+export type GamesList = BaseList & { listType: 'games' };
+
+export type List = NotesList | ShoppingList | MoviesList | BooksList | GamesList;
+export type ListType = List['listType'];
 
 export type CreateListInput = Omit<List, 'id' | 'createdAt' | 'updatedAt'>;
 

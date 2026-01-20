@@ -8,41 +8,49 @@ import type {
   UpdateUseCase,
 } from '../../common';
 import type {
-  CreateInterestItemInput,
+  BookItem,
+  CreateBookItemInput,
+  CreateGameItemInput,
+  CreateMovieItemInput,
   CreateNoteItemInput,
   CreateShoppingItemInput,
-  InterestItem,
+  GameItem,
   Item,
+  MovieItem,
   NoteItem,
   ShoppingItem,
-  UpdateInterestItemInput,
+  UpdateBookItemInput,
+  UpdateGameItemInput,
+  UpdateMovieItemInput,
   UpdateNoteItemInput,
   UpdateShoppingItemInput,
 } from '../entities/item.entity';
 import type {
-  InterestItemFilterCriteria,
+  BookItemFilterCriteria,
+  GameItemFilterCriteria,
   ItemGroupCriteria,
   ItemSortField,
+  MovieItemFilterCriteria,
   NoteItemFilterCriteria,
   ShoppingItemFilterCriteria,
 } from '../types/item.filter';
 import type { ShoppingListSummary } from '../value-objects';
 
-// Repository base com operações comuns
+// Base repository with common operations
 type BaseItemRepository<T extends Item> = ReadUseCase<T, ItemSortField> &
   DeleteUseCase & {
     getByListId(listId: string): Promise<T[]>;
     getBySectionId(sectionId: string): Promise<T[]>;
   };
 
-// Repository específico para NoteItem
+// Repository for NoteItem
 export type NoteItemRepository = BaseItemRepository<NoteItem> &
   CreateUseCase<NoteItem, CreateNoteItemInput> &
   UpdateUseCase<NoteItem, UpdateNoteItemInput> &
   SearchUseCase<NoteItem, NoteItemFilterCriteria, ItemSortField> &
   GroupUseCase<NoteItem, ItemGroupCriteria>;
 
-// Repository específico para ShoppingItem
+// Repository for ShoppingItem
 export type ShoppingItemRepository = BaseItemRepository<ShoppingItem> &
   CreateUseCase<ShoppingItem, CreateShoppingItemInput> &
   UpdateUseCase<ShoppingItem, UpdateShoppingItemInput> &
@@ -52,9 +60,23 @@ export type ShoppingItemRepository = BaseItemRepository<ShoppingItem> &
     getSummary(listId: string): Promise<ShoppingListSummary>;
   };
 
-// Repository específico para InterestItem
-export type InterestItemRepository = BaseItemRepository<InterestItem> &
-  CreateUseCase<InterestItem, CreateInterestItemInput> &
-  UpdateUseCase<InterestItem, UpdateInterestItemInput> &
-  SearchUseCase<InterestItem, InterestItemFilterCriteria, ItemSortField> &
-  GroupUseCase<InterestItem, ItemGroupCriteria>;
+// Repository for MovieItem
+export type MovieItemRepository = BaseItemRepository<MovieItem> &
+  CreateUseCase<MovieItem, CreateMovieItemInput> &
+  UpdateUseCase<MovieItem, UpdateMovieItemInput> &
+  SearchUseCase<MovieItem, MovieItemFilterCriteria, ItemSortField> &
+  GroupUseCase<MovieItem, ItemGroupCriteria>;
+
+// Repository for BookItem
+export type BookItemRepository = BaseItemRepository<BookItem> &
+  CreateUseCase<BookItem, CreateBookItemInput> &
+  UpdateUseCase<BookItem, UpdateBookItemInput> &
+  SearchUseCase<BookItem, BookItemFilterCriteria, ItemSortField> &
+  GroupUseCase<BookItem, ItemGroupCriteria>;
+
+// Repository for GameItem
+export type GameItemRepository = BaseItemRepository<GameItem> &
+  CreateUseCase<GameItem, CreateGameItemInput> &
+  UpdateUseCase<GameItem, UpdateGameItemInput> &
+  SearchUseCase<GameItem, GameItemFilterCriteria, ItemSortField> &
+  GroupUseCase<GameItem, ItemGroupCriteria>;

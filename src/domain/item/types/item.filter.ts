@@ -1,6 +1,6 @@
 import { BaseFilterCriteria, BaseSortField, DateRange } from '@domain/common';
 
-// Filtros base para Item
+// Base item filter criteria
 type BaseItemFilterCriteria = BaseFilterCriteria & {
   listId?: string;
   sectionId?: string;
@@ -8,7 +8,7 @@ type BaseItemFilterCriteria = BaseFilterCriteria & {
   updatedDateRange?: DateRange;
 };
 
-// Filtros por tipo
+// Filters by type
 export type NoteItemFilterCriteria = BaseItemFilterCriteria & {
   type: 'note';
 };
@@ -18,18 +18,30 @@ export type ShoppingItemFilterCriteria = BaseItemFilterCriteria & {
   isChecked?: boolean;
 };
 
-export type InterestItemFilterCriteria = BaseItemFilterCriteria & {
-  type: 'interest';
+export type MovieItemFilterCriteria = BaseItemFilterCriteria & {
+  type: 'movie';
+  isChecked?: boolean;
+};
+
+export type BookItemFilterCriteria = BaseItemFilterCriteria & {
+  type: 'book';
+  isChecked?: boolean;
+};
+
+export type GameItemFilterCriteria = BaseItemFilterCriteria & {
+  type: 'game';
   isChecked?: boolean;
 };
 
 export type ItemFilterCriteria =
   | NoteItemFilterCriteria
   | ShoppingItemFilterCriteria
-  | InterestItemFilterCriteria;
+  | MovieItemFilterCriteria
+  | BookItemFilterCriteria
+  | GameItemFilterCriteria;
 
-// Agrupamentos
+// Grouping
 export type ItemGroupCriteria = 'listId' | 'sectionId' | 'isChecked' | 'createdAt' | 'updatedAt';
 
-// Ordenação
+// Sorting
 export type ItemSortField = BaseSortField | 'title' | 'sortOrder';
