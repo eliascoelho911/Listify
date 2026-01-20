@@ -45,7 +45,7 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 - Fluxo de criação, edição e exclusão de listas customizadas
 - Seções customizadas dentro de cada lista para organização visual de itens
 - Lista de Notas única (pré-fabricada) com suporte a markdown básico e drag and drop para reordenação
-- Listas de Compras com quantidade, valor, total calculado, marcação de itens e drag and drop
+- Listas de Compras com quantidade, valor, total calculado, marcação de itens, drag and drop, conclusão de compra e histórico
 - Listas de Interesse (Filmes, Livros, Games) com integração a provedores externos (TMDb, Google Books, IGDB)
 - Tela de detalhes de notas com visualização e edição
 - Configurações de tema (claro, escuro, automático) e cores principais acessíveis via ícone de Perfil na Navbar
@@ -60,7 +60,7 @@ O Listify resolve isso com uma abordagem de **captura unificada e inteligente**:
 - Reconhecimento de voz para entrada de itens
 - Widgets para home screen
 - Exportação de listas (PDF, CSV)
-- Histórico de compras e análise de gastos
+- Análise de gastos e relatórios financeiros (histórico básico de compras está incluído no MVP)
 - Integração com assistentes de voz (Alexa, Google Assistant)
 - Autenticação de usuário e contas
 - Recursos avançados de IA além da inferência de categoria (sugestões proativas, auto-complete inteligente)
@@ -437,7 +437,21 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **FR-017**: Itens de lista de compras MUST ter campos: título, quantidade, valor
 - **FR-018**: Sistema MUST calcular e exibir soma total dos valores de itens marcados em barra inferior
 - **FR-019**: Sistema MUST atualizar total em tempo real quando item é marcado/desmarcado
+- **FR-019a**: Barra de total MUST exibir indicador "(X itens sem valor)" quando existirem itens marcados sem valor definido
 - **FR-020**: Sistema MUST exibir badges visuais para quantidade e valor extraídos automaticamente
+- **FR-020a**: Sistema MUST exibir botão "Concluir compra" em listas de compras com pelo menos um item marcado
+- **FR-020b**: Ao concluir compra, sistema MUST criar registro no histórico com snapshot da lista (itens, quantidades, valores, total, data)
+- **FR-020c**: Ao concluir compra, sistema MUST resetar marcações de todos os itens (lista volta ao estado "não comprado")
+- **FR-020d**: Lista original MUST permanecer ativa após conclusão para reutilização em próximas compras
+- **FR-020e**: Sistema MUST exibir botão "Ver histórico" em cada lista de compras
+- **FR-020f**: Tela de histórico MUST exibir lista de compras concluídas daquela lista específica, ordenadas por data (mais recente primeiro)
+- **FR-020g**: Tela de detalhes do histórico MUST exibir botão "Comprar tudo novamente" que adiciona todos os itens à lista
+- **FR-020h**: Ao adicionar item que já existe na lista, sistema MUST somar quantidade em vez de duplicar
+- **FR-020i**: Tela de detalhes do histórico MUST permitir selecionar itens individuais para adicionar à lista
+- **FR-020j**: Sistema MUST indicar visualmente quais itens do histórico já existem na lista atual
+- **FR-020k**: Ao tocar em item existente, sistema MUST abrir modal inteligente de edição (sheet sobre a lista)
+- **FR-020l**: Modal de edição MUST pré-preencher campo com dados atuais do item em formato de entrada inteligente (ex: "Leite 2L R$8,50")
+- **FR-020m**: Modal de edição MUST aplicar mesmo parsing de quantidade/valor ao salvar alterações
 
 #### Listas de Notas
 - **FR-021**: Itens de lista de notas MUST ter campos: título, descrição
@@ -504,6 +518,7 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - **Lista**: Agrupador de itens por contexto. Possui nome, categoria (notes, shopping, interest), subtipo para interest (movies, books, games), data de criação, ordem dos itens. Nota: categoria "notes" possui apenas UMA lista pré-fabricada; categorias "shopping" e "interest" permitem múltiplas listas customizáveis
 - **Seção**: Agrupador visual de itens dentro de uma lista específica. Possui nome, ordem na lista, lista pai (obrigatória). Cada lista tem suas próprias seções independentes. Relaciona-se com uma lista (muitos-para-um) e com múltiplos itens (um-para-muitos)
 - **Usuário**: Perfil do usuário local. Possui nome, email, foto. Configurações de tema e cor principal
+- **HistóricoCompra**: Registro de compra concluída. Possui lista de origem (referência), data da compra, snapshot dos itens (título, quantidade, valor, marcado), total da compra. Permite visualização e reutilização futura
 
 ## Critérios de Sucesso *(obrigatório)*
 
@@ -556,6 +571,11 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - Q: Estado inicial da tela de busca (campo vazio)? → A: Histórico + atalhos para 3-5 listas mais acessadas, filtros colapsados por padrão
 - Q: Ordenação dos resultados de busca? → A: Por relevância (título > descrição), secundário por data decrescente
 - Q: Destacar termo buscado nos resultados? → A: Sim, highlight com cor/negrito no título e descrição
+- Q: Fluxo de conclusão de lista de compras? → A: Botão "Concluir compra" reseta marcações dos itens e move lista para histórico (registro da compra realizada)
+- Q: Como acessar histórico de compras? → A: Botão "Ver histórico" dentro de cada lista de compras, exibindo apenas histórico daquela lista específica
+- Q: Como reutilizar itens do histórico? → A: Duas opções: (1) "Comprar tudo novamente" adiciona todos os itens, somando quantidade se já existirem na lista; (2) Seleção individual de itens com indicação visual de quais já existem
+- Q: Como editar item de lista de compras? → A: Modal inteligente (sheet sobre a lista) com campo de entrada inteligente pré-preenchido, permitindo edição com mesmo parsing de quantidade/valor
+- Q: Como calcular total com itens sem valor? → A: Total exibe soma dos itens com valor + indicador "(X itens sem valor)" para transparência
 
 ## Premissas
 
