@@ -48,16 +48,3 @@ export type LayoutConfig<GroupCriteria extends string = string> = {
   groupBy: GroupCriteria;
   sortDirection: SortDirection;
 };
-
-// Tipos para busca global unificada
-export type GlobalSearchTarget = 'items' | 'lists' | 'all';
-
-export type GlobalSearchCriteria = BaseFilterCriteria & {
-  target: GlobalSearchTarget;
-  dateRange?: DateRange;
-  listId?: string;
-};
-
-export type GlobalSearchResultItem<TItem, TList> =
-  | { entityType: 'item'; entity: TItem }
-  | { entityType: 'list'; entity: TList };

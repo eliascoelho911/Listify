@@ -7,10 +7,6 @@ export type {
   DeleteUseCase,
   GetAllUseCase,
   GetByIdUseCase,
-  GlobalSearchCriteria,
-  GlobalSearchRepository,
-  GlobalSearchResultItem,
-  GlobalSearchTarget,
   GroupResult,
   GroupUseCase,
   LayoutConfig,
@@ -24,6 +20,14 @@ export type {
   UpdateSortOrderUseCase,
   UpdateUseCase,
 } from './common';
+
+// Search domain (global search)
+export type {
+  GlobalSearchCriteria,
+  GlobalSearchRepository,
+  GlobalSearchResultItem,
+  GlobalSearchTarget,
+} from './search';
 
 // List domain
 export type {

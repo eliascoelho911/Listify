@@ -1,8 +1,6 @@
 import type {
   BaseFilterCriteria,
   BaseSortField,
-  GlobalSearchCriteria,
-  GlobalSearchResultItem,
   GroupResult,
   PaginatedResult,
   PaginationParams,
@@ -55,9 +53,3 @@ export interface GroupUseCase<T, Criteria extends string> {
 export interface UpdateSortOrderUseCase {
   updateSortOrder(updates: SortOrderUpdate[]): Promise<void>;
 }
-
-export type GlobalSearchRepository<TItem, TList> = SearchUseCase<
-  GlobalSearchResultItem<TItem, TList>,
-  GlobalSearchCriteria,
-  BaseSortField
->;
