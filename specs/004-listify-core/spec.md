@@ -467,11 +467,19 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 
 #### Busca
 - **FR-037**: Tela Buscar MUST exibir campo auto-focado, filtros visíveis e histórico de buscas recentes
+- **FR-037a**: Busca em itens locais MUST executar em tempo real a cada caractere digitado (filtro instantâneo)
+- **FR-037b**: Busca em provedores externos (TMDb, Google Books, IGDB) MUST usar debounce de 300-500ms após parar de digitar
+- **FR-037c**: Histórico MUST armazenar até 10 buscas recentes, exibidas em ordem cronológica reversa
+- **FR-037d**: Sistema MUST permitir limpar buscas individualmente (swipe ou ícone X) ou todas de uma vez (botão "Limpar histórico")
+- **FR-037e**: Estado inicial (campo vazio) MUST exibir: histórico de buscas recentes + atalhos para 3-5 listas mais acessadas pelo usuário
+- **FR-037f**: Filtros MUST estar colapsados por padrão, expandindo ao toque do usuário
 - **FR-038**: Sistema MUST buscar em título e descrição de todos os itens
 - **FR-039**: Sistema MUST filtrar resultados por tipo (notas, listas ou ambos)
 - **FR-040**: Sistema MUST filtrar resultados por período (última semana, mês, ano, todo o período)
 - **FR-041**: Sistema MUST filtrar resultados por lista selecionada
 - **FR-042**: Resultados MUST ser paginados e cada item clicável para navegação
+- **FR-042a**: Resultados MUST ser ordenados por relevância (match em título tem peso maior que descrição), com data decrescente como critério secundário
+- **FR-042b**: Resultados MUST destacar visualmente o termo buscado (highlight com cor/negrito) no título e descrição
 
 #### Detalhes e Edição
 - **FR-043**: Sistema MUST exibir tela de detalhes com título, descrição e lista associada (se houver)
@@ -543,6 +551,11 @@ O usuário prefere usar o app no modo escuro e quer personalizar a cor de destaq
 - Q: O que significa "contexto notas" no botão Adicionar? → A: Pré-seleciona a lista de Notas única. Campo já vem com destino definido
 - Q: Existem "opções de tipo" no modal do botão Adicionar? → A: NÃO. Modal contém apenas o campo de entrada inteligente. Tipo do item é inferido automaticamente pela categoria da lista destino
 - Q: Existe campo de entrada inline dentro de uma lista específica? → A: NÃO. Usuário sempre usa o modal via botão central da bottombar (pré-seleciona lista atual). Porém, cada SEÇÃO tem botão "Adicionar nessa seção" que abre o modal com `@Lista:Seção` já preenchido
+- Q: Quando a busca é acionada na tela Buscar? → A: Híbrido - busca local em tempo real (a cada caractere), busca em provedores externos com debounce 300-500ms
+- Q: Quantas buscas o histórico armazena e como limpar? → A: 10 buscas recentes, limpar individualmente (swipe/X) ou todas de uma vez
+- Q: Estado inicial da tela de busca (campo vazio)? → A: Histórico + atalhos para 3-5 listas mais acessadas, filtros colapsados por padrão
+- Q: Ordenação dos resultados de busca? → A: Por relevância (título > descrição), secundário por data decrescente
+- Q: Destacar termo buscado nos resultados? → A: Sim, highlight com cor/negrito no título e descrição
 
 ## Premissas
 
