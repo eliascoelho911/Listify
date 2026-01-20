@@ -1,11 +1,11 @@
-export type User = {
-  id: string;
-  name: string;
-  email: string;
-  photoUrl?: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import type { Entity, Timestamped } from '@domain/common';
+
+export type User = Entity &
+  Timestamped & {
+    name: string;
+    email: string;
+    photoUrl?: string;
+  };
 
 export type CreateUserInput = Omit<User, 'id' | 'createdAt' | 'updatedAt'>;
 

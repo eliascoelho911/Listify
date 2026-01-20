@@ -1,3 +1,5 @@
+import type { Entity, Timestamped } from '@domain/common';
+
 export type PurchaseHistorySection = {
   originalSectionId: string;
   name: string;
@@ -14,14 +16,13 @@ export type PurchaseHistoryItem = {
   wasChecked: boolean;
 };
 
-export type PurchaseHistory = {
-  id: string;
-  listId: string;
-  purchaseDate: Date;
-  totalValue: number;
-  sections: PurchaseHistorySection[];
-  items: PurchaseHistoryItem[];
-  createdAt: Date;
-};
+export type PurchaseHistory = Entity &
+  Timestamped & {
+    listId: string;
+    purchaseDate: Date;
+    totalValue: number;
+    sections: PurchaseHistorySection[];
+    items: PurchaseHistoryItem[];
+  };
 
-export type CreatePurchaseHistoryInput = Omit<PurchaseHistory, 'id' | 'createdAt'>;
+export type CreatePurchaseHistoryInput = Omit<PurchaseHistory, 'id' | 'createdAt' | 'updatedAt'>;

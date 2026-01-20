@@ -13,6 +13,7 @@ export type {
   BaseFilterCriteria,
   BaseSortField,
   DateRange,
+  Entity,
   GroupResult,
   LayoutConfig,
   PaginatedResult,
@@ -21,4 +22,5 @@ export type {
   SortCriteria,
   SortDirection,
   SortOrderUpdate,
+  Timestamped,
 } from './types';

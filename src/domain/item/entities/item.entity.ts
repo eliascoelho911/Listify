@@ -1,4 +1,4 @@
-import type { Sortable } from '@domain/common';
+import type { Entity, Sortable, Timestamped } from '@domain/common';
 
 // Base metadata shared by all interest categories
 type BaseMetadata = {
@@ -28,14 +28,13 @@ export type ExternalMetadata = MovieMetadata | BookMetadata | GameMetadata;
 export type MetadataCategory = ExternalMetadata['category'];
 
 // Base type shared by all items
-type BaseItem = Sortable & {
-  id: string;
-  listId?: string;
-  sectionId?: string;
-  title: string;
-  createdAt: Date;
-  updatedAt: Date;
-};
+type BaseItem = Entity &
+  Sortable &
+  Timestamped & {
+    listId?: string;
+    sectionId?: string;
+    title: string;
+  };
 
 // Note item (simple with markdown)
 export type NoteItem = BaseItem & {

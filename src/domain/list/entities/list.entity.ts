@@ -1,11 +1,11 @@
-type BaseList = {
-  id: string;
-  name: string;
-  description?: string;
-  isPrefabricated: boolean;
-  createdAt: Date;
-  updatedAt: Date;
-};
+import type { Entity, Timestamped } from '@domain/common';
+
+type BaseList = Entity &
+  Timestamped & {
+    name: string;
+    description?: string;
+    isPrefabricated: boolean;
+  };
 
 export type NotesList = BaseList & { listType: 'notes' };
 export type ShoppingList = BaseList & { listType: 'shopping' };
