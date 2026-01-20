@@ -1,10 +1,11 @@
+/* eslint-disable local-rules/no-raw-text-import */
 /**
  * Bottombar Organism Tests
  */
 
-import { render } from '@testing-library/react-native';
-import React from 'react';
+import { default as React } from 'react';
 import { Text } from 'react-native';
+import { render } from '@testing-library/react-native';
 
 import { Bottombar } from '@design-system/organisms/Bottombar/Bottombar';
 import { ThemeProvider } from '@design-system/theme';
@@ -18,7 +19,7 @@ describe('Bottombar Organism', () => {
     const { getByText } = renderWithTheme(
       <Bottombar>
         <Text>Test content</Text>
-      </Bottombar>
+      </Bottombar>,
     );
     expect(getByText('Test content')).toBeTruthy();
   });
