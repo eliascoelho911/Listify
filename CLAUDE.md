@@ -432,11 +432,308 @@ Storybook config: `.rnstorybook/` (React Native specific, not `.storybook/`)
 ### Debugging
 - Add debug logs with `console.debug` for future issue tracking
 
-## Testing
+## Testing & TDD (Test-Driven Development)
 
-Tests located in `tests/` following same structure as `src/`:
-- `tests/domain/` - Business logic tests
-- `tests/data/` - Mapper tests
-- `tests/presentation/` - Hook/component tests
+### TDD Cycle: Red → Green → Refactor
 
-Run single test: `npm test -- <pattern>`
+```
+1. RED    → Write a failing test first
+2. GREEN  → Write minimal code to make it pass
+3. REFACTOR → Improve code quality while tests pass
+```
+
+### When to Apply TDD (MANDATORY vs OPTIONAL)
+
+| Layer | TDD Required? | Rationale |
+|-------|---------------|-----------|
+| **Domain** (entities, value objects, ports) | ✅ **MANDATORY** | Pure business logic, no dependencies, easy to test |
+| **Data** (mappers) | ✅ **MANDATORY** | Pure functions, critical for data integrity |
+| **Presentation** (stores, hooks) | ⚠️ **Recommended** | Business logic in stores benefits from TDD |
+| **Infrastructure** (repositories) | ⚠️ **Optional** | Requires DB setup, integration tests preferred |
+| **Design System** (components) | ⚠️ **Optional** | Visual components often test-after with Storybook |
+
+### Test File Structure
+
+```
+tests/
+├── domain/           # TDD: Write tests FIRST
+│   ├── list/
+│   │   └── list.entity.test.ts
+│   └── item/
+│       └── item.entity.test.ts
+├── data/             # TDD: Write tests FIRST
+│   └── mappers/
+│       └── list.mapper.test.ts
+├── presentation/     # TDD recommended for stores
+│   ├── stores/
+│   │   └── listStore.test.ts
+│   └── hooks/
+│       └── useListData.test.ts
+├── design-system/    # Test-after for visual components
+│   ├── atoms/
+│   ├── molecules/
+│   └── organisms/
+└── setup.ts          # Global mocks
+```
+
+### Domain Layer TDD (MANDATORY)
+
+Domain tests are pure unit tests with **zero mocks**. Always write the test BEFORE the implementation.
+
+#### TDD Example: Entity Creation
+
+```typescript
+// Step 1: RED - Write failing test first
+// tests/domain/list/list.entity.test.ts
+describe('List Entity', () => {
+  describe('CreateListInput validation', () => {
+    it('should require name field', () => {
+      const input: CreateListInput = {
+        listType: 'shopping',
+        name: 'Groceries',
+      };
+      expect(input.name).toBe('Groceries');
+      expect(input.listType).toBe('shopping');
+    });
+
+    it('should have valid list types', () => {
+      const validTypes: ListType[] = ['shopping', 'movies', 'books', 'games', 'notes'];
+      validTypes.forEach(type => {
+        expect(['shopping', 'movies', 'books', 'games', 'notes']).toContain(type);
+      });
+    });
+  });
+});
+
+// Step 2: GREEN - Implement the entity to make tests pass
+// Step 3: REFACTOR - Improve if needed while tests stay green
+```
+
+#### TDD Example: Discriminated Union
+
+```typescript
+// tests/domain/item/item.entity.test.ts
+describe('Item Discriminated Union', () => {
+  it('should narrow type correctly for ShoppingItem', () => {
+    const item: Item = {
+      id: '1',
+      listId: 'list-1',
+      title: 'Milk',
+      type: 'shopping',
+      quantity: '2L',
+      price: 5.99,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    if (item.type === 'shopping') {
+      // TypeScript should narrow to ShoppingItem
+      expect(item.price).toBe(5.99);
+      expect(item.quantity).toBe('2L');
+    }
+  });
+
+  it('should narrow type correctly for NoteItem', () => {
+    const item: Item = {
+      id: '2',
+      listId: 'list-1',
+      title: 'Remember to call',
+      type: 'note',
+      description: 'Call the doctor',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    if (item.type === 'note') {
+      expect(item.description).toBe('Call the doctor');
+    }
+  });
+});
+```
+
+### Data Layer TDD (MANDATORY)
+
+Mappers are pure functions - test every transformation path.
+
+```typescript
+// tests/data/mappers/list.mapper.test.ts
+describe('List Mapper', () => {
+  describe('toDomainList', () => {
+    it('should convert SQLite row to domain entity', () => {
+      const row = {
+        id: 'uuid-123',
+        list_type: 'shopping',
+        name: 'Groceries',
+        created_at: 1704067200000, // timestamp
+        updated_at: 1704153600000,
+      };
+
+      const list = toDomainList(row);
+
+      expect(list.id).toBe('uuid-123');
+      expect(list.listType).toBe('shopping');
+      expect(list.name).toBe('Groceries');
+      expect(list.createdAt).toBeInstanceOf(Date);
+      expect(list.updatedAt).toBeInstanceOf(Date);
+    });
+  });
+
+  describe('toPersistenceList', () => {
+    it('should convert domain input to SQLite row', () => {
+      const input: CreateListInput = {
+        listType: 'shopping',
+        name: 'Groceries',
+      };
+
+      const row = toPersistenceList(input);
+
+      expect(row.list_type).toBe('shopping');
+      expect(row.name).toBe('Groceries');
+      expect(typeof row.created_at).toBe('number');
+      expect(typeof row.updated_at).toBe('number');
+    });
+  });
+});
+```
+
+### Presentation Layer TDD (Recommended for Stores)
+
+For Zustand stores with business logic, TDD improves reliability.
+
+```typescript
+// tests/presentation/stores/listStore.test.ts
+import { renderHook, act, waitFor } from '@testing-library/react-native';
+
+const mockListRepository = {
+  getAll: jest.fn(),
+  create: jest.fn(),
+  delete: jest.fn(),
+};
+
+describe('useListStore', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should load lists on initialization', async () => {
+    const mockLists = [{ id: '1', name: 'Shopping', listType: 'shopping' }];
+    mockListRepository.getAll.mockResolvedValue(mockLists);
+
+    const { result } = renderHook(() => useListStore(mockListRepository));
+
+    await waitFor(() => {
+      expect(result.current.lists).toEqual(mockLists);
+    });
+  });
+
+  it('should optimistically add item then rollback on error', async () => {
+    mockListRepository.create.mockRejectedValue(new Error('Network error'));
+
+    const { result } = renderHook(() => useListStore(mockListRepository));
+
+    await act(async () => {
+      await result.current.addList({ name: 'New List', listType: 'shopping' });
+    });
+
+    // Should rollback to empty after error
+    expect(result.current.lists).toHaveLength(0);
+  });
+});
+```
+
+### Component Testing (Test-After)
+
+Design System components use test-after approach with Storybook for visual validation.
+
+```typescript
+// tests/design-system/atoms/Button.test.tsx
+import { renderWithTheme } from '../testUtils';
+import { Button } from '@design-system/atoms/Button';
+import { fireEvent } from '@testing-library/react-native';
+
+describe('Button', () => {
+  it('should call onPress when pressed', () => {
+    const onPress = jest.fn();
+    const { getByText } = renderWithTheme(
+      <Button onPress={onPress}>Click me</Button>
+    );
+
+    fireEvent.press(getByText('Click me'));
+
+    expect(onPress).toHaveBeenCalledTimes(1);
+  });
+
+  it('should not call onPress when disabled', () => {
+    const onPress = jest.fn();
+    const { getByText } = renderWithTheme(
+      <Button onPress={onPress} disabled>Disabled</Button>
+    );
+
+    fireEvent.press(getByText('Disabled'));
+
+    expect(onPress).not.toHaveBeenCalled();
+  });
+});
+```
+
+### Test Utilities
+
+Use the provided test helper for Design System components:
+
+```typescript
+// tests/design-system/testUtils.tsx
+import { render } from '@testing-library/react-native';
+import { ThemeProvider } from '@design-system/theme';
+
+export function renderWithTheme(component: React.ReactElement) {
+  return render(
+    <ThemeProvider initialMode="dark">{component}</ThemeProvider>
+  );
+}
+```
+
+### Mock Patterns
+
+#### Module Mocks (Global)
+```typescript
+// tests/setup.ts
+jest.mock('@react-native-async-storage/async-storage', () => ({
+  default: {
+    getItem: jest.fn(() => Promise.resolve(null)),
+    setItem: jest.fn(() => Promise.resolve()),
+  },
+}));
+```
+
+#### Repository Mocks (Per Test)
+```typescript
+const mockRepository = {
+  getById: jest.fn().mockResolvedValue({ id: '1', name: 'Test' }),
+  create: jest.fn().mockResolvedValue({ id: '2', name: 'New' }),
+  delete: jest.fn().mockResolvedValue(true),
+};
+```
+
+#### Spy Mocks (Console Errors)
+```typescript
+const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+// ... test code
+consoleSpy.mockRestore();
+```
+
+### Running Tests
+
+```bash
+npm test                    # Run all tests
+npm test -- list            # Run tests matching "list"
+npm test -- --watch         # Watch mode
+npm test -- --coverage      # Coverage report
+```
+
+### TDD Checklist Before PR
+
+- [ ] Domain entities have tests written FIRST
+- [ ] Mappers have bidirectional conversion tests
+- [ ] Store business logic has unit tests
+- [ ] All tests pass: `npm test`
+- [ ] No skipped tests (`.skip`) without TODO comment
