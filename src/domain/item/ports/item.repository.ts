@@ -29,11 +29,10 @@ import type {
 import type { ShoppingListSummary } from '../value-objects';
 
 // Repository base com operações comuns
-type BaseItemRepository<T extends Item> = ReadUseCase<T> &
+type BaseItemRepository<T extends Item> = ReadUseCase<T, ItemSortField> &
   DeleteUseCase & {
     getByListId(listId: string): Promise<T[]>;
-    getByTagId(tagId: string): Promise<T[]>;
-    removeTagFromItems(tagId: string): Promise<number>;
+    getBySectionId(sectionId: string): Promise<T[]>;
   };
 
 // Repository específico para NoteItem

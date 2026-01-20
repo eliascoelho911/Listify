@@ -3,7 +3,7 @@ import { BaseFilterCriteria, BaseSortField, DateRange } from '@domain/common';
 // Filtros base para Item
 type BaseItemFilterCriteria = BaseFilterCriteria & {
   listId?: string;
-  tagIds?: string[];
+  sectionId?: string;
   createdDateRange?: DateRange;
   updatedDateRange?: DateRange;
 };
@@ -29,7 +29,7 @@ export type ItemFilterCriteria =
   | InterestItemFilterCriteria;
 
 // Agrupamentos
-export type ItemGroupCriteria = 'listId' | 'tagId' | 'isChecked' | 'createdAt' | 'updatedAt';
+export type ItemGroupCriteria = 'listId' | 'sectionId' | 'isChecked' | 'createdAt' | 'updatedAt';
 
 // Ordenação
-export type ItemSortField = BaseSortField | 'title';
+export type ItemSortField = BaseSortField | 'title' | 'sortOrder';

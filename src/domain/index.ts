@@ -25,16 +25,6 @@ export type {
   UpdateUseCase,
 } from './common';
 
-// Tag domain
-export type {
-  CreateTagInput,
-  Tag,
-  TagFilterCriteria,
-  TagRepository,
-  TagSortField,
-  UpdateTagInput,
-} from './tag';
-
 // List domain
 export type {
   CreateListInput,
@@ -104,3 +94,28 @@ export type {
   UserPreferencesRepository,
   UserRepository,
 } from './user';
+
+// Section domain
+export type {
+  CreateSectionInput,
+  Section,
+  SectionRepository,
+  SectionSortField,
+  UpdateSectionInput,
+} from './section';
+
+// Purchase history domain
+export type {
+  CreatePurchaseHistoryInput,
+  PurchaseHistory,
+  PurchaseHistoryItem,
+  PurchaseHistoryRepository,
+  PurchaseHistorySection,
+} from './purchase-history';
+
+// Search history domain
+export type {
+  CreateSearchHistoryEntryInput,
+  SearchHistoryEntry,
+  SearchHistoryRepository,
+} from './search-history';

@@ -55,7 +55,7 @@ export type GlobalSearchTarget = 'items' | 'lists' | 'all';
 export type GlobalSearchCriteria = BaseFilterCriteria & {
   target: GlobalSearchTarget;
   dateRange?: DateRange;
-  tagIds?: string[];
+  listId?: string;
 };
 
 export type GlobalSearchResultItem<TItem, TList> =

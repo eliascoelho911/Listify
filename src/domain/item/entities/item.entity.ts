@@ -29,9 +29,9 @@ export type MetadataCategory = ExternalMetadata['category'];
 type BaseItem = {
   id: string;
   listId?: string;
+  sectionId?: string;
   title: string;
-  tagIds: string[];
-  isChecked?: boolean;
+  sortOrder: number;
   createdAt: Date;
   updatedAt: Date;
 };
@@ -47,7 +47,7 @@ export type ShoppingItem = BaseItem & {
   type: 'shopping';
   quantity?: string;
   price?: number;
-  sortOrder: number;
+  isChecked?: boolean;
 };
 
 // Item de lista de interesse
@@ -55,6 +55,7 @@ export type InterestItem = BaseItem & {
   type: 'interest';
   externalId?: string;
   metadata?: ExternalMetadata;
+  isChecked?: boolean;
 };
 
 // Union type principal

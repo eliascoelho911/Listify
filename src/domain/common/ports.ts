@@ -18,11 +18,15 @@ export interface GetByIdUseCase<T> {
   getById(id: string): Promise<T | null>;
 }
 
-export interface GetAllUseCase<T> {
-  getAll(pagination?: PaginationParams): Promise<PaginatedResult<T>>;
+export interface GetAllUseCase<T, SortField extends BaseSortField | string = BaseSortField> {
+  getAll(
+    sort?: SortCriteria<SortField>,
+    pagination?: PaginationParams,
+  ): Promise<PaginatedResult<T>>;
 }
 
-export interface ReadUseCase<T> extends GetByIdUseCase<T>, GetAllUseCase<T> {}
+export interface ReadUseCase<T, SortField extends BaseSortField | string = BaseSortField>
+  extends GetByIdUseCase<T>, GetAllUseCase<T, SortField> {}
 
 export interface UpdateUseCase<T, Input> {
   update(id: string, updates: Input): Promise<T | null>;

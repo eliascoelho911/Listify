@@ -21,7 +21,6 @@ src/
 ├── infra/        # Infrastructure (SQLite, external services)
 ├── presentation/ # React components, screens, hooks, stores
 ├── design-system/    # 🎨 NEW: Complete Design System (Atomic Design)
-└── legacy-design-system/  # Old DS (being deprecated)
 ```
 
 ## 🎨 Design System

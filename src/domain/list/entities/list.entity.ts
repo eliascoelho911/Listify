@@ -15,6 +15,7 @@ export type List = ListTypeConfig & {
   id: string;
   name: string;
   description?: string;
+  isPrefabricated: boolean;
   createdAt: Date;
   updatedAt: Date;
 };
