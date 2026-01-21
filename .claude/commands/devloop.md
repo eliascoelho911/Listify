@@ -20,7 +20,13 @@ This command orchestrates an automated development workflow with **THREE PHASES*
 
 | Argument | Default | Description |
 |----------|---------|-------------|
-| `--max-iterations N` | 50 | Maximum ralph-loop iterations (~25 cycles) |
+| `--max-impl-cycles N` | 25 | Maximum implementation phases to execute |
+| `--max-iterations N` | `maxImplCycles * 3` | Ralph-loop API calls (auto-derived if not specified) |
+
+**Cycle counting rules:**
+- Only the **impl phase** counts as a cycle
+- Error resolution phases do NOT count as cycles
+- Review phase does NOT count as a cycle (it's part of the impl cycle)
 
 ---
 
@@ -28,7 +34,12 @@ This command orchestrates an automated development workflow with **THREE PHASES*
 
 Parse the following from user input:
 
-- `maxIterations`: Extract number after `--max-iterations` (default: 50)
+- `maxImplCycles`: Extract number after `--max-impl-cycles` (default: 25)
+- `maxIterations`: Extract number after `--max-iterations` (default: `maxImplCycles * 3`)
+
+**Edge cases:**
+- `--max-impl-cycles 0`: No cycle limit, only iteration limit applies
+- Only `--max-iterations` specified: Use default `maxImplCycles=25` with explicit `maxIterations`
 
 ## Step 2: Validate Prerequisites
 
@@ -64,6 +75,7 @@ Create `.claude/devloop-state.json`:
 {
   "phase": "impl",
   "cycle": 1,
+  "maxImplCycles": <maxImplCycles>,
   "featureDir": "<FEATURE_DIR>",
   "startedAt": "<ISO 8601 timestamp>",
   "lastError": null
@@ -76,6 +88,7 @@ Create `.claude/devloop-state.json`:
 |-------|------|-------------|
 | `phase` | `"impl"` \| `"review"` \| `"error"` | Current phase |
 | `cycle` | number | Current cycle count |
+| `maxImplCycles` | number | Maximum implementation phases allowed (0 = unlimited) |
 | `featureDir` | string | Absolute path to feature directory |
 | `startedAt` | string | ISO 8601 timestamp |
 | `lastError` | object \| null | Error info from previous iteration |
@@ -98,7 +111,7 @@ Create `.claude/devloop-state.json`:
 Run the following script to start the ralph-loop with the orchestration prompt:
 
 ```bash
-scripts/start-devloop-loop.sh <maxIterations>
+scripts/start-devloop-loop.sh <maxImplCycles> <maxIterations>
 ```
 
 This script:
@@ -114,6 +127,7 @@ Output a confirmation message:
 
 ```
 DevLoop started with:
+- Max impl cycles: <maxImplCycles> (0 = unlimited)
 - Max iterations: <maxIterations>
 - Feature directory: <featureDir>
 - Current phase: <phase>
