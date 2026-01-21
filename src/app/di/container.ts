@@ -13,6 +13,7 @@ import {
   DrizzleUserPreferencesRepository,
   DrizzleUserRepository,
 } from '@infra/repositories';
+import { SmartInputParserService } from '@infra/services';
 
 import type { AppDependencies, BuildDependenciesOptions } from './types';
 
@@ -34,6 +35,8 @@ export async function buildDependencies(
   const searchHistoryRepository = new DrizzleSearchHistoryRepository(db);
   const globalSearchRepository = new DrizzleGlobalSearchRepository(db);
 
+  const smartInputParser = new SmartInputParserService();
+
   return {
     db,
     listRepository,
@@ -48,5 +51,6 @@ export async function buildDependencies(
     purchaseHistoryRepository,
     searchHistoryRepository,
     globalSearchRepository,
+    smartInputParser,
   };
 }

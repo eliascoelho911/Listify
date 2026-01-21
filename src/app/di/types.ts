@@ -1,3 +1,4 @@
+import type { SmartInputParser } from '@domain/common';
 import type {
   BookItemRepository,
   GameItemRepository,
@@ -30,6 +31,7 @@ export type AppDependencies = {
   purchaseHistoryRepository: PurchaseHistoryRepository;
   searchHistoryRepository: SearchHistoryRepository;
   globalSearchRepository: GlobalSearchRepository<Item, List>;
+  smartInputParser: SmartInputParser;
 };
 
 export type BuildDependenciesOptions = {
