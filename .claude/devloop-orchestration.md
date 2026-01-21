@@ -24,7 +24,7 @@ Before proceeding with the current phase, check if `lastError` exists in the sta
 
 ## IF PHASE = "A" (IMPLEMENT)
 
-1. Read `phasesPerCycle` and `featureDir` from state file
+1. Read `featureDir` from state file
 2. Execute `/speckit.implement` - **NOTE**: This processes only ONE task phase per execution (e.g., Setup, Tests, Core, Integration, or Polish)
 3. After implementation completes, execute `/commit` to commit the changes
 4. Update state file: Set `"phase": "B"`

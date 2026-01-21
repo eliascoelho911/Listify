@@ -20,7 +20,6 @@ This command orchestrates an automated development workflow with **TWO-PHASE ite
 | Argument | Default | Description |
 |----------|---------|-------------|
 | `--max-iterations N` | 50 | Maximum ralph-loop iterations (~25 cycles) |
-| `--phases N` | 1 | Task phases per implement cycle (passed to speckit.implement) |
 
 ---
 
@@ -29,7 +28,6 @@ This command orchestrates an automated development workflow with **TWO-PHASE ite
 Parse the following from user input:
 
 - `maxIterations`: Extract number after `--max-iterations` (default: 50)
-- `phasesPerCycle`: Extract number after `--phases` (default: 1)
 
 ## Step 2: Validate Prerequisites
 
@@ -53,7 +51,6 @@ Create `.claude/devloop-state.json` with the following structure:
 {
   "phase": "A",
   "cycle": 1,
-  "phasesPerCycle": <phasesPerCycle>,
   "featureDir": "<FEATURE_DIR>",
   "startedAt": "<ISO 8601 timestamp>",
   "lastError": null
@@ -66,7 +63,6 @@ Create `.claude/devloop-state.json` with the following structure:
 |-------|------|-------------|
 | `phase` | `"A"` \| `"B"` | Current phase |
 | `cycle` | number | Current cycle count |
-| `phasesPerCycle` | number | Task phases per implement cycle |
 | `featureDir` | string | Absolute path to feature directory |
 | `startedAt` | string | ISO 8601 timestamp |
 | `lastError` | object \| null | Error info from previous iteration |
@@ -106,7 +102,6 @@ Output a confirmation message:
 ```
 DevLoop started with:
 - Max iterations: <maxIterations>
-- Phases per cycle: <phasesPerCycle>
 - Feature directory: <featureDir>
 
 The loop will automatically cycle between:
