@@ -10,10 +10,11 @@ $ARGUMENTS
 
 ## Outline
 
-This command orchestrates an automated development workflow with **TWO-PHASE iterations** for clean context management:
+This command orchestrates an automated development workflow with **THREE PHASES** for clean context management:
 
-- **Phase A (Implement)**: `/speckit.implement` → `/commit`
-- **Phase B (Review)**: `/review` → Apply fixes → `/commit` → `gitworktree-complete.sh --continue` → Check tasks
+- **Phase "impl" (Implement)**: `/speckit.implement` → `/commit`
+- **Phase "review" (Review)**: `/review` → Apply fixes → `/commit` → `gitworktree-complete.sh --continue` → Check tasks
+- **Phase "error" (Error Resolution)**: Exclusive phase when errors occur - resolves errors before continuing
 
 ### Arguments
 
@@ -43,13 +44,25 @@ Parse the JSON output:
 
 **If tasks.md does not exist**: Output an error message and STOP. Suggest running `/speckit.tasks` first.
 
-## Step 3: Create State File
+## Step 3: Create or Update State File
 
-Create `.claude/devloop-state.json` with the following structure:
+Check if `.claude/devloop-state.json` already exists:
+
+**If exists and has `lastError != null`**:
+- Keep existing state values (cycle, featureDir, startedAt)
+- Set `phase: "error"` (force error resolution)
+- Say: "Resuming with error resolution..."
+
+**If exists and `lastError == null`**:
+- Keep existing state (resume from current phase)
+- Say: "Resuming from phase: <phase>, cycle: <cycle>..."
+
+**If NOT exists**:
+Create `.claude/devloop-state.json`:
 
 ```json
 {
-  "phase": "A",
+  "phase": "impl",
   "cycle": 1,
   "featureDir": "<FEATURE_DIR>",
   "startedAt": "<ISO 8601 timestamp>",
@@ -61,7 +74,7 @@ Create `.claude/devloop-state.json` with the following structure:
 
 | Field | Type | Description |
 |-------|------|-------------|
-| `phase` | `"A"` \| `"B"` | Current phase |
+| `phase` | `"impl"` \| `"review"` \| `"error"` | Current phase |
 | `cycle` | number | Current cycle count |
 | `featureDir` | string | Absolute path to feature directory |
 | `startedAt` | string | ISO 8601 timestamp |
@@ -103,10 +116,13 @@ Output a confirmation message:
 DevLoop started with:
 - Max iterations: <maxIterations>
 - Feature directory: <featureDir>
+- Current phase: <phase>
+- Current cycle: <cycle>
 
 The loop will automatically cycle between:
-- Phase A: Implementation (/speckit.implement + /commit)
-- Phase B: Review & Merge (/review + fixes + /commit + merge)
+- Phase "impl": Implementation (/speckit.implement + /commit)
+- Phase "review": Review & Merge (/review + fixes + /commit + merge)
+- Phase "error": Error resolution (only when errors occur)
 
 To cancel: /devloop.cancel or /cancel-ralph
 ```
