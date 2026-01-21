@@ -30,10 +30,39 @@
     "empty": {
       "title": "No lists",
       "description": "Create a list using the + button"
-    }
+    },
+    "createButton": "Create List",
+    "createTitle": "New List"
   },
   "common": {
     "expanded": "expanded",
-    "collapsed": "collapsed"
+    "collapsed": "collapsed",
+    "cancel": "Cancel"
+  },
+  "listForm": {
+    "nameLabel": "LIST NAME",
+    "namePlaceholder": "Enter list name...",
+    "nameRequired": "Name is required",
+    "categoryLabel": "CATEGORY",
+    "create": "Create List",
+    "save": "Save",
+    "duplicateName": "A list with this name already exists in this category"
+  },
+  "search": {
+    "title": "Search",
+    "placeholder": "Search items and lists...",
+    "recentSearches": "Recent Searches",
+    "noResults": "No results found",
+    "tryDifferent": "Try a different search term",
+    "inbox": "Inbox",
+    "listItems": "{{count}} items",
+    "filter": {
+      "all": "All",
+      "items": "Items",
+      "lists": "Lists"
+    }
+  },
+  "settings": {
+    "title": "Settings"
   }
 }

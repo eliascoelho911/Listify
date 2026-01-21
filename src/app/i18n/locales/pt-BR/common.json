@@ -30,10 +30,39 @@
     "empty": {
       "title": "Nenhuma lista",
       "description": "Crie uma lista usando o botão +"
-    }
+    },
+    "createButton": "Criar Lista",
+    "createTitle": "Nova Lista"
   },
   "common": {
     "expanded": "expandido",
-    "collapsed": "recolhido"
+    "collapsed": "recolhido",
+    "cancel": "Cancelar"
+  },
+  "listForm": {
+    "nameLabel": "NOME DA LISTA",
+    "namePlaceholder": "Digite o nome da lista...",
+    "nameRequired": "Nome é obrigatório",
+    "categoryLabel": "CATEGORIA",
+    "create": "Criar Lista",
+    "save": "Salvar",
+    "duplicateName": "Já existe uma lista com este nome nesta categoria"
+  },
+  "search": {
+    "title": "Buscar",
+    "placeholder": "Buscar itens e listas...",
+    "recentSearches": "Buscas Recentes",
+    "noResults": "Nenhum resultado encontrado",
+    "tryDifferent": "Tente um termo de busca diferente",
+    "inbox": "Entrada",
+    "listItems": "{{count}} itens",
+    "filter": {
+      "all": "Todos",
+      "items": "Itens",
+      "lists": "Listas"
+    }
+  },
+  "settings": {
+    "title": "Configurações"
   }
 }

@@ -3,19 +3,21 @@
  *
  * Displays all user lists grouped by category (Notes, Shopping, Movies, Books, Games).
  * Uses CategoryDropdown organisms for each list type.
+ * Includes FAB for creating new lists via modal form.
  */
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { Modal, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { FolderOpen, Settings } from 'lucide-react-native';
+import { FolderOpen, Plus, Settings } from 'lucide-react-native';
 
 import type { List, ListType } from '@domain/list';
 import { useListStoreWithDI } from '@presentation/hooks';
+import { FAB } from '@design-system/atoms';
 import { EmptyState } from '@design-system/molecules';
-import { CategoryDropdown, Navbar } from '@design-system/organisms';
+import { CategoryDropdown, ListForm, type ListFormData, Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 const CATEGORY_ORDER: ListType[] = ['notes', 'shopping', 'movies', 'books', 'games'];
@@ -36,9 +38,15 @@ export function ListsScreen(): ReactElement {
     loadLists,
     toggleCategory,
     clearLists,
+    createList,
+    error,
+    clearError,
   } = listStore();
 
   const [refreshing, setRefreshing] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [createError, setCreateError] = useState<string | null>(null);
 
   useEffect(() => {
     loadLists();
@@ -66,6 +74,52 @@ export function ListsScreen(): ReactElement {
   const handleListLongPress = useCallback((list: List) => {
     console.debug('[ListsScreen] List long pressed:', list.id);
   }, []);
+
+  const handleOpenCreateModal = useCallback(() => {
+    setCreateError(null);
+    clearError();
+    setShowCreateModal(true);
+  }, [clearError]);
+
+  const handleCloseCreateModal = useCallback(() => {
+    setShowCreateModal(false);
+    setCreateError(null);
+  }, []);
+
+  const handleCreateList = useCallback(
+    async (data: ListFormData) => {
+      setIsCreating(true);
+      setCreateError(null);
+
+      // Check for duplicate name within same type
+      const duplicateExists = lists.some(
+        (list) =>
+          list.listType === data.listType && list.name.toLowerCase() === data.name.toLowerCase(),
+      );
+
+      if (duplicateExists) {
+        setCreateError(t('listForm.duplicateName'));
+        setIsCreating(false);
+        return;
+      }
+
+      const result = await createList({
+        name: data.name,
+        listType: data.listType,
+        isPrefabricated: false,
+      });
+
+      setIsCreating(false);
+
+      if (result) {
+        setShowCreateModal(false);
+        console.debug('[ListsScreen] List created:', result.id);
+      } else if (error) {
+        setCreateError(error);
+      }
+    },
+    [createList, lists, t, error],
+  );
 
   const handleToggleCategory = useCallback(
     (category: ListType) => {
@@ -141,6 +195,34 @@ export function ListsScreen(): ReactElement {
           })}
         </ScrollView>
       )}
+
+      {/* FAB for creating new lists */}
+      <FAB
+        icon={Plus}
+        onPress={handleOpenCreateModal}
+        label={t('lists.createButton', 'Create List')}
+        style={styles.fab}
+        testID="lists-create-fab"
+      />
+
+      {/* Create List Modal */}
+      <Modal
+        visible={showCreateModal}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={handleCloseCreateModal}
+      >
+        <View style={styles.modalContainer}>
+          <Navbar title={t('lists.createTitle', 'Nova Lista')} variant="modal" />
+          <ListForm
+            onSubmit={handleCreateList}
+            onCancel={handleCloseCreateModal}
+            isLoading={isCreating}
+            error={createError}
+            testID="create-list-form"
+          />
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -166,5 +248,15 @@ const createStyles = (
       justifyContent: 'center',
       alignItems: 'center',
       padding: theme.spacing.xl,
+    },
+    fab: {
+      position: 'absolute',
+      right: theme.spacing.lg,
+      bottom: theme.spacing.lg,
+    },
+    modalContainer: {
+      flex: 1,
+      backgroundColor: theme.colors.background,
+      paddingTop: topInset,
     },
   });

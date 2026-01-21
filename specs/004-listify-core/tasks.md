@@ -281,17 +281,17 @@
 
 ### Implementação
 
-- [ ] T116 [P] [US3.4] Criar molécula SearchInput com auto-foco em src/design-system/molecules/SearchInput/ via CLI
-- [ ] T117 [P] [US3.4] Criar átomo FilterChip em src/design-system/atoms/FilterChip/ via CLI
-- [ ] T118 [P] [US3.4] Criar molécula SearchHistory em src/design-system/molecules/SearchHistory/ via CLI
-- [ ] T119 [P] [US3.4] Criar molécula SearchResultCard em src/design-system/molecules/SearchResultCard/ via CLI
-- [ ] T120 [US3.4] Criar useSearchStore em src/presentation/stores/useSearchStore.ts
-- [ ] T121 [US3.4] Criar SearchScreen em src/presentation/screens/SearchScreen.tsx
-- [ ] T122 [US3.4] Integrar SearchScreen em app/(tabs)/search.tsx
-- [ ] T123 [US3.4] Implementar highlight de termos buscados nos resultados
-- [ ] T124 [US3.4] Implementar histórico de 10 buscas com FIFO
+- [X] T116 [P] [US3.4] Criar molécula SearchInput com auto-foco em src/design-system/molecules/SearchInput/ via CLI
+- [X] T117 [P] [US3.4] Criar átomo FilterChip em src/design-system/atoms/FilterChip/ via CLI
+- [X] T118 [P] [US3.4] Criar molécula SearchHistory em src/design-system/molecules/SearchHistory/ via CLI
+- [X] T119 [P] [US3.4] Criar molécula SearchResultCard em src/design-system/molecules/SearchResultCard/ via CLI
+- [X] T120 [US3.4] Criar useSearchStore em src/presentation/stores/useSearchStore.ts
+- [X] T121 [US3.4] Criar SearchScreen em src/presentation/screens/SearchScreen.tsx
+- [X] T122 [US3.4] Integrar SearchScreen em app/(tabs)/search.tsx
+- [X] T123 [US3.4] Implementar highlight de termos buscados nos resultados
+- [X] T124 [US3.4] Implementar histórico de 10 buscas com FIFO
 
-**Checkpoint**: Busca avançada com filtros e histórico funcional
+**Checkpoint**: Busca avançada com filtros e histórico funcional ✅
 
 ---
 
@@ -303,12 +303,12 @@
 
 ### Implementação
 
-- [ ] T125 [P] [US4.1] Criar molécula CategorySelector em src/design-system/molecules/CategorySelector/ via CLI
-- [ ] T126 [US4.1] Criar organismo ListForm em src/design-system/organisms/ListForm/ via CLI
-- [ ] T127 [US4.1] Adicionar fluxo de criação de lista na ListsScreen
-- [ ] T128 [US4.1] Implementar validação de nome único por tipo
+- [X] T125 [P] [US4.1] Criar molécula CategorySelector em src/design-system/molecules/CategorySelector/ via CLI
+- [X] T126 [US4.1] Criar organismo ListForm em src/design-system/organisms/ListForm/ via CLI
+- [X] T127 [US4.1] Adicionar fluxo de criação de lista na ListsScreen
+- [X] T128 [US4.1] Implementar validação de nome único por tipo
 
-**Checkpoint**: Criação de listas customizadas funcional
+**Checkpoint**: Criação de listas customizadas funcional ✅
 
 ---
 
