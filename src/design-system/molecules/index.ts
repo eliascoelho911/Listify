@@ -55,3 +55,11 @@ export type {
   ListSuggestion,
   ListSuggestionDropdownProps,
 } from './ListSuggestionDropdown/ListSuggestionDropdown.types';
+
+// MiniCategorySelector
+export { MiniCategorySelector } from './MiniCategorySelector/MiniCategorySelector';
+export type {
+  CategoryOption,
+  MiniCategorySelectorProps,
+  SelectableListType,
+} from './MiniCategorySelector/MiniCategorySelector.types';

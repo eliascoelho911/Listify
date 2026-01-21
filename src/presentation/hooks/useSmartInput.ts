@@ -2,18 +2,28 @@
  * useSmartInput Hook
  *
  * Manages smart input state, parsing, and list suggestions for the SmartInputModal.
- * Integrates with SmartInputParserService and provides callbacks for modal interactions.
+ * Integrates with SmartInputParserService and CategoryInferenceService.
+ * Handles category inference flow when creating new lists.
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
-import type { ParseContext, ParsedInput, SmartInputParser } from '@domain/common';
+import type {
+  CategoryInference,
+  ParseContext,
+  ParsedInput,
+  SmartInputParser,
+} from '@domain/common';
 import type { ListType } from '@domain/list';
 import type { ListSuggestion } from '@design-system/molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
+import type { SelectableListType } from '@design-system/molecules/MiniCategorySelector/MiniCategorySelector.types';
 
 export interface UseSmartInputOptions {
   /** Parser service instance */
   parser: SmartInputParser;
+
+  /** Category inference service instance */
+  categoryInference: CategoryInference;
 
   /** Callback when user submits a parsed input */
   onSubmit?: (parsed: ParsedInput) => void;
@@ -22,7 +32,7 @@ export interface UseSmartInputOptions {
   availableLists?: { id: string; name: string; listType: ListType }[];
 
   /** Callback when user requests to create a new list */
-  onCreateList?: (name: string) => void;
+  onCreateList?: (name: string, listType: ListType) => void;
 
   /** Current list context (for :section syntax) */
   currentListName?: string;
@@ -32,6 +42,17 @@ export interface UseSmartInputOptions {
 
   /** Initial input value */
   initialValue?: string;
+}
+
+/**
+ * State for pending list creation (when showing category selector)
+ */
+export interface PendingListCreation {
+  /** Name of the list to create */
+  name: string;
+
+  /** Inferred type from the inference service */
+  inferredType: SelectableListType;
 }
 
 export interface UseSmartInputReturn {
@@ -65,11 +86,23 @@ export interface UseSmartInputReturn {
   /** Callback when a list is selected from suggestions */
   selectList: (list: ListSuggestion) => void;
 
-  /** Callback when "Create new list" is pressed */
+  /** Callback when "Create new list" is pressed (triggers inference flow) */
   createList: (name: string) => void;
 
   /** Whether a submission is in progress */
   isLoading: boolean;
+
+  /** Whether the category selector should be shown */
+  showCategorySelector: boolean;
+
+  /** Pending list creation (for category selector) */
+  pendingListCreation: PendingListCreation | null;
+
+  /** Callback when user selects a category in the selector */
+  confirmCategorySelection: (type: SelectableListType) => void;
+
+  /** Cancel category selection */
+  cancelCategorySelection: () => void;
 }
 
 const EMPTY_PARSED: ParsedInput = {
@@ -87,6 +120,7 @@ const EMPTY_PARSED: ParsedInput = {
  */
 export function useSmartInput({
   parser,
+  categoryInference,
   onSubmit,
   availableLists = [],
   onCreateList,
@@ -97,6 +131,9 @@ export function useSmartInput({
   const [value, setValue] = useState(initialValue);
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
+  // State for category selection flow
+  const [pendingListCreation, setPendingListCreation] = useState<PendingListCreation | null>(null);
 
   // Parse context for the parser
   const parseContext = useMemo(
@@ -123,9 +160,12 @@ export function useSmartInput({
 
   // Determine if we should show suggestions
   const showSuggestions = useMemo((): boolean => {
-    // Show suggestions when typing after @
-    return typedListName !== null;
-  }, [typedListName]);
+    // Show suggestions when typing after @ and not showing category selector
+    return typedListName !== null && !pendingListCreation;
+  }, [typedListName, pendingListCreation]);
+
+  // Determine if we should show the category selector
+  const showCategorySelector = pendingListCreation !== null;
 
   // Filter available lists based on typed name
   const listSuggestions = useMemo((): ListSuggestion[] => {
@@ -160,6 +200,7 @@ export function useSmartInput({
     setVisible(false);
     // Reset value when closing
     setValue('');
+    setPendingListCreation(null);
   }, []);
 
   // Submit the current input
@@ -176,6 +217,7 @@ export function useSmartInput({
       setIsLoading(false);
       setValue('');
       setVisible(false);
+      setPendingListCreation(null);
     }
   }, [parsed, onSubmit]);
 
@@ -190,18 +232,67 @@ export function useSmartInput({
     [value],
   );
 
-  // Handle create new list
+  // Handle create new list - triggers inference flow
   const createList = useCallback(
     (name: string) => {
-      onCreateList?.(name);
+      if (!onCreateList) {
+        return;
+      }
+
+      // Run category inference on the current input
+      const inferenceResult = categoryInference.infer(value);
+
+      // If high confidence, create immediately
+      if (inferenceResult.confidence === 'high') {
+        onCreateList(name, inferenceResult.listType);
+
+        // Replace the @mention with the new list name
+        const beforeAt = value.slice(0, value.lastIndexOf('@'));
+        const newValue = `${beforeAt}@${name} `;
+        setValue(newValue);
+        return;
+      }
+
+      // For low/medium confidence, show category selector
+      // Map 'notes' to 'shopping' as fallback since 'notes' is not selectable
+      const inferredType: SelectableListType =
+        inferenceResult.listType === 'notes'
+          ? 'shopping'
+          : (inferenceResult.listType as SelectableListType);
+
+      setPendingListCreation({
+        name,
+        inferredType,
+      });
+    },
+    [value, categoryInference, onCreateList],
+  );
+
+  // Confirm category selection from the selector
+  const confirmCategorySelection = useCallback(
+    (type: SelectableListType) => {
+      if (!pendingListCreation || !onCreateList) {
+        return;
+      }
+
+      // Create the list with the selected type
+      onCreateList(pendingListCreation.name, type);
 
       // Replace the @mention with the new list name
       const beforeAt = value.slice(0, value.lastIndexOf('@'));
-      const newValue = `${beforeAt}@${name} `;
+      const newValue = `${beforeAt}@${pendingListCreation.name} `;
       setValue(newValue);
+
+      // Clear pending state
+      setPendingListCreation(null);
     },
-    [value, onCreateList],
+    [pendingListCreation, onCreateList, value],
   );
+
+  // Cancel category selection
+  const cancelCategorySelection = useCallback(() => {
+    setPendingListCreation(null);
+  }, []);
 
   // Reset value when initialValue changes
   useEffect(() => {
@@ -221,5 +312,9 @@ export function useSmartInput({
     selectList,
     createList,
     isLoading,
+    showCategorySelector,
+    pendingListCreation,
+    confirmCategorySelection,
+    cancelCategorySelection,
   };
 }

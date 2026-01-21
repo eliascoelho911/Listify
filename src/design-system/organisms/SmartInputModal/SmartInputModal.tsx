@@ -2,7 +2,7 @@
  * SmartInputModal Organism Component
  *
  * Bottom sheet modal for smart input. Displays input field with inline highlights,
- * parse preview chips, and list suggestions dropdown.
+ * parse preview chips, list suggestions dropdown, and category selector for new lists.
  */
 
 import React, { type ReactElement, useCallback, useMemo, useRef, useState } from 'react';
@@ -16,11 +16,13 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Send } from 'lucide-react-native';
+import { Send, X } from 'lucide-react-native';
 
 import { Icon } from '../../atoms/Icon/Icon';
+import { Text } from '../../atoms/Text/Text';
 import { InlineHighlight } from '../../molecules/InlineHighlight/InlineHighlight';
 import { ListSuggestionDropdown } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown';
+import { MiniCategorySelector } from '../../molecules/MiniCategorySelector/MiniCategorySelector';
 import { ParsePreview } from '../../molecules/ParsePreview/ParsePreview';
 import type { ParsedElement } from '../../molecules/ParsePreview/ParsePreview.types';
 import { useTheme } from '../../theme';
@@ -41,6 +43,11 @@ export function SmartInputModal({
   placeholder = 'Digite para adicionar...',
   isLoading = false,
   style,
+  showCategorySelector = false,
+  pendingListName,
+  inferredCategoryType,
+  onSelectCategory,
+  onCancelCategorySelection,
   ...viewProps
 }: SmartInputModalProps): ReactElement {
   const { theme } = useTheme();
@@ -136,7 +143,7 @@ export function SmartInputModal({
             <View style={styles.handle} />
 
             {/* Suggestions dropdown positioned above input */}
-            {showSuggestions && (
+            {showSuggestions && !showCategorySelector && (
               <View style={styles.suggestionsContainer}>
                 <ListSuggestionDropdown
                   suggestions={listSuggestions}
@@ -187,9 +194,35 @@ export function SmartInputModal({
             )}
 
             {/* Parsed elements preview (chips) */}
-            {previewElements.length > 0 && (
+            {previewElements.length > 0 && !showCategorySelector && (
               <View style={styles.previewContainer}>
                 <ParsePreview elements={previewElements} />
+              </View>
+            )}
+
+            {/* Category selector for new list creation */}
+            {showCategorySelector && pendingListName && onSelectCategory && (
+              <View style={styles.categorySelectorContainer}>
+                <View style={styles.categorySelectorHeader}>
+                  <View>
+                    <Text style={styles.categorySelectorTitle}>Criar lista:</Text>
+                    <Text style={styles.categorySelectorListName}>{pendingListName}</Text>
+                  </View>
+                  {onCancelCategorySelection && (
+                    <Pressable
+                      style={styles.cancelButton}
+                      onPress={onCancelCategorySelection}
+                      accessibilityRole="button"
+                      accessibilityLabel="Cancelar"
+                    >
+                      <Icon icon={X} size="sm" color={theme.colors.mutedForeground} />
+                    </Pressable>
+                  )}
+                </View>
+                <MiniCategorySelector
+                  onSelect={onSelectCategory}
+                  inferredType={inferredCategoryType}
+                />
               </View>
             )}
           </Pressable>

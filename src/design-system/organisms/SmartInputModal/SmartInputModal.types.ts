@@ -7,6 +7,7 @@ import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import type { ParsedInput } from '@domain/common';
 
 import type { ListSuggestion } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
+import type { SelectableListType } from '../../molecules/MiniCategorySelector/MiniCategorySelector.types';
 
 export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
   /**
@@ -84,4 +85,29 @@ export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
    * Whether current list is a shopping list (enables price extraction)
    */
   isShoppingList?: boolean;
+
+  /**
+   * Whether to show the category selector
+   */
+  showCategorySelector?: boolean;
+
+  /**
+   * Name of the list being created (for category selector)
+   */
+  pendingListName?: string;
+
+  /**
+   * Inferred category type (for category selector)
+   */
+  inferredCategoryType?: SelectableListType;
+
+  /**
+   * Callback when a category is selected
+   */
+  onSelectCategory?: (type: SelectableListType) => void;
+
+  /**
+   * Callback when category selection is cancelled
+   */
+  onCancelCategorySelection?: () => void;
 }
