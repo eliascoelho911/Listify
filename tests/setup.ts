@@ -43,3 +43,37 @@ jest.mock('expo-splash-screen', () => ({
   hideAsync: jest.fn(() => Promise.resolve()),
   preventAutoHideAsync: jest.fn(() => Promise.resolve()),
 }));
+
+// Mock react-i18next
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string, options?: Record<string, unknown>) => {
+      const translations: Record<string, string> = {
+        'listTypes.notes': 'Notas',
+        'listTypes.shopping': 'Compras',
+        'listTypes.movies': 'Filmes',
+        'listTypes.books': 'Livros',
+        'listTypes.games': 'Jogos',
+        'listCard.itemCount.empty': 'Vazia',
+        'listCard.itemCount.one': '1 item',
+        'listCard.itemCount.many': `${options?.count} itens`,
+        'listCard.systemBadge': 'Sistema',
+        'listCard.accessibilityLabel': `${options?.name}, lista de ${options?.type}`,
+        'categoryDropdown.emptyMessage': 'Nenhuma lista',
+        'categoryDropdown.accessibilityLabel': `Categoria ${options?.category}, ${options?.count} listas, ${options?.state}`,
+        'lists.title': 'Listas',
+        'lists.empty.title': 'Nenhuma lista',
+        'lists.empty.description': 'Crie uma lista usando o botão +',
+        'settings.title': 'Configurações',
+        'common.expanded': 'expandido',
+        'common.collapsed': 'recolhido',
+      };
+      return translations[key] || key;
+    },
+    i18n: {
+      language: 'pt-BR',
+      changeLanguage: jest.fn(),
+    },
+  }),
+  Trans: ({ children }: { children: React.ReactNode }) => children,
+}));

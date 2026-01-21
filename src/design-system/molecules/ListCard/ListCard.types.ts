@@ -53,7 +53,7 @@ export interface ListCardProps extends Omit<PressableProps, 'style'> {
 export interface ListTypeInfo {
   icon: LucideIcon;
   colorKey: string;
-  label: string;
+  labelKey: string;
 }
 
 export type ListTypeInfoMap = Record<ListType, ListTypeInfo>;

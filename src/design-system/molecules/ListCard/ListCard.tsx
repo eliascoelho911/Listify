@@ -6,6 +6,7 @@
  */
 
 import React, { type ReactElement, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, type StyleProp, View, type ViewStyle } from 'react-native';
 import { BookOpen, Film, Gamepad2, Lock, ShoppingCart, StickyNote } from 'lucide-react-native';
 
@@ -18,11 +19,11 @@ import { createListCardStyles } from './ListCard.styles';
 import type { ListCardProps, ListTypeInfoMap } from './ListCard.types';
 
 const LIST_TYPE_INFO: ListTypeInfoMap = {
-  notes: { icon: StickyNote, colorKey: 'itemNote', label: 'Notas' },
-  shopping: { icon: ShoppingCart, colorKey: 'itemShopping', label: 'Compras' },
-  movies: { icon: Film, colorKey: 'itemMovie', label: 'Filmes' },
-  books: { icon: BookOpen, colorKey: 'itemBook', label: 'Livros' },
-  games: { icon: Gamepad2, colorKey: 'itemGame', label: 'Jogos' },
+  notes: { icon: StickyNote, colorKey: 'itemNote', labelKey: 'listTypes.notes' },
+  shopping: { icon: ShoppingCart, colorKey: 'itemShopping', labelKey: 'listTypes.shopping' },
+  movies: { icon: Film, colorKey: 'itemMovie', labelKey: 'listTypes.movies' },
+  books: { icon: BookOpen, colorKey: 'itemBook', labelKey: 'listTypes.books' },
+  games: { icon: Gamepad2, colorKey: 'itemGame', labelKey: 'listTypes.games' },
 };
 
 function getListTypeColor(
@@ -45,10 +46,12 @@ function getListTypeColor(
   return colorMap[listType];
 }
 
-function formatItemCount(count: number): string {
-  if (count === 0) return 'Vazia';
-  if (count === 1) return '1 item';
-  return `${count} itens`;
+type TFunction = (key: string, options?: Record<string, unknown>) => string;
+
+function formatItemCount(count: number, t: TFunction): string {
+  if (count === 0) return t('listCard.itemCount.empty');
+  if (count === 1) return t('listCard.itemCount.one');
+  return t('listCard.itemCount.many', { count });
 }
 
 export function ListCard({
@@ -62,6 +65,7 @@ export function ListCard({
   ...pressableProps
 }: ListCardProps): ReactElement {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const styles = createListCardStyles(theme, selected);
 
   const handlePress = useCallback(() => {
@@ -73,11 +77,17 @@ export function ListCard({
   }, [list, onLongPress]);
 
   const typeInfo = useMemo(() => LIST_TYPE_INFO[list.listType], [list.listType]);
+  const typeLabel = useMemo(() => t(typeInfo.labelKey), [t, typeInfo.labelKey]);
   const iconColor = useMemo(
     () => getListTypeColor(list.listType, theme.colors),
     [list.listType, theme.colors],
   );
   const IconComponent = customIcon ?? typeInfo.icon;
+
+  const accessibilityLabel = t('listCard.accessibilityLabel', {
+    name: list.name,
+    type: typeLabel,
+  });
 
   return (
     <Pressable
@@ -88,7 +98,7 @@ export function ListCard({
       onPress={handlePress}
       onLongPress={handleLongPress}
       accessibilityRole="button"
-      accessibilityLabel={`${list.name}, ${typeInfo.label} list`}
+      accessibilityLabel={accessibilityLabel}
       testID={testID}
       {...pressableProps}
     >
@@ -102,7 +112,7 @@ export function ListCard({
             {list.name}
           </Text>
           {itemCount !== undefined && (
-            <Text style={styles.itemCount}>{formatItemCount(itemCount)}</Text>
+            <Text style={styles.itemCount}>{formatItemCount(itemCount, t)}</Text>
           )}
         </View>
 
@@ -115,7 +125,7 @@ export function ListCard({
         {list.isPrefabricated && (
           <View style={styles.prefabBadge}>
             <Icon icon={Lock} size="sm" color={theme.colors.mutedForeground} />
-            <Text style={styles.prefabBadgeText}>Sistema</Text>
+            <Text style={styles.prefabBadgeText}>{t('listCard.systemBadge')}</Text>
           </View>
         )}
       </View>

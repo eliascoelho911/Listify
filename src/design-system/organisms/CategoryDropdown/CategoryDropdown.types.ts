@@ -57,7 +57,7 @@ export interface CategoryDropdownProps extends Omit<ViewProps, 'style'> {
  */
 export interface CategoryInfo {
   icon: LucideIcon;
-  label: string;
+  labelKey: string;
   colorKey: string;
 }
 

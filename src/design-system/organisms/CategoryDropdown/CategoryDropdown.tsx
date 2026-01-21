@@ -6,6 +6,7 @@
  */
 
 import React, { type ReactElement, useCallback, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, type StyleProp, View, type ViewStyle } from 'react-native';
 import {
   BookOpen,
@@ -26,11 +27,11 @@ import { createCategoryDropdownStyles } from './CategoryDropdown.styles';
 import type { CategoryDropdownProps, CategoryInfoMap } from './CategoryDropdown.types';
 
 const CATEGORY_INFO: CategoryInfoMap = {
-  notes: { icon: StickyNote, label: 'Notas', colorKey: 'itemNote' },
-  shopping: { icon: ShoppingCart, label: 'Compras', colorKey: 'itemShopping' },
-  movies: { icon: Film, label: 'Filmes', colorKey: 'itemMovie' },
-  books: { icon: BookOpen, label: 'Livros', colorKey: 'itemBook' },
-  games: { icon: Gamepad2, label: 'Jogos', colorKey: 'itemGame' },
+  notes: { icon: StickyNote, labelKey: 'listTypes.notes', colorKey: 'itemNote' },
+  shopping: { icon: ShoppingCart, labelKey: 'listTypes.shopping', colorKey: 'itemShopping' },
+  movies: { icon: Film, labelKey: 'listTypes.movies', colorKey: 'itemMovie' },
+  books: { icon: BookOpen, labelKey: 'listTypes.books', colorKey: 'itemBook' },
+  games: { icon: Gamepad2, labelKey: 'listTypes.games', colorKey: 'itemGame' },
 };
 
 function getCategoryColor(
@@ -65,9 +66,11 @@ export function CategoryDropdown({
   ...viewProps
 }: CategoryDropdownProps): ReactElement {
   const { theme } = useTheme();
+  const { t } = useTranslation();
   const styles = createCategoryDropdownStyles(theme, expanded);
 
   const categoryInfo = useMemo(() => CATEGORY_INFO[category], [category]);
+  const categoryLabel = useMemo(() => t(categoryInfo.labelKey), [t, categoryInfo.labelKey]);
   const categoryColor = useMemo(
     () => getCategoryColor(category, theme.colors),
     [category, theme.colors],
@@ -91,6 +94,12 @@ export function CategoryDropdown({
     [onListLongPress],
   );
 
+  const accessibilityLabel = t('categoryDropdown.accessibilityLabel', {
+    category: categoryLabel,
+    count: lists.length,
+    state: expanded ? t('common.expanded') : t('common.collapsed'),
+  });
+
   return (
     <View style={styles.container} testID={testID} {...viewProps}>
       <Pressable
@@ -100,13 +109,13 @@ export function CategoryDropdown({
         ]}
         onPress={handleHeaderPress}
         accessibilityRole="button"
-        accessibilityLabel={`${categoryInfo.label} category, ${lists.length} lists, ${expanded ? 'expanded' : 'collapsed'}`}
+        accessibilityLabel={accessibilityLabel}
       >
         <View style={styles.headerLeft}>
           <View style={[styles.iconContainer, { backgroundColor: `${categoryColor}20` }]}>
             <Icon icon={categoryInfo.icon} size="md" color={categoryColor} />
           </View>
-          <Text style={styles.categoryLabel}>{categoryInfo.label}</Text>
+          <Text style={styles.categoryLabel}>{categoryLabel}</Text>
           <View style={styles.countBadge}>
             <Text style={styles.countText}>{lists.length}</Text>
           </View>
@@ -119,7 +128,7 @@ export function CategoryDropdown({
       {expanded && (
         <View style={styles.content}>
           {lists.length === 0 ? (
-            <Text style={styles.emptyText}>Nenhuma lista</Text>
+            <Text style={styles.emptyText}>{t('categoryDropdown.emptyMessage')}</Text>
           ) : (
             lists.map((list) => (
               <View key={list.id} style={styles.listCardWrapper}>

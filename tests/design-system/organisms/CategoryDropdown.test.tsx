@@ -2,8 +2,8 @@
  * CategoryDropdown Organism Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import type { List } from '@domain/list';
 import { CategoryDropdown } from '@design-system/organisms/CategoryDropdown/CategoryDropdown';
@@ -55,7 +55,12 @@ describe('CategoryDropdown Organism', () => {
 
   it('should render list cards when expanded', () => {
     const { getByText } = renderWithTheme(
-      <CategoryDropdown category="shopping" lists={mockLists} itemCounts={mockItemCounts} expanded />,
+      <CategoryDropdown
+        category="shopping"
+        lists={mockLists}
+        itemCounts={mockItemCounts}
+        expanded
+      />,
     );
     expect(getByText('Mercado')).toBeTruthy();
     expect(getByText('Feira')).toBeTruthy();
@@ -72,9 +77,14 @@ describe('CategoryDropdown Organism', () => {
   it('should call onToggleExpand when header is pressed', () => {
     const onToggleExpand = jest.fn();
     const { getByLabelText } = renderWithTheme(
-      <CategoryDropdown category="shopping" lists={mockLists} expanded onToggleExpand={onToggleExpand} />,
+      <CategoryDropdown
+        category="shopping"
+        lists={mockLists}
+        expanded
+        onToggleExpand={onToggleExpand}
+      />,
     );
-    fireEvent.press(getByLabelText(/Compras category/));
+    fireEvent.press(getByLabelText(/Categoria Compras/));
     expect(onToggleExpand).toHaveBeenCalled();
   });
 
@@ -88,12 +98,7 @@ describe('CategoryDropdown Organism', () => {
   it('should call onListPress when a list card is pressed', () => {
     const onListPress = jest.fn();
     const { getByText } = renderWithTheme(
-      <CategoryDropdown
-        category="shopping"
-        lists={mockLists}
-        expanded
-        onListPress={onListPress}
-      />,
+      <CategoryDropdown category="shopping" lists={mockLists} expanded onListPress={onListPress} />,
     );
     fireEvent.press(getByText('Mercado'));
     expect(onListPress).toHaveBeenCalledWith(mockLists[0]);

@@ -2,8 +2,8 @@
  * ListCard Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import type { List } from '@domain/list';
 import { ListCard } from '@design-system/molecules/ListCard/ListCard';
@@ -45,6 +45,7 @@ describe('ListCard Molecule', () => {
 
   it('should render item count when provided', () => {
     const { getByText } = renderWithTheme(<ListCard list={mockList} itemCount={5} />);
+    // Note: The mock returns the interpolated string directly
     expect(getByText('5 itens')).toBeTruthy();
   });
 
