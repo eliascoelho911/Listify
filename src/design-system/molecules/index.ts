@@ -32,3 +32,7 @@ export type { AlertDialogProps, AlertDialogVariant } from './AlertDialog/AlertDi
 // EmptyState
 export { EmptyState } from './EmptyState/EmptyState';
 export type { EmptyStateProps } from './EmptyState/EmptyState.types';
+
+// ProfileButton
+export { ProfileButton } from './ProfileButton/ProfileButton';
+export type { ProfileButtonProps, ProfileButtonSize } from './ProfileButton/ProfileButton.types';

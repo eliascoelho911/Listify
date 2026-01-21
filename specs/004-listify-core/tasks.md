@@ -122,15 +122,15 @@
 
 ### Implementação
 
-- [ ] T067 [P] [US1.1] Criar átomo NavigationTab em src/design-system/atoms/NavigationTab/ via CLI
-- [ ] T068 [P] [US1.1] Criar átomo FAB (botão central) em src/design-system/atoms/FAB/ via CLI
-- [ ] T069 [US1.1] Criar organismo Bottombar em src/design-system/organisms/Bottombar/ via CLI
-- [ ] T070 [US1.1] Criar tabs layout com Bottombar customizado em app/(tabs)/_layout.tsx
-- [ ] T071 [P] [US1.1] Criar placeholder screen Inbox em app/(tabs)/index.tsx
-- [ ] T072 [P] [US1.1] Criar placeholder screen Search em app/(tabs)/search.tsx
-- [ ] T073 [P] [US1.1] Criar placeholder screen Notes em app/(tabs)/notes.tsx
-- [ ] T074 [P] [US1.1] Criar placeholder screen Lists em app/(tabs)/lists.tsx
-- [ ] T075 [US1.1] Implementar preservação de estado entre abas via Expo Router
+- [X] T067 [P] [US1.1] Criar átomo NavigationTab em src/design-system/atoms/NavigationTab/ via CLI
+- [X] T068 [P] [US1.1] Criar átomo FAB (botão central) em src/design-system/atoms/FAB/ via CLI
+- [X] T069 [US1.1] Criar organismo Bottombar em src/design-system/organisms/Bottombar/ via CLI
+- [X] T070 [US1.1] Criar tabs layout com Bottombar customizado em app/(tabs)/_layout.tsx
+- [X] T071 [P] [US1.1] Criar placeholder screen Inbox em app/(tabs)/index.tsx
+- [X] T072 [P] [US1.1] Criar placeholder screen Search em app/(tabs)/search.tsx
+- [X] T073 [P] [US1.1] Criar placeholder screen Notes em app/(tabs)/notes.tsx
+- [X] T074 [P] [US1.1] Criar placeholder screen Lists em app/(tabs)/lists.tsx
+- [X] T075 [US1.1] Implementar preservação de estado entre abas via Expo Router
 
 **Checkpoint**: Navegação entre 4 abas + FAB central funcional
 
@@ -144,12 +144,12 @@
 
 ### Implementação
 
-- [ ] T076 [P] [US1.2] Criar átomo ScreenTitle em src/design-system/atoms/ScreenTitle/ via CLI
-- [ ] T077 [P] [US1.2] Criar molécula ProfileButton em src/design-system/molecules/ProfileButton/ via CLI
-- [ ] T078 [US1.2] Criar organismo Navbar em src/design-system/organisms/Navbar/ via CLI
-- [ ] T079 [US1.2] Criar placeholder SettingsScreen em src/presentation/screens/SettingsScreen.tsx
-- [ ] T080 [US1.2] Configurar rota settings em app/settings.tsx
-- [ ] T081 [US1.2] Integrar Navbar em todas as telas principais via tabs layout
+- [X] T076 [P] [US1.2] Criar átomo ScreenTitle em src/design-system/atoms/ScreenTitle/ via CLI
+- [X] T077 [P] [US1.2] Criar molécula ProfileButton em src/design-system/molecules/ProfileButton/ via CLI
+- [X] T078 [US1.2] Criar organismo Navbar em src/design-system/organisms/Navbar/ via CLI
+- [X] T079 [US1.2] Criar placeholder SettingsScreen em src/presentation/screens/SettingsScreen.tsx
+- [X] T080 [US1.2] Configurar rota settings em app/settings.tsx
+- [X] T081 [US1.2] Integrar Navbar em todas as telas principais via tabs layout
 
 **Checkpoint**: Navbar com perfil navegando para settings
 

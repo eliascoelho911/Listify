@@ -13,7 +13,9 @@ initializeI18n().catch(() => undefined);
 function NavigationStack(): ReactElement {
   return (
     <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
+      <Stack.Screen name="settings" options={{ headerShown: false }} />
     </Stack>
   );
 }

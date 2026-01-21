@@ -12,6 +12,9 @@
     "type-check": "bash scripts/type-check.sh",
     "test": "jest",
     "storybook:generate": "sb-rn-get-stories",
+    "storybook": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start",
+    "storybook:ios": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --ios",
+    "storybook:android": "cross-env EXPO_PUBLIC_STORYBOOK_ENABLED='true' expo start --android",
     "ds": "tsx scripts/ds-cli/index.ts"
   },
   "dependencies": {
