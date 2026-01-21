@@ -42,6 +42,12 @@ export interface UseSmartInputOptions {
 
   /** Initial input value */
   initialValue?: string;
+
+  /**
+   * Whether to keep modal open after submit (for continuous creation)
+   * @default true
+   */
+  keepOpenAfterSubmit?: boolean;
 }
 
 /**
@@ -127,6 +133,7 @@ export function useSmartInput({
   currentListName,
   isShoppingList = false,
   initialValue = '',
+  keepOpenAfterSubmit = true,
 }: UseSmartInputOptions): UseSmartInputReturn {
   const [value, setValue] = useState(initialValue);
   const [visible, setVisible] = useState(false);
@@ -216,10 +223,14 @@ export function useSmartInput({
     } finally {
       setIsLoading(false);
       setValue('');
-      setVisible(false);
       setPendingListCreation(null);
+
+      // Only close modal if keepOpenAfterSubmit is false
+      if (!keepOpenAfterSubmit) {
+        setVisible(false);
+      }
     }
-  }, [parsed, onSubmit]);
+  }, [parsed, onSubmit, keepOpenAfterSubmit]);
 
   // Handle list selection from suggestions
   const selectList = useCallback(

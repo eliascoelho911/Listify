@@ -1,6 +1,8 @@
 import { and, asc, count, desc, eq, gte, like, lte } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import { toCreateItemRow, toDomainShoppingItem, toUpdateItemRow } from '@data/mappers';
 import type {
   GroupResult,
   PaginatedResult,
@@ -18,7 +20,6 @@ import type {
   ShoppingListSummary,
   UpdateShoppingItemInput,
 } from '@domain/item';
-import { toCreateItemRow, toDomainShoppingItem, toUpdateItemRow } from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { items } from '../drizzle';

@@ -1,17 +1,18 @@
 import { eq } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import {
+  toCreateUserPreferencesRow,
+  toDomainUserPreferences,
+  toUpdateUserPreferencesRow,
+} from '@data/mappers';
 import type {
   CreateUserPreferencesInput,
   UpdateUserPreferencesInput,
   UserPreferences,
   UserPreferencesRepository,
 } from '@domain/user';
-import {
-  toCreateUserPreferencesRow,
-  toDomainUserPreferences,
-  toUpdateUserPreferencesRow,
-} from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { userPreferences } from '../drizzle';

@@ -178,12 +178,32 @@ describe('SmartInputModal Organism', () => {
           onChangeText={onChangeText}
           onClose={onClose}
           parsed={mockParsedWithTitle}
+          keepOpen={false}
         />,
       );
 
       fireEvent.press(getByTestId('smart-input-submit'));
       expect(onChangeText).toHaveBeenCalledWith('');
       expect(onClose).toHaveBeenCalled();
+    });
+
+    it('should clear text but not close when keepOpen is true', () => {
+      const onChangeText = jest.fn();
+      const onClose = jest.fn();
+
+      const { getByTestId } = renderWithProviders(
+        <SmartInputModal
+          {...defaultProps}
+          onChangeText={onChangeText}
+          onClose={onClose}
+          parsed={mockParsedWithTitle}
+          keepOpen
+        />,
+      );
+
+      fireEvent.press(getByTestId('smart-input-submit'));
+      expect(onChangeText).toHaveBeenCalledWith('');
+      expect(onClose).not.toHaveBeenCalled();
     });
   });
 

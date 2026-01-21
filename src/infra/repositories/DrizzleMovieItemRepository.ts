@@ -1,6 +1,8 @@
 import { and, asc, count, desc, eq, gte, like, lte } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import { toCreateItemRow, toDomainMovieItem, toUpdateItemRow } from '@data/mappers';
 import type { GroupResult, PaginatedResult, PaginationParams, SortCriteria } from '@domain/common';
 import type {
   CreateMovieItemInput,
@@ -11,7 +13,6 @@ import type {
   MovieItemRepository,
   UpdateMovieItemInput,
 } from '@domain/item';
-import { toCreateItemRow, toDomainMovieItem, toUpdateItemRow } from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { items } from '../drizzle';

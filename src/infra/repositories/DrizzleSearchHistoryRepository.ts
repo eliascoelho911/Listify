@@ -1,12 +1,13 @@
 import { desc, eq } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import { toCreateSearchHistoryRow, toDomainSearchHistoryEntry } from '@data/mappers';
 import type {
   CreateSearchHistoryEntryInput,
   SearchHistoryEntry,
   SearchHistoryRepository,
 } from '@domain/search-history';
-import { toCreateSearchHistoryRow, toDomainSearchHistoryEntry } from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { searchHistory } from '../drizzle';

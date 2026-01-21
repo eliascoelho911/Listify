@@ -1,6 +1,8 @@
 import { asc, count, desc, eq } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import { toCreateSectionRow, toDomainSection, toUpdateSectionRow } from '@data/mappers';
 import type {
   PaginatedResult,
   PaginationParams,
@@ -14,7 +16,6 @@ import type {
   SectionSortField,
   UpdateSectionInput,
 } from '@domain/section';
-import { toCreateSectionRow, toDomainSection, toUpdateSectionRow } from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { sections } from '../drizzle';

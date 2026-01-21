@@ -207,12 +207,12 @@
 
 ### Implementação
 
-- [ ] T094 [US2.3] Criar useItemStore com optimistic updates em src/presentation/stores/useItemStore.ts
-- [ ] T095 [US2.3] Integrar criação de item no SmartInputModal
-- [ ] T096 [US2.3] Implementar modal que permanece aberto para criação contínua
-- [ ] T097 [US2.3] Implementar item sem lista associada vai para Inbox
+- [X] T094 [US2.3] Criar useItemStore com optimistic updates em src/presentation/stores/useItemStore.ts
+- [X] T095 [US2.3] Integrar criação de item no SmartInputModal
+- [X] T096 [US2.3] Implementar modal que permanece aberto para criação contínua
+- [X] T097 [US2.3] Implementar item sem lista associada vai para Inbox
 
-**Checkpoint**: Captura ultra-rápida de itens funcional
+**Checkpoint**: Captura ultra-rápida de itens funcional ✅
 
 ---
 

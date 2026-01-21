@@ -48,6 +48,7 @@ export function SmartInputModal({
   inferredCategoryType,
   onSelectCategory,
   onCancelCategorySelection,
+  keepOpen = true,
   ...viewProps
 }: SmartInputModalProps): ReactElement {
   const { theme } = useTheme();
@@ -62,9 +63,14 @@ export function SmartInputModal({
     }
     onSubmit(parsed);
     onChangeText('');
-    Keyboard.dismiss();
-    onClose();
-  }, [parsed, onSubmit, onChangeText, onClose]);
+
+    // Only close and dismiss keyboard if not in continuous mode
+    if (!keepOpen) {
+      Keyboard.dismiss();
+      onClose();
+    }
+    // In keepOpen mode, keep focus on input for continuous creation
+  }, [parsed, onSubmit, onChangeText, keepOpen, onClose]);
 
   const handleOverlayPress = useCallback(() => {
     Keyboard.dismiss();

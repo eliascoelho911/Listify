@@ -211,13 +211,38 @@ describe('useSmartInput', () => {
       expect(onSubmit).not.toHaveBeenCalled();
     });
 
-    it('should reset value and close modal after submit', () => {
+    it('should reset value but keep modal open by default after submit', () => {
       const onSubmit = jest.fn();
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
           categoryInference: mockCategoryInference,
           onSubmit,
+        }),
+      );
+
+      act(() => {
+        result.current.open();
+        result.current.setValue('Test item');
+      });
+
+      act(() => {
+        result.current.submit();
+      });
+
+      expect(result.current.value).toBe('');
+      // Modal stays open by default for continuous creation
+      expect(result.current.visible).toBe(true);
+    });
+
+    it('should close modal after submit when keepOpenAfterSubmit is false', () => {
+      const onSubmit = jest.fn();
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: mockCategoryInference,
+          onSubmit,
+          keepOpenAfterSubmit: false,
         }),
       );
 

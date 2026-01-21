@@ -110,4 +110,10 @@ export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
    * Callback when category selection is cancelled
    */
   onCancelCategorySelection?: () => void;
+
+  /**
+   * Whether to keep modal open after submit (for continuous creation)
+   * @default true
+   */
+  keepOpen?: boolean;
 }

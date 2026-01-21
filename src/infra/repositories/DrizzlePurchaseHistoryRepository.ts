@@ -1,6 +1,8 @@
 import { asc, count, desc, eq } from 'drizzle-orm';
+import 'react-native-get-random-values';
 import { v4 as uuid } from 'uuid';
 
+import { toCreatePurchaseHistoryRow, toDomainPurchaseHistory } from '@data/mappers';
 import type {
   BaseSortField,
   PaginatedResult,
@@ -12,7 +14,6 @@ import type {
   PurchaseHistory,
   PurchaseHistoryRepository,
 } from '@domain/purchase-history';
-import { toCreatePurchaseHistoryRow, toDomainPurchaseHistory } from '@data/mappers';
 
 import type { DrizzleDB } from '../drizzle';
 import { purchaseHistory } from '../drizzle';
