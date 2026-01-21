@@ -1,4 +1,5 @@
 import type { CreateUserInput, UpdateUserInput, User } from '@domain/user';
+
 import type { CreateUserRow, UpdateUserRow, UserRow } from '../persistence';
 
 /**

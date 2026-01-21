@@ -1,7 +1,6 @@
 import type { CreateUserInput, User } from '@domain/user';
-import type { CreateUserRow, UserRow, UpdateUserRow } from '@data/persistence';
-
 import { toCreateUserRow, toDomainUser, toUpdateUserRow } from '@data/mappers/user.mapper';
+import type { CreateUserRow, UpdateUserRow, UserRow } from '@data/persistence';
 
 describe('User Mapper', () => {
   describe('toDomainUser', () => {

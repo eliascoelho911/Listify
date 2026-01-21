@@ -4,12 +4,11 @@ import type {
   PurchaseHistoryItem,
   PurchaseHistorySection,
 } from '@domain/purchase-history';
-import type { CreatePurchaseHistoryRow, PurchaseHistoryRow } from '@data/persistence';
-
 import {
   toCreatePurchaseHistoryRow,
   toDomainPurchaseHistory,
 } from '@data/mappers/purchase-history.mapper';
+import type { CreatePurchaseHistoryRow, PurchaseHistoryRow } from '@data/persistence';
 
 describe('PurchaseHistory Mapper', () => {
   describe('toDomainPurchaseHistory', () => {

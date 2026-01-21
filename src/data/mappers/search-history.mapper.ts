@@ -1,4 +1,5 @@
 import type { CreateSearchHistoryEntryInput, SearchHistoryEntry } from '@domain/search-history';
+
 import type { CreateSearchHistoryRow, SearchHistoryRow } from '../persistence';
 
 /**

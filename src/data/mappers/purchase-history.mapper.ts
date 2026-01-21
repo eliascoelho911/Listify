@@ -4,6 +4,7 @@ import type {
   PurchaseHistoryItem,
   PurchaseHistorySection,
 } from '@domain/purchase-history';
+
 import type { CreatePurchaseHistoryRow, PurchaseHistoryRow } from '../persistence';
 
 /**

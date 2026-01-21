@@ -1,4 +1,5 @@
 import type { CreateSectionInput, Section, UpdateSectionInput } from '@domain/section';
+
 import type { CreateSectionRow, SectionRow, UpdateSectionRow } from '../persistence';
 
 /**

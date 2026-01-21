@@ -1,7 +1,6 @@
 import type { CreateListInput, List } from '@domain/list';
-import type { CreateListRow, ListRow } from '@data/persistence';
-
 import { toCreateListRow, toDomainList, toUpdateListRow } from '@data/mappers/list.mapper';
+import type { CreateListRow, ListRow } from '@data/persistence';
 
 describe('List Mapper', () => {
   describe('toDomainList', () => {
