@@ -30,7 +30,7 @@ FILE_COUNT=${#MODIFIED_ARRAY[@]}
 echo "Linting $FILE_COUNT modified file(s)..."
 
 # Run ESLint only on modified files
-LINT_OUTPUT=$(npx eslint $MODIFIED_FILES 2>&1)
+LINT_OUTPUT=$(npm run lint:fix $MODIFIED_FILES 2>&1)
 LINT_EXIT=$?
 
 if [ $LINT_EXIT -ne 0 ]; then

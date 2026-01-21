@@ -10,6 +10,7 @@ if [ $# -eq 0 ]; then
   npx prettier -w app src tests --log-level=warn
   npx eslint "app/**/*.{js,ts,tsx}" "src/**/*.{js,ts,tsx}" "tests/**/*.{js,ts,tsx}" \
     --report-unused-disable-directives --fix 
+  echo "Prettier e ESLint fix concluídos em todo o projeto."
 else
   # Com argumentos: filtra apenas arquivos .js, .ts, .tsx para ESLint
   JS_FILES=""
@@ -28,4 +29,6 @@ else
   if [ -n "$JS_FILES" ]; then
     npx eslint $JS_FILES --report-unused-disable-directives --fix
   fi
+
+  echo "Prettier e ESLint fix concluídos nos arquivos especificados."  
 fi

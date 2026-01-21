@@ -1,5 +1,5 @@
 #!/bin/bash
-# Runs typecheck and tests related to modified files before allowing stop
+# Runs lint-fix, typecheck and tests related to modified files before allowing stop
 #
 # Exit codes:
 #   0 - Success, approve stop
@@ -29,6 +29,18 @@ MODIFIED_ARRAY=($MODIFIED_FILES)
 FILE_COUNT=${#MODIFIED_ARRAY[@]}
 
 echo "Validating $FILE_COUNT modified file(s) before stop..."
+
+# --- LINT-FIX ---
+echo "Running lint-fix on modified files..."
+LINT_OUTPUT=$("$SCRIPT_DIR/lint-fix.sh" ${MODIFIED_ARRAY[@]} 2>&1)
+LINT_EXIT=$?
+
+if [ $LINT_EXIT -ne 0 ]; then
+  echo "Lint-fix failed for modified files:" >&2
+  echo "$LINT_OUTPUT" >&2
+  echo '{"decision": "block", "reason": "Lint-fix failed for modified files. Fix before completing."}' >&2
+  exit 2
+fi
 
 # --- TYPECHECK ---
 echo "Running TypeScript check..."

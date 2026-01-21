@@ -86,6 +86,7 @@
     "expo-splash-screen": "^31.0.13",
     "jest": "^29.7.0",
     "jest-expo": "^54.0.16",
+    "prettier-eslint": "^16.4.2",
     "react-native-safe-area-context": "^5.6.2",
     "storybook": "^10.1.11",
     "ts-jest": "^29.4.6",
