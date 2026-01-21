@@ -95,3 +95,10 @@ export type { SearchHistoryProps } from './SearchHistory/SearchHistory.types';
 // SearchResultCard
 export { SearchResultCard } from './SearchResultCard/SearchResultCard';
 export type { SearchResultCardProps } from './SearchResultCard/SearchResultCard.types';
+
+// CategorySelector
+export { CategorySelector } from './CategorySelector/CategorySelector';
+export type {
+  SelectableListType as CategorySelectorListType,
+  CategorySelectorProps,
+} from './CategorySelector/CategorySelector.types';

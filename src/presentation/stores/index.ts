@@ -19,6 +19,16 @@ export type {
 } from './useListStore';
 export { createListStore } from './useListStore';
 export type {
+  SearchFilters,
+  SearchResult,
+  SearchStore,
+  SearchStoreActions,
+  SearchStoreDependencies,
+  SearchStoreInstance,
+  SearchStoreState,
+} from './useSearchStore';
+export { createSearchStore } from './useSearchStore';
+export type {
   UserPreferencesStore,
   UserPreferencesStoreActions,
   UserPreferencesStoreDependencies,

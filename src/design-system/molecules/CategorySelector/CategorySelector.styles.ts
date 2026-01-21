@@ -1,26 +1,35 @@
 /**
- * SearchResultCard Molecule Styles
+ * CategorySelector Molecule Styles
  */
 
 import { StyleSheet } from 'react-native';
 
 import type { Theme } from '../../theme/theme';
 
-export const createSearchResultCardStyles = (theme: Theme) => {
+export const createCategorySelectorStyles = (theme: Theme, isSelected: boolean) => {
   return StyleSheet.create({
     container: {
+      gap: theme.spacing.sm,
+    },
+    option: {
       flexDirection: 'row',
       alignItems: 'center',
       padding: theme.spacing.md,
       borderRadius: theme.radii.md,
       backgroundColor: theme.colors.card,
-      gap: theme.spacing.sm,
+      borderWidth: 2,
+      borderColor: theme.colors.border,
+      gap: theme.spacing.md,
+    },
+    optionSelected: {
+      backgroundColor: theme.colors.accent,
+      borderColor: theme.colors.primary,
     },
     iconContainer: {
-      width: 40,
-      height: 40,
+      width: 44,
+      height: 44,
       borderRadius: theme.radii.sm,
-      backgroundColor: theme.colors.muted,
+      backgroundColor: isSelected ? theme.colors.primary : theme.colors.muted,
       justifyContent: 'center',
       alignItems: 'center',
     },
@@ -28,35 +37,28 @@ export const createSearchResultCardStyles = (theme: Theme) => {
       flex: 1,
       gap: theme.spacing.xs,
     },
-    titleContainer: {
-      flexDirection: 'row',
-      flexWrap: 'wrap',
-    },
-    titleText: {
+    label: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.base,
       fontWeight: theme.typography.weights.medium,
       color: theme.colors.foreground,
     },
-    highlightText: {
-      fontFamily: theme.typography.families.body,
-      fontSize: theme.typography.sizes.base,
-      fontWeight: theme.typography.weights.semibold,
+    labelSelected: {
       color: theme.colors.primary,
-      backgroundColor: theme.colors.accent,
+      fontWeight: theme.typography.weights.semibold,
     },
-    subtitle: {
+    description: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.sm,
       color: theme.colors.mutedForeground,
     },
-    timestamp: {
-      fontFamily: theme.typography.families.body,
-      fontSize: theme.typography.sizes.xs,
-      color: theme.colors.mutedForeground,
-    },
-    chevron: {
-      marginLeft: theme.spacing.xs,
+    checkmark: {
+      width: 24,
+      height: 24,
+      borderRadius: theme.radii.full,
+      backgroundColor: theme.colors.primary,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
   });
 };
