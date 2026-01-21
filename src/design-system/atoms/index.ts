@@ -70,3 +70,7 @@ export type { ScreenTitleProps } from './ScreenTitle/ScreenTitle.types';
 // GroupHeader
 export { GroupHeader } from './GroupHeader/GroupHeader';
 export type { GroupHeaderProps, GroupHeaderVariant } from './GroupHeader/GroupHeader.types';
+
+// FilterChip
+export { FilterChip } from './FilterChip/FilterChip';
+export type { FilterChipProps } from './FilterChip/FilterChip.types';
