@@ -224,13 +224,13 @@
 
 ### Implementação
 
-- [ ] T098 [P] [US3.1] Criar átomo GroupHeader em src/design-system/atoms/GroupHeader/ via CLI
-- [ ] T099 [P] [US3.1] Criar molécula ItemCard (genérico) em src/design-system/molecules/ItemCard/ via CLI
-- [ ] T100 [P] [US3.1] Criar molécula SortingControls em src/design-system/molecules/SortingControls/ via CLI
-- [ ] T101 [US3.1] Criar organismo InfiniteScrollList em src/design-system/organisms/InfiniteScrollList/ via CLI
-- [ ] T102 [US3.1] Criar hook useInfiniteScroll em src/presentation/hooks/useInfiniteScroll.ts
-- [ ] T103 [US3.1] Criar InboxScreen completa em src/presentation/screens/InboxScreen.tsx
-- [ ] T104 [US3.1] Integrar InboxScreen em app/(tabs)/index.tsx
+- [X] T098 [P] [US3.1] Criar átomo GroupHeader em src/design-system/atoms/GroupHeader/ via CLI
+- [X] T099 [P] [US3.1] Criar molécula ItemCard (genérico) em src/design-system/molecules/ItemCard/ via CLI
+- [X] T100 [P] [US3.1] Criar molécula SortingControls em src/design-system/molecules/SortingControls/ via CLI
+- [X] T101 [US3.1] Criar organismo InfiniteScrollList em src/design-system/organisms/InfiniteScrollList/ via CLI
+- [X] T102 [US3.1] Criar hook useInfiniteScroll em src/presentation/hooks/useInfiniteScroll.ts
+- [X] T103 [US3.1] Criar InboxScreen completa em src/presentation/screens/InboxScreen.tsx
+- [X] T104 [US3.1] Integrar InboxScreen em app/(tabs)/index.tsx
 
 **Checkpoint**: Inbox com scroll infinito e agrupamento por data/lista funcional
 
@@ -244,12 +244,12 @@
 
 ### Implementação
 
-- [ ] T105 [P] [US3.2] Criar molécula ListCard em src/design-system/molecules/ListCard/ via CLI
-- [ ] T106 [P] [US3.2] Criar molécula EmptyState em src/design-system/molecules/EmptyState/ via CLI
-- [ ] T107 [US3.2] Criar organismo CategoryDropdown em src/design-system/organisms/CategoryDropdown/ via CLI
-- [ ] T108 [US3.2] Criar useListStore com optimistic updates em src/presentation/stores/useListStore.ts
-- [ ] T109 [US3.2] Criar ListsScreen em src/presentation/screens/ListsScreen.tsx
-- [ ] T110 [US3.2] Integrar ListsScreen em app/(tabs)/lists.tsx
+- [X] T105 [P] [US3.2] Criar molécula ListCard em src/design-system/molecules/ListCard/ via CLI
+- [X] T106 [P] [US3.2] Criar molécula EmptyState em src/design-system/molecules/EmptyState/ via CLI
+- [X] T107 [US3.2] Criar organismo CategoryDropdown em src/design-system/organisms/CategoryDropdown/ via CLI
+- [X] T108 [US3.2] Criar useListStore com optimistic updates em src/presentation/stores/useListStore.ts
+- [X] T109 [US3.2] Criar ListsScreen em src/presentation/screens/ListsScreen.tsx
+- [X] T110 [US3.2] Integrar ListsScreen em app/(tabs)/lists.tsx
 
 **Checkpoint**: Tela Listas com dropdowns por categoria funcional
 

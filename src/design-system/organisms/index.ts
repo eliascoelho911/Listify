@@ -29,3 +29,11 @@ export type {
   InfiniteScrollGroup,
   InfiniteScrollListProps,
 } from './InfiniteScrollList/InfiniteScrollList.types';
+
+// CategoryDropdown
+export { CategoryDropdown } from './CategoryDropdown/CategoryDropdown';
+export type {
+  CategoryDropdownProps,
+  CategoryInfo,
+  CategoryInfoMap,
+} from './CategoryDropdown/CategoryDropdown.types';
