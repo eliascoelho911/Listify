@@ -51,6 +51,15 @@ export const semantic = {
   info: cyan[500],
 };
 
+// Item type colors (used in ItemCard and list icons)
+export const itemTypeColors = {
+  note: '#64748b', // Slate gray
+  shopping: '#22c55e', // Green
+  movie: '#f43f5e', // Rose
+  book: '#8b5cf6', // Violet
+  game: '#3b82f6', // Blue
+};
+
 /**
  * Dark Theme Tokens (padrão)
  */
@@ -103,6 +112,13 @@ export const darkTheme = {
   overlay: 'rgba(0, 0, 0, 0.6)',
   overlayLight: 'rgba(0, 0, 0, 0.5)',
   shadowBase: '#000',
+
+  // Item type colors
+  itemNote: itemTypeColors.note,
+  itemShopping: itemTypeColors.shopping,
+  itemMovie: itemTypeColors.movie,
+  itemBook: itemTypeColors.book,
+  itemGame: itemTypeColors.game,
 };
 
 /**
@@ -157,6 +173,13 @@ export const lightTheme = {
   overlay: 'rgba(0, 0, 0, 0.4)',
   overlayLight: 'rgba(0, 0, 0, 0.3)',
   shadowBase: '#000',
+
+  // Item type colors
+  itemNote: itemTypeColors.note,
+  itemShopping: itemTypeColors.shopping,
+  itemMovie: itemTypeColors.movie,
+  itemBook: itemTypeColors.book,
+  itemGame: itemTypeColors.game,
 };
 
 /**

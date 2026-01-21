@@ -66,3 +66,7 @@ export type { FABProps, FABSize } from './FAB/FAB.types';
 // ScreenTitle
 export { ScreenTitle } from './ScreenTitle/ScreenTitle';
 export type { ScreenTitleProps } from './ScreenTitle/ScreenTitle.types';
+
+// GroupHeader
+export { GroupHeader } from './GroupHeader/GroupHeader';
+export type { GroupHeaderProps, GroupHeaderVariant } from './GroupHeader/GroupHeader.types';
