@@ -111,37 +111,27 @@
       "indexes": {
         "items_list_id_idx": {
           "name": "items_list_id_idx",
-          "columns": [
-            "list_id"
-          ],
+          "columns": ["list_id"],
           "isUnique": false
         },
         "items_section_id_idx": {
           "name": "items_section_id_idx",
-          "columns": [
-            "section_id"
-          ],
+          "columns": ["section_id"],
           "isUnique": false
         },
         "items_type_idx": {
           "name": "items_type_idx",
-          "columns": [
-            "type"
-          ],
+          "columns": ["type"],
           "isUnique": false
         },
         "items_created_at_idx": {
           "name": "items_created_at_idx",
-          "columns": [
-            "created_at"
-          ],
+          "columns": ["created_at"],
           "isUnique": false
         },
         "items_title_idx": {
           "name": "items_title_idx",
-          "columns": [
-            "title"
-          ],
+          "columns": ["title"],
           "isUnique": false
         }
       },
@@ -150,12 +140,8 @@
           "name": "items_list_id_lists_id_fk",
           "tableFrom": "items",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         },
@@ -163,12 +149,8 @@
           "name": "items_section_id_sections_id_fk",
           "tableFrom": "items",
           "tableTo": "sections",
-          "columnsFrom": [
-            "section_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["section_id"],
+          "columnsTo": ["id"],
           "onDelete": "set null",
           "onUpdate": "no action"
         }
@@ -234,17 +216,12 @@
       "indexes": {
         "lists_list_type_idx": {
           "name": "lists_list_type_idx",
-          "columns": [
-            "list_type"
-          ],
+          "columns": ["list_type"],
           "isUnique": false
         },
         "lists_name_type_unique": {
           "name": "lists_name_type_unique",
-          "columns": [
-            "name",
-            "list_type"
-          ],
+          "columns": ["name", "list_type"],
           "isUnique": true
         }
       },
@@ -319,16 +296,12 @@
       "indexes": {
         "purchase_history_list_id_idx": {
           "name": "purchase_history_list_id_idx",
-          "columns": [
-            "list_id"
-          ],
+          "columns": ["list_id"],
           "isUnique": false
         },
         "purchase_history_purchase_date_idx": {
           "name": "purchase_history_purchase_date_idx",
-          "columns": [
-            "purchase_date"
-          ],
+          "columns": ["purchase_date"],
           "isUnique": false
         }
       },
@@ -337,12 +310,8 @@
           "name": "purchase_history_list_id_lists_id_fk",
           "tableFrom": "purchase_history",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -379,16 +348,12 @@
       "indexes": {
         "search_history_query_unique": {
           "name": "search_history_query_unique",
-          "columns": [
-            "query"
-          ],
+          "columns": ["query"],
           "isUnique": true
         },
         "search_history_searched_at_idx": {
           "name": "search_history_searched_at_idx",
-          "columns": [
-            "searched_at"
-          ],
+          "columns": ["searched_at"],
           "isUnique": false
         }
       },
@@ -447,17 +412,12 @@
       "indexes": {
         "sections_list_id_idx": {
           "name": "sections_list_id_idx",
-          "columns": [
-            "list_id"
-          ],
+          "columns": ["list_id"],
           "isUnique": false
         },
         "sections_list_name_unique": {
           "name": "sections_list_name_unique",
-          "columns": [
-            "list_id",
-            "name"
-          ],
+          "columns": ["list_id", "name"],
           "isUnique": true
         }
       },
@@ -466,12 +426,8 @@
           "name": "sections_list_id_lists_id_fk",
           "tableFrom": "sections",
           "tableTo": "lists",
-          "columnsFrom": [
-            "list_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["list_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }
@@ -538,9 +494,7 @@
       "indexes": {
         "user_preferences_user_id_unique": {
           "name": "user_preferences_user_id_unique",
-          "columns": [
-            "user_id"
-          ],
+          "columns": ["user_id"],
           "isUnique": true
         }
       },
@@ -549,12 +503,8 @@
           "name": "user_preferences_user_id_users_id_fk",
           "tableFrom": "user_preferences",
           "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
+          "columnsFrom": ["user_id"],
+          "columnsTo": ["id"],
           "onDelete": "cascade",
           "onUpdate": "no action"
         }

@@ -2,10 +2,10 @@ import React, { createContext, type ReactElement, type ReactNode, useContext } f
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useMigrations } from 'drizzle-orm/expo-sqlite/migrator';
 
-import { Text } from '@design-system/atoms/Text/Text';
-import { useTheme } from '@design-system/theme';
 import { type DrizzleDB, getDatabase } from '@infra/drizzle';
 import migrations from '@infra/drizzle/migrations/migrations';
+import { Text } from '@design-system/atoms/Text/Text';
+import { useTheme } from '@design-system/theme';
 
 type DatabaseContextValue = {
   db: DrizzleDB;
