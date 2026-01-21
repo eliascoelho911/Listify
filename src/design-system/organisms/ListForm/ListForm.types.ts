@@ -6,10 +6,9 @@
 
 import type { StyleProp, ViewStyle } from 'react-native';
 
-/**
- * Available list types for selection (excludes 'notes' as it's a prefabricated list)
- */
-export type SelectableListType = 'shopping' | 'movies' | 'books' | 'games';
+import type { SelectableListType } from '../../molecules/CategorySelector/CategorySelector.types';
+
+export type { SelectableListType };
 
 export interface ListFormData {
   /**

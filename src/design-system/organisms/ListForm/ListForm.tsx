@@ -5,8 +5,8 @@
  */
 
 import React, { type ReactElement, useCallback, useState } from 'react';
-import { Pressable, ScrollView, TextInput, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Pressable, ScrollView, TextInput, View } from 'react-native';
 
 import { Text } from '../../atoms/Text/Text';
 import { CategorySelector } from '../../molecules/CategorySelector/CategorySelector';
@@ -29,9 +29,7 @@ export function ListForm({
   const styles = createListFormStyles(theme);
 
   const [name, setName] = useState(initialData?.name ?? '');
-  const [listType, setListType] = useState<SelectableListType>(
-    initialData?.listType ?? 'shopping',
-  );
+  const [listType, setListType] = useState<SelectableListType>(initialData?.listType ?? 'shopping');
   const [isFocused, setIsFocused] = useState(false);
   const [touched, setTouched] = useState(false);
 
@@ -80,12 +78,8 @@ export function ListForm({
             editable={!isLoading}
             testID={testID ? `${testID}-name-input` : undefined}
           />
-          {showNameError && (
-            <Text style={styles.errorText}>{t('listForm.nameRequired')}</Text>
-          )}
-          {error && !showNameError && (
-            <Text style={styles.errorText}>{error}</Text>
-          )}
+          {showNameError && <Text style={styles.errorText}>{t('listForm.nameRequired')}</Text>}
+          {error && !showNameError && <Text style={styles.errorText}>{error}</Text>}
         </View>
 
         {/* Category Selector Section */}
@@ -109,16 +103,10 @@ export function ListForm({
           accessibilityLabel={t('common.cancel')}
           testID={testID ? `${testID}-cancel-button` : undefined}
         >
-          <Text style={[styles.buttonText, styles.buttonTextSecondary]}>
-            {t('common.cancel')}
-          </Text>
+          <Text style={[styles.buttonText, styles.buttonTextSecondary]}>{t('common.cancel')}</Text>
         </Pressable>
         <Pressable
-          style={[
-            styles.button,
-            styles.buttonPrimary,
-            isLoading && styles.buttonDisabled,
-          ]}
+          style={[styles.button, styles.buttonPrimary, isLoading && styles.buttonDisabled]}
           onPress={handleSubmit}
           disabled={isLoading}
           accessibilityRole="button"

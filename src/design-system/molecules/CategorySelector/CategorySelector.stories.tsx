@@ -2,9 +2,9 @@
  * CategorySelector Molecule Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { CategorySelector } from './CategorySelector';
@@ -28,9 +28,7 @@ export default meta;
 
 type Story = StoryObj<typeof CategorySelector>;
 
-function CategorySelectorWithState(
-  props: Partial<React.ComponentProps<typeof CategorySelector>>,
-) {
+function CategorySelectorWithState(props: Partial<React.ComponentProps<typeof CategorySelector>>) {
   const [selectedType, setSelectedType] = useState<SelectableListType>(
     props.selectedType ?? 'shopping',
   );

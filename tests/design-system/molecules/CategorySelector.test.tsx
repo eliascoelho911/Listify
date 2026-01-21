@@ -2,13 +2,12 @@
  * CategorySelector Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { CategorySelector } from '@design-system/molecules/CategorySelector/CategorySelector';
-import { ThemeProvider } from '@design-system/theme';
-
 import type { SelectableListType } from '@design-system/molecules/CategorySelector/CategorySelector.types';
+import { ThemeProvider } from '@design-system/theme';
 
 const renderWithTheme = (component: React.ReactElement) => {
   return render(<ThemeProvider>{component}</ThemeProvider>);
@@ -29,7 +28,7 @@ describe('CategorySelector Molecule', () => {
     expect(getByText('Compras')).toBeTruthy();
     expect(getByText('Filmes')).toBeTruthy();
     expect(getByText('Livros')).toBeTruthy();
-    expect(getByText('Games')).toBeTruthy();
+    expect(getByText('Jogos')).toBeTruthy();
   });
 
   it('should call onSelect when an option is pressed', () => {
@@ -43,11 +42,7 @@ describe('CategorySelector Molecule', () => {
 
   it('should highlight the selected option', () => {
     const { getByTestId } = renderWithTheme(
-      <CategorySelector
-        selectedType="movies"
-        onSelect={mockOnSelect}
-        testID="category-selector"
-      />,
+      <CategorySelector selectedType="movies" onSelect={mockOnSelect} testID="category-selector" />,
     );
 
     const moviesOption = getByTestId('category-selector-movies');

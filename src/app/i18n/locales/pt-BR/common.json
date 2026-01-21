@@ -12,6 +12,12 @@
     "books": "Livros",
     "games": "Jogos"
   },
+  "categoryDescriptions": {
+    "shopping": "Lista de compras com preços e quantidades",
+    "movies": "Filmes e séries para assistir",
+    "books": "Livros para ler",
+    "games": "Jogos para jogar"
+  },
   "listCard": {
     "itemCount": {
       "empty": "Vazia",

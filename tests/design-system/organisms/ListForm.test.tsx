@@ -2,8 +2,8 @@
  * ListForm Organism Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { ListForm } from '@design-system/organisms/ListForm/ListForm';
 import { ThemeProvider } from '@design-system/theme';
@@ -22,24 +22,16 @@ describe('ListForm Organism', () => {
 
   it('should render name input and category selector', () => {
     const { getByPlaceholderText, getByTestId } = renderWithTheme(
-      <ListForm
-        onSubmit={mockOnSubmit}
-        onCancel={mockOnCancel}
-        testID="list-form"
-      />,
+      <ListForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} testID="list-form" />,
     );
 
-    expect(getByPlaceholderText('listForm.namePlaceholder')).toBeTruthy();
+    expect(getByPlaceholderText('Digite o nome da lista...')).toBeTruthy();
     expect(getByTestId('list-form-category')).toBeTruthy();
   });
 
   it('should call onCancel when cancel button is pressed', () => {
     const { getByTestId } = renderWithTheme(
-      <ListForm
-        onSubmit={mockOnSubmit}
-        onCancel={mockOnCancel}
-        testID="list-form"
-      />,
+      <ListForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} testID="list-form" />,
     );
 
     fireEvent.press(getByTestId('list-form-cancel-button'));
@@ -48,29 +40,21 @@ describe('ListForm Organism', () => {
 
   it('should show validation error when submitting empty name', () => {
     const { getByTestId, getByText } = renderWithTheme(
-      <ListForm
-        onSubmit={mockOnSubmit}
-        onCancel={mockOnCancel}
-        testID="list-form"
-      />,
+      <ListForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} testID="list-form" />,
     );
 
     fireEvent.press(getByTestId('list-form-submit-button'));
 
-    expect(getByText('listForm.nameRequired')).toBeTruthy();
+    expect(getByText('Nome é obrigatório')).toBeTruthy();
     expect(mockOnSubmit).not.toHaveBeenCalled();
   });
 
   it('should call onSubmit with form data when valid', () => {
     const { getByTestId, getByPlaceholderText } = renderWithTheme(
-      <ListForm
-        onSubmit={mockOnSubmit}
-        onCancel={mockOnCancel}
-        testID="list-form"
-      />,
+      <ListForm onSubmit={mockOnSubmit} onCancel={mockOnCancel} testID="list-form" />,
     );
 
-    const nameInput = getByPlaceholderText('listForm.namePlaceholder');
+    const nameInput = getByPlaceholderText('Digite o nome da lista...');
     fireEvent.changeText(nameInput, 'My New List');
 
     fireEvent.press(getByTestId('list-form-submit-button'));
@@ -95,7 +79,7 @@ describe('ListForm Organism', () => {
     );
 
     expect(getByDisplayValue('Existing List')).toBeTruthy();
-    expect(getByText('listForm.save')).toBeTruthy();
+    expect(getByText('Salvar')).toBeTruthy();
   });
 
   it('should display error message when provided', () => {

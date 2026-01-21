@@ -9,7 +9,7 @@ import React, { type ReactElement, useCallback, useEffect, useMemo, useRef, useS
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { useRouter } from 'expo-router';
+import { type Href, useRouter } from 'expo-router';
 import { Search, Settings } from 'lucide-react-native';
 
 import type { Item } from '@domain/item';
@@ -17,11 +17,11 @@ import type { List } from '@domain/list';
 import type { GlobalSearchTarget } from '@domain/search';
 import { useSearchStoreWithDI } from '@presentation/hooks';
 import type { SearchResult } from '@presentation/stores';
-import { EmptyState } from '@design-system/molecules';
 import { FilterChip } from '@design-system/atoms/FilterChip/FilterChip';
-import { SearchInput } from '@design-system/molecules/SearchInput/SearchInput';
+import { EmptyState } from '@design-system/molecules';
 import { SearchHistory } from '@design-system/molecules/SearchHistory/SearchHistory';
 import type { SearchHistoryItem } from '@design-system/molecules/SearchHistory/SearchHistory.types';
+import { SearchInput } from '@design-system/molecules/SearchInput/SearchInput';
 import { SearchResultCard } from '@design-system/molecules/SearchResultCard/SearchResultCard';
 import type { SearchResultType } from '@design-system/molecules/SearchResultCard/SearchResultCard.types';
 import { Navbar } from '@design-system/organisms';
@@ -29,16 +29,7 @@ import { useTheme } from '@design-system/theme';
 
 const DEBOUNCE_DELAY = 300;
 
-interface TargetFilter {
-  key: GlobalSearchTarget;
-  label: string;
-}
-
-const TARGET_FILTERS: TargetFilter[] = [
-  { key: 'all', label: 'All' },
-  { key: 'items', label: 'Items' },
-  { key: 'lists', label: 'Lists' },
-];
+const TARGET_FILTER_KEYS: GlobalSearchTarget[] = ['all', 'items', 'lists'];
 
 function mapResultType(result: SearchResult): SearchResultType {
   if (result.entityType === 'list') {
@@ -117,8 +108,12 @@ export function SearchScreen(): ReactElement {
   const handleSubmit = useCallback(async () => {
     const trimmedQuery = localQuery.trim();
     if (trimmedQuery) {
-      await addToHistory(trimmedQuery);
-      await executeSearch();
+      try {
+        await addToHistory(trimmedQuery);
+        await executeSearch();
+      } catch (error) {
+        console.debug('[SearchScreen] Search failed:', error);
+      }
     }
   }, [localQuery, addToHistory, executeSearch]);
 
@@ -150,14 +145,16 @@ export function SearchScreen(): ReactElement {
   const handleResultPress = useCallback(
     (result: SearchResult) => {
       if (result.entityType === 'list') {
-        router.push(`/list/${result.id}`);
+        // TODO: Route /list/[id] will be implemented in a future US
+        router.push(`/list/${result.id}` as Href);
       } else {
         const item = result.entity as Item;
         if (item.listId) {
-          router.push(`/list/${item.listId}?itemId=${item.id}`);
+          // TODO: Route /list/[id] will be implemented in a future US
+          router.push(`/list/${item.listId}?itemId=${item.id}` as Href);
         } else {
           // Inbox item - navigate to inbox with item highlighted
-          router.push(`/?itemId=${item.id}`);
+          router.push(`/?itemId=${item.id}` as Href);
         }
       }
     },
@@ -237,13 +234,13 @@ export function SearchScreen(): ReactElement {
         />
 
         <View style={styles.filtersContainer}>
-          {TARGET_FILTERS.map((filter) => (
+          {TARGET_FILTER_KEYS.map((filterKey) => (
             <FilterChip
-              key={filter.key}
-              label={t(`search.filter.${filter.key}`, filter.label)}
-              selected={filters.target === filter.key}
-              onPress={() => handleFilterChange(filter.key)}
-              testID={`filter-${filter.key}`}
+              key={filterKey}
+              label={t(`search.filter.${filterKey}`)}
+              selected={filters.target === filterKey}
+              onPress={() => handleFilterChange(filterKey)}
+              testID={`filter-${filterKey}`}
             />
           ))}
         </View>

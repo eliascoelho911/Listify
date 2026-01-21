@@ -5,9 +5,10 @@
  * Shows all available list types with icons, labels, and descriptions.
  */
 
-import { Book, Check, Film, Gamepad2, type LucideIcon, ShoppingCart } from 'lucide-react-native';
 import React, { type ReactElement, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Pressable, View } from 'react-native';
+import { Book, Check, Film, Gamepad2, type LucideIcon, ShoppingCart } from 'lucide-react-native';
 
 import { Icon } from '../../atoms/Icon/Icon';
 import { Text } from '../../atoms/Text/Text';
@@ -15,33 +16,11 @@ import { useTheme } from '../../theme';
 import { createCategorySelectorStyles } from './CategorySelector.styles';
 import type { CategorySelectorProps, SelectableListType } from './CategorySelector.types';
 
-interface CategoryConfig {
-  icon: LucideIcon;
-  label: string;
-  description: string;
-}
-
-const CATEGORY_CONFIG: Record<SelectableListType, CategoryConfig> = {
-  shopping: {
-    icon: ShoppingCart,
-    label: 'Compras',
-    description: 'Lista de compras com preços e quantidades',
-  },
-  movies: {
-    icon: Film,
-    label: 'Filmes',
-    description: 'Filmes e séries para assistir',
-  },
-  books: {
-    icon: Book,
-    label: 'Livros',
-    description: 'Livros para ler',
-  },
-  games: {
-    icon: Gamepad2,
-    label: 'Games',
-    description: 'Jogos para jogar',
-  },
+const CATEGORY_ICONS: Record<SelectableListType, LucideIcon> = {
+  shopping: ShoppingCart,
+  movies: Film,
+  books: Book,
+  games: Gamepad2,
 };
 
 const CATEGORY_ORDER: SelectableListType[] = ['shopping', 'movies', 'books', 'games'];
@@ -53,10 +32,13 @@ export function CategorySelector({
   testID,
 }: CategorySelectorProps): ReactElement {
   const { theme } = useTheme();
+  const { t } = useTranslation();
 
   const renderOption = useCallback(
     (type: SelectableListType) => {
-      const config = CATEGORY_CONFIG[type];
+      const icon = CATEGORY_ICONS[type];
+      const label = t(`listTypes.${type}`);
+      const description = t(`categoryDescriptions.${type}`);
       const isSelected = selectedType === type;
       const styles = createCategorySelectorStyles(theme, isSelected);
 
@@ -67,19 +49,19 @@ export function CategorySelector({
           onPress={() => onSelect(type)}
           accessibilityRole="radio"
           accessibilityState={{ selected: isSelected }}
-          accessibilityLabel={`${config.label}, ${config.description}`}
+          accessibilityLabel={`${label}, ${description}`}
           testID={testID ? `${testID}-${type}` : undefined}
         >
           <View style={styles.iconContainer}>
             <Icon
-              icon={config.icon}
+              icon={icon}
               size="md"
               color={isSelected ? theme.colors.primaryForeground : theme.colors.mutedForeground}
             />
           </View>
           <View style={styles.content}>
-            <Text style={[styles.label, isSelected && styles.labelSelected]}>{config.label}</Text>
-            <Text style={styles.description}>{config.description}</Text>
+            <Text style={[styles.label, isSelected && styles.labelSelected]}>{label}</Text>
+            <Text style={styles.description}>{description}</Text>
           </View>
           {isSelected && (
             <View style={styles.checkmark}>
@@ -89,7 +71,7 @@ export function CategorySelector({
         </Pressable>
       );
     },
-    [selectedType, onSelect, theme, testID],
+    [selectedType, onSelect, theme, testID, t],
   );
 
   const baseStyles = createCategorySelectorStyles(theme, false);

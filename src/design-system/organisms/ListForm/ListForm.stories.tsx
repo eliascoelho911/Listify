@@ -2,9 +2,9 @@
  * ListForm Organism Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { Alert, View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { ListForm } from './ListForm';
@@ -16,7 +16,7 @@ const meta: Meta<typeof ListForm> = {
   decorators: [
     (Story) => (
       <ThemeProvider>
-        <View style={{ flex: 1, backgroundColor: '#0a0a0a' }}>
+        <View style={{ flex: 1 }}>
           <Story />
         </View>
       </ThemeProvider>
