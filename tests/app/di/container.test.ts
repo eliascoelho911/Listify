@@ -1,36 +1,29 @@
 /**
  * Container Tests
  *
- * Tests for the DI container buildDependencies function.
- * Note: These tests require mocking the database initialization
- * as SQLite cannot be opened in Jest environment.
+ * Tests for the DI container buildDependenciesSync function.
+ * Note: These tests require mocking the database.
  */
 
-import { buildDependencies } from '@app/di/container';
-import * as drizzle from '@infra/drizzle';
+import { buildDependenciesSync } from '@app/di/container';
+import type { DrizzleDB } from '@infra/drizzle';
 
-// Mock the drizzle initialization
-jest.mock('@infra/drizzle', () => ({
-  ...jest.requireActual('@infra/drizzle'),
-  initializeDatabase: jest.fn(() => ({
-    // Mock minimal DrizzleDB interface
+// Create a mock DrizzleDB instance
+const createMockDb = (): DrizzleDB =>
+  ({
     select: jest.fn(),
     insert: jest.fn(),
     update: jest.fn(),
     delete: jest.fn(),
-  })),
-}));
+  }) as unknown as DrizzleDB;
 
-describe('buildDependencies', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
-
-  it('should build all required dependencies', async () => {
-    const dependencies = await buildDependencies();
+describe('buildDependenciesSync', () => {
+  it('should build all required dependencies', () => {
+    const mockDb = createMockDb();
+    const dependencies = buildDependenciesSync(mockDb);
 
     expect(dependencies).toBeDefined();
-    expect(dependencies.db).toBeDefined();
+    expect(dependencies.db).toBe(mockDb);
     expect(dependencies.listRepository).toBeDefined();
     expect(dependencies.sectionRepository).toBeDefined();
     expect(dependencies.noteItemRepository).toBeDefined();
@@ -45,16 +38,19 @@ describe('buildDependencies', () => {
     expect(dependencies.globalSearchRepository).toBeDefined();
   });
 
-  it('should initialize database with custom name when provided', async () => {
-    const customDbName = 'test-listify.db';
-    await buildDependencies({ databaseName: customDbName });
+  it('should return smart input parser service', () => {
+    const mockDb = createMockDb();
+    const dependencies = buildDependenciesSync(mockDb);
 
-    expect(drizzle.initializeDatabase).toHaveBeenCalledWith(customDbName);
+    expect(dependencies.smartInputParser).toBeDefined();
+    expect(typeof dependencies.smartInputParser.parse).toBe('function');
   });
 
-  it('should initialize database with default name when not provided', async () => {
-    await buildDependencies();
+  it('should return category inference service', () => {
+    const mockDb = createMockDb();
+    const dependencies = buildDependenciesSync(mockDb);
 
-    expect(drizzle.initializeDatabase).toHaveBeenCalledWith(undefined);
+    expect(dependencies.categoryInference).toBeDefined();
+    expect(typeof dependencies.categoryInference.infer).toBe('function');
   });
 });

@@ -7,5 +7,6 @@ export {
   AppDependenciesProvider,
   useAppDependencies,
 } from './AppDependenciesProvider';
-export { buildDependencies } from './container';
-export type { AppDependencies, BuildDependenciesOptions, DrizzleDB } from './types';
+export { buildDependenciesSync } from './container';
+export { DatabaseProvider, useDatabase } from './DatabaseProvider';
+export type { AppDependencies, DrizzleDB } from './types';

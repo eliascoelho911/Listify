@@ -4,6 +4,12 @@ module.exports = function (api) {
     presets: ['babel-preset-expo'],
     plugins: [
       [
+        'inline-import',
+        {
+          extensions: ['.sql'],
+        },
+      ],
+      [
         'module-resolver',
         {
           extensions: ['.ts', '.tsx', '.js', '.jsx', '.json'],

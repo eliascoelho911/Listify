@@ -1,4 +1,4 @@
-import { initializeDatabase } from '@infra/drizzle';
+import type { DrizzleDB } from '@infra/drizzle';
 import {
   DrizzleBookItemRepository,
   DrizzleGameItemRepository,
@@ -15,13 +15,13 @@ import {
 } from '@infra/repositories';
 import { CategoryInferenceService, SmartInputParserService } from '@infra/services';
 
-import type { AppDependencies, BuildDependenciesOptions } from './types';
+import type { AppDependencies } from './types';
 
-export async function buildDependencies(
-  options: BuildDependenciesOptions = {},
-): Promise<AppDependencies> {
-  const db = initializeDatabase(options.databaseName);
-
+/**
+ * Builds all app dependencies synchronously.
+ * Database must already be initialized with migrations completed.
+ */
+export function buildDependenciesSync(db: DrizzleDB): AppDependencies {
   const listRepository = new DrizzleListRepository(db);
   const sectionRepository = new DrizzleSectionRepository(db);
   const noteItemRepository = new DrizzleNoteItemRepository(db);

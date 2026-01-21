@@ -34,7 +34,3 @@ export type AppDependencies = {
   smartInputParser: SmartInputParser;
   categoryInference: CategoryInference;
 };
-
-export type BuildDependenciesOptions = {
-  databaseName?: string;
-};

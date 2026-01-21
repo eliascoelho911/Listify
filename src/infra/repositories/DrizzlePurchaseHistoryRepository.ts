@@ -1,3 +1,5 @@
+import 'react-native-get-random-values';
+
 import { asc, count, desc, eq } from 'drizzle-orm';
 import { v4 as uuid } from 'uuid';
 
