@@ -22,3 +22,10 @@ export type { BottombarProps } from './Bottombar/Bottombar.types';
 // SmartInputModal
 export { SmartInputModal } from './SmartInputModal/SmartInputModal';
 export type { SmartInputModalProps } from './SmartInputModal/SmartInputModal.types';
+
+// InfiniteScrollList
+export { InfiniteScrollList } from './InfiniteScrollList/InfiniteScrollList';
+export type {
+  InfiniteScrollGroup,
+  InfiniteScrollListProps,
+} from './InfiniteScrollList/InfiniteScrollList.types';

@@ -3,6 +3,29 @@
  * Mocks for native modules required by Design System components
  */
 
+// Mock lucide-react-native icons
+jest.mock('lucide-react-native', () => {
+  const React = require('react');
+  const createMockIcon = (name: string) => {
+    const MockIcon = (props: Record<string, unknown>) =>
+      React.createElement('Text', { testID: `icon-${name}`, ...props }, name);
+    MockIcon.displayName = name;
+    return MockIcon;
+  };
+
+  return new Proxy(
+    {},
+    {
+      get: (_target, prop) => {
+        if (typeof prop === 'string' && prop !== '__esModule') {
+          return createMockIcon(prop);
+        }
+        return undefined;
+      },
+    },
+  );
+});
+
 // Mock AsyncStorage
 jest.mock('@react-native-async-storage/async-storage', () => ({
   __esModule: true,

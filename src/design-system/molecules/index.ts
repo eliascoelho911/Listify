@@ -63,3 +63,15 @@ export type {
   MiniCategorySelectorProps,
   SelectableListType,
 } from './MiniCategorySelector/MiniCategorySelector.types';
+
+// ItemCard
+export { ItemCard } from './ItemCard/ItemCard';
+export type { ItemCardProps } from './ItemCard/ItemCard.types';
+
+// SortingControls
+export { SortingControls } from './SortingControls/SortingControls';
+export type {
+  SortDirection,
+  SortingControlsProps,
+  SortOption,
+} from './SortingControls/SortingControls.types';
