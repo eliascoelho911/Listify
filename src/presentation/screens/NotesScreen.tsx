@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
+import type { TFunction } from 'i18next';
 import { FileText, Settings } from 'lucide-react-native';
 
 import type { NoteItem } from '@domain/item';
@@ -27,41 +28,46 @@ import { useTheme } from '@design-system/theme';
 
 type GroupBy = 'date' | 'list';
 
-const SORT_OPTIONS: SortOption<GroupBy>[] = [{ value: 'date', label: 'Data' }];
+function getSortOptions(t: TFunction): SortOption<GroupBy>[] {
+  return [{ value: 'date', label: t('common.date', 'Data') }];
+}
 
-function formatDateGroup(date: Date): string {
+function formatDateGroup(date: Date, t: TFunction, locale: string): string {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const itemDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   if (itemDate.getTime() === today.getTime()) {
-    return 'Hoje';
+    return t('common.today', 'Hoje');
   }
   if (itemDate.getTime() === yesterday.getTime()) {
-    return 'Ontem';
+    return t('common.yesterday', 'Ontem');
   }
 
   const diff = today.getTime() - itemDate.getTime();
   const days = Math.floor(diff / (24 * 60 * 60 * 1000));
 
   if (days < 7) {
-    return date.toLocaleDateString('pt-BR', { weekday: 'long' });
+    return date.toLocaleDateString(locale, { weekday: 'long' });
   }
   if (days < 30) {
-    return `${Math.floor(days / 7)} semana${days >= 14 ? 's' : ''} atrás`;
+    const weeks = Math.floor(days / 7);
+    return t('common.weeksAgo', { count: weeks, defaultValue: '{{count}} semana atrás' });
   }
-  return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
 }
 
 function groupNotesByDate(
   notes: NoteItem[],
   direction: SortDirection,
+  t: TFunction,
+  locale: string,
 ): InfiniteScrollGroup<NoteItem>[] {
   const groups = new Map<string, NoteItem[]>();
 
   for (const note of notes) {
-    const key = formatDateGroup(note.createdAt);
+    const key = formatDateGroup(note.createdAt, t, locale);
     const existing = groups.get(key) ?? [];
     existing.push(note);
     groups.set(key, existing);
@@ -84,7 +90,7 @@ export function NotesScreen(): ReactElement {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const styles = createStyles(theme, insets.top);
 
   const itemStore = useItemStoreWithDI();
@@ -108,10 +114,12 @@ export function NotesScreen(): ReactElement {
     return items.filter((item): item is NoteItem => item.type === 'note');
   }, [items]);
 
+  const sortOptions = useMemo(() => getSortOptions(t), [t]);
+
   const groups = useMemo(() => {
     if (notes.length === 0) return [];
-    return groupNotesByDate(notes, sortDirection);
-  }, [notes, sortDirection]);
+    return groupNotesByDate(notes, sortDirection, t, i18n.language);
+  }, [notes, sortDirection, t, i18n.language]);
 
   const handleGroupByChange = useCallback((value: GroupBy) => {
     setGroupBy(value);
@@ -128,14 +136,10 @@ export function NotesScreen(): ReactElement {
     await loadAllNotes();
   }, [loadAllNotes]);
 
-  const handleNotePress = useCallback(
-    (note: NoteItem) => {
-      console.debug('[NotesScreen] Note pressed:', note.id);
-      // Navigate to note detail/edit screen
-      router.push(`/note/${note.id}`);
-    },
-    [router],
-  );
+  const handleNotePress = useCallback((note: NoteItem) => {
+    console.debug('[NotesScreen] Note pressed:', note.id);
+    // TODO: Navigate to note detail/edit screen when route is created
+  }, []);
 
   const handleNoteLongPress = useCallback((note: NoteItem) => {
     console.debug('[NotesScreen] Note long pressed:', note.id);
@@ -184,7 +188,7 @@ export function NotesScreen(): ReactElement {
       />
 
       <SortingControls
-        options={SORT_OPTIONS}
+        options={sortOptions}
         selectedValue={groupBy}
         sortDirection={sortDirection}
         onSortChange={handleGroupByChange}

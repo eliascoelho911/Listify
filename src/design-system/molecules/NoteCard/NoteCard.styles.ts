@@ -7,6 +7,8 @@ import { StyleSheet } from 'react-native';
 import type { Theme } from '../../theme/theme';
 
 export const createNoteCardStyles = (theme: Theme, selected?: boolean) => {
+  const iconContainerSize = theme.spacing.xl + theme.spacing.md; // 24 + 12 = 36
+
   return StyleSheet.create({
     container: {
       flexDirection: 'row',
@@ -19,8 +21,8 @@ export const createNoteCardStyles = (theme: Theme, selected?: boolean) => {
       gap: theme.spacing.sm,
     },
     iconContainer: {
-      width: 36,
-      height: 36,
+      width: iconContainerSize,
+      height: iconContainerSize,
       borderRadius: theme.radii.md,
       backgroundColor: `${theme.colors.itemNote}20`,
       alignItems: 'center',

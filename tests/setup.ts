@@ -67,6 +67,11 @@ jest.mock('react-i18next', () => ({
         'settings.title': 'Configurações',
         'common.expanded': 'expandido',
         'common.collapsed': 'recolhido',
+        'common.date': 'Data',
+        'common.today': 'Hoje',
+        'common.yesterday': 'Ontem',
+        'common.weeksAgo': `${options?.count} semana${(options?.count as number) >= 2 ? 's' : ''} atrás`,
+        'notes.characterCount': `${options?.count} caracteres`,
       };
       return translations[key] || key;
     },

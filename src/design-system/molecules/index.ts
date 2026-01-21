@@ -83,3 +83,15 @@ export type { ListCardProps, ListTypeInfo, ListTypeInfoMap } from './ListCard/Li
 // NoteCard
 export { NoteCard } from './NoteCard/NoteCard';
 export type { NoteCardProps } from './NoteCard/NoteCard.types';
+
+// SearchInput
+export { SearchInput } from './SearchInput/SearchInput';
+export type { SearchInputProps } from './SearchInput/SearchInput.types';
+
+// SearchHistory
+export { SearchHistory } from './SearchHistory/SearchHistory';
+export type { SearchHistoryProps } from './SearchHistory/SearchHistory.types';
+
+// SearchResultCard
+export { SearchResultCard } from './SearchResultCard/SearchResultCard';
+export type { SearchResultCardProps } from './SearchResultCard/SearchResultCard.types';

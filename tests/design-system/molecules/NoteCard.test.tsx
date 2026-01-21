@@ -46,7 +46,7 @@ describe('NoteCard Molecule', () => {
   it('should show character count when description exists', () => {
     const note = createMockNote({ description: '12345' });
     const { getByText } = renderWithTheme(<NoteCard note={note} />);
-    expect(getByText('5 characters')).toBeTruthy();
+    expect(getByText('5 caracteres')).toBeTruthy();
   });
 
   it('should call onPress when pressed', () => {
