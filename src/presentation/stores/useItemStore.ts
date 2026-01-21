@@ -121,6 +121,11 @@ export interface ItemStoreActions {
   loadInboxItems: () => Promise<void>;
 
   /**
+   * Load all notes (for Notes screen)
+   */
+  loadAllNotes: () => Promise<void>;
+
+  /**
    * Clear all items from the store
    */
   clearItems: () => void;
@@ -488,6 +493,21 @@ export function createItemStore(deps: ItemStoreDependencies): ItemStoreInstance 
       } catch (error) {
         set({ isLoading: false, error: 'Failed to load inbox items' });
         console.error('[useItemStore] Failed to load inbox items:', error);
+      }
+    },
+
+    // Load all notes
+    loadAllNotes: async (): Promise<void> => {
+      set({ isLoading: true, error: null });
+
+      try {
+        const result = await noteItemRepository.getAll({ field: 'createdAt', direction: 'desc' });
+
+        set({ items: result.items, isLoading: false, initialized: true });
+        console.debug(`[useItemStore] Loaded ${result.items.length} notes`);
+      } catch (error) {
+        set({ isLoading: false, error: 'Failed to load notes' });
+        console.error('[useItemStore] Failed to load notes:', error);
       }
     },
 

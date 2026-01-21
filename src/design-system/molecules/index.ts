@@ -79,3 +79,7 @@ export type {
 // ListCard
 export { ListCard } from './ListCard/ListCard';
 export type { ListCardProps, ListTypeInfo, ListTypeInfoMap } from './ListCard/ListCard.types';
+
+// NoteCard
+export { NoteCard } from './NoteCard/NoteCard';
+export type { NoteCardProps } from './NoteCard/NoteCard.types';

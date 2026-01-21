@@ -263,11 +263,11 @@
 
 ### Implementação
 
-- [ ] T111 [P] [US3.3] Criar molécula NoteCard (variante de ItemCard) em src/design-system/molecules/NoteCard/ via CLI
-- [ ] T112 [US3.3] Criar useUserPreferencesStore em src/presentation/stores/useUserPreferencesStore.ts
-- [ ] T113 [US3.3] Criar NotesScreen em src/presentation/screens/NotesScreen.tsx
-- [ ] T114 [US3.3] Integrar NotesScreen em app/(tabs)/notes.tsx
-- [ ] T115 [US3.3] Implementar persistência de configurações de layout
+- [X] T111 [P] [US3.3] Criar molécula NoteCard (variante de ItemCard) em src/design-system/molecules/NoteCard/ via CLI
+- [X] T112 [US3.3] Criar useUserPreferencesStore em src/presentation/stores/useUserPreferencesStore.ts
+- [X] T113 [US3.3] Criar NotesScreen em src/presentation/screens/NotesScreen.tsx
+- [X] T114 [US3.3] Integrar NotesScreen em app/(tabs)/notes.tsx
+- [X] T115 [US3.3] Implementar persistência de configurações de layout
 
 **Checkpoint**: Tela Notas com agrupamento configurável funcional
 

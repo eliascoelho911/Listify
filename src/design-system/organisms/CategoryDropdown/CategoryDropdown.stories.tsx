@@ -2,9 +2,9 @@
  * CategoryDropdown Organism Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import type { List } from '@domain/list';
 
