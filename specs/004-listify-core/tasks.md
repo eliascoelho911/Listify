@@ -187,13 +187,13 @@
 
 ### Testes (TDD para infra service)
 
-- [ ] T090 [P] [US2.2] Escrever testes do CategoryInferenceService em tests/infra/services/CategoryInferenceService.test.ts
+- [X] T090 [P] [US2.2] Escrever testes do CategoryInferenceService em tests/infra/services/CategoryInferenceService.test.ts
 
 ### Implementação
 
-- [ ] T091 [US2.2] Implementar CategoryInferenceService em src/infra/services/CategoryInferenceService.ts
-- [ ] T092 [US2.2] Criar molécula MiniCategorySelector em src/design-system/molecules/MiniCategorySelector/ via CLI
-- [ ] T093 [US2.2] Integrar inferência no SmartInputModal com fluxo de criação de lista
+- [X] T091 [US2.2] Implementar CategoryInferenceService em src/infra/services/CategoryInferenceService.ts
+- [X] T092 [US2.2] Criar molécula MiniCategorySelector em src/design-system/molecules/MiniCategorySelector/ via CLI
+- [X] T093 [US2.2] Integrar inferência no SmartInputModal com fluxo de criação de lista
 
 **Checkpoint**: Criação inline de lista com inferência de categoria funcional
 

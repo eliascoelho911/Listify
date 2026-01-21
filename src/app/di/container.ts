@@ -13,7 +13,7 @@ import {
   DrizzleUserPreferencesRepository,
   DrizzleUserRepository,
 } from '@infra/repositories';
-import { SmartInputParserService } from '@infra/services';
+import { CategoryInferenceService, SmartInputParserService } from '@infra/services';
 
 import type { AppDependencies, BuildDependenciesOptions } from './types';
 
@@ -36,6 +36,7 @@ export async function buildDependencies(
   const globalSearchRepository = new DrizzleGlobalSearchRepository(db);
 
   const smartInputParser = new SmartInputParserService();
+  const categoryInference = new CategoryInferenceService();
 
   return {
     db,
@@ -52,5 +53,6 @@ export async function buildDependencies(
     searchHistoryRepository,
     globalSearchRepository,
     smartInputParser,
+    categoryInference,
   };
 }

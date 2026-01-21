@@ -78,6 +78,37 @@ export const createSmartInputModalStyles = (theme: Theme) => {
       bottom: '100%',
       marginBottom: theme.spacing.sm,
     },
+    categorySelectorContainer: {
+      marginTop: theme.spacing.md,
+      paddingTop: theme.spacing.md,
+      borderTopWidth: 1,
+      borderTopColor: theme.colors.border,
+    },
+    categorySelectorHeader: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: theme.spacing.sm,
+    },
+    categorySelectorTitle: {
+      fontSize: theme.typography.sizes.sm,
+      fontFamily: theme.typography.families.body,
+      color: theme.colors.mutedForeground,
+    },
+    categorySelectorListName: {
+      fontSize: theme.typography.sizes.base,
+      fontFamily: theme.typography.families.body,
+      fontWeight: theme.typography.weights.semibold,
+      color: theme.colors.foreground,
+    },
+    cancelButton: {
+      padding: theme.spacing.xs,
+    },
+    cancelButtonText: {
+      fontSize: theme.typography.sizes.sm,
+      fontFamily: theme.typography.families.body,
+      color: theme.colors.mutedForeground,
+    },
     hidden: {
       display: 'none',
     },

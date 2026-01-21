@@ -4,7 +4,12 @@
 
 import { act, renderHook } from '@testing-library/react-native';
 
-import type { ParsedInput, SmartInputParser } from '@domain/common';
+import type {
+  CategoryInference,
+  InferenceResult,
+  ParsedInput,
+  SmartInputParser,
+} from '@domain/common';
 import type { ListType } from '@domain/list';
 import { useSmartInput } from '@presentation/hooks/useSmartInput';
 
@@ -39,6 +44,13 @@ const createMockParser = (): SmartInputParser => ({
   }),
 });
 
+// Mock category inference implementation
+const createMockCategoryInference = (
+  defaultResult: InferenceResult = { listType: 'shopping', confidence: 'high' },
+): CategoryInference => ({
+  infer: jest.fn((): InferenceResult => defaultResult),
+});
+
 const mockAvailableLists: { id: string; name: string; listType: ListType }[] = [
   { id: '1', name: 'Mercado', listType: 'shopping' },
   { id: '2', name: 'Mercado Central', listType: 'shopping' },
@@ -48,15 +60,19 @@ const mockAvailableLists: { id: string; name: string; listType: ListType }[] = [
 
 describe('useSmartInput', () => {
   let mockParser: SmartInputParser;
+  let mockCategoryInference: CategoryInference;
 
   beforeEach(() => {
     mockParser = createMockParser();
+    mockCategoryInference = createMockCategoryInference();
     jest.clearAllMocks();
   });
 
   describe('Initial state', () => {
     it('should initialize with empty value', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       expect(result.current.value).toBe('');
       expect(result.current.visible).toBe(false);
@@ -67,6 +83,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           initialValue: 'Test item',
         }),
       );
@@ -75,7 +92,9 @@ describe('useSmartInput', () => {
     });
 
     it('should return empty parsed result for empty value', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       expect(result.current.parsed.title).toBe('');
       expect(result.current.parsed.listName).toBeNull();
@@ -85,7 +104,9 @@ describe('useSmartInput', () => {
 
   describe('setValue', () => {
     it('should update value when setValue is called', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       act(() => {
         result.current.setValue('New value');
@@ -95,7 +116,9 @@ describe('useSmartInput', () => {
     });
 
     it('should parse value when it changes', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       act(() => {
         result.current.setValue('@Mercado Leite');
@@ -109,7 +132,9 @@ describe('useSmartInput', () => {
 
   describe('Modal visibility', () => {
     it('should open modal when open is called', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       expect(result.current.visible).toBe(false);
 
@@ -121,7 +146,9 @@ describe('useSmartInput', () => {
     });
 
     it('should close modal and reset value when close is called', () => {
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
+      const { result } = renderHook(() =>
+        useSmartInput({ parser: mockParser, categoryInference: mockCategoryInference }),
+      );
 
       act(() => {
         result.current.open();
@@ -143,7 +170,13 @@ describe('useSmartInput', () => {
   describe('Submit', () => {
     it('should call onSubmit with parsed result', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: mockCategoryInference,
+          onSubmit,
+        }),
+      );
 
       act(() => {
         result.current.setValue('@Mercado Leite');
@@ -163,7 +196,13 @@ describe('useSmartInput', () => {
 
     it('should not call onSubmit when title and listName are empty', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: mockCategoryInference,
+          onSubmit,
+        }),
+      );
 
       act(() => {
         result.current.submit();
@@ -174,7 +213,13 @@ describe('useSmartInput', () => {
 
     it('should reset value and close modal after submit', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: mockCategoryInference,
+          onSubmit,
+        }),
+      );
 
       act(() => {
         result.current.open();
@@ -195,6 +240,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -211,6 +257,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -226,6 +273,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -244,6 +292,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -262,6 +311,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -281,6 +331,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           availableLists: mockAvailableLists,
         }),
       );
@@ -297,12 +348,18 @@ describe('useSmartInput', () => {
     });
   });
 
-  describe('createList', () => {
-    it('should call onCreateList with list name', () => {
+  describe('createList with category inference', () => {
+    it('should call onCreateList immediately with inferred type when confidence is high', () => {
       const onCreateList = jest.fn();
+      const highConfidenceInference = createMockCategoryInference({
+        listType: 'shopping',
+        confidence: 'high',
+      });
+
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: highConfidenceInference,
           onCreateList,
         }),
       );
@@ -312,14 +369,21 @@ describe('useSmartInput', () => {
         result.current.createList('NovaLista');
       });
 
-      expect(onCreateList).toHaveBeenCalledWith('NovaLista');
+      expect(onCreateList).toHaveBeenCalledWith('NovaLista', 'shopping');
+      expect(result.current.showCategorySelector).toBe(false);
     });
 
-    it('should update value with new list name after creation', () => {
+    it('should show category selector when confidence is low', () => {
       const onCreateList = jest.fn();
+      const lowConfidenceInference = createMockCategoryInference({
+        listType: 'notes',
+        confidence: 'low',
+      });
+
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: lowConfidenceInference,
           onCreateList,
         }),
       );
@@ -329,7 +393,116 @@ describe('useSmartInput', () => {
         result.current.createList('NovaLista');
       });
 
+      expect(onCreateList).not.toHaveBeenCalled();
+      expect(result.current.showCategorySelector).toBe(true);
+      expect(result.current.pendingListCreation?.name).toBe('NovaLista');
+    });
+
+    it('should show category selector when confidence is medium', () => {
+      const onCreateList = jest.fn();
+      const mediumConfidenceInference = createMockCategoryInference({
+        listType: 'movies',
+        confidence: 'medium',
+      });
+
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: mediumConfidenceInference,
+          onCreateList,
+        }),
+      );
+
+      act(() => {
+        result.current.setValue('@Filmes');
+        result.current.createList('Filmes');
+      });
+
+      expect(onCreateList).not.toHaveBeenCalled();
+      expect(result.current.showCategorySelector).toBe(true);
+      expect(result.current.pendingListCreation?.inferredType).toBe('movies');
+    });
+
+    it('should map notes to shopping as fallback inferred type', () => {
+      const onCreateList = jest.fn();
+      const notesInference = createMockCategoryInference({
+        listType: 'notes',
+        confidence: 'low',
+      });
+
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: notesInference,
+          onCreateList,
+        }),
+      );
+
+      act(() => {
+        result.current.setValue('@MinhaLista');
+        result.current.createList('MinhaLista');
+      });
+
+      expect(result.current.pendingListCreation?.inferredType).toBe('shopping');
+    });
+
+    it('should call onCreateList with selected type when confirming category', () => {
+      const onCreateList = jest.fn();
+      const lowConfidenceInference = createMockCategoryInference({
+        listType: 'notes',
+        confidence: 'low',
+      });
+
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: lowConfidenceInference,
+          onCreateList,
+        }),
+      );
+
+      act(() => {
+        result.current.setValue('@NovaLista');
+        result.current.createList('NovaLista');
+      });
+
+      act(() => {
+        result.current.confirmCategorySelection('movies');
+      });
+
+      expect(onCreateList).toHaveBeenCalledWith('NovaLista', 'movies');
+      expect(result.current.showCategorySelector).toBe(false);
       expect(result.current.value).toBe('@NovaLista ');
+    });
+
+    it('should clear pending state when cancelling category selection', () => {
+      const onCreateList = jest.fn();
+      const lowConfidenceInference = createMockCategoryInference({
+        listType: 'notes',
+        confidence: 'low',
+      });
+
+      const { result } = renderHook(() =>
+        useSmartInput({
+          parser: mockParser,
+          categoryInference: lowConfidenceInference,
+          onCreateList,
+        }),
+      );
+
+      act(() => {
+        result.current.setValue('@NovaLista');
+        result.current.createList('NovaLista');
+      });
+
+      expect(result.current.showCategorySelector).toBe(true);
+
+      act(() => {
+        result.current.cancelCategorySelection();
+      });
+
+      expect(result.current.showCategorySelector).toBe(false);
+      expect(result.current.pendingListCreation).toBeNull();
     });
   });
 
@@ -338,6 +511,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           currentListName: 'Mercado',
         }),
       );
@@ -356,6 +530,7 @@ describe('useSmartInput', () => {
       const { result } = renderHook(() =>
         useSmartInput({
           parser: mockParser,
+          categoryInference: mockCategoryInference,
           isShoppingList: true,
         }),
       );
