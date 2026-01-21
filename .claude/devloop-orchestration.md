@@ -53,6 +53,28 @@ This phase is **exclusive** for resolving errors. It only executes when `lastErr
 
 **GUARD**: This phase should only execute when `lastError == null`. If you're here with an error, update state to `phase: "error"` and end session.
 
+### Impl Cycle Limit Check (BEFORE implementation)
+
+Before executing any implementation:
+
+1. Read `cycle` and `maxImplCycles` from state file
+2. **If `maxImplCycles > 0` AND `cycle > maxImplCycles`**:
+   - Count remaining incomplete tasks in `tasks.md` (lines matching `- [ ]`)
+   - Delete the state file: `.claude/devloop-state.json`
+   - Output message:
+     ```
+     Max impl cycles reached (limit: <maxImplCycles>).
+     Stopping DevLoop with <X> task(s) remaining.
+     Run /devloop to continue with remaining tasks.
+     ```
+   - Output the completion promise:
+     ```
+     <promise>ALL_TASKS_COMPLETED</promise>
+     ```
+   - **END SESSION** - do not proceed with implementation
+
+### Implementation Steps
+
 1. Read `featureDir` from state file
 2. Execute `/speckit.implement` - **NOTE**: This processes only ONE task phase per execution (e.g., Setup, Tests, Core, Integration, or Polish)
 3. After implementation completes, execute `/commit` to commit the changes
@@ -176,4 +198,4 @@ If `lastError` already exists, **increment** `retryCount` instead of setting to 
 ```
 
 ### State File Missing
-Create fresh state with `phase: "impl"`, `cycle: 1`, `lastError: null`
+Create fresh state with `phase: "impl"`, `cycle: 1`, `maxImplCycles: 25`, `lastError: null`

@@ -4,8 +4,13 @@ set -euo pipefail
 # DevLoop Ralph Loop Starter
 # Creates ralph-loop state file directly to bypass argument parsing issues
 # with complex markdown prompts
+#
+# Usage: start-devloop-loop.sh [maxImplCycles] [maxIterations]
+# - maxImplCycles: Maximum implementation phases (default: 25)
+# - maxIterations: Maximum ralph-loop API calls (default: maxImplCycles * 3)
 
-MAX_ITERATIONS="${1:-50}"
+MAX_IMPL_CYCLES="${1:-25}"
+MAX_ITERATIONS="${2:-$(( MAX_IMPL_CYCLES * 3 ))}"
 
 # Verify orchestration prompt exists
 if [[ ! -f ".claude/devloop-orchestration.md" ]]; then
@@ -38,6 +43,7 @@ EOF
 echo "DevLoop Ralph Loop activated!"
 echo ""
 echo "Iteration: 1"
+echo "Max impl cycles: $MAX_IMPL_CYCLES"
 echo "Max iterations: $MAX_ITERATIONS"
 echo "Completion promise: ALL_TASKS_COMPLETED"
 echo ""
