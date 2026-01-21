@@ -4,5 +4,36 @@
     "title": "Starting up",
     "subtitle": "Initializing Listify...",
     "hint": "Preparing your local data."
+  },
+  "listTypes": {
+    "notes": "Notes",
+    "shopping": "Shopping",
+    "movies": "Movies",
+    "books": "Books",
+    "games": "Games"
+  },
+  "listCard": {
+    "itemCount": {
+      "empty": "Empty",
+      "one": "1 item",
+      "many": "{{count}} items"
+    },
+    "systemBadge": "System",
+    "accessibilityLabel": "{{name}}, {{type}} list"
+  },
+  "categoryDropdown": {
+    "emptyMessage": "No lists",
+    "accessibilityLabel": "{{category}} category, {{count}} lists, {{state}}"
+  },
+  "lists": {
+    "title": "Lists",
+    "empty": {
+      "title": "No lists",
+      "description": "Create a list using the + button"
+    }
+  },
+  "common": {
+    "expanded": "expanded",
+    "collapsed": "collapsed"
   }
 }
