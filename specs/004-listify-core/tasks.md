@@ -163,19 +163,19 @@
 
 ### Testes (TDD para infra service)
 
-- [ ] T082 [P] [US2.1] Escrever testes do SmartInputParserService conforme contract em tests/infra/services/SmartInputParserService.test.ts
+- [X] T082 [P] [US2.1] Escrever testes do SmartInputParserService conforme contract em tests/infra/services/SmartInputParserService.test.ts
 
 ### Implementação
 
-- [ ] T083 [US2.1] Implementar SmartInputParserService em src/infra/services/SmartInputParserService.ts
-- [ ] T084 [P] [US2.1] Criar molécula InlineHighlight para highlighting em src/design-system/molecules/InlineHighlight/ via CLI
-- [ ] T085 [P] [US2.1] Criar molécula ParsePreview para preview de chips em src/design-system/molecules/ParsePreview/ via CLI
-- [ ] T086 [P] [US2.1] Criar molécula ListSuggestionDropdown em src/design-system/molecules/ListSuggestionDropdown/ via CLI
-- [ ] T087 [US2.1] Criar organismo SmartInputModal em src/design-system/organisms/SmartInputModal/ via CLI
-- [ ] T088 [US2.1] Criar hook useSmartInput em src/presentation/hooks/useSmartInput.ts
-- [ ] T089 [US2.1] Integrar SmartInputModal com FAB central no tabs layout
+- [X] T083 [US2.1] Implementar SmartInputParserService em src/infra/services/SmartInputParserService.ts
+- [X] T084 [P] [US2.1] Criar molécula InlineHighlight para highlighting em src/design-system/molecules/InlineHighlight/ via CLI
+- [X] T085 [P] [US2.1] Criar molécula ParsePreview para preview de chips em src/design-system/molecules/ParsePreview/ via CLI
+- [X] T086 [P] [US2.1] Criar molécula ListSuggestionDropdown em src/design-system/molecules/ListSuggestionDropdown/ via CLI
+- [X] T087 [US2.1] Criar organismo SmartInputModal em src/design-system/organisms/SmartInputModal/ via CLI
+- [X] T088 [US2.1] Criar hook useSmartInput em src/presentation/hooks/useSmartInput.ts
+- [X] T089 [US2.1] Integrar SmartInputModal com FAB central no tabs layout
 
-**Checkpoint**: Campo de entrada inteligente com parsing e inline highlighting funcional
+**Checkpoint**: Campo de entrada inteligente com parsing e inline highlighting funcional ✅
 
 ---
 

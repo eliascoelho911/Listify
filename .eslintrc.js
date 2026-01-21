@@ -197,8 +197,8 @@ module.exports = {
           {
             patterns: [
               {
-                group: ['@domain/*'],
-                message: 'Design-system cannot depend on domain layer.',
+                group: ['@domain/**/ports/*'],
+                message: 'Design-system cannot depend on domain ports.',
               },
               {
                 group: ['@data/*'],

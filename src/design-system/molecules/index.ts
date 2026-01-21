@@ -36,3 +36,22 @@ export type { EmptyStateProps } from './EmptyState/EmptyState.types';
 // ProfileButton
 export { ProfileButton } from './ProfileButton/ProfileButton';
 export type { ProfileButtonProps, ProfileButtonSize } from './ProfileButton/ProfileButton.types';
+
+// InlineHighlight
+export { InlineHighlight } from './InlineHighlight/InlineHighlight';
+export type {
+  HighlightSegment,
+  HighlightType,
+  InlineHighlightProps,
+} from './InlineHighlight/InlineHighlight.types';
+
+// ParsePreview
+export { ParsePreview } from './ParsePreview/ParsePreview';
+export type { ParsedElement, ParsePreviewProps } from './ParsePreview/ParsePreview.types';
+
+// ListSuggestionDropdown
+export { ListSuggestionDropdown } from './ListSuggestionDropdown/ListSuggestionDropdown';
+export type {
+  ListSuggestion,
+  ListSuggestionDropdownProps,
+} from './ListSuggestionDropdown/ListSuggestionDropdown.types';

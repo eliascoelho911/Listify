@@ -1,0 +1,87 @@
+/**
+ * SmartInputModal Organism Types
+ */
+
+import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
+
+import type { ParsedInput } from '@domain/common';
+
+import type { ListSuggestion } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
+
+export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
+  /**
+   * Whether the modal is visible
+   */
+  visible: boolean;
+
+  /**
+   * Callback when modal should be closed
+   */
+  onClose: () => void;
+
+  /**
+   * Callback when user submits the input
+   */
+  onSubmit: (parsed: ParsedInput) => void;
+
+  /**
+   * Current input text
+   */
+  value: string;
+
+  /**
+   * Callback when input text changes
+   */
+  onChangeText: (text: string) => void;
+
+  /**
+   * Current parsed result (from parser service)
+   */
+  parsed: ParsedInput;
+
+  /**
+   * List suggestions to show in dropdown
+   */
+  listSuggestions: ListSuggestion[];
+
+  /**
+   * Whether list suggestions dropdown is visible
+   */
+  showSuggestions: boolean;
+
+  /**
+   * Callback when a list is selected from suggestions
+   */
+  onSelectList: (list: ListSuggestion) => void;
+
+  /**
+   * Callback when "Create new list" is pressed
+   */
+  onCreateList?: (name: string) => void;
+
+  /**
+   * Placeholder text for input
+   * @default "Digite para adicionar..."
+   */
+  placeholder?: string;
+
+  /**
+   * Whether the input is in loading state
+   */
+  isLoading?: boolean;
+
+  /**
+   * Optional style for the container
+   */
+  style?: StyleProp<ViewStyle>;
+
+  /**
+   * Name of the current list context (for :section syntax)
+   */
+  currentListName?: string;
+
+  /**
+   * Whether current list is a shopping list (enables price extraction)
+   */
+  isShoppingList?: boolean;
+}
