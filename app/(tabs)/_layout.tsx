@@ -5,14 +5,14 @@
  * Integrates SmartInputModal with FAB for quick item/list creation.
  */
 
-import { useCallback, type ReactElement } from 'react';
+import { type ReactElement, useCallback } from 'react';
 import { Tabs } from 'expo-router';
 
 import { useAppDependencies } from '@app/di';
 import type { ParsedInput } from '@domain/common';
+import { useSmartInput } from '@presentation/hooks';
 import { Bottombar, SmartInputModal } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
-import { useSmartInput } from '@presentation/hooks';
 
 export default function TabsLayout(): ReactElement {
   const { theme } = useTheme();

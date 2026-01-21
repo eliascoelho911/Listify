@@ -6,11 +6,16 @@
  */
 
 import React, { type ReactElement, useMemo } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
+import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createInlineHighlightStyles, type InlineHighlightStyles } from './InlineHighlight.styles';
-import type { HighlightSegment, HighlightType, InlineHighlightProps } from './InlineHighlight.types';
+import type {
+  HighlightSegment,
+  HighlightType,
+  InlineHighlightProps,
+} from './InlineHighlight.types';
 
 interface TextSegment {
   text: string;
@@ -19,7 +24,7 @@ interface TextSegment {
 
 function getHighlightStyle(
   type: HighlightType,
-  styles: InlineHighlightStyles
+  styles: InlineHighlightStyles,
 ): InlineHighlightStyles['highlightList'] {
   switch (type) {
     case 'list':

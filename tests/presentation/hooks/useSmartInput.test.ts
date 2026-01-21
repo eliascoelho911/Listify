@@ -6,7 +6,6 @@ import { act, renderHook } from '@testing-library/react-native';
 
 import type { ParsedInput, SmartInputParser } from '@domain/common';
 import type { ListType } from '@domain/list';
-
 import { useSmartInput } from '@presentation/hooks/useSmartInput';
 
 // Mock parser implementation
@@ -40,7 +39,7 @@ const createMockParser = (): SmartInputParser => ({
   }),
 });
 
-const mockAvailableLists: Array<{ id: string; name: string; listType: ListType }> = [
+const mockAvailableLists: { id: string; name: string; listType: ListType }[] = [
   { id: '1', name: 'Mercado', listType: 'shopping' },
   { id: '2', name: 'Mercado Central', listType: 'shopping' },
   { id: '3', name: 'Filmes para Ver', listType: 'movies' },
@@ -57,9 +56,7 @@ describe('useSmartInput', () => {
 
   describe('Initial state', () => {
     it('should initialize with empty value', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       expect(result.current.value).toBe('');
       expect(result.current.visible).toBe(false);
@@ -71,16 +68,14 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           initialValue: 'Test item',
-        })
+        }),
       );
 
       expect(result.current.value).toBe('Test item');
     });
 
     it('should return empty parsed result for empty value', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       expect(result.current.parsed.title).toBe('');
       expect(result.current.parsed.listName).toBeNull();
@@ -90,9 +85,7 @@ describe('useSmartInput', () => {
 
   describe('setValue', () => {
     it('should update value when setValue is called', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       act(() => {
         result.current.setValue('New value');
@@ -102,9 +95,7 @@ describe('useSmartInput', () => {
     });
 
     it('should parse value when it changes', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       act(() => {
         result.current.setValue('@Mercado Leite');
@@ -118,9 +109,7 @@ describe('useSmartInput', () => {
 
   describe('Modal visibility', () => {
     it('should open modal when open is called', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       expect(result.current.visible).toBe(false);
 
@@ -132,9 +121,7 @@ describe('useSmartInput', () => {
     });
 
     it('should close modal and reset value when close is called', () => {
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser }));
 
       act(() => {
         result.current.open();
@@ -156,9 +143,7 @@ describe('useSmartInput', () => {
   describe('Submit', () => {
     it('should call onSubmit with parsed result', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser, onSubmit })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
 
       act(() => {
         result.current.setValue('@Mercado Leite');
@@ -172,15 +157,13 @@ describe('useSmartInput', () => {
         expect.objectContaining({
           listName: 'Mercado',
           title: 'Leite',
-        })
+        }),
       );
     });
 
     it('should not call onSubmit when title and listName are empty', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser, onSubmit })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
 
       act(() => {
         result.current.submit();
@@ -191,9 +174,7 @@ describe('useSmartInput', () => {
 
     it('should reset value and close modal after submit', () => {
       const onSubmit = jest.fn();
-      const { result } = renderHook(() =>
-        useSmartInput({ parser: mockParser, onSubmit })
-      );
+      const { result } = renderHook(() => useSmartInput({ parser: mockParser, onSubmit }));
 
       act(() => {
         result.current.open();
@@ -215,7 +196,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -231,7 +212,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -246,7 +227,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -264,7 +245,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -282,7 +263,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -301,7 +282,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           availableLists: mockAvailableLists,
-        })
+        }),
       );
 
       act(() => {
@@ -323,7 +304,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           onCreateList,
-        })
+        }),
       );
 
       act(() => {
@@ -340,7 +321,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           onCreateList,
-        })
+        }),
       );
 
       act(() => {
@@ -358,7 +339,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           currentListName: 'Mercado',
-        })
+        }),
       );
 
       act(() => {
@@ -376,7 +357,7 @@ describe('useSmartInput', () => {
         useSmartInput({
           parser: mockParser,
           isShoppingList: true,
-        })
+        }),
       );
 
       act(() => {

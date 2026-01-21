@@ -2,8 +2,8 @@
  * ListSuggestionDropdown Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { ListSuggestionDropdown } from '@design-system/molecules/ListSuggestionDropdown/ListSuggestionDropdown';
 import type { ListSuggestion } from '@design-system/molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
@@ -26,18 +26,14 @@ describe('ListSuggestionDropdown Molecule', () => {
         suggestions={mockSuggestions}
         visible={false}
         onSelectList={jest.fn()}
-      />
+      />,
     );
     expect(queryByText('Mercado')).toBeNull();
   });
 
   it('should render suggestions when visible', () => {
     const { getByText } = renderWithTheme(
-      <ListSuggestionDropdown
-        suggestions={mockSuggestions}
-        visible={true}
-        onSelectList={jest.fn()}
-      />
+      <ListSuggestionDropdown suggestions={mockSuggestions} visible onSelectList={jest.fn()} />,
     );
     expect(getByText('Mercado')).toBeTruthy();
     expect(getByText('Filmes para Ver')).toBeTruthy();
@@ -46,22 +42,14 @@ describe('ListSuggestionDropdown Molecule', () => {
 
   it('should display list type labels', () => {
     const { getByText } = renderWithTheme(
-      <ListSuggestionDropdown
-        suggestions={mockSuggestions}
-        visible={true}
-        onSelectList={jest.fn()}
-      />
+      <ListSuggestionDropdown suggestions={mockSuggestions} visible onSelectList={jest.fn()} />,
     );
     expect(getByText('Compras')).toBeTruthy();
   });
 
   it('should display sections when available', () => {
     const { getByText } = renderWithTheme(
-      <ListSuggestionDropdown
-        suggestions={mockSuggestions}
-        visible={true}
-        onSelectList={jest.fn()}
-      />
+      <ListSuggestionDropdown suggestions={mockSuggestions} visible onSelectList={jest.fn()} />,
     );
     expect(getByText('Seções: Laticínios, Padaria')).toBeTruthy();
   });
@@ -69,11 +57,7 @@ describe('ListSuggestionDropdown Molecule', () => {
   it('should call onSelectList when a suggestion is pressed', () => {
     const onSelectList = jest.fn();
     const { getByText } = renderWithTheme(
-      <ListSuggestionDropdown
-        suggestions={mockSuggestions}
-        visible={true}
-        onSelectList={onSelectList}
-      />
+      <ListSuggestionDropdown suggestions={mockSuggestions} visible onSelectList={onSelectList} />,
     );
 
     fireEvent.press(getByText('Mercado'));
@@ -86,12 +70,12 @@ describe('ListSuggestionDropdown Molecule', () => {
     const { getByText } = renderWithTheme(
       <ListSuggestionDropdown
         suggestions={mockSuggestions}
-        visible={true}
+        visible
         searchText="Nova Lista"
-        showCreateOption={true}
+        showCreateOption
         onSelectList={jest.fn()}
         onCreateNew={onCreateNew}
-      />
+      />,
     );
 
     expect(getByText('"Nova Lista"')).toBeTruthy();
@@ -102,12 +86,12 @@ describe('ListSuggestionDropdown Molecule', () => {
     const { getByText } = renderWithTheme(
       <ListSuggestionDropdown
         suggestions={[]}
-        visible={true}
+        visible
         searchText="Nova Lista"
-        showCreateOption={true}
+        showCreateOption
         onSelectList={jest.fn()}
         onCreateNew={onCreateNew}
-      />
+      />,
     );
 
     fireEvent.press(getByText('"Nova Lista"'));
@@ -119,12 +103,12 @@ describe('ListSuggestionDropdown Molecule', () => {
     const { queryByText } = renderWithTheme(
       <ListSuggestionDropdown
         suggestions={mockSuggestions}
-        visible={true}
+        visible
         searchText="Mercado"
-        showCreateOption={true}
+        showCreateOption
         onSelectList={jest.fn()}
         onCreateNew={jest.fn()}
-      />
+      />,
     );
 
     expect(queryByText('Criar')).toBeNull();
@@ -134,10 +118,10 @@ describe('ListSuggestionDropdown Molecule', () => {
     const { getByText } = renderWithTheme(
       <ListSuggestionDropdown
         suggestions={[]}
-        visible={true}
+        visible
         showCreateOption={false}
         onSelectList={jest.fn()}
-      />
+      />,
     );
 
     expect(getByText('Nenhuma lista encontrada')).toBeTruthy();
@@ -147,10 +131,10 @@ describe('ListSuggestionDropdown Molecule', () => {
     const { getByText, queryByText } = renderWithTheme(
       <ListSuggestionDropdown
         suggestions={mockSuggestions}
-        visible={true}
+        visible
         maxSuggestions={2}
         onSelectList={jest.fn()}
-      />
+      />,
     );
 
     expect(getByText('Mercado')).toBeTruthy();

@@ -6,8 +6,9 @@
  */
 
 import React, { type ReactElement } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
 
+import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createParsePreviewStyles, type ParsePreviewStyles } from './ParsePreview.styles';
 import type { ParsedElement, ParsePreviewProps } from './ParsePreview.types';
@@ -19,10 +20,7 @@ const TYPE_LABELS: Record<ParsedElement['type'], string> = {
   quantity: 'Qtd',
 };
 
-function getChipStyle(
-  type: ParsedElement['type'],
-  styles: ParsePreviewStyles
-) {
+function getChipStyle(type: ParsedElement['type'], styles: ParsePreviewStyles) {
   switch (type) {
     case 'list':
       return styles.chipList;
@@ -37,10 +35,7 @@ function getChipStyle(
   }
 }
 
-function getValueStyle(
-  type: ParsedElement['type'],
-  styles: ParsePreviewStyles
-) {
+function getValueStyle(type: ParsedElement['type'], styles: ParsePreviewStyles) {
   switch (type) {
     case 'list':
       return styles.valueList;

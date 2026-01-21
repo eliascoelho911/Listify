@@ -10,7 +10,7 @@ export const createSmartInputModalStyles = (theme: Theme) => {
   return StyleSheet.create({
     overlay: {
       flex: 1,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)',
+      backgroundColor: theme.colors.overlayLight,
       justifyContent: 'flex-end',
     },
     container: {

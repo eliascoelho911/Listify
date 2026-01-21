@@ -5,16 +5,17 @@
  * Shows existing lists that match the typed @mention and option to create new.
  */
 
-import { List, Plus, ShoppingCart, Film, Book, Gamepad2, StickyNote } from 'lucide-react-native';
 import React, { type ReactElement } from 'react';
-import { Pressable, Text, View } from 'react-native';
+import { Pressable, View } from 'react-native';
+import { Book, Film, Gamepad2, List, Plus, ShoppingCart, StickyNote } from 'lucide-react-native';
 
 import type { ListType } from '@domain/list';
 
 import { Icon } from '../../atoms/Icon/Icon';
+import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createListSuggestionDropdownStyles } from './ListSuggestionDropdown.styles';
-import type { ListSuggestion, ListSuggestionDropdownProps } from './ListSuggestionDropdown.types';
+import type { ListSuggestionDropdownProps } from './ListSuggestionDropdown.types';
 
 const LIST_TYPE_ICONS: Record<ListType, typeof List> = {
   notes: StickyNote,
@@ -52,9 +53,7 @@ export function ListSuggestionDropdown({
   }
 
   const displayedSuggestions = suggestions.slice(0, maxSuggestions);
-  const hasExactMatch = suggestions.some(
-    (s) => s.name.toLowerCase() === searchText?.toLowerCase()
-  );
+  const hasExactMatch = suggestions.some((s) => s.name.toLowerCase() === searchText?.toLowerCase());
   const showCreate = showCreateOption && searchText && !hasExactMatch && onCreateNew;
 
   return (

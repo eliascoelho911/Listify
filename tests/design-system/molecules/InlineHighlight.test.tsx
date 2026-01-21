@@ -2,8 +2,8 @@
  * InlineHighlight Molecule Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { InlineHighlight } from '@design-system/molecules/InlineHighlight/InlineHighlight';
 import type { HighlightSegment } from '@design-system/molecules/InlineHighlight/InlineHighlight.types';
@@ -15,18 +15,14 @@ const renderWithTheme = (component: React.ReactElement) => {
 
 describe('InlineHighlight Molecule', () => {
   it('should render plain text without highlights', () => {
-    const { getByText } = renderWithTheme(
-      <InlineHighlight text="Simple text" highlights={[]} />
-    );
+    const { getByText } = renderWithTheme(<InlineHighlight text="Simple text" highlights={[]} />);
     expect(getByText('Simple text')).toBeTruthy();
   });
 
   it('should render text with list highlight', () => {
-    const highlights: HighlightSegment[] = [
-      { type: 'list', start: 5, end: 13, value: '@Mercado' },
-    ];
+    const highlights: HighlightSegment[] = [{ type: 'list', start: 5, end: 13, value: '@Mercado' }];
     const { getByText } = renderWithTheme(
-      <InlineHighlight text="Item @Mercado" highlights={highlights} />
+      <InlineHighlight text="Item @Mercado" highlights={highlights} />,
     );
     expect(getByText('Item ')).toBeTruthy();
     expect(getByText('@Mercado')).toBeTruthy();
@@ -39,7 +35,7 @@ describe('InlineHighlight Molecule', () => {
       { type: 'list', start: 17, end: 25, value: '@Mercado' },
     ];
     const { getByText } = renderWithTheme(
-      <InlineHighlight text="Leite 2L R$8,50 @Mercado" highlights={highlights} />
+      <InlineHighlight text="Leite 2L R$8,50 @Mercado" highlights={highlights} />,
     );
     expect(getByText('Leite ')).toBeTruthy();
     expect(getByText('2L')).toBeTruthy();
@@ -53,7 +49,7 @@ describe('InlineHighlight Molecule', () => {
       { type: 'section', start: 5, end: 13, value: ':Urgente' },
     ];
     const { getByText } = renderWithTheme(
-      <InlineHighlight text="Item :Urgente" highlights={highlights} />
+      <InlineHighlight text="Item :Urgente" highlights={highlights} />,
     );
     expect(getByText(':Urgente')).toBeTruthy();
   });
@@ -65,7 +61,7 @@ describe('InlineHighlight Molecule', () => {
 
   it('should handle selectable prop', () => {
     const { toJSON } = renderWithTheme(
-      <InlineHighlight text="Selectable text" highlights={[]} selectable />
+      <InlineHighlight text="Selectable text" highlights={[]} selectable />,
     );
     expect(toJSON()).toBeTruthy();
   });

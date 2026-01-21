@@ -1,9 +1,4 @@
-import type {
-  Highlight,
-  ParseContext,
-  ParsedInput,
-  SmartInputParser,
-} from '@domain/common';
+import type { Highlight, ParseContext, ParsedInput, SmartInputParser } from '@domain/common';
 
 /**
  * Regex pattern for list reference: @listName or @listName:sectionName
@@ -135,9 +130,7 @@ export class SmartInputParserService implements SmartInputParser {
     }
 
     // 5. Extract title (remaining text after removing all patterns)
-    const title = workingText
-      .replace(/\s+/g, ' ')
-      .trim();
+    const title = workingText.replace(/\s+/g, ' ').trim();
 
     // 6. Sort highlights by start position
     highlights.sort((a, b) => a.start - b.start);

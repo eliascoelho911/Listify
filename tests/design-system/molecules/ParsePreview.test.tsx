@@ -2,8 +2,8 @@
  * ParsePreview Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { ParsePreview } from '@design-system/molecules/ParsePreview/ParsePreview';
 import type { ParsedElement } from '@design-system/molecules/ParsePreview/ParsePreview.types';
@@ -72,7 +72,7 @@ describe('ParsePreview Molecule', () => {
     const onPress = jest.fn();
     const elements: ParsedElement[] = [{ type: 'list', value: '@Mercado' }];
     const { getByText } = renderWithTheme(
-      <ParsePreview elements={elements} onElementPress={onPress} />
+      <ParsePreview elements={elements} onElementPress={onPress} />,
     );
 
     fireEvent.press(getByText('@Mercado'));

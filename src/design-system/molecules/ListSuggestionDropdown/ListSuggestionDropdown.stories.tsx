@@ -2,18 +2,20 @@
  * ListSuggestionDropdown Molecule Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
-
-// Simple action logger for stories
-const action = (name: string) => (...args: unknown[]) => {
-  console.log(`[Storybook Action] ${name}:`, ...args);
-};
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { ListSuggestionDropdown } from './ListSuggestionDropdown';
 import type { ListSuggestion } from './ListSuggestionDropdown.types';
+
+// Simple action logger for stories
+const action =
+  (name: string) =>
+  (...args: unknown[]) => {
+    console.log(`[Storybook Action] ${name}:`, ...args);
+  };
 
 const mockSuggestions: ListSuggestion[] = [
   { id: '1', name: 'Mercado', listType: 'shopping', sections: ['Laticínios', 'Padaria', 'Frios'] },
@@ -58,9 +60,7 @@ export const Default: Story = {
 
 export const WithSearchText: Story = {
   args: {
-    suggestions: mockSuggestions.filter((s) =>
-      s.name.toLowerCase().includes('merc')
-    ),
+    suggestions: mockSuggestions.filter((s) => s.name.toLowerCase().includes('merc')),
     visible: true,
     searchText: 'Merc',
     onSelectList: action('onSelectList'),

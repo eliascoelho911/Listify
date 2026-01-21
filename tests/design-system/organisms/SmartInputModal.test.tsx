@@ -2,12 +2,11 @@
  * SmartInputModal Organism Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import type { ParsedInput } from '@domain/common';
-
 import { SmartInputModal } from '@design-system/organisms/SmartInputModal/SmartInputModal';
 import { ThemeProvider } from '@design-system/theme';
 
@@ -20,7 +19,7 @@ const renderWithProviders = (component: React.ReactElement) => {
       }}
     >
       <ThemeProvider>{component}</ThemeProvider>
-    </SafeAreaProvider>
+    </SafeAreaProvider>,
   );
 };
 
@@ -93,28 +92,24 @@ describe('SmartInputModal Organism', () => {
   describe('Rendering', () => {
     it('should render nothing when not visible', () => {
       const { queryByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} visible={false} />
+        <SmartInputModal {...defaultProps} visible={false} />,
       );
       expect(queryByTestId('smart-input-field')).toBeNull();
     });
 
     it('should render input field when visible', () => {
-      const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} />
-      );
+      const { getByTestId } = renderWithProviders(<SmartInputModal {...defaultProps} />);
       expect(getByTestId('smart-input-field')).toBeTruthy();
     });
 
     it('should render submit button', () => {
-      const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} />
-      );
+      const { getByTestId } = renderWithProviders(<SmartInputModal {...defaultProps} />);
       expect(getByTestId('smart-input-submit')).toBeTruthy();
     });
 
     it('should render with custom placeholder', () => {
       const { getByPlaceholderText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} placeholder="Custom placeholder" />
+        <SmartInputModal {...defaultProps} placeholder="Custom placeholder" />,
       );
       expect(getByPlaceholderText('Custom placeholder')).toBeTruthy();
     });
@@ -124,7 +119,7 @@ describe('SmartInputModal Organism', () => {
     it('should call onChangeText when input changes', () => {
       const onChangeText = jest.fn();
       const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} onChangeText={onChangeText} />
+        <SmartInputModal {...defaultProps} onChangeText={onChangeText} />,
       );
 
       fireEvent.changeText(getByTestId('smart-input-field'), 'New text');
@@ -133,7 +128,7 @@ describe('SmartInputModal Organism', () => {
 
     it('should display the value prop in input', () => {
       const { getByDisplayValue } = renderWithProviders(
-        <SmartInputModal {...defaultProps} value="Test value" />
+        <SmartInputModal {...defaultProps} value="Test value" />,
       );
       expect(getByDisplayValue('Test value')).toBeTruthy();
     });
@@ -143,7 +138,7 @@ describe('SmartInputModal Organism', () => {
     it('should not call onSubmit when title is empty', () => {
       const onSubmit = jest.fn();
       const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={mockParsedEmpty} />
+        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={mockParsedEmpty} />,
       );
 
       fireEvent.press(getByTestId('smart-input-submit'));
@@ -153,7 +148,7 @@ describe('SmartInputModal Organism', () => {
     it('should call onSubmit when title has content', () => {
       const onSubmit = jest.fn();
       const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={mockParsedWithTitle} />
+        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={mockParsedWithTitle} />,
       );
 
       fireEvent.press(getByTestId('smart-input-submit'));
@@ -167,7 +162,7 @@ describe('SmartInputModal Organism', () => {
         listName: 'Mercado',
       };
       const { getByTestId } = renderWithProviders(
-        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={parsedWithOnlyList} />
+        <SmartInputModal {...defaultProps} onSubmit={onSubmit} parsed={parsedWithOnlyList} />,
       );
 
       fireEvent.press(getByTestId('smart-input-submit'));
@@ -183,7 +178,7 @@ describe('SmartInputModal Organism', () => {
           onChangeText={onChangeText}
           onClose={onClose}
           parsed={mockParsedWithTitle}
-        />
+        />,
       );
 
       fireEvent.press(getByTestId('smart-input-submit'));
@@ -195,28 +190,28 @@ describe('SmartInputModal Organism', () => {
   describe('Parse preview', () => {
     it('should show list chip when listName is present', () => {
       const { getByText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} parsed={mockParsedWithList} />
+        <SmartInputModal {...defaultProps} parsed={mockParsedWithList} />,
       );
       expect(getByText('@Mercado')).toBeTruthy();
     });
 
     it('should show section chip when sectionName is present', () => {
       const { getByText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />
+        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />,
       );
       expect(getByText('Laticínios')).toBeTruthy();
     });
 
     it('should show quantity chip when quantity is present', () => {
       const { getByText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />
+        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />,
       );
       expect(getByText('2L')).toBeTruthy();
     });
 
     it('should show price chip when price is present', () => {
       const { getByText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />
+        <SmartInputModal {...defaultProps} parsed={mockParsedWithAll} />,
       );
       expect(getByText('R$8,99')).toBeTruthy();
     });
@@ -225,11 +220,7 @@ describe('SmartInputModal Organism', () => {
   describe('Inline highlight', () => {
     it('should render inline highlight when value and highlights exist', () => {
       const { getAllByText } = renderWithProviders(
-        <SmartInputModal
-          {...defaultProps}
-          value="@Mercado Leite"
-          parsed={mockParsedWithList}
-        />
+        <SmartInputModal {...defaultProps} value="@Mercado Leite" parsed={mockParsedWithList} />,
       );
       // InlineHighlight and ParsePreview both render @Mercado
       // so we expect at least 2 occurrences
@@ -240,11 +231,7 @@ describe('SmartInputModal Organism', () => {
   describe('List suggestions', () => {
     it('should show suggestions dropdown when showSuggestions is true', () => {
       const { getByText } = renderWithProviders(
-        <SmartInputModal
-          {...defaultProps}
-          listSuggestions={mockListSuggestions}
-          showSuggestions={true}
-        />
+        <SmartInputModal {...defaultProps} listSuggestions={mockListSuggestions} showSuggestions />,
       );
       expect(getByText('Mercado')).toBeTruthy();
       expect(getByText('Filmes para Ver')).toBeTruthy();
@@ -256,9 +243,9 @@ describe('SmartInputModal Organism', () => {
         <SmartInputModal
           {...defaultProps}
           listSuggestions={mockListSuggestions}
-          showSuggestions={true}
+          showSuggestions
           onSelectList={onSelectList}
-        />
+        />,
       );
 
       fireEvent.press(getByText('Mercado'));
@@ -272,9 +259,9 @@ describe('SmartInputModal Organism', () => {
           {...defaultProps}
           value="@Nova"
           listSuggestions={[]}
-          showSuggestions={true}
+          showSuggestions
           onCreateList={onCreateList}
-        />
+        />,
       );
       expect(getByText(/Criar/)).toBeTruthy();
     });
@@ -282,9 +269,7 @@ describe('SmartInputModal Organism', () => {
 
   describe('Accessibility', () => {
     it('should have accessible submit button', () => {
-      const { getByLabelText } = renderWithProviders(
-        <SmartInputModal {...defaultProps} />
-      );
+      const { getByLabelText } = renderWithProviders(<SmartInputModal {...defaultProps} />);
       expect(getByLabelText('Submit')).toBeTruthy();
     });
   });

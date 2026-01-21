@@ -9,7 +9,6 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import type { ParseContext, ParsedInput, SmartInputParser } from '@domain/common';
 import type { ListType } from '@domain/list';
-
 import type { ListSuggestion } from '@design-system/molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
 
 export interface UseSmartInputOptions {
@@ -20,7 +19,7 @@ export interface UseSmartInputOptions {
   onSubmit?: (parsed: ParsedInput) => void;
 
   /** List of available lists for suggestions */
-  availableLists?: Array<{ id: string; name: string; listType: ListType }>;
+  availableLists?: { id: string; name: string; listType: ListType }[];
 
   /** Callback when user requests to create a new list */
   onCreateList?: (name: string) => void;
@@ -105,7 +104,7 @@ export function useSmartInput({
       currentListName,
       isShoppingList,
     }),
-    [currentListName, isShoppingList]
+    [currentListName, isShoppingList],
   );
 
   // Parse the current input value
@@ -144,7 +143,7 @@ export function useSmartInput({
           id: list.id,
           name: list.name,
           listType: list.listType,
-        })
+        }),
       );
 
     // Sort by name
@@ -188,7 +187,7 @@ export function useSmartInput({
       const newValue = `${beforeAt}@${list.name} `;
       setValue(newValue);
     },
-    [value]
+    [value],
   );
 
   // Handle create new list
@@ -201,7 +200,7 @@ export function useSmartInput({
       const newValue = `${beforeAt}@${name} `;
       setValue(newValue);
     },
-    [value, onCreateList]
+    [value, onCreateList],
   );
 
   // Reset value when initialValue changes

@@ -5,7 +5,6 @@
  * parse preview chips, and list suggestions dropdown.
  */
 
-import { Send } from 'lucide-react-native';
 import React, { type ReactElement, useCallback, useMemo, useRef, useState } from 'react';
 import {
   Keyboard,
@@ -17,6 +16,7 @@ import {
   View,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { Send } from 'lucide-react-native';
 
 import { Icon } from '../../atoms/Icon/Icon';
 import { InlineHighlight } from '../../molecules/InlineHighlight/InlineHighlight';
