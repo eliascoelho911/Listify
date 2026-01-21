@@ -6,88 +6,86 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import { render, waitFor } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 
 import { AppDependenciesProvider, useAppDependencies } from '@app/di/AppDependenciesProvider';
+import type { DrizzleDB } from '@infra/drizzle';
 
-// Mock buildDependencies
-const mockDependencies = {};
+// Mock the DatabaseProvider's useDatabase hook
+const mockDb = {
+  select: jest.fn(),
+  insert: jest.fn(),
+  update: jest.fn(),
+  delete: jest.fn(),
+} as unknown as DrizzleDB;
 
-jest.mock('@app/di/container', () => ({
-  buildDependencies: jest.fn(),
+jest.mock('@app/di/DatabaseProvider', () => ({
+  useDatabase: jest.fn(() => mockDb),
 }));
 
-const { buildDependencies } = jest.requireMock('@app/di/container');
+// Mock buildDependenciesSync
+const mockDependencies = {
+  db: mockDb,
+  listRepository: {},
+  sectionRepository: {},
+  noteItemRepository: {},
+  shoppingItemRepository: {},
+  movieItemRepository: {},
+  bookItemRepository: {},
+  gameItemRepository: {},
+  userRepository: {},
+  userPreferencesRepository: {},
+  purchaseHistoryRepository: {},
+  searchHistoryRepository: {},
+  globalSearchRepository: {},
+  smartInputParser: { parse: jest.fn() },
+  categoryInference: { infer: jest.fn() },
+};
+
+jest.mock('@app/di/container', () => ({
+  buildDependenciesSync: jest.fn(() => mockDependencies),
+}));
 
 describe('AppDependenciesProvider', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    buildDependencies.mockResolvedValue(mockDependencies);
   });
 
-  it('should show fallback while loading', () => {
-    buildDependencies.mockImplementation(() => new Promise(() => {}));
-
-    const { getByTestId } = render(
-      <AppDependenciesProvider fallback={<View testID="loading" />}>
-        <View testID="content" />
-      </AppDependenciesProvider>,
-    );
-
-    expect(getByTestId('loading')).toBeTruthy();
-  });
-
-  it('should render children when dependencies are loaded', async () => {
+  it('should render children with dependencies', () => {
     const { getByTestId } = render(
       <AppDependenciesProvider>
         <View testID="content" />
       </AppDependenciesProvider>,
     );
 
-    await waitFor(() => {
-      expect(getByTestId('content')).toBeTruthy();
-    });
+    expect(getByTestId('content')).toBeTruthy();
   });
 
-  it('should show error fallback when build fails', async () => {
-    const error = new Error('Build failed');
-    buildDependencies.mockRejectedValue(error);
+  it('should provide dependencies to children', () => {
+    let result: ReturnType<typeof useAppDependencies> | undefined;
 
-    const errorFallback = () => <View testID="error" />;
-
-    const { getByTestId } = render(
-      <AppDependenciesProvider errorFallback={errorFallback}>
-        <View testID="content" />
-      </AppDependenciesProvider>,
-    );
-
-    await waitFor(() => {
-      expect(getByTestId('error')).toBeTruthy();
-    });
-  });
-
-  it('should pass options to buildDependencies', async () => {
-    const options = { databaseName: 'custom.db' };
+    function TestComponent() {
+      result = useAppDependencies();
+      return <View testID="test" />;
+    }
 
     render(
-      <AppDependenciesProvider options={options}>
-        <View testID="content" />
+      <AppDependenciesProvider>
+        <TestComponent />
       </AppDependenciesProvider>,
     );
 
-    await waitFor(() => {
-      expect(buildDependencies).toHaveBeenCalledWith(options);
-    });
+    expect(result).toBeDefined();
+    expect(result!.db).toBe(mockDb);
   });
 });
 
 describe('useAppDependencies', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    buildDependencies.mockResolvedValue(mockDependencies);
   });
 
-  it('should return dependencies when used inside provider', async () => {
+  it('should return dependencies when used inside provider', () => {
     let result: ReturnType<typeof useAppDependencies> | null = null;
 
     function TestComponent() {
@@ -101,9 +99,7 @@ describe('useAppDependencies', () => {
       </AppDependenciesProvider>,
     );
 
-    await waitFor(() => {
-      expect(result).toEqual(mockDependencies);
-    });
+    expect(result).toEqual(mockDependencies);
   });
 
   it('should throw error when used outside provider', () => {

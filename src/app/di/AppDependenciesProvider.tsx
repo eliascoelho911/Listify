@@ -3,76 +3,31 @@ import React, {
   type ReactElement,
   type ReactNode,
   useContext,
-  useEffect,
-  useState,
+  useMemo,
 } from 'react';
 
-import { buildDependencies } from './container';
-import type { AppDependencies, BuildDependenciesOptions } from './types';
-
-type AppDependenciesState = {
-  dependencies: AppDependencies | null;
-  isLoading: boolean;
-  error: Error | null;
-};
+import { buildDependenciesSync } from './container';
+import { useDatabase } from './DatabaseProvider';
+import type { AppDependencies } from './types';
 
 export const AppDependenciesContext = createContext<AppDependencies | null>(null);
 
 type AppDependenciesProviderProps = {
   children: ReactNode;
-  options?: BuildDependenciesOptions;
-  fallback?: ReactNode;
-  errorFallback?: (error: Error) => ReactNode;
 };
 
 /**
  * Provider global para centralizar injeção de dependências.
  *
- * Gerencia a inicialização assíncrona do banco de dados e repositories,
- * fornecendo loading state durante bootstrap e error handling.
+ * Requer que DatabaseProvider esteja acima na árvore de componentes,
+ * pois usa useDatabase() para obter a instância do banco de dados.
  */
-export function AppDependenciesProvider({
-  children,
-  options,
-  fallback,
-  errorFallback,
-}: AppDependenciesProviderProps): ReactElement {
-  const [state, setState] = useState<AppDependenciesState>({
-    dependencies: null,
-    isLoading: true,
-    error: null,
-  });
-
-  useEffect(() => {
-    let mounted = true;
-
-    buildDependencies(options)
-      .then((deps) => {
-        if (mounted) {
-          setState({ dependencies: deps, isLoading: false, error: null });
-        }
-      })
-      .catch((error: Error) => {
-        if (mounted) {
-          setState({ dependencies: null, isLoading: false, error });
-        }
-      });
-
-    return () => {
-      mounted = false;
-    };
-  }, [options]);
-
-  if (state.isLoading) {
-    return <>{fallback ?? null}</>;
-  }
-
-  if (state.error) {
-    return <>{errorFallback?.(state.error) ?? null}</>;
-  }
+export function AppDependenciesProvider({ children }: AppDependenciesProviderProps): ReactElement {
+  const db = useDatabase();
+  const dependencies = useMemo(() => buildDependenciesSync(db), [db]);
 
   return (
-    <AppDependenciesContext.Provider value={state.dependencies}>
+    <AppDependenciesContext.Provider value={dependencies}>
       {children}
     </AppDependenciesContext.Provider>
   );

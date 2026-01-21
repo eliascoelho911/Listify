@@ -5,6 +5,7 @@ import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
 import { AppDependenciesProvider } from '@app/di/AppDependenciesProvider';
+import { DatabaseProvider } from '@app/di/DatabaseProvider';
 import { initializeI18n } from '@app/i18n/i18n';
 import { ThemeProvider } from '@design-system/theme';
 
@@ -25,10 +26,12 @@ export default function RootLayout(): ReactElement {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider>
         <SafeAreaProvider>
-          <AppDependenciesProvider>
-            <StatusBar style="light" />
-            <NavigationStack />
-          </AppDependenciesProvider>
+          <DatabaseProvider>
+            <AppDependenciesProvider>
+              <StatusBar style="light" />
+              <NavigationStack />
+            </AppDependenciesProvider>
+          </DatabaseProvider>
         </SafeAreaProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
