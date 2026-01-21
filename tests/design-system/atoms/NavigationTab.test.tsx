@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Inbox } from 'lucide-react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { NavigationTab } from '@design-system/atoms/NavigationTab/NavigationTab';
 import { ThemeProvider } from '@design-system/theme';

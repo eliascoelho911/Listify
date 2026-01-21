@@ -5,6 +5,7 @@ import type {
   UpdateUserPreferencesInput,
   UserPreferences,
 } from '@domain/user';
+
 import type {
   CreateUserPreferencesRow,
   UpdateUserPreferencesRow,

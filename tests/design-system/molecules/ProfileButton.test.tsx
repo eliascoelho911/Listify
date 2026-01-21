@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { ProfileButton } from '@design-system/molecules/ProfileButton/ProfileButton';
 import { getInitials } from '@design-system/molecules/ProfileButton/ProfileButton.styles';

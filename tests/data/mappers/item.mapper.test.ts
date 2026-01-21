@@ -6,8 +6,6 @@ import type {
   NoteItem,
   ShoppingItem,
 } from '@domain/item';
-import type { CreateItemRow, ItemRow, UpdateItemRow } from '@data/persistence';
-
 import {
   toCreateItemRow,
   toDomainItem,
@@ -15,6 +13,7 @@ import {
   toDomainShoppingItem,
   toUpdateItemRow,
 } from '@data/mappers/item.mapper';
+import type { CreateItemRow, ItemRow, UpdateItemRow } from '@data/persistence';
 
 describe('Item Mapper', () => {
   describe('toDomainItem', () => {

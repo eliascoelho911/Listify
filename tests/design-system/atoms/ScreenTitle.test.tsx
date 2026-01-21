@@ -3,8 +3,8 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { render } from '@testing-library/react-native';
 
 import { ScreenTitle } from '@design-system/atoms/ScreenTitle/ScreenTitle';
 import { ThemeProvider } from '@design-system/theme';
@@ -44,9 +44,7 @@ describe('ScreenTitle', () => {
   });
 
   it('should have testID when provided', () => {
-    const { getByTestId } = renderWithTheme(
-      <ScreenTitle title="Inbox" testID="screen-title" />,
-    );
+    const { getByTestId } = renderWithTheme(<ScreenTitle title="Inbox" testID="screen-title" />);
 
     expect(getByTestId('screen-title')).toBeTruthy();
   });

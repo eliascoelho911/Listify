@@ -1,4 +1,5 @@
 import type { CreateListInput, List, ListType, UpdateListInput } from '@domain/list';
+
 import type { CreateListRow, ListRow, UpdateListRow } from '../persistence';
 
 /**

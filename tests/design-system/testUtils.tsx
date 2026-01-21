@@ -6,8 +6,8 @@
  */
 
 import React from 'react';
-import { render, type RenderOptions } from '@testing-library/react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { render, type RenderOptions } from '@testing-library/react-native';
 
 import { ThemeProvider } from '@design-system/theme';
 import type { ThemeMode } from '@design-system/theme/theme';

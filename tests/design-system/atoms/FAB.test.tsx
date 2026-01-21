@@ -3,9 +3,9 @@
  */
 
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { fireEvent, render } from '@testing-library/react-native';
 import { Plus } from 'lucide-react-native';
-import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { FAB } from '@design-system/atoms/FAB/FAB';
 import { ThemeProvider } from '@design-system/theme';

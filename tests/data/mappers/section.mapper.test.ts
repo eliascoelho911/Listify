@@ -1,11 +1,10 @@
 import type { CreateSectionInput, Section } from '@domain/section';
-import type { CreateSectionRow, SectionRow, UpdateSectionRow } from '@data/persistence';
-
 import {
   toCreateSectionRow,
   toDomainSection,
   toUpdateSectionRow,
 } from '@data/mappers/section.mapper';
+import type { CreateSectionRow, SectionRow, UpdateSectionRow } from '@data/persistence';
 
 describe('Section Mapper', () => {
   describe('toDomainSection', () => {
