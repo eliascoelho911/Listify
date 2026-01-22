@@ -1,7 +1,7 @@
 /**
  * Bottombar Organism Component
  *
- * Custom bottom navigation bar with FAB in the center
+ * Floating bottom navigation bar with pill shape and elevated FAB
  */
 
 import React, { type ReactElement, useCallback } from 'react';
@@ -10,10 +10,10 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { LucideIcon } from 'lucide-react-native';
 import { Inbox, List, Plus, Search, StickyNote } from 'lucide-react-native';
 
-import { FAB } from '../../atoms/FAB/FAB';
-import { NavigationTab } from '../../atoms/NavigationTab/NavigationTab';
+import { FAB, IconButton } from '@design-system/atoms';
+
 import { useTheme } from '../../theme';
-import { createBottombarStyles } from './Bottombar.styles';
+import { BOTTOMBAR_CONFIG, createBottombarStyles } from './Bottombar.styles';
 import type { BottombarProps, BottombarTabName } from './Bottombar.types';
 
 const TAB_ICONS: Record<string, LucideIcon> = {
@@ -25,24 +25,17 @@ const TAB_ICONS: Record<string, LucideIcon> = {
 
 const TAB_LABELS: Record<string, string> = {
   index: 'Inbox',
-  search: 'Buscar',
-  notes: 'Notas',
-  lists: 'Listas',
+  search: 'Search',
+  notes: 'Notes',
+  lists: 'Lists',
 };
 
-export function Bottombar({
-  state,
-  descriptors,
-  navigation,
-  onFABPress,
-}: BottombarProps): ReactElement {
+export function Bottombar({ state, navigation, onFABPress }: BottombarProps): ReactElement {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createBottombarStyles(theme);
 
   const routes = state.routes;
-  const leftRoutes = routes.slice(0, 2);
-  const rightRoutes = routes.slice(2, 4);
 
   // Get the current tab name
   const currentTabName = routes[state.index]?.name as BottombarTabName;
@@ -53,18 +46,11 @@ export function Bottombar({
   }, [onFABPress, currentTabName]);
 
   const renderTab = (route: (typeof routes)[number], index: number): ReactElement => {
-    const { options } = descriptors[route.key];
     const isFocused = state.index === index;
 
     const routeName = route.name;
     const icon = TAB_ICONS[routeName] || Inbox;
-    const label =
-      TAB_LABELS[routeName] ||
-      (options.tabBarLabel !== undefined
-        ? String(options.tabBarLabel)
-        : options.title !== undefined
-          ? options.title
-          : route.name);
+    const label = TAB_LABELS[routeName] || routeName;
 
     const onPress = (): void => {
       const event = navigation.emit({
@@ -78,42 +64,54 @@ export function Bottombar({
       }
     };
 
-    const onLongPress = (): void => {
-      navigation.emit({
-        type: 'tabLongPress',
-        target: route.key,
-      });
-    };
-
     return (
-      <NavigationTab
-        key={route.key}
+      <IconButton
         icon={icon}
-        label={label}
         isActive={isFocused}
         onPress={onPress}
-        onLongPress={onLongPress}
+        variant="ghost"
+        size="md"
+        accessibilityLabel={label}
         testID={`tab-${routeName}`}
       />
     );
   };
 
+  // Insert FAB in the middle (after first 2 tabs)
+  const renderItems = (): ReactElement[] => {
+    const items: ReactElement[] = [];
+
+    routes.forEach((route, index) => {
+      // Add FAB after the second tab
+      if (index === 2) {
+        items.push(
+          <View key="fab" style={styles.item}>
+            <FAB
+              size="md"
+              icon={Plus}
+              onPress={handleFABPress}
+              accessibilityLabel={currentTabName === 'lists' ? 'Add new list' : 'Add new item'}
+              testID="fab-add"
+            />
+          </View>,
+        );
+      }
+
+      items.push(
+        <View key={route.key} style={styles.item}>
+          {renderTab(route, index)}
+        </View>,
+      );
+    });
+
+    return items;
+  };
+
   return (
-    <View style={[styles.container, { paddingBottom: insets.bottom + 8 }]}>
-      <View style={styles.leftTabs}>{leftRoutes.map((route, idx) => renderTab(route, idx))}</View>
-
-      <View style={styles.fabContainer}>
-        <FAB
-          icon={Plus}
-          onPress={handleFABPress}
-          accessibilityLabel={currentTabName === 'lists' ? 'Add new list' : 'Add new item'}
-          testID="fab-add"
-        />
-      </View>
-
-      <View style={styles.rightTabs}>
-        {rightRoutes.map((route, idx) => renderTab(route, idx + 2))}
-      </View>
+    <View
+      style={[styles.wrapper, { paddingBottom: insets.bottom + BOTTOMBAR_CONFIG.bottomMargin }]}
+    >
+      <View style={styles.container}>{renderItems()}</View>
     </View>
   );
 }
