@@ -10,17 +10,21 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { Inbox, Settings } from 'lucide-react-native';
+import { Inbox, Settings, Trash2 } from 'lucide-react-native';
 
 import type { Item } from '@domain/item';
 import { useItemStoreWithDI } from '@presentation/hooks';
 import { GroupHeader } from '@design-system/atoms';
 import {
+  ConfirmationDialog,
+  ContextMenu,
+  type ContextMenuItem,
   EmptyState,
   ItemCard,
   type SortDirection,
   SortingControls,
   type SortOption,
+  SwipeToDelete,
 } from '@design-system/molecules';
 import { type InfiniteScrollGroup, InfiniteScrollList, Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
@@ -130,8 +134,16 @@ export function InboxScreen(): ReactElement {
   const [groupBy, setGroupBy] = useState<GroupBy>('date');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
+  // Context menu state
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+
+  // Delete confirmation state
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
+
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadInboxItems, clearItems } = itemStore();
+  const { items, isLoading, loadInboxItems, clearItems, deleteItem } = itemStore();
 
   useEffect(() => {
     loadInboxItems();
@@ -163,28 +175,92 @@ export function InboxScreen(): ReactElement {
     await loadInboxItems();
   }, [loadInboxItems]);
 
-  const handleItemPress = useCallback((item: Item) => {
-    console.debug('[InboxScreen] Item pressed:', item.id);
-  }, []);
+  const handleItemPress = useCallback(
+    (item: Item) => {
+      console.debug('[InboxScreen] Item pressed:', item.id);
+      // Navigate to item detail based on type
+      if (item.type === 'note') {
+        router.push(`/note/${item.id}`);
+      }
+    },
+    [router],
+  );
 
   const handleItemLongPress = useCallback((item: Item) => {
     console.debug('[InboxScreen] Item long pressed:', item.id);
+    setSelectedItem(item);
+    setContextMenuVisible(true);
   }, []);
+
+  const handleContextMenuClose = useCallback(() => {
+    setContextMenuVisible(false);
+    setSelectedItem(null);
+  }, []);
+
+  const handleContextMenuSelect = useCallback(
+    (menuItem: ContextMenuItem) => {
+      if (menuItem.id === 'delete' && selectedItem) {
+        setItemToDelete(selectedItem);
+        setDeleteDialogVisible(true);
+      }
+      setContextMenuVisible(false);
+    },
+    [selectedItem],
+  );
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete) return;
+
+    console.debug('[InboxScreen] Delete confirmed:', itemToDelete.id);
+    await deleteItem(itemToDelete.id, itemToDelete.type);
+
+    setDeleteDialogVisible(false);
+    setItemToDelete(null);
+    setSelectedItem(null);
+  }, [itemToDelete, deleteItem]);
+
+  const handleDeleteCancel = useCallback(() => {
+    setDeleteDialogVisible(false);
+    setItemToDelete(null);
+  }, []);
+
+  const contextMenuItems: ContextMenuItem[] = useMemo(
+    () => [
+      {
+        id: 'delete',
+        label: t('common.delete', 'Excluir'),
+        icon: Trash2,
+        destructive: true,
+      },
+    ],
+    [t],
+  );
 
   const handleSettingsPress = useCallback(() => {
     router.push('/settings');
   }, [router]);
 
+  const handleSwipeDelete = useCallback((item: Item) => {
+    // Set item for confirmation before actual deletion
+    setItemToDelete(item);
+    setDeleteDialogVisible(true);
+  }, []);
+
   const renderItem = useCallback(
     (item: Item) => (
-      <ItemCard
-        item={item}
-        showListBadge={false}
-        onPress={handleItemPress}
-        onLongPress={handleItemLongPress}
-      />
+      <SwipeToDelete
+        onDelete={() => handleSwipeDelete(item)}
+        deleteLabel={t('common.delete', 'Excluir')}
+      >
+        <ItemCard
+          item={item}
+          showListBadge={false}
+          onPress={handleItemPress}
+          onLongPress={handleItemLongPress}
+        />
+      </SwipeToDelete>
     ),
-    [handleItemPress, handleItemLongPress],
+    [handleItemPress, handleItemLongPress, handleSwipeDelete, t],
   );
 
   const renderGroupHeader = useCallback(
@@ -237,6 +313,35 @@ export function InboxScreen(): ReactElement {
         refreshing={isLoading}
         emptyContent={emptyContent}
         style={styles.list}
+      />
+
+      {/* Context Menu for item actions */}
+      <ContextMenu
+        visible={contextMenuVisible}
+        items={contextMenuItems}
+        title={selectedItem?.title}
+        onClose={handleContextMenuClose}
+        onSelect={handleContextMenuSelect}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        visible={deleteDialogVisible}
+        title={t('inbox.deleteItem.title', 'Excluir item?')}
+        description={t(
+          'inbox.deleteItem.message',
+          'Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.',
+        )}
+        confirmButton={{
+          label: t('common.delete', 'Excluir'),
+          destructive: true,
+        }}
+        cancelButton={{
+          label: t('common.cancel', 'Cancelar'),
+        }}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        testID="inbox-delete-dialog"
       />
     </View>
   );

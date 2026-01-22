@@ -164,3 +164,7 @@ export type {
   MediaItem,
   MediaTypeConfig,
 } from './MediaCard/MediaCard.types';
+
+// SwipeToDelete
+export { SwipeToDelete } from './SwipeToDelete/SwipeToDelete';
+export type { SwipeToDeleteProps } from './SwipeToDelete/SwipeToDelete.types';

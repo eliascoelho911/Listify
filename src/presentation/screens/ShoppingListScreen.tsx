@@ -32,6 +32,7 @@ import {
   EmptyState,
   SectionHeader,
   ShoppingItemCard,
+  SwipeToDelete,
   TotalBar,
 } from '@design-system/molecules';
 import type { EditSubmitData, NavbarAction } from '@design-system/organisms';
@@ -312,6 +313,12 @@ export function ShoppingListScreen(): ReactElement {
     // The smart input would receive: `@${listName}:${section.name}` prefix
   }, []);
 
+  const handleSwipeDelete = useCallback((item: ShoppingItem) => {
+    // Set item for confirmation before actual deletion
+    setItemToDelete(item);
+    setDeleteDialogVisible(true);
+  }, []);
+
   const shoppingItems = useMemo(
     () =>
       items
@@ -410,19 +417,32 @@ export function ShoppingListScreen(): ReactElement {
             </View>
           );
         }
-        case 'item':
+        case 'item': {
+          const itemCard = (
+            <ShoppingItemCard
+              item={listItem.item}
+              onToggle={handleItemToggle}
+              onPress={handleItemPress}
+              onLongPress={handleItemLongPress}
+              showDragHandle={isReorderMode}
+              testID={`shopping-item-${listItem.item.id}`}
+            />
+          );
           return (
             <View style={styles.itemContainer}>
-              <ShoppingItemCard
-                item={listItem.item}
-                onToggle={handleItemToggle}
-                onPress={handleItemPress}
-                onLongPress={handleItemLongPress}
-                showDragHandle={isReorderMode}
-                testID={`shopping-item-${listItem.item.id}`}
-              />
+              {isReorderMode ? (
+                itemCard
+              ) : (
+                <SwipeToDelete
+                  onDelete={() => handleSwipeDelete(listItem.item)}
+                  deleteLabel={t('common.delete', 'Excluir')}
+                >
+                  {itemCard}
+                </SwipeToDelete>
+              )}
             </View>
           );
+        }
         case 'add-section-button':
           return (
             <View style={styles.addSectionContainer}>
@@ -441,6 +461,7 @@ export function ShoppingListScreen(): ReactElement {
       handleItemToggle,
       handleItemPress,
       handleItemLongPress,
+      handleSwipeDelete,
       handleAddSection,
       isReorderMode,
       styles.sectionHeaderContainer,

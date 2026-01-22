@@ -12,18 +12,22 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import type { TFunction } from 'i18next';
-import { FileText, GripVertical, Settings } from 'lucide-react-native';
+import { FileText, GripVertical, Settings, Trash2 } from 'lucide-react-native';
 
 import type { NoteItem } from '@domain/item';
 import { useItemStoreWithDI, useUserPreferencesStoreWithDI } from '@presentation/hooks';
 import { useDragAndDrop } from '@presentation/hooks/useDragAndDrop';
 import { DragHandle, GroupHeader } from '@design-system/atoms';
 import {
+  ConfirmationDialog,
+  ContextMenu,
+  type ContextMenuItem,
   EmptyState,
   NoteCard,
   type SortDirection,
   SortingControls,
   type SortOption,
+  SwipeToDelete,
 } from '@design-system/molecules';
 import {
   DraggableList,
@@ -101,8 +105,16 @@ export function NotesScreen(): ReactElement {
   const { t, i18n } = useTranslation();
   const styles = createStyles(theme, insets.top);
 
+  // Context menu state
+  const [contextMenuVisible, setContextMenuVisible] = useState(false);
+  const [selectedNote, setSelectedNote] = useState<NoteItem | null>(null);
+
+  // Delete confirmation state
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [noteToDelete, setNoteToDelete] = useState<NoteItem | null>(null);
+
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadAllNotes, clearItems, updateSortOrder } = itemStore();
+  const { items, isLoading, loadAllNotes, clearItems, updateSortOrder, deleteItem } = itemStore();
 
   const preferencesStore = useUserPreferencesStoreWithDI();
   const { getLayoutConfig, setLayoutConfig } = preferencesStore();
@@ -182,8 +194,53 @@ export function NotesScreen(): ReactElement {
 
   const handleNoteLongPress = useCallback((note: NoteItem) => {
     console.debug('[NotesScreen] Note long pressed:', note.id);
-    // TODO: Show context menu
+    setSelectedNote(note);
+    setContextMenuVisible(true);
   }, []);
+
+  const handleContextMenuClose = useCallback(() => {
+    setContextMenuVisible(false);
+    setSelectedNote(null);
+  }, []);
+
+  const handleContextMenuSelect = useCallback(
+    (menuItem: ContextMenuItem) => {
+      if (menuItem.id === 'delete' && selectedNote) {
+        setNoteToDelete(selectedNote);
+        setDeleteDialogVisible(true);
+      }
+      setContextMenuVisible(false);
+    },
+    [selectedNote],
+  );
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!noteToDelete) return;
+
+    console.debug('[NotesScreen] Delete confirmed:', noteToDelete.id);
+    await deleteItem(noteToDelete.id, 'note');
+
+    setDeleteDialogVisible(false);
+    setNoteToDelete(null);
+    setSelectedNote(null);
+  }, [noteToDelete, deleteItem]);
+
+  const handleDeleteCancel = useCallback(() => {
+    setDeleteDialogVisible(false);
+    setNoteToDelete(null);
+  }, []);
+
+  const contextMenuItems: ContextMenuItem[] = useMemo(
+    () => [
+      {
+        id: 'delete',
+        label: t('common.delete', 'Excluir'),
+        icon: Trash2,
+        destructive: true,
+      },
+    ],
+    [t],
+  );
 
   const handleSettingsPress = useCallback(() => {
     router.push('/settings');
@@ -193,12 +250,23 @@ export function NotesScreen(): ReactElement {
     setIsReorderMode((prev) => !prev);
   }, []);
 
+  const handleSwipeDelete = useCallback((note: NoteItem) => {
+    // Set note for confirmation before actual deletion
+    setNoteToDelete(note);
+    setDeleteDialogVisible(true);
+  }, []);
+
   // Render item for normal mode (grouped list)
   const renderItem = useCallback(
     (note: NoteItem) => (
-      <NoteCard note={note} onPress={handleNotePress} onLongPress={handleNoteLongPress} />
+      <SwipeToDelete
+        onDelete={() => handleSwipeDelete(note)}
+        deleteLabel={t('common.delete', 'Excluir')}
+      >
+        <NoteCard note={note} onPress={handleNotePress} onLongPress={handleNoteLongPress} />
+      </SwipeToDelete>
     ),
-    [handleNotePress, handleNoteLongPress],
+    [handleNotePress, handleNoteLongPress, handleSwipeDelete, t],
   );
 
   // Render item for reorder mode (draggable list)
@@ -296,6 +364,35 @@ export function NotesScreen(): ReactElement {
           style={styles.list}
         />
       )}
+
+      {/* Context Menu for note actions */}
+      <ContextMenu
+        visible={contextMenuVisible}
+        items={contextMenuItems}
+        title={selectedNote?.title}
+        onClose={handleContextMenuClose}
+        onSelect={handleContextMenuSelect}
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        visible={deleteDialogVisible}
+        title={t('notes.deleteNote.title', 'Excluir nota?')}
+        description={t(
+          'notes.deleteNote.message',
+          'Tem certeza que deseja excluir esta nota? Esta ação não pode ser desfeita.',
+        )}
+        confirmButton={{
+          label: t('common.delete', 'Excluir'),
+          destructive: true,
+        }}
+        cancelButton={{
+          label: t('common.cancel', 'Cancelar'),
+        }}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        testID="notes-delete-dialog"
+      />
     </View>
   );
 }

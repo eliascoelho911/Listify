@@ -514,10 +514,10 @@
 
 ### Implementação
 
-- [ ] T193 [US10.1] Criar molécula SwipeToDelete em src/design-system/molecules/SwipeToDelete/ via CLI
-- [ ] T194 [US10.1] Integrar exclusão via long-press com ContextMenu
-- [ ] T195 [US10.1] Integrar exclusão via swipe
-- [ ] T196 [US10.1] Implementar confirmação antes de exclusão permanente
+- [X] T193 [US10.1] Criar molécula SwipeToDelete em src/design-system/molecules/SwipeToDelete/ via CLI
+- [X] T194 [US10.1] Integrar exclusão via long-press com ContextMenu
+- [X] T195 [US10.1] Integrar exclusão via swipe
+- [X] T196 [US10.1] Implementar confirmação antes de exclusão permanente
 
 **Checkpoint**: Exclusão de itens funcional em todas as listas
 
