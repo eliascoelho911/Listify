@@ -9,7 +9,7 @@
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Modal, ScrollView, StyleSheet, View } from 'react-native';
+import { Modal, RefreshControl, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { Edit2, FolderOpen, Plus, Settings, Trash2 } from 'lucide-react-native';
@@ -23,7 +23,13 @@ import {
   type ContextMenuItem,
   EmptyState,
 } from '@design-system/molecules';
-import { CategoryDropdown, ListForm, type ListFormData, Navbar } from '@design-system/organisms';
+import {
+  CategoryDropdown,
+  ListForm,
+  type ListFormData,
+  type ListFormListType,
+  Navbar,
+} from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 const CATEGORY_ORDER: ListType[] = ['notes', 'shopping', 'movies', 'books', 'games'];
@@ -347,8 +353,7 @@ export function ListsScreen(): ReactElement {
         <ScrollView
           style={styles.scrollView}
           contentContainerStyle={styles.scrollContent}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
+          refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} />}
           showsVerticalScrollIndicator={false}
         >
           {CATEGORY_ORDER.map((category) => {
@@ -429,7 +434,7 @@ export function ListsScreen(): ReactElement {
         onRequestClose={handleCloseCreateModal}
       >
         <View style={styles.modalContainer}>
-          <Navbar title={t('lists.createTitle', 'Nova Lista')} variant="modal" />
+          <Navbar title={t('lists.createTitle', 'Nova Lista')} />
           <ListForm
             onSubmit={handleCreateList}
             onCancel={handleCloseCreateModal}
@@ -448,13 +453,13 @@ export function ListsScreen(): ReactElement {
         onRequestClose={handleCloseEditModal}
       >
         <View style={styles.modalContainer}>
-          <Navbar title={t('lists.editTitle', 'Editar Lista')} variant="modal" />
+          <Navbar title={t('lists.editTitle', 'Editar Lista')} />
           <ListForm
             initialData={
               editModal.list
                 ? {
                     name: editModal.list.name,
-                    listType: editModal.list.listType,
+                    listType: editModal.list.listType as ListFormListType,
                   }
                 : undefined
             }

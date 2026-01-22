@@ -212,54 +212,6 @@ export function ShoppingListScreen(): ReactElement {
     setCompleteDialogVisible(true);
   }, []);
 
-  const handleCompletePurchaseConfirm = useCallback(async () => {
-    if (!listId || totals.checkedCount === 0) return;
-
-    setCompleteDialogVisible(false);
-    setIsCompletingPurchase(true);
-
-    try {
-      // Create snapshot of checked items for history
-      const checkedItems = shoppingItems.filter((item) => item.isChecked);
-      const historyInput: CreatePurchaseHistoryInput = {
-        listId,
-        purchaseDate: new Date(),
-        totalValue: totals.total,
-        sections: sections.map((section) => ({
-          originalSectionId: section.id,
-          name: section.name,
-          sortOrder: section.sortOrder,
-        })),
-        items: checkedItems.map((item) => ({
-          originalItemId: item.id,
-          sectionId: item.sectionId,
-          title: item.title,
-          quantity: item.quantity,
-          price: item.price,
-          sortOrder: item.sortOrder,
-          wasChecked: true,
-        })),
-      };
-
-      const entry = await createHistoryEntry(historyInput);
-
-      if (entry) {
-        console.debug('[ShoppingListScreen] Purchase history created:', entry.id);
-
-        // Reset checked state for all checked items
-        for (const item of checkedItems) {
-          await updateItem(item.id, 'shopping', { isChecked: false });
-        }
-
-        console.debug('[ShoppingListScreen] Item markings reset');
-      }
-    } catch (error) {
-      console.error('[ShoppingListScreen] Failed to complete purchase:', error);
-    } finally {
-      setIsCompletingPurchase(false);
-    }
-  }, [listId, totals, shoppingItems, sections, createHistoryEntry, updateItem]);
-
   const handleCompletePurchaseCancel = useCallback(() => {
     setCompleteDialogVisible(false);
   }, []);
@@ -333,6 +285,54 @@ export function ShoppingListScreen(): ReactElement {
   );
 
   const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
+
+  const handleCompletePurchaseConfirm = useCallback(async () => {
+    if (!listId || totals.checkedCount === 0) return;
+
+    setCompleteDialogVisible(false);
+    setIsCompletingPurchase(true);
+
+    try {
+      // Create snapshot of checked items for history
+      const checkedItems = shoppingItems.filter((item) => item.isChecked);
+      const historyInput: CreatePurchaseHistoryInput = {
+        listId,
+        purchaseDate: new Date(),
+        totalValue: totals.total,
+        sections: sections.map((section) => ({
+          originalSectionId: section.id,
+          name: section.name,
+          sortOrder: section.sortOrder,
+        })),
+        items: checkedItems.map((item) => ({
+          originalItemId: item.id,
+          sectionId: item.sectionId,
+          title: item.title,
+          quantity: item.quantity,
+          price: item.price,
+          sortOrder: item.sortOrder,
+          wasChecked: true,
+        })),
+      };
+
+      const entry = await createHistoryEntry(historyInput);
+
+      if (entry) {
+        console.debug('[ShoppingListScreen] Purchase history created:', entry.id);
+
+        // Reset checked state for all checked items
+        for (const item of checkedItems) {
+          await updateItem(item.id, 'shopping', { isChecked: false });
+        }
+
+        console.debug('[ShoppingListScreen] Item markings reset');
+      }
+    } catch (error) {
+      console.error('[ShoppingListScreen] Failed to complete purchase:', error);
+    } finally {
+      setIsCompletingPurchase(false);
+    }
+  }, [listId, totals, shoppingItems, sections, createHistoryEntry, updateItem]);
 
   /** Group items by section and create flat list data */
   const listData = useMemo(() => {

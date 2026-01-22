@@ -294,7 +294,7 @@ export function InterestListScreen(): ReactElement {
           cast: (result.metadata.cast as string[]) ?? undefined,
         };
 
-        await createItem({ ...baseInput, type: 'movie', metadata }, 'movie');
+        await createItem({ ...baseInput, type: 'movie', metadata });
       } else if (itemType === 'book') {
         const metadata: BookMetadata = {
           category: 'book',
@@ -305,7 +305,7 @@ export function InterestListScreen(): ReactElement {
           authors: (result.metadata.authors as string[]) ?? undefined,
         };
 
-        await createItem({ ...baseInput, type: 'book', metadata }, 'book');
+        await createItem({ ...baseInput, type: 'book', metadata });
       } else if (itemType === 'game') {
         const metadata: GameMetadata = {
           category: 'game',
@@ -316,7 +316,7 @@ export function InterestListScreen(): ReactElement {
           developer: (result.metadata.developer as string) ?? undefined,
         };
 
-        await createItem({ ...baseInput, type: 'game', metadata }, 'game');
+        await createItem({ ...baseInput, type: 'game', metadata });
       }
 
       // Keep modal open for continuous creation
@@ -341,20 +341,23 @@ export function InterestListScreen(): ReactElement {
       };
 
       if (itemType === 'movie') {
-        await createItem(
-          { ...baseInput, type: 'movie', metadata: { category: 'movie' as const } },
-          'movie',
-        );
+        await createItem({
+          ...baseInput,
+          type: 'movie',
+          metadata: { category: 'movie' as const },
+        });
       } else if (itemType === 'book') {
-        await createItem(
-          { ...baseInput, type: 'book', metadata: { category: 'book' as const } },
-          'book',
-        );
+        await createItem({
+          ...baseInput,
+          type: 'book',
+          metadata: { category: 'book' as const },
+        });
       } else if (itemType === 'game') {
-        await createItem(
-          { ...baseInput, type: 'game', metadata: { category: 'game' as const } },
-          'game',
-        );
+        await createItem({
+          ...baseInput,
+          type: 'game',
+          metadata: { category: 'game' as const },
+        });
       }
 
       // Keep modal open for continuous creation
