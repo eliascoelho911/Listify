@@ -117,3 +117,7 @@ export type {
   ConfirmationDialogButton,
   ConfirmationDialogProps,
 } from './ConfirmationDialog/ConfirmationDialog.types';
+
+// SectionHeader
+export { SectionHeader } from './SectionHeader/SectionHeader';
+export type { SectionHeaderProps } from './SectionHeader/SectionHeader.types';

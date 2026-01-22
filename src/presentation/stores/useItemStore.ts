@@ -142,6 +142,21 @@ export interface ItemStoreActions {
    * @returns True if all updates succeeded
    */
   updateSortOrder: (items: Item[], type: ItemType) => Promise<boolean>;
+
+  /**
+   * Move an item to a different section
+   * @param itemId - The item ID to move
+   * @param sectionId - The target section ID (null to remove from section)
+   * @param type - The item type
+   * @param newSortOrder - The new sort order within the target section
+   * @returns The updated item, or null on failure
+   */
+  moveItemToSection: (
+    itemId: string,
+    sectionId: string | null,
+    type: ItemType,
+    newSortOrder?: number,
+  ) => Promise<Item | null>;
 }
 
 export type ItemStore = ItemStoreState & ItemStoreActions;
@@ -568,6 +583,26 @@ export function createItemStore(deps: ItemStoreDependencies): ItemStoreInstance 
         console.error('[useItemStore] Failed to update sort order:', error);
         return false;
       }
+    },
+
+    // Move item to a different section
+    moveItemToSection: async (
+      itemId: string,
+      sectionId: string | null,
+      type: ItemType,
+      newSortOrder?: number,
+    ): Promise<Item | null> => {
+      const updates: { sectionId?: string; sortOrder?: number } = {};
+
+      if (sectionId !== undefined) {
+        updates.sectionId = sectionId ?? undefined;
+      }
+      if (newSortOrder !== undefined) {
+        updates.sortOrder = newSortOrder;
+      }
+
+      // Use the existing updateItem method
+      return get().updateItem(itemId, type, updates);
     },
   }));
 }

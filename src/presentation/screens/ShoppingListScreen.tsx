@@ -5,22 +5,29 @@
  * Shows a TotalBar at the bottom with the sum of all checked item prices.
  * Supports real-time total calculation as items are toggled.
  * Supports drag and drop reordering of items.
+ * Supports sections for organizing items.
  */
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, GripVertical, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
 import type { ShoppingItem } from '@domain/item';
-import { useItemStoreWithDI } from '@presentation/hooks';
-import { FAB } from '@design-system/atoms';
-import { EmptyState, ShoppingItemCard, TotalBar } from '@design-system/molecules';
-import type { DraggableListRenderItemParams, NavbarAction } from '@design-system/organisms';
-import { DraggableList, Navbar } from '@design-system/organisms';
+import type { Section } from '@domain/section';
+import { useItemStoreWithDI, useSectionStoreWithDI } from '@presentation/hooks';
+import { FAB, SectionAddButton } from '@design-system/atoms';
+import {
+  EmptyState,
+  SectionHeader,
+  ShoppingItemCard,
+  TotalBar,
+} from '@design-system/molecules';
+import type { NavbarAction } from '@design-system/organisms';
+import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 interface TotalCalculation {
@@ -29,6 +36,18 @@ interface TotalCalculation {
   totalCount: number;
   itemsWithoutPrice: number;
 }
+
+/** Represents a section with its items for rendering */
+interface SectionWithItems {
+  section: Section | null; // null for unsorted items
+  items: ShoppingItem[];
+}
+
+/** Type for items in the flat list - can be section header, item, or add button */
+type ListItem =
+  | { type: 'section-header'; section: Section | null; itemCount: number }
+  | { type: 'item'; item: ShoppingItem; sectionId: string | null }
+  | { type: 'add-section-button' };
 
 function calculateTotal(items: ShoppingItem[]): TotalCalculation {
   let total = 0;
@@ -65,8 +84,16 @@ export function ShoppingListScreen(): ReactElement {
 
   const { listRepository } = useAppDependencies();
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadByListId, clearItems, toggleChecked, updateSortOrder } =
-    itemStore();
+  const sectionStore = useSectionStoreWithDI();
+  const { items, isLoading, loadByListId, clearItems, toggleChecked } = itemStore();
+  const {
+    sectionsByListId,
+    expandedSections,
+    loadSections,
+    createSection,
+    toggleSectionExpanded,
+    clearSections,
+  } = sectionStore();
 
   const [listName, setListName] = useState<string>('');
   const [isReorderMode, setIsReorderMode] = useState(false);
@@ -74,14 +101,20 @@ export function ShoppingListScreen(): ReactElement {
   useEffect(() => {
     if (listId) {
       loadByListId(listId, 'shopping');
+      loadSections(listId);
       listRepository.getById(listId).then((list) => {
         if (list) {
           setListName(list.name);
         }
       });
     }
-    return () => clearItems();
-  }, [listId, loadByListId, clearItems, listRepository]);
+    return () => {
+      clearItems();
+      if (listId) {
+        clearSections(listId);
+      }
+    };
+  }, [listId, loadByListId, loadSections, clearItems, clearSections, listRepository]);
 
   const handleBackPress = useCallback(() => {
     router.back();
@@ -114,12 +147,45 @@ export function ShoppingListScreen(): ReactElement {
     // TODO: Open add item modal
   }, []);
 
-  const handleDragEnd = useCallback(
-    async (reorderedItems: ShoppingItem[]) => {
-      console.debug('[ShoppingListScreen] Drag end, updating sort order');
-      await updateSortOrder(reorderedItems, 'shopping');
+  const handleAddSection = useCallback(async () => {
+    if (!listId) return;
+    console.debug('[ShoppingListScreen] Add section');
+
+    const sections = sectionsByListId[listId] ?? [];
+    const newSection = await createSection({
+      listId,
+      name: t('sections.newSection', 'Nova Seção'),
+      sortOrder: sections.length,
+    });
+
+    if (newSection) {
+      console.debug('[ShoppingListScreen] Section created:', newSection.id);
+    }
+  }, [listId, sectionsByListId, createSection, t]);
+
+  const handleToggleSectionExpand = useCallback(
+    (sectionId: string | null) => {
+      if (sectionId) {
+        toggleSectionExpanded(sectionId);
+      }
     },
-    [updateSortOrder],
+    [toggleSectionExpanded],
+  );
+
+  const handleSectionLongPress = useCallback((section: Section | null) => {
+    if (section) {
+      console.debug('[ShoppingListScreen] Section long pressed:', section.id);
+      // TODO: Open section context menu for edit/delete
+    }
+  }, []);
+
+  const handleAddItemToSection = useCallback(
+    (section: Section) => {
+      console.debug('[ShoppingListScreen] Add item to section:', section.id, section.name);
+      // TODO: Open smart input with section pre-selected
+      // The smart input would receive: `@${listName}:${section.name}` prefix
+    },
+    [],
   );
 
   const shoppingItems = useMemo(
@@ -130,25 +196,153 @@ export function ShoppingListScreen(): ReactElement {
     [items],
   );
 
+  const sections = useMemo(
+    () => (listId ? sectionsByListId[listId] ?? [] : []),
+    [listId, sectionsByListId],
+  );
+
   const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
 
-  const renderDraggableItem = useCallback(
-    ({ item, drag, isActive }: DraggableListRenderItemParams<ShoppingItem>) => (
-      <View style={styles.itemContainer}>
-        <ShoppingItemCard
-          item={item}
-          onToggle={handleItemToggle}
-          onPress={handleItemPress}
-          onLongPress={handleItemLongPress}
-          showDragHandle={isReorderMode}
-          isDragging={isActive}
-          onDrag={drag}
-          testID={`shopping-item-${item.id}`}
-        />
-      </View>
-    ),
-    [handleItemToggle, handleItemPress, handleItemLongPress, isReorderMode, styles.itemContainer],
+  /** Group items by section and create flat list data */
+  const listData = useMemo(() => {
+    const result: ListItem[] = [];
+
+    // Group items by sectionId
+    const itemsBySectionId = new Map<string | null, ShoppingItem[]>();
+    for (const item of shoppingItems) {
+      const sectionId = item.sectionId ?? null;
+      const existing = itemsBySectionId.get(sectionId) ?? [];
+      existing.push(item);
+      itemsBySectionId.set(sectionId, existing);
+    }
+
+    // Add sections with their items
+    for (const section of sections) {
+      const sectionItems = itemsBySectionId.get(section.id) ?? [];
+      const isExpanded = expandedSections[section.id] !== false;
+
+      result.push({
+        type: 'section-header',
+        section,
+        itemCount: sectionItems.length,
+      });
+
+      if (isExpanded) {
+        for (const item of sectionItems) {
+          result.push({ type: 'item', item, sectionId: section.id });
+        }
+      }
+    }
+
+    // Add unsorted items (no sectionId)
+    const unsortedItems = itemsBySectionId.get(null) ?? [];
+    if (unsortedItems.length > 0 || sections.length > 0) {
+      // Only show "Unsorted" header if there are sections
+      if (sections.length > 0) {
+        result.push({
+          type: 'section-header',
+          section: null,
+          itemCount: unsortedItems.length,
+        });
+      }
+
+      for (const item of unsortedItems) {
+        result.push({ type: 'item', item, sectionId: null });
+      }
+    }
+
+    // Add button to create new section
+    result.push({ type: 'add-section-button' });
+
+    return result;
+  }, [shoppingItems, sections, expandedSections]);
+
+  const renderListItem = useCallback(
+    ({ item: listItem }: { item: ListItem }) => {
+      switch (listItem.type) {
+        case 'section-header': {
+          const isExpanded =
+            listItem.section === null || expandedSections[listItem.section.id] !== false;
+          return (
+            <View style={styles.sectionHeaderContainer}>
+              <SectionHeader
+                name={
+                  listItem.section?.name ?? t('sections.unsorted', 'Sem seção')
+                }
+                itemCount={listItem.itemCount}
+                expanded={isExpanded}
+                onToggleExpand={
+                  listItem.section
+                    ? () => handleToggleSectionExpand(listItem.section?.id ?? null)
+                    : undefined
+                }
+                onLongPress={() => handleSectionLongPress(listItem.section)}
+                showAddButton={listItem.section !== null}
+                onAddItem={
+                  listItem.section
+                    ? () => handleAddItemToSection(listItem.section as Section)
+                    : undefined
+                }
+                testID={`section-header-${listItem.section?.id ?? 'unsorted'}`}
+              />
+            </View>
+          );
+        }
+        case 'item':
+          return (
+            <View style={styles.itemContainer}>
+              <ShoppingItemCard
+                item={listItem.item}
+                onToggle={handleItemToggle}
+                onPress={handleItemPress}
+                onLongPress={handleItemLongPress}
+                showDragHandle={isReorderMode}
+                testID={`shopping-item-${listItem.item.id}`}
+              />
+            </View>
+          );
+        case 'add-section-button':
+          return (
+            <View style={styles.addSectionContainer}>
+              <SectionAddButton
+                onPress={handleAddSection}
+                testID="add-section-button"
+              />
+            </View>
+          );
+        default:
+          return null;
+      }
+    },
+    [
+      expandedSections,
+      handleToggleSectionExpand,
+      handleSectionLongPress,
+      handleAddItemToSection,
+      handleItemToggle,
+      handleItemPress,
+      handleItemLongPress,
+      handleAddSection,
+      isReorderMode,
+      styles.sectionHeaderContainer,
+      styles.itemContainer,
+      styles.addSectionContainer,
+      t,
+    ],
   );
+
+  const keyExtractor = useCallback((item: ListItem, index: number) => {
+    switch (item.type) {
+      case 'section-header':
+        return `section-${item.section?.id ?? 'unsorted'}`;
+      case 'item':
+        return `item-${item.item.id}`;
+      case 'add-section-button':
+        return 'add-section-button';
+      default:
+        return `unknown-${index}`;
+    }
+  }, []);
 
   const emptyContent = (
     <EmptyState
@@ -184,15 +378,15 @@ export function ShoppingListScreen(): ReactElement {
     <View style={styles.container}>
       <Navbar title={listName} leftAction={leftAction} rightActions={rightActions} />
 
-      {!isLoading && shoppingItems.length === 0 ? (
+      {!isLoading && shoppingItems.length === 0 && sections.length === 0 ? (
         <View style={styles.emptyContainer}>{emptyContent}</View>
       ) : (
-        <DraggableList
-          data={shoppingItems}
-          renderItem={renderDraggableItem}
-          onDragEnd={handleDragEnd}
-          isReorderEnabled={isReorderMode}
+        <FlatList
+          data={listData}
+          renderItem={renderListItem}
+          keyExtractor={keyExtractor}
           contentContainerStyle={styles.listContent}
+          showsVerticalScrollIndicator={false}
           ListEmptyComponent={emptyContent}
         />
       )}
@@ -235,8 +429,16 @@ const createStyles = (
       paddingVertical: theme.spacing.md,
       paddingBottom: 120,
     },
+    sectionHeaderContainer: {
+      marginTop: theme.spacing.md,
+      marginBottom: theme.spacing.xs,
+    },
     itemContainer: {
       marginVertical: theme.spacing.xs,
+    },
+    addSectionContainer: {
+      marginTop: theme.spacing.lg,
+      marginBottom: theme.spacing.md,
     },
     emptyContainer: {
       flex: 1,
