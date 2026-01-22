@@ -35,4 +35,5 @@ export type AppDependencies = {
   categoryInference: CategoryInference;
   movieProvider: MediaProviderRepository;
   bookProvider: MediaProviderRepository;
+  gameProvider: MediaProviderRepository;
 };
