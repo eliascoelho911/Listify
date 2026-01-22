@@ -6,7 +6,7 @@
  */
 
 import React, { type ReactElement, useEffect, useState } from 'react';
-import { ActivityIndicator, View, StyleSheet } from 'react-native';
+import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { useAppDependencies } from '@app/di';

@@ -415,14 +415,14 @@
 
 ### Implementação
 
-- [ ] T159 [P] [US6.4] Criar molécula CompleteButton em src/design-system/molecules/CompleteButton/ via CLI
-- [ ] T160 [P] [US6.4] Criar molécula HistoryCard em src/design-system/molecules/HistoryCard/ via CLI
-- [ ] T161 [US6.4] Criar organismo HistoryList em src/design-system/organisms/HistoryList/ via CLI
-- [ ] T162 [US6.4] Criar usePurchaseHistoryStore em src/presentation/stores/usePurchaseHistoryStore.ts
-- [ ] T163 [US6.4] Criar PurchaseHistoryScreen em src/presentation/screens/PurchaseHistoryScreen.tsx
-- [ ] T164 [US6.4] Configurar rota em app/history/[listId].tsx
-- [ ] T165 [US6.4] Implementar snapshot de compra no histórico
-- [ ] T166 [US6.4] Implementar reset de marcações após conclusão
+- [X] T159 [P] [US6.4] Criar molécula CompleteButton em src/design-system/molecules/CompleteButton/ via CLI
+- [X] T160 [P] [US6.4] Criar molécula HistoryCard em src/design-system/molecules/HistoryCard/ via CLI
+- [X] T161 [US6.4] Criar organismo HistoryList em src/design-system/organisms/HistoryList/ via CLI
+- [X] T162 [US6.4] Criar usePurchaseHistoryStore em src/presentation/stores/usePurchaseHistoryStore.ts
+- [X] T163 [US6.4] Criar PurchaseHistoryScreen em src/presentation/screens/PurchaseHistoryScreen.tsx
+- [X] T164 [US6.4] Configurar rota em app/history/[listId].tsx
+- [X] T165 [US6.4] Implementar snapshot de compra no histórico
+- [X] T166 [US6.4] Implementar reset de marcações após conclusão
 
 **Checkpoint**: Conclusão de compra e histórico funcional
 
