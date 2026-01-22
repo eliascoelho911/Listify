@@ -94,3 +94,7 @@ export type { SectionAddButtonProps } from './SectionAddButton/SectionAddButton.
 // AddAllButton
 export { AddAllButton } from './AddAllButton/AddAllButton';
 export type { AddAllButtonProps } from './AddAllButton/AddAllButton.types';
+
+// InlineEdit
+export { InlineEdit } from './InlineEdit/InlineEdit';
+export type { InlineEditProps } from './InlineEdit/InlineEdit.types';
