@@ -6,11 +6,10 @@
 
 import { withBackgrounds } from '@storybook/addon-ondevice-backgrounds';
 import type { Preview } from '@storybook/react-native';
-import React, { useMemo } from 'react';
-import { View } from 'react-native';
+
 import type { ThemeMode } from '../src/design-system/theme/theme';
 import { darkTheme, lightTheme } from '../src/design-system/theme/theme';
-import { ThemeContext } from '../src/design-system/theme/ThemeProvider';
+import { ThemeProvider } from '../src/design-system/theme/ThemeProvider';
 
 const preview: Preview = {
   // Global args pattern for theme control (works in React Native Storybook v10)
@@ -33,30 +32,11 @@ const preview: Preview = {
     withBackgrounds,
     (Story, context) => {
       const themeMode: ThemeMode = (context.args.theme as ThemeMode) || 'dark';
-      const theme = themeMode === 'light' ? lightTheme : darkTheme;
-
-      // Simplified theme context for Storybook (no font loading, AsyncStorage, or SplashScreen)
-      const themeContextValue = useMemo(
-        () => ({
-          theme,
-          mode: themeMode,
-          toggleTheme: () => {},
-          setTheme: () => {},
-        }),
-        [theme, themeMode],
-      );
 
       return (
-        <ThemeContext.Provider value={themeContextValue}>
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: theme.colors.background,
-            }}
-          >
-            <Story />
-          </View>
-        </ThemeContext.Provider>
+        <ThemeProvider initialMode={themeMode}>
+          <Story />
+        </ThemeProvider>
       );
     },
   ],
