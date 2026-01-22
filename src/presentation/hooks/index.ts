@@ -11,6 +11,6 @@ export { useInfiniteScroll } from './useInfiniteScroll';
 export { useItemStoreWithDI } from './useItemStoreWithDI';
 export { useListStoreWithDI } from './useListStoreWithDI';
 export { useSearchStoreWithDI } from './useSearchStoreWithDI';
-export type { UseSmartInputOptions, UseSmartInputReturn } from './useSmartInput';
+export type { SmartInputMode, UseSmartInputOptions, UseSmartInputReturn } from './useSmartInput';
 export { useSmartInput } from './useSmartInput';
 export { useUserPreferencesStoreWithDI } from './useUserPreferencesStoreWithDI';

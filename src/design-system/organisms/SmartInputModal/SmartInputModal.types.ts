@@ -9,7 +9,19 @@ import type { ParsedInput } from '@domain/common';
 import type { ListSuggestion } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
 import type { SelectableListType } from '../../molecules/MiniCategorySelector/MiniCategorySelector.types';
 
+/**
+ * Input mode for SmartInputModal
+ * - 'item': Create items (default behavior with @mention, :section, price parsing)
+ * - 'list': Create lists (simple name input with category selector)
+ */
+export type SmartInputMode = 'item' | 'list';
+
 export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
+  /**
+   * Input mode
+   * @default 'item'
+   */
+  mode?: SmartInputMode;
   /**
    * Whether the modal is visible
    */
