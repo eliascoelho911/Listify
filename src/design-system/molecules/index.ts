@@ -147,3 +147,20 @@ export type {
   MarkdownEditorProps,
   MarkdownFormatAction,
 } from './MarkdownEditor/MarkdownEditor.types';
+
+// MediaSearchDropdown
+export { MediaSearchDropdown } from './MediaSearchDropdown/MediaSearchDropdown';
+export type {
+  MediaSearchDropdownProps,
+  MediaSearchResult,
+  MediaType,
+} from './MediaSearchDropdown/MediaSearchDropdown.types';
+
+// MediaCard
+export { MediaCard } from './MediaCard/MediaCard';
+export type {
+  MediaCardProps,
+  MediaCardType,
+  MediaItem,
+  MediaTypeConfig,
+} from './MediaCard/MediaCard.types';

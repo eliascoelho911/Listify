@@ -493,14 +493,14 @@
 
 ### Implementação
 
-- [ ] T185 [P] [US8.1] Criar molécula MediaSearchDropdown em src/design-system/molecules/MediaSearchDropdown/ via CLI
-- [ ] T186 [P] [US8.1] Criar molécula MediaCard em src/design-system/molecules/MediaCard/ via CLI
-- [ ] T187 [US8.1] Implementar TMDbProviderService em src/infra/services/TMDbProviderService.ts
-- [ ] T188 [US8.1] Criar InterestListScreen em src/presentation/screens/InterestListScreen.tsx
-- [ ] T189 [US8.1] Configurar rota genérica para listas de interesse em app/list/[id].tsx
-- [ ] T190 [US8.1] Integrar busca inline no SmartInputModal para listas de filmes
-- [ ] T191 [US8.1] Implementar marcação "visto" para filmes
-- [ ] T192 [US8.1] Implementar fallback para entrada manual sem TMDb
+- [X] T185 [P] [US8.1] Criar molécula MediaSearchDropdown em src/design-system/molecules/MediaSearchDropdown/ via CLI
+- [X] T186 [P] [US8.1] Criar molécula MediaCard em src/design-system/molecules/MediaCard/ via CLI
+- [X] T187 [US8.1] Implementar TMDbProviderService em src/infra/services/TMDbProviderService.ts
+- [X] T188 [US8.1] Criar InterestListScreen em src/presentation/screens/InterestListScreen.tsx
+- [X] T189 [US8.1] Configurar rota genérica para listas de interesse em app/list/[id].tsx
+- [X] T190 [US8.1] Integrar busca inline no SmartInputModal para listas de filmes
+- [X] T191 [US8.1] Implementar marcação "visto" para filmes
+- [X] T192 [US8.1] Implementar fallback para entrada manual sem TMDb
 
 **Checkpoint**: Listas de filmes com enriquecimento TMDb funcional
 

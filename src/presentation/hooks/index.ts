@@ -12,6 +12,7 @@ export type {
 export { useInfiniteScroll } from './useInfiniteScroll';
 export { useItemStoreWithDI } from './useItemStoreWithDI';
 export { useListStoreWithDI } from './useListStoreWithDI';
+export { useMediaSearch } from './useMediaSearch';
 export { usePurchaseHistoryStoreWithDI } from './usePurchaseHistoryStoreWithDI';
 export { useSearchStoreWithDI } from './useSearchStoreWithDI';
 export { useSectionStoreWithDI } from './useSectionStoreWithDI';

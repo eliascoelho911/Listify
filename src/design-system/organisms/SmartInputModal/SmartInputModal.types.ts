@@ -7,6 +7,10 @@ import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 import type { ParsedInput } from '@domain/common';
 
 import type { ListSuggestion } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
+import type {
+  MediaSearchResult,
+  MediaType,
+} from '../../molecules/MediaSearchDropdown/MediaSearchDropdown.types';
 import type { SelectableListType } from '../../molecules/MiniCategorySelector/MiniCategorySelector.types';
 
 /**
@@ -128,4 +132,35 @@ export interface SmartInputModalProps extends Omit<ViewProps, 'style'> {
    * @default true
    */
   keepOpen?: boolean;
+
+  /**
+   * Media search mode - for interest lists (movies, books, games)
+   * When set, shows media search dropdown instead of list suggestions
+   */
+  mediaSearchMode?: MediaType;
+
+  /**
+   * Media search results from external provider
+   */
+  mediaSearchResults?: MediaSearchResult[];
+
+  /**
+   * Whether media search is in progress
+   */
+  isMediaSearchLoading?: boolean;
+
+  /**
+   * Media search error message
+   */
+  mediaSearchError?: string;
+
+  /**
+   * Callback when a media search result is selected
+   */
+  onSelectMediaResult?: (result: MediaSearchResult) => void;
+
+  /**
+   * Callback for manual entry when no media result matches
+   */
+  onManualMediaEntry?: (title: string) => void;
 }

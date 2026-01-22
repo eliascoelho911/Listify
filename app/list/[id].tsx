@@ -11,7 +11,7 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 
 import { useAppDependencies } from '@app/di';
 import type { List } from '@domain/list';
-import { ShoppingListScreen } from '@presentation/screens';
+import { InterestListScreen, ShoppingListScreen } from '@presentation/screens';
 import { useTheme } from '@design-system/theme';
 
 export default function ListRoute(): ReactElement {
@@ -66,14 +66,18 @@ export default function ListRoute(): ReactElement {
     case 'shopping':
       return <ShoppingListScreen />;
 
-    case 'notes':
     case 'movies':
     case 'books':
     case 'games':
-      // TODO: Implement other list type screens
-      // For now, redirect back
-      console.debug('[ListRoute] Unsupported list type:', list.listType);
-      return <ShoppingListScreen />;
+      return <InterestListScreen />;
+
+    case 'notes':
+      // Notes use NoteDetailScreen accessed via note/[id].tsx
+      console.debug('[ListRoute] Notes list accessed - should use notes tab');
+      router.back();
+      return (
+        <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]} />
+      );
 
     default:
       return <ShoppingListScreen />;
