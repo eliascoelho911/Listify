@@ -2,8 +2,8 @@
  * HistoryList Organism Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { HistoryList } from '@design-system/organisms/HistoryList/HistoryList';
 import type { HistoryEntry } from '@design-system/organisms/HistoryList/HistoryList.types';

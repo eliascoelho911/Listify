@@ -2,8 +2,8 @@
  * CompleteButton Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { CompleteButton } from '@design-system/molecules/CompleteButton/CompleteButton';
 import { ThemeProvider } from '@design-system/theme';

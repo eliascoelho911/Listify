@@ -2,8 +2,8 @@
  * HistoryCard Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { HistoryCard } from '@design-system/molecules/HistoryCard/HistoryCard';
 import { ThemeProvider } from '@design-system/theme';
@@ -36,7 +36,12 @@ describe('HistoryCard Molecule', () => {
 
   it('should render singular item text for single item', () => {
     const { getByText } = renderWithTheme(
-      <HistoryCard purchaseDate={testDate} totalValue={15.99} itemCount={1} onPress={mockOnPress} />,
+      <HistoryCard
+        purchaseDate={testDate}
+        totalValue={15.99}
+        itemCount={1}
+        onPress={mockOnPress}
+      />,
     );
     // Translation returns key in test environment
     expect(getByText('history.itemCount.singular')).toBeTruthy();

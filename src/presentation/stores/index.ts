@@ -19,6 +19,14 @@ export type {
 } from './useListStore';
 export { createListStore } from './useListStore';
 export type {
+  PurchaseHistoryStore,
+  PurchaseHistoryStoreActions,
+  PurchaseHistoryStoreDependencies,
+  PurchaseHistoryStoreInstance,
+  PurchaseHistoryStoreState,
+} from './usePurchaseHistoryStore';
+export { createPurchaseHistoryStore } from './usePurchaseHistoryStore';
+export type {
   SearchFilters,
   SearchResult,
   SearchStore,
@@ -36,11 +44,3 @@ export type {
   UserPreferencesStoreState,
 } from './useUserPreferencesStore';
 export { createUserPreferencesStore } from './useUserPreferencesStore';
-export type {
-  PurchaseHistoryStore,
-  PurchaseHistoryStoreActions,
-  PurchaseHistoryStoreDependencies,
-  PurchaseHistoryStoreInstance,
-  PurchaseHistoryStoreState,
-} from './usePurchaseHistoryStore';
-export { createPurchaseHistoryStore } from './usePurchaseHistoryStore';

@@ -52,11 +52,15 @@ export function HistoryCard({
       onPress={onPress}
       disabled={!onPress}
       accessibilityRole="button"
-      accessibilityLabel={t('history.cardAccessibility', 'Compra de {{date}}, {{total}}, {{items}}', {
-        date: formattedDate,
-        total: formattedTotal,
-        items: itemsText,
-      })}
+      accessibilityLabel={t(
+        'history.cardAccessibility',
+        'Compra de {{date}}, {{total}}, {{items}}',
+        {
+          date: formattedDate,
+          total: formattedTotal,
+          items: itemsText,
+        },
+      )}
       testID={testID}
     >
       <View style={styles.leftContent}>

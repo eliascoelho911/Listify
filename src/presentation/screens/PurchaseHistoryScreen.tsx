@@ -13,9 +13,8 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft } from 'lucide-react-native';
 
 import { usePurchaseHistoryStoreWithDI } from '@presentation/hooks';
-import type { NavbarAction } from '@design-system/organisms';
+import type { HistoryEntry, NavbarAction } from '@design-system/organisms';
 import { HistoryList, Navbar } from '@design-system/organisms';
-import type { HistoryEntry } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 import type { Theme } from '@design-system/theme/theme';
 
@@ -59,13 +58,10 @@ export function PurchaseHistoryScreen(): ReactElement {
     router.back();
   }, [router]);
 
-  const handleEntryPress = useCallback(
-    (entry: HistoryEntry) => {
-      console.debug('[PurchaseHistoryScreen] Entry pressed:', entry.id);
-      // Navigate to purchase detail screen if we implement it later
-    },
-    [],
-  );
+  const handleEntryPress = useCallback((entry: HistoryEntry) => {
+    console.debug('[PurchaseHistoryScreen] Entry pressed:', entry.id);
+    // Navigate to purchase detail screen if we implement it later
+  }, []);
 
   const navbarActions: NavbarAction[] = [];
 

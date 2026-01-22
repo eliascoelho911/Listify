@@ -190,7 +190,10 @@ export function createPurchaseHistoryStore(
         entries.sort((a, b) => b.purchaseDate.getTime() - a.purchaseDate.getTime());
 
         set({ entries, isLoading: false, initialized: true });
-        console.debug(`[usePurchaseHistoryStore] Loaded ${entries.length} entries for list:`, listId);
+        console.debug(
+          `[usePurchaseHistoryStore] Loaded ${entries.length} entries for list:`,
+          listId,
+        );
       } catch (error) {
         set({ isLoading: false, error: 'Failed to load purchase history' });
         console.error('[usePurchaseHistoryStore] Failed to load entries:', error);

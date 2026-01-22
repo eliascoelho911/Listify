@@ -18,8 +18,8 @@ import { ArrowLeft, GripVertical, History, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
 import type { Item, ShoppingItem } from '@domain/item';
-import type { Section } from '@domain/section';
 import type { CreatePurchaseHistoryInput } from '@domain/purchase-history';
+import type { Section } from '@domain/section';
 import {
   useItemStoreWithDI,
   usePurchaseHistoryStoreWithDI,
