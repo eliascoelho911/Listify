@@ -359,12 +359,12 @@
 
 ### Implementação
 
-- [ ] T142 [P] [US4.2] Criar molécula ContextMenu em src/design-system/molecules/ContextMenu/ via CLI
-- [ ] T143 [P] [US4.2] Criar molécula ConfirmationDialog em src/design-system/molecules/ConfirmationDialog/ via CLI
-- [ ] T144 [US4.2] Adicionar long-press na ListCard para menu de contexto
-- [ ] T145 [US4.2] Implementar fluxo de edição de lista
-- [ ] T146 [US4.2] Implementar fluxo de exclusão com opção de mover itens
-- [ ] T147 [US4.2] Bloquear edição/exclusão da lista de Notas pré-fabricada
+- [X] T142 [P] [US4.2] Criar molécula ContextMenu em src/design-system/molecules/ContextMenu/ via CLI
+- [X] T143 [P] [US4.2] Criar molécula ConfirmationDialog em src/design-system/molecules/ConfirmationDialog/ via CLI
+- [X] T144 [US4.2] Adicionar long-press na ListCard para menu de contexto
+- [X] T145 [US4.2] Implementar fluxo de edição de lista
+- [X] T146 [US4.2] Implementar fluxo de exclusão com opção de mover itens
+- [X] T147 [US4.2] Bloquear edição/exclusão da lista de Notas pré-fabricada
 
 **Checkpoint**: Gerenciamento completo de listas (exceto Notas)
 

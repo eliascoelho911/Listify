@@ -110,3 +110,10 @@ export type { ShoppingItemCardProps } from './ShoppingItemCard/ShoppingItemCard.
 // TotalBar
 export { TotalBar } from './TotalBar/TotalBar';
 export type { TotalBarProps } from './TotalBar/TotalBar.types';
+
+// ConfirmationDialog
+export { ConfirmationDialog } from './ConfirmationDialog/ConfirmationDialog';
+export type {
+  ConfirmationDialogButton,
+  ConfirmationDialogProps,
+} from './ConfirmationDialog/ConfirmationDialog.types';

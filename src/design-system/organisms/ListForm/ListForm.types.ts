@@ -59,6 +59,12 @@ export interface ListFormProps {
   isEditing?: boolean;
 
   /**
+   * Whether to disable the type/category selection (for editing existing lists)
+   * @default false
+   */
+  disableTypeSelection?: boolean;
+
+  /**
    * Optional style for the container
    */
   style?: StyleProp<ViewStyle>;
