@@ -26,7 +26,7 @@ import type {
 } from '@domain/item';
 import type { ListType } from '@domain/list';
 import { useItemStoreWithDI, useSmartInput } from '@presentation/hooks';
-import { FAB } from '@design-system/atoms';
+import { IconButton } from '@design-system/atoms';
 import type { MediaItem } from '@design-system/molecules';
 import { ConfirmationDialog, EmptyState, MediaCard, SwipeToDelete } from '@design-system/molecules';
 import type {
@@ -456,9 +456,11 @@ export function InterestListScreen(): ReactElement {
       )}
 
       <View style={styles.fabContainer}>
-        <FAB
+        <IconButton
           icon={Plus}
           onPress={handleAddItem}
+          variant="accent"
+          size="lg"
           accessibilityLabel={t('interest.addItem', 'Adicionar Item')}
           testID="interest-add-fab"
         />

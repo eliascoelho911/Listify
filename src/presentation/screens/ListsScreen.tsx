@@ -16,7 +16,7 @@ import { Edit2, FolderOpen, Plus, Settings, Trash2 } from 'lucide-react-native';
 
 import type { List, ListType } from '@domain/list';
 import { useListStoreWithDI } from '@presentation/hooks';
-import { FAB } from '@design-system/atoms';
+import { IconButton } from '@design-system/atoms';
 import {
   ConfirmationDialog,
   ContextMenu,
@@ -370,14 +370,17 @@ export function ListsScreen(): ReactElement {
         </ScrollView>
       )}
 
-      {/* FAB for creating new lists */}
-      <FAB
-        icon={Plus}
-        onPress={handleOpenCreateModal}
-        label={t('lists.createButton', 'Create List')}
-        style={styles.fab}
-        testID="lists-create-fab"
-      />
+      {/* IconButton for creating new lists */}
+      <View style={styles.fab}>
+        <IconButton
+          icon={Plus}
+          onPress={handleOpenCreateModal}
+          variant="accent"
+          size="lg"
+          accessibilityLabel={t('lists.createButton', 'Create List')}
+          testID="lists-create-fab"
+        />
+      </View>
 
       {/* Context Menu for list actions */}
       <ContextMenu

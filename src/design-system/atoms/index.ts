@@ -55,10 +55,6 @@ export type { DateBadgeProps, DateBadgeVariant } from './DateBadge/DateBadge.typ
 export { Logo } from './Logo/Logo';
 export type { LogoProps, LogoSize } from './Logo/Logo.types';
 
-// FAB (Floating Action Button)
-export { FAB } from './FAB/FAB';
-export type { FABProps, FABSize } from './FAB/FAB.types';
-
 // ScreenTitle
 export { ScreenTitle } from './ScreenTitle/ScreenTitle';
 export type { ScreenTitleProps } from './ScreenTitle/ScreenTitle.types';

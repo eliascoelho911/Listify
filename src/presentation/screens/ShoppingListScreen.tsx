@@ -25,7 +25,7 @@ import {
   usePurchaseHistoryStoreWithDI,
   useSectionStoreWithDI,
 } from '@presentation/hooks';
-import { FAB, SectionAddButton } from '@design-system/atoms';
+import { IconButton, SectionAddButton } from '@design-system/atoms';
 import {
   CompleteButton,
   ConfirmationDialog,
@@ -558,9 +558,11 @@ export function ShoppingListScreen(): ReactElement {
       </View>
 
       <View style={styles.fabContainer}>
-        <FAB
+        <IconButton
           icon={Plus}
           onPress={handleAddItem}
+          variant="accent"
+          size="lg"
           accessibilityLabel={t('shopping.addItem', 'Adicionar Item')}
           testID="shopping-add-fab"
         />
