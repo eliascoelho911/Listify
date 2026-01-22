@@ -174,7 +174,11 @@ export const Empty: Story = {
       renderItem={(item: SimpleItem) => <SimpleItemCard item={item} />}
       keyExtractor={(item: SimpleItem) => item.id}
       emptyContent={
-        <EmptyState icon={Inbox} title="No items yet" subtitle="Add your first item to get started" />
+        <EmptyState
+          icon={Inbox}
+          title="No items yet"
+          subtitle="Add your first item to get started"
+        />
       }
     />
   ),
