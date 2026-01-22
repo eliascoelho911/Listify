@@ -320,14 +320,14 @@
 
 ### Implementação
 
-- [ ] T129 [P] [US6.1] Criar átomo Checkbox em src/design-system/atoms/Checkbox/ via CLI
-- [ ] T130 [P] [US6.1] Criar átomo PriceBadge em src/design-system/atoms/PriceBadge/ via CLI
-- [ ] T131 [P] [US6.1] Criar molécula ShoppingItemCard em src/design-system/molecules/ShoppingItemCard/ via CLI
-- [ ] T132 [US6.1] Criar molécula TotalBar em src/design-system/molecules/TotalBar/ via CLI
-- [ ] T133 [US6.1] Criar ShoppingListScreen em src/presentation/screens/ShoppingListScreen.tsx
-- [ ] T134 [US6.1] Configurar rota em app/shopping/[id].tsx
-- [ ] T135 [US6.1] Implementar cálculo de total em tempo real (<100ms)
-- [ ] T136 [US6.1] Implementar indicador "(X itens sem valor)" na TotalBar
+- [X] T129 [P] [US6.1] Criar átomo Checkbox em src/design-system/atoms/Checkbox/ via CLI
+- [X] T130 [P] [US6.1] Criar átomo PriceBadge em src/design-system/atoms/PriceBadge/ via CLI
+- [X] T131 [P] [US6.1] Criar molécula ShoppingItemCard em src/design-system/molecules/ShoppingItemCard/ via CLI
+- [X] T132 [US6.1] Criar molécula TotalBar em src/design-system/molecules/TotalBar/ via CLI
+- [X] T133 [US6.1] Criar ShoppingListScreen em src/presentation/screens/ShoppingListScreen.tsx
+- [X] T134 [US6.1] Configurar rota em app/list/[id].tsx
+- [X] T135 [US6.1] Implementar cálculo de total em tempo real (<100ms)
+- [X] T136 [US6.1] Implementar indicador "(X itens sem valor)" na TotalBar
 
 **Checkpoint**: Lista de compras com marcação e total funcional
 

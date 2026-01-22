@@ -17,6 +17,7 @@ function NavigationStack(): ReactElement {
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
       <Stack.Screen name="settings" options={{ headerShown: false }} />
+      <Stack.Screen name="list/[id]" options={{ headerShown: false }} />
     </Stack>
   );
 }

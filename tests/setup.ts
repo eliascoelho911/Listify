@@ -84,6 +84,9 @@ jest.mock('react-i18next', () => ({
         'common.yesterday': 'Ontem',
         'common.weeksAgo': `${options?.count} semana${(options?.count as number) >= 2 ? 's' : ''} atrás`,
         'notes.characterCount': `${options?.count} caracteres`,
+        'shopping.total': 'Total',
+        'shopping.progress': `${options?.checked}/${options?.total} items`,
+        'shopping.itemsWithoutPrice': `(${options?.count} without price)`,
       };
       return translations[key] || key;
     },

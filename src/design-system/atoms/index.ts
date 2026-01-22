@@ -74,3 +74,11 @@ export type { GroupHeaderProps, GroupHeaderVariant } from './GroupHeader/GroupHe
 // FilterChip
 export { FilterChip } from './FilterChip/FilterChip';
 export type { FilterChipProps } from './FilterChip/FilterChip.types';
+
+// Checkbox
+export { Checkbox } from './Checkbox/Checkbox';
+export type { CheckboxProps } from './Checkbox/Checkbox.types';
+
+// PriceBadge
+export { PriceBadge } from './PriceBadge/PriceBadge';
+export type { PriceBadgeProps } from './PriceBadge/PriceBadge.types';

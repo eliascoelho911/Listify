@@ -70,5 +70,12 @@
   },
   "settings": {
     "title": "Settings"
+  },
+  "shopping": {
+    "total": "Total",
+    "progress": "{{checked}}/{{total}} items",
+    "itemsWithoutPrice": "({{count}} without price)",
+    "itemsWithoutPrice_one": "(1 item without price)",
+    "itemsWithoutPrice_other": "({{count}} items without price)"
   }
 }
