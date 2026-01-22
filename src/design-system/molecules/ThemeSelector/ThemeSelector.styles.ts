@@ -49,7 +49,7 @@ export const createThemeSelectorStyles = (theme: Theme, isSelected: boolean) => 
       fontSize: theme.typography.sizes.sm,
       fontFamily: theme.typography.families.body,
       color: theme.colors.mutedForeground,
-      marginTop: theme.spacing.xxs,
+      marginTop: theme.spacing.xs,
     },
     descriptionSelected: {
       color: theme.colors.primaryForeground,

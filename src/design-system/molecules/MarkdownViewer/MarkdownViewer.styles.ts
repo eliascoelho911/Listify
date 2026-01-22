@@ -42,7 +42,7 @@ export const createMarkdownViewerStyles = (theme: Theme) => {
     },
     h1: {
       fontFamily: theme.typography.families.body,
-      fontSize: theme.typography.sizes.xxl,
+      fontSize: theme.typography.sizes['2xl'],
       fontWeight: theme.typography.weights.bold as '700',
       color: theme.colors.foreground,
       marginTop: theme.spacing.lg,

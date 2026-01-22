@@ -15,6 +15,7 @@ import { Checkbox } from '../../atoms/Checkbox/Checkbox';
 import { Icon } from '../../atoms/Icon/Icon';
 import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
+import { semantic } from '../../tokens/colors';
 import { createMediaCardStyles } from './MediaCard.styles';
 import type { MediaCardProps, MediaCardType, MediaItem, MediaTypeConfig } from './MediaCard.types';
 
@@ -135,7 +136,7 @@ export function MediaCard({
           {showYear && year && <Text style={styles.yearText}>{year}</Text>}
           {showRating && rating && rating > 0 && (
             <View style={styles.ratingBadge}>
-              <Icon icon={Star} size="xs" color={theme.colors.warning} />
+              <Icon icon={Star} size="sm" color={semantic.warning} />
               <Text style={styles.ratingText}>{rating.toFixed(1)}</Text>
             </View>
           )}
@@ -155,7 +156,7 @@ export function MediaCard({
 
         {isChecked && (
           <View style={styles.statusBadge}>
-            <Icon icon={CheckCircle} size="xs" color={theme.colors.accentForeground} />
+            <Icon icon={CheckCircle} size="sm" color={theme.colors.accentForeground} />
             <Text style={styles.statusText}>{config.checkedLabel}</Text>
           </View>
         )}
@@ -165,7 +166,7 @@ export function MediaCard({
         <View style={styles.checkboxContainer}>
           <Checkbox
             checked={isChecked}
-            onCheckedChange={handleCheckboxToggle}
+            onToggle={handleCheckboxToggle}
             disabled={disabled}
             size="md"
           />

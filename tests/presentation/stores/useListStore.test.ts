@@ -27,7 +27,7 @@ const createMockListRepository = (): jest.Mocked<ListRepository> => ({
   update: jest.fn(),
   delete: jest.fn(),
   search: jest.fn(),
-  group: jest.fn(),
+  groupBy: jest.fn(),
 });
 
 describe('useListStore', () => {
@@ -72,8 +72,8 @@ describe('useListStore', () => {
       const mockLists = [createMockList(), createMockList({ id: 'list-2', name: 'List 2' })];
       const mockResult: PaginatedResult<List> = {
         items: mockLists,
-        total: 2,
-        hasMore: false,
+        totalCount: 2,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockResolvedValue(mockResult);
 
@@ -91,8 +91,8 @@ describe('useListStore', () => {
     it('should set loading state while fetching', async () => {
       const mockResult: PaginatedResult<List> = {
         items: [],
-        total: 0,
-        hasMore: false,
+        totalCount: 0,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockImplementation(
         () => new Promise((resolve) => setTimeout(() => resolve(mockResult), 100)),
@@ -174,8 +174,8 @@ describe('useListStore', () => {
     beforeEach(async () => {
       const mockResult: PaginatedResult<List> = {
         items: [createMockList()],
-        total: 1,
-        hasMore: false,
+        totalCount: 1,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockResolvedValue(mockResult);
       await store.getState().loadLists();
@@ -230,8 +230,8 @@ describe('useListStore', () => {
     beforeEach(async () => {
       const mockResult: PaginatedResult<List> = {
         items: [createMockList(), createMockList({ id: 'list-2', name: 'List 2' })],
-        total: 2,
-        hasMore: false,
+        totalCount: 2,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockResolvedValue(mockResult);
       await store.getState().loadLists();
@@ -302,8 +302,8 @@ describe('useListStore', () => {
           createMockList({ id: '3', listType: 'shopping' }),
           createMockList({ id: '4', listType: 'movies' }),
         ],
-        total: 4,
-        hasMore: false,
+        totalCount: 4,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockResolvedValue(mockResult);
       await store.getState().loadLists();
@@ -364,8 +364,8 @@ describe('useListStore', () => {
     beforeEach(async () => {
       const mockResult: PaginatedResult<List> = {
         items: [createMockList()],
-        total: 1,
-        hasMore: false,
+        totalCount: 1,
+        pagination: { offset: 0, limit: 100, hasMore: false },
       };
       mockRepository.getAll.mockResolvedValue(mockResult);
       await store.getState().loadLists();

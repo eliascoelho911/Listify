@@ -54,7 +54,7 @@ export const createSelectableItemListStyles = (theme: Theme) => {
     },
     itemContent: {
       flex: 1,
-      gap: theme.spacing.xxs,
+      gap: theme.spacing.xs,
     },
     itemTitle: {
       fontFamily: theme.typography.families.body,
@@ -83,10 +83,10 @@ export const createSelectableItemListStyles = (theme: Theme) => {
     existingBadge: {
       flexDirection: 'row',
       alignItems: 'center',
-      gap: theme.spacing.xxs,
+      gap: theme.spacing.xs,
       backgroundColor: theme.colors.primary,
       paddingHorizontal: theme.spacing.sm,
-      paddingVertical: theme.spacing.xxs,
+      paddingVertical: theme.spacing.xs,
       borderRadius: theme.radii.full,
     },
     existingBadgeText: {

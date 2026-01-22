@@ -33,7 +33,7 @@ type GroupBy = 'date' | 'type' | 'list';
 
 function formatDateGroup(
   date: Date,
-  t: (key: string, defaultValue?: string) => string,
+  t: (key: string, options?: Record<string, unknown>) => string,
   locale: string,
 ): string {
   const now = new Date();
@@ -42,10 +42,10 @@ function formatDateGroup(
   const itemDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   if (itemDate.getTime() === today.getTime()) {
-    return t('inbox.dateGroups.today', 'Today');
+    return t('inbox.dateGroups.today', { defaultValue: 'Today' });
   }
   if (itemDate.getTime() === yesterday.getTime()) {
-    return t('inbox.dateGroups.yesterday', 'Yesterday');
+    return t('inbox.dateGroups.yesterday', { defaultValue: 'Yesterday' });
   }
 
   const diff = today.getTime() - itemDate.getTime();
@@ -63,7 +63,7 @@ function formatDateGroup(
 
 function getItemTypeName(
   type: Item['type'],
-  t: (key: string, defaultValue?: string) => string,
+  t: (key: string, options?: Record<string, unknown>) => string,
 ): string {
   const typeKeys: Record<Item['type'], string> = {
     note: 'listTypes.notes',
@@ -72,13 +72,13 @@ function getItemTypeName(
     book: 'listTypes.books',
     game: 'listTypes.games',
   };
-  return t(typeKeys[type], type);
+  return t(typeKeys[type], { defaultValue: type });
 }
 
 function groupItemsByDate(
   items: Item[],
   direction: SortDirection,
-  t: (key: string, defaultValue?: string) => string,
+  t: (key: string, options?: Record<string, unknown>) => string,
   locale: string,
 ): InfiniteScrollGroup<Item>[] {
   const groups = new Map<string, Item[]>();
@@ -106,7 +106,7 @@ function groupItemsByDate(
 function groupItemsByType(
   items: Item[],
   direction: SortDirection,
-  t: (key: string, defaultValue?: string) => string,
+  t: (key: string, options?: Record<string, unknown>) => string,
 ): InfiniteScrollGroup<Item>[] {
   const groups = new Map<string, Item[]>();
 

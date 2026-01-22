@@ -26,7 +26,7 @@ const createStyles = (theme: Theme, topInset: number) =>
     },
     navbarContainer: {
       paddingTop: topInset,
-      backgroundColor: theme.colors.topbar,
+      backgroundColor: theme.colors.background,
     },
     content: {
       flex: 1,
@@ -81,9 +81,12 @@ export function PurchaseHistoryScreen(): ReactElement {
         <Navbar
           title={t('history.title', 'Histórico')}
           variant="default"
-          leftIcon={ArrowLeft}
-          onLeftPress={handleBack}
-          actions={navbarActions}
+          leftAction={{
+            icon: ArrowLeft,
+            onPress: handleBack,
+            label: t('common.back', 'Voltar'),
+          }}
+          rightActions={navbarActions}
           testID="history-navbar"
         />
       </View>

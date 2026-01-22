@@ -9,7 +9,7 @@ import type { LucideIcon } from 'lucide-react-native';
 
 import type { List, ListType } from '@domain/list';
 
-export interface ListCardProps extends Omit<PressableProps, 'style'> {
+export interface ListCardProps extends Omit<PressableProps, 'style' | 'onPress' | 'onLongPress'> {
   /**
    * The list entity to display
    */

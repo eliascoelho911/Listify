@@ -63,7 +63,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               {this.state.error.message}
             </Text>
           )}
-          <Button variant="primary" onPress={this.handleRetry} style={styles.button}>
+          <Button variant="default" onPress={this.handleRetry}>
             Try Again
           </Button>
         </View>
@@ -95,8 +95,5 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginBottom: darkTheme.spacing.lg,
     fontFamily: darkTheme.typography.families.mono,
-  },
-  button: {
-    minWidth: 120,
   },
 });

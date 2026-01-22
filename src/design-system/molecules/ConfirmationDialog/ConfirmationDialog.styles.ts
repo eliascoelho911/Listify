@@ -31,7 +31,7 @@ export const createConfirmationDialogStyles = (theme: Theme) => {
     },
     title: {
       fontSize: theme.typography.sizes.lg,
-      fontFamily: theme.typography.families.heading,
+      fontFamily: theme.typography.families.body,
       fontWeight: theme.typography.weights.semibold,
       color: theme.colors.foreground,
       marginBottom: theme.spacing.sm,

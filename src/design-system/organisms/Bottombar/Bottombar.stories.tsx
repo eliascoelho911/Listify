@@ -63,7 +63,7 @@ export default meta;
 type Story = StoryObj;
 
 export const Default: Story = {
-  render: () => <MockBottombar />,
+  render: () => <DocumentationContent />,
 };
 
 export const Documentation: Story = {
