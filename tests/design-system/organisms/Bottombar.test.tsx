@@ -2,7 +2,7 @@
  * Bottombar Organism Tests
  *
  * Note: The Bottombar component requires BottomTabBarProps from @react-navigation/bottom-tabs.
- * These tests verify the NavigationTab and FAB components which are the building blocks.
+ * These tests verify the IconButton and FAB components which are the building blocks.
  * Integration tests for the full Bottombar should be done in the app/ layer.
  */
 
@@ -12,7 +12,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import { Inbox } from 'lucide-react-native';
 
 import { FAB } from '@design-system/atoms/FAB/FAB';
-import { NavigationTab } from '@design-system/atoms/NavigationTab/NavigationTab';
+import { IconButton } from '@design-system/atoms/IconButton/IconButton';
 import { ThemeProvider } from '@design-system/theme';
 
 const initialSafeAreaMetrics = {
@@ -29,21 +29,37 @@ const renderWithTheme = (component: React.ReactElement) => {
 };
 
 describe('Bottombar building blocks', () => {
-  describe('NavigationTab', () => {
-    it('should render tab with label', () => {
-      const { getByText } = renderWithTheme(<NavigationTab icon={Inbox} label="Inbox" />);
+  describe('IconButton (used for tabs)', () => {
+    it('should render icon button', () => {
+      const { getByTestId } = renderWithTheme(
+        <IconButton icon={Inbox} accessibilityLabel="Inbox" onPress={jest.fn()} testID="tab" />,
+      );
 
-      expect(getByText('Inbox')).toBeTruthy();
+      expect(getByTestId('tab')).toBeTruthy();
     });
 
     it('should handle press events', () => {
       const onPress = jest.fn();
       const { getByTestId } = renderWithTheme(
-        <NavigationTab icon={Inbox} label="Inbox" onPress={onPress} testID="tab" />,
+        <IconButton icon={Inbox} accessibilityLabel="Inbox" onPress={onPress} testID="tab" />,
       );
 
       fireEvent.press(getByTestId('tab'));
       expect(onPress).toHaveBeenCalledTimes(1);
+    });
+
+    it('should render in active state', () => {
+      const { getByTestId } = renderWithTheme(
+        <IconButton
+          icon={Inbox}
+          accessibilityLabel="Inbox"
+          isActive
+          onPress={jest.fn()}
+          testID="tab"
+        />,
+      );
+
+      expect(getByTestId('tab')).toBeTruthy();
     });
   });
 
