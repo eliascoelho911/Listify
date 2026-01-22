@@ -10,9 +10,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { LucideIcon } from 'lucide-react-native';
 import { Inbox, List, Plus, Search, StickyNote } from 'lucide-react-native';
 
-import { FAB } from '@design-system/atoms';
+import { FAB, IconButton } from '@design-system/atoms';
 
-import { NavigationTab } from '../../atoms/NavigationTab/NavigationTab';
 import { useTheme } from '../../theme';
 import { BOTTOMBAR_CONFIG, createBottombarStyles } from './Bottombar.styles';
 import type { BottombarProps, BottombarTabName } from './Bottombar.types';
@@ -26,17 +25,12 @@ const TAB_ICONS: Record<string, LucideIcon> = {
 
 const TAB_LABELS: Record<string, string> = {
   index: 'Inbox',
-  search: 'Buscar',
-  notes: 'Notas',
-  lists: 'Listas',
+  search: 'Search',
+  notes: 'Notes',
+  lists: 'Lists',
 };
 
-export function Bottombar({
-  state,
-  descriptors,
-  navigation,
-  onFABPress,
-}: BottombarProps): ReactElement {
+export function Bottombar({ state, navigation, onFABPress }: BottombarProps): ReactElement {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const styles = createBottombarStyles(theme);
@@ -52,18 +46,11 @@ export function Bottombar({
   }, [onFABPress, currentTabName]);
 
   const renderTab = (route: (typeof routes)[number], index: number): ReactElement => {
-    const { options } = descriptors[route.key];
     const isFocused = state.index === index;
 
     const routeName = route.name;
     const icon = TAB_ICONS[routeName] || Inbox;
-    const label =
-      TAB_LABELS[routeName] ||
-      (options.tabBarLabel !== undefined
-        ? String(options.tabBarLabel)
-        : options.title !== undefined
-          ? options.title
-          : route.name);
+    const label = TAB_LABELS[routeName] || routeName;
 
     const onPress = (): void => {
       const event = navigation.emit({
@@ -77,21 +64,14 @@ export function Bottombar({
       }
     };
 
-    const onLongPress = (): void => {
-      navigation.emit({
-        type: 'tabLongPress',
-        target: route.key,
-      });
-    };
-
     return (
-      <NavigationTab
-        key={route.key}
+      <IconButton
         icon={icon}
-        label={label}
         isActive={isFocused}
         onPress={onPress}
-        onLongPress={onLongPress}
+        variant="ghost"
+        size="md"
+        accessibilityLabel={label}
         testID={`tab-${routeName}`}
       />
     );
