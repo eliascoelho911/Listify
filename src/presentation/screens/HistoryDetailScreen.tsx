@@ -13,7 +13,7 @@ import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft } from 'lucide-react-native';
+import { ArrowLeft, ShoppingCart } from 'lucide-react-native';
 
 import type { CreateShoppingItemInput, ShoppingItem } from '@domain/item';
 import type {
@@ -21,7 +21,7 @@ import type {
   PurchaseHistoryItem,
 } from '@domain/purchase-history/entities/purchase-history.entity';
 import { useItemStoreWithDI, usePurchaseHistoryStoreWithDI } from '@presentation/hooks';
-import { AddAllButton } from '@design-system/atoms';
+import { Badge, Button, Icon } from '@design-system/atoms';
 import { SelectableItemList } from '@design-system/molecules';
 import type { SelectableItemListItem } from '@design-system/molecules/SelectableItemList/SelectableItemList.types';
 import { Navbar } from '@design-system/organisms';
@@ -36,7 +36,7 @@ const createStyles = (theme: Theme, topInset: number, bottomInset: number) =>
     },
     navbarContainer: {
       paddingTop: topInset,
-      backgroundColor: theme.colors.topbar,
+      backgroundColor: theme.colors.card,
     },
     content: {
       flex: 1,
@@ -223,8 +223,7 @@ export function HistoryDetailScreen(): ReactElement {
         <Navbar
           title={formattedDate || t('history.detail.title', 'Compra')}
           variant="default"
-          leftIcon={ArrowLeft}
-          onLeftPress={handleBack}
+          leftAction={{ icon: ArrowLeft, onPress: handleBack, label: t('common.back', 'Voltar') }}
           testID="history-detail-navbar"
         />
       </View>
@@ -243,23 +242,31 @@ export function HistoryDetailScreen(): ReactElement {
 
       <View style={styles.footer}>
         {selectedIds.size > 0 ? (
-          <AddAllButton
-            label={t('history.detail.addSelected', 'Adicionar selecionados')}
-            itemCount={selectedIds.size}
-            onPress={handleAddSelected}
+          <Button
+            variant="default"
+            icon={<Icon icon={ShoppingCart} size="sm" color={theme.colors.primaryForeground} />}
             loading={isAdding}
             disabled={isAdding}
+            onPress={handleAddSelected}
             testID="history-detail-add-selected-button"
-          />
+          >
+            {t('history.detail.addSelected', 'Adicionar selecionados')}
+            {selectedIds.size > 0 && <Badge variant="secondary">{String(selectedIds.size)}</Badge>}
+          </Button>
         ) : (
-          <AddAllButton
-            label={t('history.detail.buyAllAgain', 'Comprar tudo novamente')}
-            itemCount={selectableItems.length}
-            onPress={handleBuyAllAgain}
+          <Button
+            variant="default"
+            icon={<Icon icon={ShoppingCart} size="sm" color={theme.colors.primaryForeground} />}
             loading={isAdding}
             disabled={isAdding || selectableItems.length === 0}
+            onPress={handleBuyAllAgain}
             testID="history-detail-buy-all-button"
-          />
+          >
+            {t('history.detail.buyAllAgain', 'Comprar tudo novamente')}
+            {selectableItems.length > 0 && (
+              <Badge variant="secondary">{String(selectableItems.length)}</Badge>
+            )}
+          </Button>
         )}
       </View>
     </View>

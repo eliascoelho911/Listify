@@ -14,7 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, GripVertical, History, Plus } from 'lucide-react-native';
+import { ArrowLeft, FolderPlus, GripVertical, History, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
 import type { Item, ShoppingItem } from '@domain/item';
@@ -25,7 +25,7 @@ import {
   usePurchaseHistoryStoreWithDI,
   useSectionStoreWithDI,
 } from '@presentation/hooks';
-import { FAB, SectionAddButton } from '@design-system/atoms';
+import { Button, FAB, Icon } from '@design-system/atoms';
 import {
   CompleteButton,
   ConfirmationDialog,
@@ -208,6 +208,21 @@ export function ShoppingListScreen(): ReactElement {
     setItemToDelete(null);
   }, []);
 
+  const shoppingItems = useMemo(
+    () =>
+      items
+        .filter((item): item is ShoppingItem => item.type === 'shopping')
+        .sort((a, b) => a.sortOrder - b.sortOrder),
+    [items],
+  );
+
+  const sections = useMemo(
+    () => (listId ? (sectionsByListId[listId] ?? []) : []),
+    [listId, sectionsByListId],
+  );
+
+  const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
+
   const handleCompletePurchasePress = useCallback(() => {
     setCompleteDialogVisible(true);
   }, []);
@@ -318,21 +333,6 @@ export function ShoppingListScreen(): ReactElement {
     setItemToDelete(item);
     setDeleteDialogVisible(true);
   }, []);
-
-  const shoppingItems = useMemo(
-    () =>
-      items
-        .filter((item): item is ShoppingItem => item.type === 'shopping')
-        .sort((a, b) => a.sortOrder - b.sortOrder),
-    [items],
-  );
-
-  const sections = useMemo(
-    () => (listId ? (sectionsByListId[listId] ?? []) : []),
-    [listId, sectionsByListId],
-  );
-
-  const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
 
   /** Group items by section and create flat list data */
   const listData = useMemo(() => {
@@ -446,7 +446,15 @@ export function ShoppingListScreen(): ReactElement {
         case 'add-section-button':
           return (
             <View style={styles.addSectionContainer}>
-              <SectionAddButton onPress={handleAddSection} testID="add-section-button" />
+              <Button
+                variant="ghost"
+                size="sm"
+                icon={<Icon icon={FolderPlus} size="sm" color={theme.colors.mutedForeground} />}
+                onPress={handleAddSection}
+                testID="add-section-button"
+              >
+                {t('sections.addSection', 'Add Section')}
+              </Button>
             </View>
           );
         default:

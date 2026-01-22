@@ -191,10 +191,10 @@ utils/        → Funções auxiliares
 
 **Localização**: `src/design-system/molecules/`
 
-**Exemplos** (a serem implementados):
+**Exemplos**:
 
 - `FormField` - Label + Input com error message
-- `SearchBar` - Input + Icon de busca
+- `SearchInput` - Input especializado para busca com ícone e clear button
 
 **Import rules**:
 
@@ -325,7 +325,7 @@ function MyComponent() {
 
 ```typescript
 // Em um Atom
-import { SearchBar } from '../molecules/SearchBar'; // ❌ Atom não pode importar Molecule!
+import { FormField } from '../molecules/FormField'; // ❌ Atom não pode importar Molecule!
 
 // Em uma Molecule
 import { Navbar } from '../organisms/Navbar'; // ❌ Molecule não pode importar Organism!
