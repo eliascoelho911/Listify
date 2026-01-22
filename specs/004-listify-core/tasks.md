@@ -565,13 +565,13 @@
 
 ### Implementação
 
-- [ ] T205 [P] [US9.1] Criar molécula ThemeSelector em src/design-system/molecules/ThemeSelector/ via CLI
-- [ ] T206 [P] [US9.1] Criar molécula ColorPicker em src/design-system/molecules/ColorPicker/ via CLI
-- [ ] T207 [US9.1] Completar SettingsScreen com seções de tema e cor
-- [ ] T208 [US9.1] Integrar tema automático com preferência do sistema
-- [ ] T209 [US9.1] Implementar persistência de configurações via UserPreferences
+- [X] T205 [P] [US9.1] Criar molécula ThemeSelector em src/design-system/molecules/ThemeSelector/ via CLI
+- [X] T206 [P] [US9.1] Criar molécula ColorPicker em src/design-system/molecules/ColorPicker/ via CLI
+- [X] T207 [US9.1] Completar SettingsScreen com seções de tema e cor
+- [X] T208 [US9.1] Integrar tema automático com preferência do sistema
+- [X] T209 [US9.1] Implementar persistência de configurações via UserPreferences
 
-**Checkpoint**: Configuração de tema e cor funcional
+**Checkpoint**: Configuração de tema e cor funcional ✅
 
 ---
 

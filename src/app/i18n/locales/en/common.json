@@ -69,7 +69,24 @@
     }
   },
   "settings": {
-    "title": "Settings"
+    "title": "Settings",
+    "theme": {
+      "title": "Theme",
+      "options": {
+        "light": "Light",
+        "dark": "Dark",
+        "auto": "System"
+      },
+      "descriptions": {
+        "light": "Always use light mode",
+        "dark": "Always use dark mode",
+        "auto": "Follow system preference"
+      }
+    },
+    "color": {
+      "title": "Accent Color",
+      "description": "Choose a color to personalize your experience"
+    }
   },
   "shopping": {
     "total": "Total",

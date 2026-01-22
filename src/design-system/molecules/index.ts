@@ -168,3 +168,11 @@ export type {
 // SwipeToDelete
 export { SwipeToDelete } from './SwipeToDelete/SwipeToDelete';
 export type { SwipeToDeleteProps } from './SwipeToDelete/SwipeToDelete.types';
+
+// ThemeSelector
+export { ThemeSelector } from './ThemeSelector/ThemeSelector';
+export type { ThemeOption, ThemeSelectorProps } from './ThemeSelector/ThemeSelector.types';
+
+// ColorPicker
+export { ColorPicker } from './ColorPicker/ColorPicker';
+export type { ColorOption, ColorPickerProps } from './ColorPicker/ColorPicker.types';

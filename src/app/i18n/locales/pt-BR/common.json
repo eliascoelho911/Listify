@@ -69,7 +69,24 @@
     }
   },
   "settings": {
-    "title": "Configurações"
+    "title": "Configurações",
+    "theme": {
+      "title": "Tema",
+      "options": {
+        "light": "Claro",
+        "dark": "Escuro",
+        "auto": "Sistema"
+      },
+      "descriptions": {
+        "light": "Usar sempre o modo claro",
+        "dark": "Usar sempre o modo escuro",
+        "auto": "Seguir preferência do sistema"
+      }
+    },
+    "color": {
+      "title": "Cor de Destaque",
+      "description": "Escolha uma cor para personalizar sua experiência"
+    }
   },
   "shopping": {
     "total": "Total",
