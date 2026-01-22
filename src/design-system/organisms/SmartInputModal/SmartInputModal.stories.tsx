@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { Button, View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import type { ParsedInput } from '@domain/common';
 

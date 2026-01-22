@@ -4,7 +4,7 @@
 
 import React, { useState } from 'react';
 import { TouchableOpacity, View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import { DragHandle } from '../../atoms/DragHandle/DragHandle';
 import { Text } from '../../atoms/Text/Text';

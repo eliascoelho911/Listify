@@ -7,7 +7,7 @@ const config: StorybookConfig = {
     '../src/design-system/organisms/**/*.stories.?(ts|tsx|js|jsx)',
     '../src/design-system/templates/**/*.stories.?(ts|tsx|js|jsx)',
     '../src/presentation/components/**/*.stories.?(ts|tsx|js|jsx)',
-    '../src/presentation/screens/**/*.stories.?(ts|tsx|js|jsx)'
+    '../src/presentation/screens/**/*.stories.?(ts|tsx|js|jsx)',
   ],
   addons: [
     '@storybook/addon-ondevice-controls',

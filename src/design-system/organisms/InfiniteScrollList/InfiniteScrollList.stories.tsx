@@ -4,7 +4,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 import { Inbox } from 'lucide-react-native';
 
 import type { NoteItem, ShoppingItem } from '@domain/item/entities/item.entity';
@@ -136,11 +136,13 @@ export default meta;
 type Story = StoryObj<typeof InfiniteScrollList<SimpleItem>>;
 
 export const Default: Story = {
-  args: {
-    groups: simpleGroups,
-    renderItem: (item: SimpleItem) => <SimpleItemCard item={item} />,
-    keyExtractor: (item: SimpleItem) => item.id,
-  },
+  render: () => (
+    <InfiniteScrollList
+      groups={simpleGroups}
+      renderItem={(item: SimpleItem) => <SimpleItemCard item={item} />}
+      keyExtractor={(item: SimpleItem) => item.id}
+    />
+  ),
 };
 
 export const WithItemCards: Story = {
@@ -154,32 +156,42 @@ export const WithItemCards: Story = {
 };
 
 export const Loading: Story = {
-  args: {
-    groups: simpleGroups,
-    renderItem: (item: SimpleItem) => <SimpleItemCard item={item} />,
-    keyExtractor: (item: SimpleItem) => item.id,
-    isLoading: true,
-    hasMore: true,
-  },
+  render: () => (
+    <InfiniteScrollList
+      groups={simpleGroups}
+      renderItem={(item: SimpleItem) => <SimpleItemCard item={item} />}
+      keyExtractor={(item: SimpleItem) => item.id}
+      isLoading
+      hasMore
+    />
+  ),
 };
 
 export const Empty: Story = {
-  args: {
-    groups: [],
-    renderItem: (item: SimpleItem) => <SimpleItemCard item={item} />,
-    keyExtractor: (item: SimpleItem) => item.id,
-    emptyContent: (
-      <EmptyState icon={Inbox} title="No items yet" subtitle="Add your first item to get started" />
-    ),
-  },
+  render: () => (
+    <InfiniteScrollList
+      groups={[]}
+      renderItem={(item: SimpleItem) => <SimpleItemCard item={item} />}
+      keyExtractor={(item: SimpleItem) => item.id}
+      emptyContent={
+        <EmptyState
+          icon={Inbox}
+          title="No items yet"
+          subtitle="Add your first item to get started"
+        />
+      }
+    />
+  ),
 };
 
 export const WithRefresh: Story = {
-  args: {
-    groups: simpleGroups,
-    renderItem: (item: SimpleItem) => <SimpleItemCard item={item} />,
-    keyExtractor: (item: SimpleItem) => item.id,
-    onRefresh: () => console.debug('Refreshing...'),
-    refreshing: false,
-  },
+  render: () => (
+    <InfiniteScrollList
+      groups={simpleGroups}
+      renderItem={(item: SimpleItem) => <SimpleItemCard item={item} />}
+      keyExtractor={(item: SimpleItem) => item.id}
+      onRefresh={() => console.debug('Refreshing...')}
+      refreshing={false}
+    />
+  ),
 };
