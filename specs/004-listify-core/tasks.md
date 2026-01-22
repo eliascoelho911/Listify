@@ -398,10 +398,10 @@
 
 ### Implementação
 
-- [ ] T155 [US6.3] Criar organismo EditModal (sheet) em src/design-system/organisms/EditModal/ via CLI
-- [ ] T156 [US6.3] Implementar pré-preenchimento do campo com dados atuais
-- [ ] T157 [US6.3] Integrar EditModal na ShoppingListScreen
-- [ ] T158 [US6.3] Implementar exclusão de item via modal
+- [X] T155 [US6.3] Criar organismo EditModal (sheet) em src/design-system/organisms/EditModal/ via CLI
+- [X] T156 [US6.3] Implementar pré-preenchimento do campo com dados atuais
+- [X] T157 [US6.3] Integrar EditModal na ShoppingListScreen
+- [X] T158 [US6.3] Implementar exclusão de item via modal
 
 **Checkpoint**: Edição de itens de compras funcional
 

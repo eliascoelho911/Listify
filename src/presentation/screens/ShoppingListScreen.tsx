@@ -6,6 +6,7 @@
  * Supports real-time total calculation as items are toggled.
  * Supports drag and drop reordering of items.
  * Supports sections for organizing items.
+ * Supports editing and deleting items via EditModal.
  */
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
@@ -16,13 +17,19 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, GripVertical, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
-import type { ShoppingItem } from '@domain/item';
+import type { Item, ShoppingItem } from '@domain/item';
 import type { Section } from '@domain/section';
 import { useItemStoreWithDI, useSectionStoreWithDI } from '@presentation/hooks';
 import { FAB, SectionAddButton } from '@design-system/atoms';
-import { EmptyState, SectionHeader, ShoppingItemCard, TotalBar } from '@design-system/molecules';
-import type { NavbarAction } from '@design-system/organisms';
-import { Navbar } from '@design-system/organisms';
+import {
+  ConfirmationDialog,
+  EmptyState,
+  SectionHeader,
+  ShoppingItemCard,
+  TotalBar,
+} from '@design-system/molecules';
+import type { EditSubmitData, NavbarAction } from '@design-system/organisms';
+import { EditModal, Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 interface TotalCalculation {
@@ -74,7 +81,8 @@ export function ShoppingListScreen(): ReactElement {
   const { listRepository } = useAppDependencies();
   const itemStore = useItemStoreWithDI();
   const sectionStore = useSectionStoreWithDI();
-  const { items, isLoading, loadByListId, clearItems, toggleChecked } = itemStore();
+  const { items, isLoading, loadByListId, clearItems, toggleChecked, updateItem, deleteItem } =
+    itemStore();
   const {
     sectionsByListId,
     expandedSections,
@@ -86,6 +94,14 @@ export function ShoppingListScreen(): ReactElement {
 
   const [listName, setListName] = useState<string>('');
   const [isReorderMode, setIsReorderMode] = useState(false);
+
+  // Edit modal state
+  const [editModalVisible, setEditModalVisible] = useState(false);
+  const [editingItem, setEditingItem] = useState<ShoppingItem | null>(null);
+
+  // Delete confirmation dialog state
+  const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
+  const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
 
   useEffect(() => {
     if (listId) {
@@ -123,12 +139,60 @@ export function ShoppingListScreen(): ReactElement {
 
   const handleItemPress = useCallback((item: ShoppingItem) => {
     console.debug('[ShoppingListScreen] Item pressed:', item.id);
-    // TODO: Open item edit modal
+    setEditingItem(item);
+    setEditModalVisible(true);
   }, []);
 
   const handleItemLongPress = useCallback((item: ShoppingItem) => {
     console.debug('[ShoppingListScreen] Item long pressed:', item.id);
-    // TODO: Open context menu
+    // Open edit modal on long press as well
+    setEditingItem(item);
+    setEditModalVisible(true);
+  }, []);
+
+  const handleEditModalClose = useCallback(() => {
+    setEditModalVisible(false);
+    setEditingItem(null);
+  }, []);
+
+  const handleEditSubmit = useCallback(
+    async (data: EditSubmitData) => {
+      if (!editingItem) return;
+
+      console.debug('[ShoppingListScreen] Edit submit:', data);
+      await updateItem(editingItem.id, 'shopping', {
+        title: data.updates.title,
+        quantity: data.updates.quantity,
+        price: data.updates.price,
+      });
+
+      setEditModalVisible(false);
+      setEditingItem(null);
+    },
+    [editingItem, updateItem],
+  );
+
+  const handleDeleteRequest = useCallback((item: Item) => {
+    console.debug('[ShoppingListScreen] Delete requested:', item.id);
+    setItemToDelete(item);
+    setDeleteDialogVisible(true);
+    setEditModalVisible(false);
+  }, []);
+
+  const handleDeleteConfirm = useCallback(async () => {
+    if (!itemToDelete) return;
+
+    console.debug('[ShoppingListScreen] Delete confirmed:', itemToDelete.id);
+    await deleteItem(itemToDelete.id, 'shopping');
+
+    setDeleteDialogVisible(false);
+    setItemToDelete(null);
+    setEditingItem(null);
+  }, [itemToDelete, deleteItem]);
+
+  const handleDeleteCancel = useCallback(() => {
+    setDeleteDialogVisible(false);
+    setItemToDelete(null);
   }, []);
 
   const handleAddItem = useCallback(() => {
@@ -388,6 +452,36 @@ export function ShoppingListScreen(): ReactElement {
           testID="shopping-add-fab"
         />
       </View>
+
+      {/* Edit Modal */}
+      <EditModal
+        visible={editModalVisible}
+        item={editingItem}
+        onClose={handleEditModalClose}
+        onSubmit={handleEditSubmit}
+        onDelete={handleDeleteRequest}
+        testID="shopping-edit-modal"
+      />
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmationDialog
+        visible={deleteDialogVisible}
+        title={t('shopping.deleteItem.title', 'Excluir item?')}
+        description={t(
+          'shopping.deleteItem.message',
+          'Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita.',
+        )}
+        confirmButton={{
+          label: t('common.delete', 'Excluir'),
+          destructive: true,
+        }}
+        cancelButton={{
+          label: t('common.cancel', 'Cancelar'),
+        }}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+        testID="shopping-delete-dialog"
+      />
     </View>
   );
 }
