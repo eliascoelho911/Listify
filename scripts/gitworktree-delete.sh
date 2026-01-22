@@ -210,21 +210,15 @@ if [ -z "$TARGET" ]; then
     done
     echo ""
 
-    options=()
-    for wt in "${deletable_worktrees[@]}"; do
-        branch=$(echo "$wt" | cut -d'|' -f1)
-        options+=("$branch")
-    done
+    echo -en "${YELLOW}Escolha [1-${#deletable_worktrees[@]}]: ${NC}"
+    read -r choice
 
-    select_option "Selecione o worktree para remover:" "${options[@]}"
-    choice=$?
-
-    if [ $choice -eq 255 ]; then
+    if ! [[ "$choice" =~ ^[0-9]+$ ]] || [ "$choice" -lt 1 ] || [ "$choice" -gt "${#deletable_worktrees[@]}" ]; then
         print_error "opção inválida"
         exit 1
     fi
 
-    selected="${deletable_worktrees[$choice]}"
+    selected="${deletable_worktrees[$((choice - 1))]}"
     TARGET_BRANCH=$(echo "$selected" | cut -d'|' -f1)
     TARGET_PATH=$(echo "$selected" | cut -d'|' -f2)
 else
@@ -375,7 +369,7 @@ else
     select_option "Deseja deletar a branch também?" \
         "Deletar branch local apenas" \
         "Deletar branch local E remota" \
-        "Manter branch"
+        "Manter branch" || true
     choice=$?
 
     case $choice in
