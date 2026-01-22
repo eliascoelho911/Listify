@@ -3,19 +3,21 @@
  *
  * Displays all note items grouped by date with sorting controls.
  * Uses the NoteCard molecule for consistent note display.
+ * Supports drag-and-drop reordering in edit mode.
  */
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import type { TFunction } from 'i18next';
-import { FileText, Settings } from 'lucide-react-native';
+import { FileText, GripVertical, Settings } from 'lucide-react-native';
 
 import type { NoteItem } from '@domain/item';
 import { useItemStoreWithDI, useUserPreferencesStoreWithDI } from '@presentation/hooks';
-import { GroupHeader } from '@design-system/atoms';
+import { useDragAndDrop } from '@presentation/hooks/useDragAndDrop';
+import { DragHandle, GroupHeader } from '@design-system/atoms';
 import {
   EmptyState,
   NoteCard,
@@ -23,7 +25,13 @@ import {
   SortingControls,
   type SortOption,
 } from '@design-system/molecules';
-import { type InfiniteScrollGroup, InfiniteScrollList, Navbar } from '@design-system/organisms';
+import {
+  DraggableList,
+  type DraggableListRenderItemParams,
+  type InfiniteScrollGroup,
+  InfiniteScrollList,
+  Navbar,
+} from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 type GroupBy = 'date' | 'list';
@@ -94,7 +102,7 @@ export function NotesScreen(): ReactElement {
   const styles = createStyles(theme, insets.top);
 
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadAllNotes, clearItems } = itemStore();
+  const { items, isLoading, loadAllNotes, clearItems, updateSortOrder } = itemStore();
 
   const preferencesStore = useUserPreferencesStoreWithDI();
   const { getLayoutConfig, setLayoutConfig } = preferencesStore();
@@ -103,6 +111,7 @@ export function NotesScreen(): ReactElement {
   const layoutConfig = getLayoutConfig('notes');
   const [groupBy, setGroupBy] = useState<GroupBy>('date');
   const [sortDirection, setSortDirection] = useState<SortDirection>(layoutConfig.sortDirection);
+  const [isReorderMode, setIsReorderMode] = useState(false);
 
   useEffect(() => {
     loadAllNotes();
@@ -113,6 +122,33 @@ export function NotesScreen(): ReactElement {
   const notes = useMemo(() => {
     return items.filter((item): item is NoteItem => item.type === 'note');
   }, [items]);
+
+  // Sort notes by sortOrder for drag and drop
+  const sortedNotes = useMemo(() => {
+    return [...notes].sort((a, b) => a.sortOrder - b.sortOrder);
+  }, [notes]);
+
+  // Drag and drop handler
+  const handlePersistOrder = useCallback(
+    async (reorderedNotes: NoteItem[]): Promise<void> => {
+      await updateSortOrder(reorderedNotes, 'note');
+    },
+    [updateSortOrder],
+  );
+
+  const {
+    items: draggableNotes,
+    handleDragEnd,
+    setItems: setDraggableNotes,
+  } = useDragAndDrop<NoteItem>({
+    initialItems: sortedNotes,
+    onPersist: handlePersistOrder,
+  });
+
+  // Sync draggable items when notes change
+  useEffect(() => {
+    setDraggableNotes(sortedNotes);
+  }, [sortedNotes, setDraggableNotes]);
 
   const sortOptions = useMemo(() => getSortOptions(t), [t]);
 
@@ -150,11 +186,31 @@ export function NotesScreen(): ReactElement {
     router.push('/settings');
   }, [router]);
 
+  const handleToggleReorderMode = useCallback(() => {
+    setIsReorderMode((prev) => !prev);
+  }, []);
+
+  // Render item for normal mode (grouped list)
   const renderItem = useCallback(
     (note: NoteItem) => (
       <NoteCard note={note} onPress={handleNotePress} onLongPress={handleNoteLongPress} />
     ),
     [handleNotePress, handleNoteLongPress],
+  );
+
+  // Render item for reorder mode (draggable list)
+  const renderDraggableItem = useCallback(
+    ({ item, drag, isActive }: DraggableListRenderItemParams<NoteItem>) => (
+      <View style={[styles.draggableItemContainer, isActive && styles.draggableItemActive]}>
+        <Pressable onPressIn={drag} style={styles.dragHandleContainer}>
+          <DragHandle size="md" isDragging={isActive} />
+        </Pressable>
+        <View style={styles.draggableItemContent}>
+          <NoteCard note={item} onPress={handleNotePress} onLongPress={handleNoteLongPress} />
+        </View>
+      </View>
+    ),
+    [handleNotePress, handleNoteLongPress, styles],
   );
 
   const renderGroupHeader = useCallback(
@@ -174,46 +230,79 @@ export function NotesScreen(): ReactElement {
     />
   );
 
+  // Navbar actions with reorder toggle
+  const navbarActions = useMemo(
+    () => [
+      {
+        icon: GripVertical,
+        onPress: handleToggleReorderMode,
+        label: isReorderMode
+          ? t('notes.reorder.done', 'Concluir')
+          : t('notes.reorder.start', 'Reordenar'),
+      },
+      {
+        icon: Settings,
+        onPress: handleSettingsPress,
+        label: t('settings.title', 'Configurações'),
+      },
+    ],
+    [handleToggleReorderMode, handleSettingsPress, isReorderMode, t],
+  );
+
   return (
     <View style={styles.container}>
       <Navbar
-        title={t('notes.title', 'Notas')}
-        rightActions={[
-          {
-            icon: Settings,
-            onPress: handleSettingsPress,
-            label: t('settings.title', 'Configurações'),
-          },
-        ]}
+        title={
+          isReorderMode ? t('notes.reorder.title', 'Reordenar Notas') : t('notes.title', 'Notas')
+        }
+        rightActions={navbarActions}
       />
 
-      <SortingControls
-        options={sortOptions}
-        selectedValue={groupBy}
-        sortDirection={sortDirection}
-        onSortChange={handleGroupByChange}
-        onDirectionToggle={handleDirectionToggle}
-        label={t('notes.groupBy', 'Agrupar por')}
-      />
+      {!isReorderMode && (
+        <SortingControls
+          options={sortOptions}
+          selectedValue={groupBy}
+          sortDirection={sortDirection}
+          onSortChange={handleGroupByChange}
+          onDirectionToggle={handleDirectionToggle}
+          label={t('notes.groupBy', 'Agrupar por')}
+        />
+      )}
 
-      <InfiniteScrollList
-        groups={groups}
-        renderItem={renderItem}
-        renderGroupHeader={renderGroupHeader}
-        keyExtractor={keyExtractor}
-        isLoading={isLoading}
-        hasMore={false}
-        onRefresh={handleRefresh}
-        refreshing={isLoading}
-        emptyContent={emptyContent}
-        style={styles.list}
-      />
+      {isReorderMode ? (
+        <DraggableList<NoteItem>
+          data={draggableNotes}
+          renderItem={renderDraggableItem}
+          onDragEnd={handleDragEnd}
+          keyExtractor={keyExtractor}
+          isReorderEnabled
+          style={styles.list}
+          ListEmptyComponent={emptyContent}
+        />
+      ) : (
+        <InfiniteScrollList
+          groups={groups}
+          renderItem={renderItem}
+          renderGroupHeader={renderGroupHeader}
+          keyExtractor={keyExtractor}
+          isLoading={isLoading}
+          hasMore={false}
+          onRefresh={handleRefresh}
+          refreshing={isLoading}
+          emptyContent={emptyContent}
+          style={styles.list}
+        />
+      )}
     </View>
   );
 }
 
 const createStyles = (
-  theme: { colors: { background: string }; spacing: { lg: number } },
+  theme: {
+    colors: { background: string; card: string; primary: string };
+    spacing: { sm: number; md: number; lg: number };
+    radii: { md: number };
+  },
   topInset: number,
 ) =>
   StyleSheet.create({
@@ -223,6 +312,24 @@ const createStyles = (
       paddingTop: topInset,
     },
     list: {
+      flex: 1,
+    },
+    draggableItemContainer: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      marginHorizontal: theme.spacing.md,
+      marginVertical: theme.spacing.sm / 2,
+    },
+    draggableItemActive: {
+      opacity: 0.9,
+      backgroundColor: theme.colors.card,
+      borderRadius: theme.radii.md,
+    },
+    dragHandleContainer: {
+      paddingRight: theme.spacing.sm,
+      paddingVertical: theme.spacing.md,
+    },
+    draggableItemContent: {
       flex: 1,
     },
   });

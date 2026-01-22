@@ -7,6 +7,7 @@
 
 import { create, type StoreApi, type UseBoundStore } from 'zustand';
 
+import { generateNoteTitle } from '@domain/common';
 import type {
   BookItem,
   CreateBookItemInput,
@@ -64,6 +65,24 @@ export interface ItemStoreState {
 }
 
 /**
+ * Input for creating a note item with optional title
+ */
+export interface CreateNoteOptions {
+  /** Title for the note (auto-generated if not provided) */
+  title?: string;
+  /** Description/content of the note */
+  description?: string;
+  /** List ID to associate with (uses prefabricated notes list if not provided) */
+  listId?: string;
+  /** Section ID within the list */
+  sectionId?: string;
+  /** Sort order (defaults to 0) */
+  sortOrder?: number;
+  /** Locale for timestamp-based title generation */
+  locale?: string;
+}
+
+/**
  * Actions available on the item store
  */
 export interface ItemStoreActions {
@@ -73,6 +92,14 @@ export interface ItemStoreActions {
    * @returns The created item, or null on failure
    */
   createItem: (input: CreateItemInput) => Promise<Item | null>;
+
+  /**
+   * Create a new note item with automatic title generation
+   * If title is not provided, generates one from description or timestamp
+   * @param options - Note creation options
+   * @returns The created note item, or null on failure
+   */
+  createNoteItem: (options: CreateNoteOptions) => Promise<NoteItem | null>;
 
   /**
    * Update an existing item with optimistic update
@@ -310,6 +337,26 @@ export function createItemStore(deps: ItemStoreDependencies): ItemStoreInstance 
         console.error('[useItemStore] Failed to create item:', error);
         return null;
       }
+    },
+
+    // Create note item with automatic title generation
+    createNoteItem: async (options: CreateNoteOptions): Promise<NoteItem | null> => {
+      const { title, description, listId, sectionId, sortOrder = 0, locale = 'pt-BR' } = options;
+
+      // Generate title if not provided
+      const finalTitle = title?.trim() || generateNoteTitle(description, locale);
+
+      const input: CreateNoteItemInput = {
+        type: 'note',
+        title: finalTitle,
+        description,
+        listId,
+        sectionId,
+        sortOrder,
+      };
+
+      const created = await get().createItem(input);
+      return created as NoteItem | null;
     },
 
     // Update item with optimistic update
