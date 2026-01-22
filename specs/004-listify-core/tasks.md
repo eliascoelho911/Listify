@@ -548,10 +548,10 @@
 
 ### Implementação
 
-- [ ] T201 [US8.3] Implementar IGDBProviderService em src/infra/services/IGDBProviderService.ts
-- [ ] T202 [US8.3] Criar variante GameCard de MediaCard
-- [ ] T203 [US8.3] Integrar busca inline no SmartInputModal para listas de games
-- [ ] T204 [US8.3] Implementar marcação "jogado" para games
+- [X] T201 [US8.3] Implementar IGDBProviderService em src/infra/services/IGDBProviderService.ts
+- [X] T202 [US8.3] Criar variante GameCard de MediaCard
+- [X] T203 [US8.3] Integrar busca inline no SmartInputModal para listas de games
+- [X] T204 [US8.3] Implementar marcação "jogado" para games
 
 **Checkpoint**: Listas de games com enriquecimento IGDB funcional
 

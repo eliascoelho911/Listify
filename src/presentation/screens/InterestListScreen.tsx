@@ -19,6 +19,7 @@ import type {
   BookItem,
   BookMetadata,
   GameItem,
+  GameMetadata,
   Item,
   MovieItem,
   MovieMetadata,
@@ -94,8 +95,14 @@ export function InterestListScreen(): ReactElement {
   const { id: listId } = useLocalSearchParams<{ id: string }>();
   const styles = createStyles(theme, insets.top);
 
-  const { listRepository, smartInputParser, categoryInference, movieProvider, bookProvider } =
-    useAppDependencies();
+  const {
+    listRepository,
+    smartInputParser,
+    categoryInference,
+    movieProvider,
+    bookProvider,
+    gameProvider,
+  } = useAppDependencies();
   const itemStore = useItemStoreWithDI();
   const { items, isLoading, loadByListId, clearItems, toggleChecked, deleteItem, createItem } =
     itemStore();
@@ -123,11 +130,11 @@ export function InterestListScreen(): ReactElement {
       case 'book':
         return bookProvider;
       case 'game':
-        return null; // TODO: Add gameProvider when IGDB is implemented
+        return gameProvider;
       default:
         return null;
     }
-  }, [itemType, movieProvider, bookProvider]);
+  }, [itemType, movieProvider, bookProvider, gameProvider]);
 
   // Smart input hook for parsing (minimal use in media search mode)
   const smartInput = useSmartInput({
@@ -299,8 +306,18 @@ export function InterestListScreen(): ReactElement {
         };
 
         await createItem({ ...baseInput, type: 'book', metadata }, 'book');
+      } else if (itemType === 'game') {
+        const metadata: GameMetadata = {
+          category: 'game',
+          coverUrl: result.imageUrl ?? undefined,
+          description: result.description ?? undefined,
+          releaseDate: result.year ? `${result.year}-01-01` : undefined,
+          rating: (result.metadata.rating as number) ?? undefined,
+          developer: (result.metadata.developer as string) ?? undefined,
+        };
+
+        await createItem({ ...baseInput, type: 'game', metadata }, 'game');
       }
-      // TODO: Handle game type when IGDB is implemented
 
       // Keep modal open for continuous creation
       setSearchQuery('');
@@ -333,8 +350,12 @@ export function InterestListScreen(): ReactElement {
           { ...baseInput, type: 'book', metadata: { category: 'book' as const } },
           'book',
         );
+      } else if (itemType === 'game') {
+        await createItem(
+          { ...baseInput, type: 'game', metadata: { category: 'game' as const } },
+          'game',
+        );
       }
-      // TODO: Handle game type when IGDB is implemented
 
       // Keep modal open for continuous creation
       setSearchQuery('');
