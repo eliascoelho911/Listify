@@ -472,7 +472,7 @@ Todo componente interativo deve ter:
 
 - Componente combina 2-3 atoms
 - Tem propósito funcional específico
-- Exemplo: FormField (Label + Input), SearchBar (Input + Icon)
+- Exemplo: FormField (Label + Input), SearchInput (Input + Icon)
 
 ### Posso usar hard-coded values para casos especiais?
 

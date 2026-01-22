@@ -47,10 +47,6 @@ export type {
 export { Text } from './Text/Text';
 export type { TextAlign, TextColor, TextProps, TextVariant, TextWeight } from './Text/Text.types';
 
-// DateBadge
-export { DateBadge } from './DateBadge/DateBadge';
-export type { DateBadgeProps, DateBadgeVariant } from './DateBadge/DateBadge.types';
-
 // Logo
 export { Logo } from './Logo/Logo';
 export type { LogoProps, LogoSize } from './Logo/Logo.types';
@@ -78,14 +74,6 @@ export type { PriceBadgeProps } from './PriceBadge/PriceBadge.types';
 // DragHandle
 export { DragHandle } from './DragHandle/DragHandle';
 export type { DragHandleProps, DragHandleSize } from './DragHandle/DragHandle.types';
-
-// SectionAddButton
-export { SectionAddButton } from './SectionAddButton/SectionAddButton';
-export type { SectionAddButtonProps } from './SectionAddButton/SectionAddButton.types';
-
-// AddAllButton
-export { AddAllButton } from './AddAllButton/AddAllButton';
-export type { AddAllButtonProps } from './AddAllButton/AddAllButton.types';
 
 // InlineEdit
 export { InlineEdit } from './InlineEdit/InlineEdit';
