@@ -25,7 +25,7 @@ import {
   usePurchaseHistoryStoreWithDI,
   useSectionStoreWithDI,
 } from '@presentation/hooks';
-import { IconButton, SectionAddButton } from '@design-system/atoms';
+import { Button, Icon, IconButton } from '@design-system/atoms';
 import {
   CompleteButton,
   ConfirmationDialog,
@@ -285,21 +285,6 @@ export function ShoppingListScreen(): ReactElement {
     setItemToDelete(item);
     setDeleteDialogVisible(true);
   }, []);
-
-  const shoppingItems = useMemo(
-    () =>
-      items
-        .filter((item): item is ShoppingItem => item.type === 'shopping')
-        .sort((a, b) => a.sortOrder - b.sortOrder),
-    [items],
-  );
-
-  const sections = useMemo(
-    () => (listId ? (sectionsByListId[listId] ?? []) : []),
-    [listId, sectionsByListId],
-  );
-
-  const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
 
   const handleCompletePurchaseConfirm = useCallback(async () => {
     if (!listId || totals.checkedCount === 0) return;
