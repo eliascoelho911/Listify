@@ -53,3 +53,12 @@ export type {
   DraggableListProps,
   DraggableListRenderItemParams,
 } from './DraggableList/DraggableList.types';
+
+// EditModal
+export { EditModal } from './EditModal/EditModal';
+export type {
+  EditModalItemType,
+  EditModalProps,
+  EditSubmitData,
+} from './EditModal/EditModal.types';
+export { shoppingItemToEditableString } from './EditModal/EditModal.types';
