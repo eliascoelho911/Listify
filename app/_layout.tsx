@@ -13,10 +13,17 @@ import { ThemeProvider } from '@design-system/theme';
 initializeI18n().catch(() => undefined);
 
 function NavigationStack(): ReactElement {
-  return (
+  const isStorybookEnabled = process.env.EXPO_PUBLIC_STORYBOOK_ENABLED === 'true';
+  console.log('Storybook Enabled:', isStorybookEnabled);
+  console.log('Dev Mode:', __DEV__);
+
+  return isStorybookEnabled && __DEV__ ? (
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="storybook" options={{ headerShown: false }} />
+    </Stack>
+  ) : (
     <Stack screenOptions={{ headerShown: false }}>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="(drawer)" options={{ headerShown: false }} />
       <Stack.Screen name="settings" options={{ headerShown: false }} />
       <Stack.Screen name="list/[id]" options={{ headerShown: false }} />
     </Stack>
