@@ -1,14 +1,10 @@
-import type { CreateUserPreferencesInput, LayoutConfigs, UserPreferences } from '@domain/user';
+import type { CreateUserPreferencesInput, LayoutConfigs } from '@domain/user';
 import {
   toCreateUserPreferencesRow,
   toDomainUserPreferences,
   toUpdateUserPreferencesRow,
 } from '@data/mappers/user-preferences.mapper';
-import type {
-  CreateUserPreferencesRow,
-  UpdateUserPreferencesRow,
-  UserPreferencesRow,
-} from '@data/persistence';
+import type { UserPreferencesRow } from '@data/persistence';
 
 describe('UserPreferences Mapper', () => {
   describe('toDomainUserPreferences', () => {

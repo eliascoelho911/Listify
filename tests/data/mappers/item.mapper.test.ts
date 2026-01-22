@@ -1,7 +1,6 @@
 import type {
   CreateNoteItemInput,
   CreateShoppingItemInput,
-  Item,
   MovieMetadata,
   NoteItem,
   ShoppingItem,
@@ -13,7 +12,7 @@ import {
   toDomainShoppingItem,
   toUpdateItemRow,
 } from '@data/mappers/item.mapper';
-import type { CreateItemRow, ItemRow, UpdateItemRow } from '@data/persistence';
+import type { ItemRow } from '@data/persistence';
 
 describe('Item Mapper', () => {
   describe('toDomainItem', () => {

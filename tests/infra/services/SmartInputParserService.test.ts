@@ -1,4 +1,4 @@
-import type { Highlight, ParseContext, ParsedInput, SmartInputParser } from '@domain/common';
+import type { SmartInputParser } from '@domain/common';
 import { SmartInputParserService } from '@infra/services/SmartInputParserService';
 
 describe('SmartInputParserService', () => {

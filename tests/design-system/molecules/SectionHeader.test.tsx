@@ -2,8 +2,8 @@
  * SectionHeader Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { SectionHeader } from '@design-system/molecules/SectionHeader/SectionHeader';
 import { ThemeProvider } from '@design-system/theme';

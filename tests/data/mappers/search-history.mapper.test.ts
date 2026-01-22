@@ -1,9 +1,9 @@
-import type { CreateSearchHistoryEntryInput, SearchHistoryEntry } from '@domain/search-history';
+import type { CreateSearchHistoryEntryInput } from '@domain/search-history';
 import {
   toCreateSearchHistoryRow,
   toDomainSearchHistoryEntry,
 } from '@data/mappers/search-history.mapper';
-import type { CreateSearchHistoryRow, SearchHistoryRow } from '@data/persistence';
+import type { SearchHistoryRow } from '@data/persistence';
 
 describe('SearchHistory Mapper', () => {
   describe('toDomainSearchHistoryEntry', () => {

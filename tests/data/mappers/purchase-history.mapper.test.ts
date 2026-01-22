@@ -1,6 +1,5 @@
 import type {
   CreatePurchaseHistoryInput,
-  PurchaseHistory,
   PurchaseHistoryItem,
   PurchaseHistorySection,
 } from '@domain/purchase-history';
@@ -8,7 +7,7 @@ import {
   toCreatePurchaseHistoryRow,
   toDomainPurchaseHistory,
 } from '@data/mappers/purchase-history.mapper';
-import type { CreatePurchaseHistoryRow, PurchaseHistoryRow } from '@data/persistence';
+import type { PurchaseHistoryRow } from '@data/persistence';
 
 describe('PurchaseHistory Mapper', () => {
   describe('toDomainPurchaseHistory', () => {

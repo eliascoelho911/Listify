@@ -2,9 +2,9 @@
  * DraggableList Organism Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
 import { View } from 'react-native';
+import { render } from '@testing-library/react-native';
 
 import { Text } from '@design-system/atoms/Text/Text';
 import { DraggableList } from '@design-system/organisms/DraggableList/DraggableList';
@@ -14,7 +14,7 @@ import { ThemeProvider } from '@design-system/theme';
 // Mock react-native-draggable-flatlist
 jest.mock('react-native-draggable-flatlist', () => {
   const React = require('react');
-  const { View, FlatList } = require('react-native');
+  const { View } = require('react-native');
 
   return {
     __esModule: true,
@@ -24,7 +24,7 @@ jest.mock('react-native-draggable-flatlist', () => {
       keyExtractor,
       ListEmptyComponent,
     }: {
-      data: Array<{ id: string }>;
+      data: { id: string }[];
       renderItem: (params: {
         item: { id: string };
         drag: () => void;

@@ -2,8 +2,8 @@
  * TotalBar Molecule Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { TotalBar } from '@design-system/molecules/TotalBar/TotalBar';
 import { ThemeProvider } from '@design-system/theme';

@@ -2,8 +2,8 @@
  * SectionAddButton Atom Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { SectionAddButton } from '@design-system/atoms/SectionAddButton/SectionAddButton';
 import { ThemeProvider } from '@design-system/theme';

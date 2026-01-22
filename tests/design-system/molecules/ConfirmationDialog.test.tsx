@@ -75,7 +75,7 @@ describe('ConfirmationDialog', () => {
 
   it('should show loading indicator when isLoading is true', () => {
     const { queryByText, getByTestId } = renderWithTheme(
-      <ConfirmationDialog {...defaultProps} isLoading={true} testID="dialog" />,
+      <ConfirmationDialog {...defaultProps} isLoading testID="dialog" />,
     );
 
     expect(queryByText('Delete')).toBeNull();
@@ -84,7 +84,7 @@ describe('ConfirmationDialog', () => {
 
   it('should disable cancel button when isLoading is true', () => {
     const { getByTestId } = renderWithTheme(
-      <ConfirmationDialog {...defaultProps} isLoading={true} testID="dialog" />,
+      <ConfirmationDialog {...defaultProps} isLoading testID="dialog" />,
     );
 
     // The cancel button should be disabled during loading
