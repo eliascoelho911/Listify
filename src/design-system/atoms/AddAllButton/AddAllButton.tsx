@@ -5,11 +5,12 @@
  * Features an icon and label, styled for high visibility.
  */
 
-import { Ionicons } from '@expo/vector-icons';
 import React, { type ReactElement } from 'react';
-import { ActivityIndicator, Text, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, View } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
 
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createAddAllButtonStyles } from './AddAllButton.styles';
 import type { AddAllButtonProps } from './AddAllButton.types';
 
@@ -38,20 +39,13 @@ export function AddAllButton({
       testID={testID}
     >
       {loading ? (
-        <ActivityIndicator
-          size="small"
-          color={theme.colors.primaryForeground}
-        />
+        <ActivityIndicator size="small" color={theme.colors.primaryForeground} />
       ) : (
         <>
           <Ionicons
             name="cart-outline"
             size={20}
-            color={
-              isDisabled
-                ? theme.colors.mutedForeground
-                : theme.colors.primaryForeground
-            }
+            color={isDisabled ? theme.colors.mutedForeground : theme.colors.primaryForeground}
             style={styles.icon}
           />
           <Text style={styles.label}>{label}</Text>

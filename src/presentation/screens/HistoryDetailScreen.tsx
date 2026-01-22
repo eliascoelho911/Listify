@@ -8,28 +8,25 @@
  * - Quantity sum for items that already exist in the list
  */
 
-import { ArrowLeft } from 'lucide-react-native';
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
+import { ArrowLeft } from 'lucide-react-native';
 
+import type { CreateShoppingItemInput, ShoppingItem } from '@domain/item';
+import type {
+  PurchaseHistory,
+  PurchaseHistoryItem,
+} from '@domain/purchase-history/entities/purchase-history.entity';
+import { useItemStoreWithDI, usePurchaseHistoryStoreWithDI } from '@presentation/hooks';
 import { AddAllButton } from '@design-system/atoms';
 import { SelectableItemList } from '@design-system/molecules';
 import type { SelectableItemListItem } from '@design-system/molecules/SelectableItemList/SelectableItemList.types';
 import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 import type { Theme } from '@design-system/theme/theme';
-import type { CreateShoppingItemInput, ShoppingItem } from '@domain/item';
-import type {
-  PurchaseHistory,
-  PurchaseHistoryItem,
-} from '@domain/purchase-history/entities/purchase-history.entity';
-import {
-  useItemStoreWithDI,
-  usePurchaseHistoryStoreWithDI,
-} from '@presentation/hooks';
 
 const createStyles = (theme: Theme, topInset: number, bottomInset: number) =>
   StyleSheet.create({
@@ -81,10 +78,7 @@ export function HistoryDetailScreen(): ReactElement {
 
       setIsLoading(true);
       try {
-        const [entry] = await Promise.all([
-          getById(historyId),
-          loadByListId(listId, 'shopping'),
-        ]);
+        const [entry] = await Promise.all([getById(historyId), loadByListId(listId, 'shopping')]);
         setHistoryEntry(entry);
       } catch (error) {
         console.error('[HistoryDetailScreen] Failed to load data:', error);
@@ -205,9 +199,7 @@ export function HistoryDetailScreen(): ReactElement {
 
   // "Add selected" handler
   const handleAddSelected = useCallback(async () => {
-    const selectedItems = selectableItems.filter((item) =>
-      selectedIds.has(item.originalItemId),
-    );
+    const selectedItems = selectableItems.filter((item) => selectedIds.has(item.originalItemId));
     await addItemsToList(selectedItems);
   }, [addItemsToList, selectableItems, selectedIds]);
 

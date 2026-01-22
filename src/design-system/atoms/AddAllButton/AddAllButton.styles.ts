@@ -28,9 +28,7 @@ export const createAddAllButtonStyles = (theme: Theme, disabled: boolean) => {
       color: disabled ? theme.colors.mutedForeground : theme.colors.primaryForeground,
     },
     badge: {
-      backgroundColor: disabled
-        ? theme.colors.mutedForeground
-        : theme.colors.primaryForeground,
+      backgroundColor: disabled ? theme.colors.mutedForeground : theme.colors.primaryForeground,
       paddingHorizontal: theme.spacing.sm,
       paddingVertical: theme.spacing.xxs,
       borderRadius: theme.radii.full,

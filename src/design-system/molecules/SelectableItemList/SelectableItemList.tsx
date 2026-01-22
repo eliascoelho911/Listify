@@ -8,15 +8,13 @@
 
 import React, { type ReactElement, useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ActivityIndicator, FlatList, Pressable, Text, View } from 'react-native';
+import { ActivityIndicator, FlatList, Pressable, View } from 'react-native';
 
 import { Checkbox } from '../../atoms/Checkbox/Checkbox';
+import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createSelectableItemListStyles } from './SelectableItemList.styles';
-import type {
-  SelectableItemListItem,
-  SelectableItemListProps,
-} from './SelectableItemList.types';
+import type { SelectableItemListItem, SelectableItemListProps } from './SelectableItemList.types';
 
 export function SelectableItemList({
   items,
@@ -52,15 +50,12 @@ export function SelectableItemList({
     }
   }, [allSelected, onSelectAll, onDeselectAll]);
 
-  const formatPrice = useCallback(
-    (price: number) => {
-      return new Intl.NumberFormat('pt-BR', {
-        style: 'currency',
-        currency: 'BRL',
-      }).format(price);
-    },
-    [],
-  );
+  const formatPrice = useCallback((price: number) => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(price);
+  }, []);
 
   const renderItem = useCallback(
     ({ item }: { item: SelectableItemListItem }) => {
@@ -69,10 +64,7 @@ export function SelectableItemList({
 
       return (
         <Pressable
-          style={[
-            styles.itemContainer,
-            item.existsInList && styles.itemContainerExisting,
-          ]}
+          style={[styles.itemContainer, item.existsInList && styles.itemContainerExisting]}
           onPress={() => onSelectionChange(item.originalItemId, !isSelected)}
           accessibilityRole="checkbox"
           accessibilityState={{ checked: isSelected }}
@@ -87,54 +79,32 @@ export function SelectableItemList({
 
           <View style={styles.itemContent}>
             <Text
-              style={[
-                styles.itemTitle,
-                item.existsInList && styles.itemTitleExisting,
-              ]}
+              style={[styles.itemTitle, item.existsInList && styles.itemTitleExisting]}
               numberOfLines={1}
             >
               {item.title}
             </Text>
 
             <View style={styles.itemMeta}>
-              {item.quantity && (
-                <Text style={styles.itemQuantity}>{item.quantity}</Text>
-              )}
-              {hasPrice && (
-                <Text style={styles.itemPrice}>{formatPrice(item.price!)}</Text>
-              )}
+              {item.quantity && <Text style={styles.itemQuantity}>{item.quantity}</Text>}
+              {hasPrice && <Text style={styles.itemPrice}>{formatPrice(item.price!)}</Text>}
             </View>
           </View>
 
           {item.existsInList && (
             <View style={styles.existingBadge}>
-              <Text style={styles.existingBadgeText}>
-                {t('shopping.history.alreadyInList')}
-              </Text>
+              <Text style={styles.existingBadgeText}>{t('shopping.history.alreadyInList')}</Text>
             </View>
           )}
         </Pressable>
       );
     },
-    [
-      selectedIds,
-      onSelectionChange,
-      styles,
-      formatPrice,
-      t,
-      testID,
-    ],
+    [selectedIds, onSelectionChange, styles, formatPrice, t, testID],
   );
 
-  const renderSeparator = useCallback(
-    () => <View style={styles.separator} />,
-    [styles.separator],
-  );
+  const renderSeparator = useCallback(() => <View style={styles.separator} />, [styles.separator]);
 
-  const keyExtractor = useCallback(
-    (item: SelectableItemListItem) => item.originalItemId,
-    [],
-  );
+  const keyExtractor = useCallback((item: SelectableItemListItem) => item.originalItemId, []);
 
   if (isLoading) {
     return (
@@ -147,9 +117,7 @@ export function SelectableItemList({
   if (items.length === 0) {
     return (
       <View style={[styles.container, styles.emptyState, style]}>
-        <Text style={styles.emptyStateText}>
-          {t('shopping.history.noItems')}
-        </Text>
+        <Text style={styles.emptyStateText}>{t('shopping.history.noItems')}</Text>
       </View>
     );
   }
@@ -167,9 +135,7 @@ export function SelectableItemList({
             onPress={handleSelectAllToggle}
             accessibilityRole="button"
             accessibilityLabel={
-              allSelected
-                ? t('shopping.history.deselectAll')
-                : t('shopping.history.selectAll')
+              allSelected ? t('shopping.history.deselectAll') : t('shopping.history.selectAll')
             }
           >
             <Text style={styles.selectAllText}>

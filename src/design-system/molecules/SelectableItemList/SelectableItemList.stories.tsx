@@ -2,9 +2,9 @@
  * SelectableItemList Molecule Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { SelectableItemList } from './SelectableItemList';
@@ -79,9 +79,7 @@ const SelectableItemListWithState = (props: {
   items: SelectableItemListItem[];
   initialSelected?: string[];
 }) => {
-  const [selectedIds, setSelectedIds] = useState<Set<string>>(
-    new Set(props.initialSelected ?? []),
-  );
+  const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set(props.initialSelected ?? []));
 
   const handleSelectionChange = (itemId: string, selected: boolean) => {
     setSelectedIds((prev) => {
@@ -119,12 +117,7 @@ export const Default: Story = {
 };
 
 export const WithPreselected: Story = {
-  render: () => (
-    <SelectableItemListWithState
-      items={mockItems}
-      initialSelected={['1', '3', '5']}
-    />
-  ),
+  render: () => <SelectableItemListWithState items={mockItems} initialSelected={['1', '3', '5']} />,
 };
 
 export const AllSelected: Story = {
@@ -137,9 +130,7 @@ export const AllSelected: Story = {
 };
 
 export const EmptyList: Story = {
-  render: () => (
-    <SelectableItemListWithState items={[]} />
-  ),
+  render: () => <SelectableItemListWithState items={[]} />,
 };
 
 export const Loading: Story = {

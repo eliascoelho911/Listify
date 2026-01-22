@@ -2,8 +2,8 @@
  * SelectableItemList Molecule Tests
  */
 
-import { fireEvent, waitFor } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, waitFor } from '@testing-library/react-native';
 
 import { SelectableItemList } from '@design-system/molecules/SelectableItemList/SelectableItemList';
 import type { SelectableItemListItem } from '@design-system/molecules/SelectableItemList/SelectableItemList.types';
@@ -127,21 +127,21 @@ describe('SelectableItemList', () => {
   });
 
   it('should show loading indicator when isLoading is true', () => {
-    const { getByTestId } = renderWithTheme(
+    const { UNSAFE_getByType } = renderWithTheme(
       <SelectableItemList {...defaultProps} items={[]} isLoading testID="selectable-list" />,
     );
 
-    // The loading state should show an activity indicator
-    // Note: We can't easily test for ActivityIndicator, but we verify the component renders
-    expect(getByTestId('selectable-list')).toBeTruthy();
+    // The loading state should show an ActivityIndicator
+    // Using UNSAFE_getByType since ActivityIndicator doesn't render text or have testID
+    const ActivityIndicator = require('react-native').ActivityIndicator;
+    expect(UNSAFE_getByType(ActivityIndicator)).toBeTruthy();
   });
 
   it('should show empty state when no items', () => {
-    const { getByText } = renderWithTheme(
-      <SelectableItemList {...defaultProps} items={[]} />,
-    );
+    const { getByText } = renderWithTheme(<SelectableItemList {...defaultProps} items={[]} />);
 
-    expect(getByText(/Nenhum item/)).toBeTruthy();
+    // The component uses t('shopping.history.noItems') which maps to 'Nenhum item no histórico'
+    expect(getByText(/Nenhum item no histórico/)).toBeTruthy();
   });
 
   it('should show existing badge for items that exist in the list', () => {
