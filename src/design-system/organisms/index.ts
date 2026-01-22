@@ -45,3 +45,11 @@ export type {
   SelectableListType as ListFormListType,
   ListFormProps,
 } from './ListForm/ListForm.types';
+
+// DraggableList
+export { DraggableList } from './DraggableList/DraggableList';
+export type {
+  DraggableListItem,
+  DraggableListProps,
+  DraggableListRenderItemParams,
+} from './DraggableList/DraggableList.types';

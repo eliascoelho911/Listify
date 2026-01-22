@@ -82,3 +82,7 @@ export type { CheckboxProps } from './Checkbox/Checkbox.types';
 // PriceBadge
 export { PriceBadge } from './PriceBadge/PriceBadge';
 export type { PriceBadgeProps } from './PriceBadge/PriceBadge.types';
+
+// DragHandle
+export { DragHandle } from './DragHandle/DragHandle';
+export type { DragHandleProps, DragHandleSize } from './DragHandle/DragHandle.types';

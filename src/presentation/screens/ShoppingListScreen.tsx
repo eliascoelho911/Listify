@@ -4,21 +4,23 @@
  * Displays a shopping list with items that can be checked off.
  * Shows a TotalBar at the bottom with the sum of all checked item prices.
  * Supports real-time total calculation as items are toggled.
+ * Supports drag and drop reordering of items.
  */
 
 import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, Plus } from 'lucide-react-native';
+import { ArrowLeft, GripVertical, Plus } from 'lucide-react-native';
 
-import type { ShoppingItem } from '@domain/item';
 import { useAppDependencies } from '@app/di';
+import type { ShoppingItem } from '@domain/item';
 import { useItemStoreWithDI } from '@presentation/hooks';
-import { FAB, IconButton } from '@design-system/atoms';
+import { FAB } from '@design-system/atoms';
 import { EmptyState, ShoppingItemCard, TotalBar } from '@design-system/molecules';
-import { Navbar } from '@design-system/organisms';
+import type { DraggableListRenderItemParams, NavbarAction } from '@design-system/organisms';
+import { DraggableList, Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 interface TotalCalculation {
@@ -63,10 +65,11 @@ export function ShoppingListScreen(): ReactElement {
 
   const { listRepository } = useAppDependencies();
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadByListId, clearItems, toggleChecked } = itemStore();
+  const { items, isLoading, loadByListId, clearItems, toggleChecked, updateSortOrder } =
+    itemStore();
 
   const [listName, setListName] = useState<string>('');
-  const [refreshing, setRefreshing] = useState(false);
+  const [isReorderMode, setIsReorderMode] = useState(false);
 
   useEffect(() => {
     if (listId) {
@@ -80,16 +83,13 @@ export function ShoppingListScreen(): ReactElement {
     return () => clearItems();
   }, [listId, loadByListId, clearItems, listRepository]);
 
-  const handleRefresh = useCallback(async () => {
-    if (!listId) return;
-    setRefreshing(true);
-    await loadByListId(listId, 'shopping');
-    setRefreshing(false);
-  }, [listId, loadByListId]);
-
   const handleBackPress = useCallback(() => {
     router.back();
   }, [router]);
+
+  const handleToggleReorderMode = useCallback(() => {
+    setIsReorderMode((prev) => !prev);
+  }, []);
 
   const handleItemToggle = useCallback(
     async (item: ShoppingItem, checked: boolean) => {
@@ -114,29 +114,41 @@ export function ShoppingListScreen(): ReactElement {
     // TODO: Open add item modal
   }, []);
 
+  const handleDragEnd = useCallback(
+    async (reorderedItems: ShoppingItem[]) => {
+      console.debug('[ShoppingListScreen] Drag end, updating sort order');
+      await updateSortOrder(reorderedItems, 'shopping');
+    },
+    [updateSortOrder],
+  );
+
   const shoppingItems = useMemo(
-    () => items.filter((item): item is ShoppingItem => item.type === 'shopping'),
+    () =>
+      items
+        .filter((item): item is ShoppingItem => item.type === 'shopping')
+        .sort((a, b) => a.sortOrder - b.sortOrder),
     [items],
   );
 
   const totals = useMemo(() => calculateTotal(shoppingItems), [shoppingItems]);
 
-  const renderItem = useCallback(
-    ({ item }: { item: ShoppingItem }) => (
-      <ShoppingItemCard
-        item={item}
-        onToggle={handleItemToggle}
-        onPress={handleItemPress}
-        onLongPress={handleItemLongPress}
-        testID={`shopping-item-${item.id}`}
-      />
+  const renderDraggableItem = useCallback(
+    ({ item, drag, isActive }: DraggableListRenderItemParams<ShoppingItem>) => (
+      <View style={styles.itemContainer}>
+        <ShoppingItemCard
+          item={item}
+          onToggle={handleItemToggle}
+          onPress={handleItemPress}
+          onLongPress={handleItemLongPress}
+          showDragHandle={isReorderMode}
+          isDragging={isActive}
+          onDrag={drag}
+          testID={`shopping-item-${item.id}`}
+        />
+      </View>
     ),
-    [handleItemToggle, handleItemPress, handleItemLongPress],
+    [handleItemToggle, handleItemPress, handleItemLongPress, isReorderMode, styles.itemContainer],
   );
-
-  const keyExtractor = useCallback((item: ShoppingItem) => item.id, []);
-
-  const ItemSeparator = useCallback(() => <View style={styles.separator} />, [styles.separator]);
 
   const emptyContent = (
     <EmptyState
@@ -146,31 +158,42 @@ export function ShoppingListScreen(): ReactElement {
     />
   );
 
+  const leftAction: NavbarAction = useMemo(
+    () => ({
+      icon: ArrowLeft,
+      onPress: handleBackPress,
+      label: t('common.back', 'Voltar'),
+    }),
+    [handleBackPress, t],
+  );
+
+  const rightActions: NavbarAction[] = useMemo(
+    () => [
+      {
+        icon: GripVertical,
+        onPress: handleToggleReorderMode,
+        label: t('shopping.reorder', 'Reordenar'),
+        variant: isReorderMode ? 'accent' : 'ghost',
+        isActive: isReorderMode,
+      },
+    ],
+    [handleToggleReorderMode, isReorderMode, t],
+  );
+
   return (
     <View style={styles.container}>
-      <Navbar
-        title={listName}
-        leftActions={[
-          {
-            icon: ArrowLeft,
-            onPress: handleBackPress,
-            label: t('common.back', 'Voltar'),
-          },
-        ]}
-      />
+      <Navbar title={listName} leftAction={leftAction} rightActions={rightActions} />
 
       {!isLoading && shoppingItems.length === 0 ? (
         <View style={styles.emptyContainer}>{emptyContent}</View>
       ) : (
-        <FlatList
+        <DraggableList
           data={shoppingItems}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={ItemSeparator}
+          renderItem={renderDraggableItem}
+          onDragEnd={handleDragEnd}
+          isReorderEnabled={isReorderMode}
           contentContainerStyle={styles.listContent}
-          refreshing={refreshing}
-          onRefresh={handleRefresh}
-          showsVerticalScrollIndicator={false}
+          ListEmptyComponent={emptyContent}
         />
       )}
 
@@ -182,13 +205,14 @@ export function ShoppingListScreen(): ReactElement {
         testID="shopping-total-bar"
       />
 
-      <FAB
-        icon={Plus}
-        onPress={handleAddItem}
-        label={t('shopping.addItem', 'Adicionar Item')}
-        style={styles.fab}
-        testID="shopping-add-fab"
-      />
+      <View style={styles.fabContainer}>
+        <FAB
+          icon={Plus}
+          onPress={handleAddItem}
+          accessibilityLabel={t('shopping.addItem', 'Adicionar Item')}
+          testID="shopping-add-fab"
+        />
+      </View>
     </View>
   );
 }
@@ -196,7 +220,7 @@ export function ShoppingListScreen(): ReactElement {
 const createStyles = (
   theme: {
     colors: { background: string };
-    spacing: { sm: number; md: number; lg: number; xl: number };
+    spacing: { xs: number; sm: number; md: number; lg: number; xl: number };
   },
   topInset: number,
 ) =>
@@ -211,8 +235,8 @@ const createStyles = (
       paddingVertical: theme.spacing.md,
       paddingBottom: 120,
     },
-    separator: {
-      height: theme.spacing.sm,
+    itemContainer: {
+      marginVertical: theme.spacing.xs,
     },
     emptyContainer: {
       flex: 1,
@@ -220,7 +244,7 @@ const createStyles = (
       alignItems: 'center',
       padding: theme.spacing.xl,
     },
-    fab: {
+    fabContainer: {
       position: 'absolute',
       right: theme.spacing.lg,
       bottom: 80,

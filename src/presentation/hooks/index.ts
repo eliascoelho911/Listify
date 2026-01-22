@@ -2,6 +2,8 @@
  * Presentation Hooks Barrel Export
  */
 
+export type { DraggableItem, UseDragAndDropOptions, UseDragAndDropResult } from './useDragAndDrop';
+export { useDragAndDrop } from './useDragAndDrop';
 export type {
   PaginatedResult,
   UseInfiniteScrollOptions,

@@ -341,11 +341,11 @@
 
 ### Implementação
 
-- [ ] T137 [P] [US6.2] Criar átomo DragHandle em src/design-system/atoms/DragHandle/ via CLI
-- [ ] T138 [US6.2] Criar organismo DraggableList em src/design-system/organisms/DraggableList/ via CLI
-- [ ] T139 [US6.2] Criar hook useDragAndDrop em src/presentation/hooks/useDragAndDrop.ts
-- [ ] T140 [US6.2] Integrar drag and drop na ShoppingListScreen
-- [ ] T141 [US6.2] Implementar persistência de sortOrder no banco
+- [X] T137 [P] [US6.2] Criar átomo DragHandle em src/design-system/atoms/DragHandle/ via CLI
+- [X] T138 [US6.2] Criar organismo DraggableList em src/design-system/organisms/DraggableList/ via CLI
+- [X] T139 [US6.2] Criar hook useDragAndDrop em src/presentation/hooks/useDragAndDrop.ts
+- [X] T140 [US6.2] Integrar drag and drop na ShoppingListScreen
+- [X] T141 [US6.2] Implementar persistência de sortOrder no banco
 
 **Checkpoint**: Reordenação de itens com drag and drop funcional
 
