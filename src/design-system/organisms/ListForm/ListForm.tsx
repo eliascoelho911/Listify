@@ -21,6 +21,7 @@ export function ListForm({
   isLoading = false,
   error,
   isEditing = false,
+  disableTypeSelection = false,
   style,
   testID,
 }: ListFormProps): ReactElement {
@@ -83,14 +84,16 @@ export function ListForm({
         </View>
 
         {/* Category Selector Section */}
-        <View style={styles.section}>
-          <Text style={styles.label}>{t('listForm.categoryLabel')}</Text>
-          <CategorySelector
-            selectedType={listType}
-            onSelect={setListType}
-            testID={testID ? `${testID}-category` : undefined}
-          />
-        </View>
+        {!disableTypeSelection && (
+          <View style={styles.section}>
+            <Text style={styles.label}>{t('listForm.categoryLabel')}</Text>
+            <CategorySelector
+              selectedType={listType}
+              onSelect={setListType}
+              testID={testID ? `${testID}-category` : undefined}
+            />
+          </View>
+        )}
       </ScrollView>
 
       {/* Footer with buttons */}
