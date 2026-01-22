@@ -1,8 +1,4 @@
-import type {
-  CategoryInference,
-  MediaProviderRepository,
-  SmartInputParser,
-} from '@domain/common';
+import type { CategoryInference, MediaProviderRepository, SmartInputParser } from '@domain/common';
 import type {
   BookItemRepository,
   GameItemRepository,

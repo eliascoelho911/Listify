@@ -18,12 +18,8 @@ import type { BookItem, GameItem, Item, MovieItem } from '@domain/item';
 import type { ListType } from '@domain/list';
 import { useItemStoreWithDI } from '@presentation/hooks';
 import { FAB } from '@design-system/atoms';
-import {
-  ConfirmationDialog,
-  EmptyState,
-  MediaCard,
-} from '@design-system/molecules';
 import type { MediaItem } from '@design-system/molecules';
+import { ConfirmationDialog, EmptyState, MediaCard } from '@design-system/molecules';
 import type { NavbarAction } from '@design-system/organisms';
 import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
@@ -161,9 +157,7 @@ export function InterestListScreen(): ReactElement {
   const interestItems = useMemo(
     () =>
       items
-        .filter((item): item is InterestItem =>
-          ['movie', 'book', 'game'].includes(item.type),
-        )
+        .filter((item): item is InterestItem => ['movie', 'book', 'game'].includes(item.type))
         .sort((a, b) => a.sortOrder - b.sortOrder),
     [items],
   );

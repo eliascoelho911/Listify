@@ -7,25 +7,14 @@
 
 import React, { type ReactElement, useCallback } from 'react';
 import { Image, Pressable, View } from 'react-native';
-import {
-  Book,
-  CheckCircle,
-  Film,
-  Gamepad2,
-  Star,
-} from 'lucide-react-native';
+import { Book, CheckCircle, Film, Gamepad2, Star } from 'lucide-react-native';
 
 import { Checkbox } from '../../atoms/Checkbox/Checkbox';
 import { Icon } from '../../atoms/Icon/Icon';
 import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createMediaCardStyles } from './MediaCard.styles';
-import type {
-  MediaCardProps,
-  MediaCardType,
-  MediaItem,
-  MediaTypeConfig,
-} from './MediaCard.types';
+import type { MediaCardProps, MediaCardType, MediaItem, MediaTypeConfig } from './MediaCard.types';
 
 const MEDIA_TYPE_CONFIG: Record<MediaCardType, MediaTypeConfig> = {
   movie: {
@@ -112,11 +101,7 @@ export function MediaCard({
       {...viewProps}
     >
       {coverUrl ? (
-        <Image
-          source={{ uri: coverUrl }}
-          style={styles.coverImage}
-          resizeMode="cover"
-        />
+        <Image source={{ uri: coverUrl }} style={styles.coverImage} resizeMode="cover" />
       ) : (
         <View style={styles.coverPlaceholder}>
           <Icon icon={config.icon} size="xl" color={theme.colors.mutedForeground} />
@@ -125,10 +110,7 @@ export function MediaCard({
 
       <View style={styles.content}>
         <View style={styles.titleRow}>
-          <Text
-            style={[styles.title, isChecked && styles.titleChecked]}
-            numberOfLines={2}
-          >
+          <Text style={[styles.title, isChecked && styles.titleChecked]} numberOfLines={2}>
             {item.title}
           </Text>
         </View>

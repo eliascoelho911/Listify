@@ -58,7 +58,9 @@ export class TMDbProviderService implements MediaProviderRepository {
     this.apiKey = process.env.EXPO_PUBLIC_TMDB_API_KEY;
 
     if (!this.apiKey) {
-      console.debug('[TMDbProviderService] EXPO_PUBLIC_TMDB_API_KEY not set - movie search will be unavailable');
+      console.debug(
+        '[TMDbProviderService] EXPO_PUBLIC_TMDB_API_KEY not set - movie search will be unavailable',
+      );
     }
   }
 
@@ -147,9 +149,7 @@ export class TMDbProviderService implements MediaProviderRepository {
       imageUrl: movie.poster_path
         ? `${TMDB_IMAGE_BASE_URL}/${POSTER_SIZE}${movie.poster_path}`
         : null,
-      year: movie.release_date
-        ? new Date(movie.release_date).getFullYear()
-        : null,
+      year: movie.release_date ? new Date(movie.release_date).getFullYear() : null,
       metadata: {
         originalTitle: movie.original_title,
         voteAverage: movie.vote_average,
@@ -173,9 +173,7 @@ export class TMDbProviderService implements MediaProviderRepository {
       imageUrl: movie.poster_path
         ? `${TMDB_IMAGE_BASE_URL}/${POSTER_SIZE}${movie.poster_path}`
         : null,
-      year: movie.release_date
-        ? new Date(movie.release_date).getFullYear()
-        : null,
+      year: movie.release_date ? new Date(movie.release_date).getFullYear() : null,
       metadata: {
         originalTitle: movie.original_title,
         voteAverage: movie.vote_average,

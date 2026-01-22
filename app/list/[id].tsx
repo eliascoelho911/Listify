@@ -75,7 +75,9 @@ export default function ListRoute(): ReactElement {
       // Notes use NoteDetailScreen accessed via note/[id].tsx
       console.debug('[ListRoute] Notes list accessed - should use notes tab');
       router.back();
-      return <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]} />;
+      return (
+        <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]} />
+      );
 
     default:
       return <ShoppingListScreen />;

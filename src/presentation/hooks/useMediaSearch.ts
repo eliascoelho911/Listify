@@ -7,9 +7,8 @@
 
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { MediaProviderRepository, MediaSearchResult } from '@domain/common';
-
 import { useAppDependencies } from '@app/di';
+import type { MediaProviderRepository, MediaSearchResult } from '@domain/common';
 
 const DEBOUNCE_MS = 300;
 

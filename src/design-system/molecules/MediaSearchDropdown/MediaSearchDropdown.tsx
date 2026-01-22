@@ -64,9 +64,7 @@ export function MediaSearchDropdown({
           </View>
         )}
 
-        {errorMessage && !isLoading && (
-          <Text style={styles.errorText}>{errorMessage}</Text>
-        )}
+        {errorMessage && !isLoading && <Text style={styles.errorText}>{errorMessage}</Text>}
 
         {!isLoading && !errorMessage && !hasResults && searchQuery && (
           <Text style={styles.emptyText}>
@@ -93,20 +91,14 @@ export function MediaSearchDropdown({
                   />
                 ) : (
                   <View style={styles.itemImagePlaceholder}>
-                    <Icon
-                      icon={MediaIcon}
-                      size="lg"
-                      color={theme.colors.mutedForeground}
-                    />
+                    <Icon icon={MediaIcon} size="lg" color={theme.colors.mutedForeground} />
                   </View>
                 )}
                 <View style={styles.itemContent}>
                   <Text style={styles.itemTitle} numberOfLines={2}>
                     {result.title}
                   </Text>
-                  {result.year && (
-                    <Text style={styles.itemYear}>{result.year}</Text>
-                  )}
+                  {result.year && <Text style={styles.itemYear}>{result.year}</Text>}
                   {result.description && (
                     <Text style={styles.itemDescription} numberOfLines={2}>
                       {result.description}
