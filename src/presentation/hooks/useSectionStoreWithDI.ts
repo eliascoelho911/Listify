@@ -1,5 +1,8 @@
 /**
  * Hook to use the section store with dependency injection
+ *
+ * Provides access to the section store with automatic DI integration.
+ * Creates a stable store instance using repositories from the DI container.
  */
 
 import { useMemo } from 'react';
@@ -11,22 +14,30 @@ import {
 } from '@presentation/stores/useSectionStore';
 
 /**
- * Returns a function that creates/returns the section store with injected dependencies.
- * The store is memoized per repository instance.
+ * Hook that creates and returns a section store connected to DI repositories.
+ *
+ * The store instance is memoized based on the repository references,
+ * so it will only be recreated if the DI container changes.
+ *
+ * @returns The section store instance with all actions and state
+ *
+ * @example
+ * ```tsx
+ * function MyComponent() {
+ *   const sectionStore = useSectionStoreWithDI();
+ *
+ *   // Subscribe to state changes
+ *   const { sectionsByListId, loadSections } = sectionStore();
+ *
+ *   // Or use selectors
+ *   const sections = sectionStore(state => state.sectionsByListId[listId]);
+ * }
+ * ```
  */
-export function useSectionStoreWithDI(): () => SectionStoreInstance {
+export function useSectionStoreWithDI(): SectionStoreInstance {
   const { sectionRepository } = useAppDependencies();
 
-  const storeFactory = useMemo(() => {
-    let store: SectionStoreInstance | null = null;
+  const store = useMemo(() => createSectionStore({ sectionRepository }), [sectionRepository]);
 
-    return () => {
-      if (!store) {
-        store = createSectionStore({ sectionRepository });
-      }
-      return store;
-    };
-  }, [sectionRepository]);
-
-  return storeFactory;
+  return store;
 }
