@@ -8,3 +8,4 @@ export { NotesScreen } from './NotesScreen';
 export { SearchScreen } from './SearchScreen';
 export { SettingsScreen } from './SettingsScreen';
 export { ShoppingListScreen } from './ShoppingListScreen';
+export { PurchaseHistoryScreen } from './PurchaseHistoryScreen';

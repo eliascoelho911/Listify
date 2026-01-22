@@ -62,3 +62,7 @@ export type {
   EditSubmitData,
 } from './EditModal/EditModal.types';
 export { shoppingItemToEditableString } from './EditModal/EditModal.types';
+
+// HistoryList
+export { HistoryList } from './HistoryList/HistoryList';
+export type { HistoryEntry, HistoryListProps } from './HistoryList/HistoryList.types';

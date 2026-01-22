@@ -36,3 +36,11 @@ export type {
   UserPreferencesStoreState,
 } from './useUserPreferencesStore';
 export { createUserPreferencesStore } from './useUserPreferencesStore';
+export type {
+  PurchaseHistoryStore,
+  PurchaseHistoryStoreActions,
+  PurchaseHistoryStoreDependencies,
+  PurchaseHistoryStoreInstance,
+  PurchaseHistoryStoreState,
+} from './usePurchaseHistoryStore';
+export { createPurchaseHistoryStore } from './usePurchaseHistoryStore';

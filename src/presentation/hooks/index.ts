@@ -17,3 +17,4 @@ export { useSectionStoreWithDI } from './useSectionStoreWithDI';
 export type { SmartInputMode, UseSmartInputOptions, UseSmartInputReturn } from './useSmartInput';
 export { useSmartInput } from './useSmartInput';
 export { useUserPreferencesStoreWithDI } from './useUserPreferencesStoreWithDI';
+export { usePurchaseHistoryStoreWithDI } from './usePurchaseHistoryStoreWithDI';

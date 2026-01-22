@@ -121,3 +121,11 @@ export type {
 // SectionHeader
 export { SectionHeader } from './SectionHeader/SectionHeader';
 export type { SectionHeaderProps } from './SectionHeader/SectionHeader.types';
+
+// CompleteButton
+export { CompleteButton } from './CompleteButton/CompleteButton';
+export type { CompleteButtonProps } from './CompleteButton/CompleteButton.types';
+
+// HistoryCard
+export { HistoryCard } from './HistoryCard/HistoryCard';
+export type { HistoryCardProps } from './HistoryCard/HistoryCard.types';

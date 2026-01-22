@@ -14,14 +14,20 @@ import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useLocalSearchParams, useRouter } from 'expo-router';
-import { ArrowLeft, GripVertical, Plus } from 'lucide-react-native';
+import { ArrowLeft, GripVertical, History, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
 import type { Item, ShoppingItem } from '@domain/item';
 import type { Section } from '@domain/section';
-import { useItemStoreWithDI, useSectionStoreWithDI } from '@presentation/hooks';
+import type { CreatePurchaseHistoryInput } from '@domain/purchase-history';
+import {
+  useItemStoreWithDI,
+  usePurchaseHistoryStoreWithDI,
+  useSectionStoreWithDI,
+} from '@presentation/hooks';
 import { FAB, SectionAddButton } from '@design-system/atoms';
 import {
+  CompleteButton,
   ConfirmationDialog,
   EmptyState,
   SectionHeader,
@@ -81,8 +87,10 @@ export function ShoppingListScreen(): ReactElement {
   const { listRepository } = useAppDependencies();
   const itemStore = useItemStoreWithDI();
   const sectionStore = useSectionStoreWithDI();
+  const purchaseHistoryStore = usePurchaseHistoryStoreWithDI();
   const { items, isLoading, loadByListId, clearItems, toggleChecked, updateItem, deleteItem } =
     itemStore();
+  const { createEntry: createHistoryEntry } = purchaseHistoryStore();
   const {
     sectionsByListId,
     expandedSections,
@@ -102,6 +110,10 @@ export function ShoppingListScreen(): ReactElement {
   // Delete confirmation dialog state
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
+
+  // Complete purchase state
+  const [isCompletingPurchase, setIsCompletingPurchase] = useState(false);
+  const [completeDialogVisible, setCompleteDialogVisible] = useState(false);
 
   useEffect(() => {
     if (listId) {
@@ -194,6 +206,68 @@ export function ShoppingListScreen(): ReactElement {
     setDeleteDialogVisible(false);
     setItemToDelete(null);
   }, []);
+
+  const handleCompletePurchasePress = useCallback(() => {
+    setCompleteDialogVisible(true);
+  }, []);
+
+  const handleCompletePurchaseConfirm = useCallback(async () => {
+    if (!listId || totals.checkedCount === 0) return;
+
+    setCompleteDialogVisible(false);
+    setIsCompletingPurchase(true);
+
+    try {
+      // Create snapshot of checked items for history
+      const checkedItems = shoppingItems.filter((item) => item.isChecked);
+      const historyInput: CreatePurchaseHistoryInput = {
+        listId,
+        purchaseDate: new Date(),
+        totalValue: totals.total,
+        sections: sections.map((section) => ({
+          originalSectionId: section.id,
+          name: section.name,
+          sortOrder: section.sortOrder,
+        })),
+        items: checkedItems.map((item) => ({
+          originalItemId: item.id,
+          sectionId: item.sectionId,
+          title: item.title,
+          quantity: item.quantity,
+          price: item.price,
+          sortOrder: item.sortOrder,
+          wasChecked: true,
+        })),
+      };
+
+      const entry = await createHistoryEntry(historyInput);
+
+      if (entry) {
+        console.debug('[ShoppingListScreen] Purchase history created:', entry.id);
+
+        // Reset checked state for all checked items
+        for (const item of checkedItems) {
+          await updateItem(item.id, 'shopping', { isChecked: false });
+        }
+
+        console.debug('[ShoppingListScreen] Item markings reset');
+      }
+    } catch (error) {
+      console.error('[ShoppingListScreen] Failed to complete purchase:', error);
+    } finally {
+      setIsCompletingPurchase(false);
+    }
+  }, [listId, totals, shoppingItems, sections, createHistoryEntry, updateItem]);
+
+  const handleCompletePurchaseCancel = useCallback(() => {
+    setCompleteDialogVisible(false);
+  }, []);
+
+  const handleViewHistory = useCallback(() => {
+    if (listId) {
+      router.push(`/history/${listId}`);
+    }
+  }, [listId, router]);
 
   const handleAddItem = useCallback(() => {
     console.debug('[ShoppingListScreen] Add item');
@@ -409,6 +483,11 @@ export function ShoppingListScreen(): ReactElement {
   const rightActions: NavbarAction[] = useMemo(
     () => [
       {
+        icon: History,
+        onPress: handleViewHistory,
+        label: t('shopping.viewHistory', 'Ver histórico'),
+      },
+      {
         icon: GripVertical,
         onPress: handleToggleReorderMode,
         label: t('shopping.reorder', 'Reordenar'),
@@ -416,7 +495,7 @@ export function ShoppingListScreen(): ReactElement {
         isActive: isReorderMode,
       },
     ],
-    [handleToggleReorderMode, isReorderMode, t],
+    [handleViewHistory, handleToggleReorderMode, isReorderMode, t],
   );
 
   return (
@@ -436,13 +515,26 @@ export function ShoppingListScreen(): ReactElement {
         />
       )}
 
-      <TotalBar
-        total={totals.total}
-        checkedCount={totals.checkedCount}
-        totalCount={totals.totalCount}
-        itemsWithoutPrice={totals.itemsWithoutPrice}
-        testID="shopping-total-bar"
-      />
+      <View style={styles.bottomBarContainer}>
+        <TotalBar
+          total={totals.total}
+          checkedCount={totals.checkedCount}
+          totalCount={totals.totalCount}
+          itemsWithoutPrice={totals.itemsWithoutPrice}
+          testID="shopping-total-bar"
+        />
+        {totals.checkedCount > 0 && (
+          <View style={styles.completeButtonContainer}>
+            <CompleteButton
+              onPress={handleCompletePurchasePress}
+              total={totals.total}
+              checkedCount={totals.checkedCount}
+              isLoading={isCompletingPurchase}
+              testID="shopping-complete-button"
+            />
+          </View>
+        )}
+      </View>
 
       <View style={styles.fabContainer}>
         <FAB
@@ -482,6 +574,25 @@ export function ShoppingListScreen(): ReactElement {
         onCancel={handleDeleteCancel}
         testID="shopping-delete-dialog"
       />
+
+      {/* Complete Purchase Confirmation Dialog */}
+      <ConfirmationDialog
+        visible={completeDialogVisible}
+        title={t('shopping.completePurchase.title', 'Concluir compra?')}
+        description={t(
+          'shopping.completePurchase.message',
+          'Os itens marcados serão salvos no histórico e desmarcados da lista.',
+        )}
+        confirmButton={{
+          label: t('shopping.completePurchase.confirm', 'Concluir'),
+        }}
+        cancelButton={{
+          label: t('common.cancel', 'Cancelar'),
+        }}
+        onConfirm={handleCompletePurchaseConfirm}
+        onCancel={handleCompletePurchaseCancel}
+        testID="shopping-complete-dialog"
+      />
     </View>
   );
 }
@@ -502,7 +613,7 @@ const createStyles = (
     listContent: {
       paddingHorizontal: theme.spacing.md,
       paddingVertical: theme.spacing.md,
-      paddingBottom: 120,
+      paddingBottom: 200,
     },
     sectionHeaderContainer: {
       marginTop: theme.spacing.md,
@@ -524,6 +635,16 @@ const createStyles = (
     fabContainer: {
       position: 'absolute',
       right: theme.spacing.lg,
-      bottom: 80,
+      bottom: 160,
+    },
+    bottomBarContainer: {
+      position: 'absolute',
+      bottom: 0,
+      left: 0,
+      right: 0,
+    },
+    completeButtonContainer: {
+      paddingHorizontal: theme.spacing.lg,
+      paddingBottom: theme.spacing.lg,
     },
   });
