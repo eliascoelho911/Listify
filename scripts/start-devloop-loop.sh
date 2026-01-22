@@ -48,3 +48,8 @@ echo "Max iterations: $MAX_ITERATIONS"
 echo "Completion promise: ALL_TASKS_COMPLETED"
 echo ""
 echo "Orchestration prompt loaded from .claude/devloop-orchestration.md"
+echo ""
+echo "=== BEGIN ORCHESTRATION PROMPT ==="
+cat .claude/devloop-orchestration.md
+echo ""
+echo "=== EXECUTE THE PROMPT ABOVE ==="

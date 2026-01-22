@@ -118,25 +118,16 @@ This script:
 1. Reads the orchestration prompt from `.claude/devloop-orchestration.md`
 2. Creates `.claude/ralph-loop.local.md` with proper YAML frontmatter and the prompt content
 3. Sets the completion promise to `ALL_TASKS_COMPLETED`
+4. Outputs the orchestration prompt between markers for immediate execution
 
 **Note**: The orchestration prompt is stored in `.claude/devloop-orchestration.md` to avoid markdown parsing issues with shell argument passing.
 
-## Step 5: Confirm Loop Started
+## Step 5: Execute First Iteration (CRITICAL)
 
-Output a confirmation message:
+**DO NOT** end your response after Step 4. The script outputs the orchestration prompt - you MUST execute it immediately.
 
-```
-DevLoop started with:
-- Max impl cycles: <maxImplCycles> (0 = unlimited)
-- Max iterations: <maxIterations>
-- Feature directory: <featureDir>
-- Current phase: <phase>
-- Current cycle: <cycle>
+1. Read the prompt output between `=== BEGIN ORCHESTRATION PROMPT ===` and `=== EXECUTE THE PROMPT ABOVE ===`
+2. Follow the orchestration prompt instructions (Phase Routing, etc.)
+3. When the phase completes, the ralph-loop stop hook will handle continuation
 
-The loop will automatically cycle between:
-- Phase "impl": Implementation (/speckit.implement + /commit)
-- Phase "review": Review & Merge (/review + fixes + /commit + merge)
-- Phase "error": Error resolution (only when errors occur)
-
-To cancel: /devloop.cancel or /cancel-ralph
-```
+**IMPORTANT**: Your response must continue with the orchestration prompt execution. Do not stop here.
