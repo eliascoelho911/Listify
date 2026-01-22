@@ -18,6 +18,13 @@ import type { ListType } from '@domain/list';
 import type { ListSuggestion } from '@design-system/molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
 import type { SelectableListType } from '@design-system/molecules/MiniCategorySelector/MiniCategorySelector.types';
 
+/**
+ * Input mode for the smart input
+ * - 'item': Create items (default behavior with @mention, :section, price parsing)
+ * - 'list': Create lists (simple name input with category selector)
+ */
+export type SmartInputMode = 'item' | 'list';
+
 export interface UseSmartInputOptions {
   /** Parser service instance */
   parser: SmartInputParser;
@@ -25,7 +32,13 @@ export interface UseSmartInputOptions {
   /** Category inference service instance */
   categoryInference: CategoryInference;
 
-  /** Callback when user submits a parsed input */
+  /**
+   * Input mode
+   * @default 'item'
+   */
+  mode?: SmartInputMode;
+
+  /** Callback when user submits a parsed input (item mode) */
   onSubmit?: (parsed: ParsedInput) => void;
 
   /** List of available lists for suggestions */
@@ -62,6 +75,9 @@ export interface PendingListCreation {
 }
 
 export interface UseSmartInputReturn {
+  /** Current input mode */
+  mode: SmartInputMode;
+
   /** Current input value */
   value: string;
 
@@ -104,7 +120,7 @@ export interface UseSmartInputReturn {
   /** Pending list creation (for category selector) */
   pendingListCreation: PendingListCreation | null;
 
-  /** Callback when user selects a category in the selector */
+  /** Callback when user selects a category in the selector (item mode) or directly creates list (list mode) */
   confirmCategorySelection: (type: SelectableListType) => void;
 
   /** Cancel category selection */
@@ -127,6 +143,7 @@ const EMPTY_PARSED: ParsedInput = {
 export function useSmartInput({
   parser,
   categoryInference,
+  mode = 'item',
   onSubmit,
   availableLists = [],
   onCreateList,
@@ -139,8 +156,10 @@ export function useSmartInput({
   const [visible, setVisible] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-  // State for category selection flow
+  // State for category selection flow (item mode only)
   const [pendingListCreation, setPendingListCreation] = useState<PendingListCreation | null>(null);
+
+  const isListMode = mode === 'list';
 
   // Parse context for the parser
   const parseContext = useMemo(
@@ -282,7 +301,28 @@ export function useSmartInput({
   // Confirm category selection from the selector
   const confirmCategorySelection = useCallback(
     (type: SelectableListType) => {
-      if (!pendingListCreation || !onCreateList) {
+      if (!onCreateList) {
+        return;
+      }
+
+      // In list mode, use the current value as the list name
+      if (isListMode) {
+        const listName = value.trim();
+        if (!listName) {
+          return;
+        }
+
+        // Create the list with the selected type
+        onCreateList(listName, type);
+
+        // Reset and close modal
+        setValue('');
+        setVisible(false);
+        return;
+      }
+
+      // In item mode, use the pending list creation name
+      if (!pendingListCreation) {
         return;
       }
 
@@ -297,7 +337,7 @@ export function useSmartInput({
       // Clear pending state
       setPendingListCreation(null);
     },
-    [pendingListCreation, onCreateList, value],
+    [isListMode, value, pendingListCreation, onCreateList],
   );
 
   // Cancel category selection
@@ -311,6 +351,7 @@ export function useSmartInput({
   }, [initialValue]);
 
   return {
+    mode,
     value,
     setValue,
     parsed,

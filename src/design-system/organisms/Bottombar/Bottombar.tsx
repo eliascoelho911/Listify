@@ -4,7 +4,7 @@
  * Custom bottom navigation bar with FAB in the center
  */
 
-import React, { type ReactElement } from 'react';
+import React, { type ReactElement, useCallback } from 'react';
 import { View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { LucideIcon } from 'lucide-react-native';
@@ -14,7 +14,7 @@ import { FAB } from '../../atoms/FAB/FAB';
 import { NavigationTab } from '../../atoms/NavigationTab/NavigationTab';
 import { useTheme } from '../../theme';
 import { createBottombarStyles } from './Bottombar.styles';
-import type { BottombarProps } from './Bottombar.types';
+import type { BottombarProps, BottombarTabName } from './Bottombar.types';
 
 const TAB_ICONS: Record<string, LucideIcon> = {
   index: Inbox,
@@ -43,6 +43,14 @@ export function Bottombar({
   const routes = state.routes;
   const leftRoutes = routes.slice(0, 2);
   const rightRoutes = routes.slice(2, 4);
+
+  // Get the current tab name
+  const currentTabName = routes[state.index]?.name as BottombarTabName;
+
+  // Handle FAB press with current tab context
+  const handleFABPress = useCallback(() => {
+    onFABPress?.(currentTabName);
+  }, [onFABPress, currentTabName]);
 
   const renderTab = (route: (typeof routes)[number], index: number): ReactElement => {
     const { options } = descriptors[route.key];
@@ -95,7 +103,12 @@ export function Bottombar({
       <View style={styles.leftTabs}>{leftRoutes.map((route, idx) => renderTab(route, idx))}</View>
 
       <View style={styles.fabContainer}>
-        <FAB icon={Plus} onPress={onFABPress} accessibilityLabel="Add new item" testID="fab-add" />
+        <FAB
+          icon={Plus}
+          onPress={handleFABPress}
+          accessibilityLabel={currentTabName === 'lists' ? 'Add new list' : 'Add new item'}
+          testID="fab-add"
+        />
       </View>
 
       <View style={styles.rightTabs}>

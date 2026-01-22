@@ -17,11 +17,11 @@ export type { ShoppingListCardProps } from './ShoppingListCard/ShoppingListCard.
 
 // Bottombar
 export { Bottombar } from './Bottombar/Bottombar';
-export type { BottombarProps } from './Bottombar/Bottombar.types';
+export type { BottombarProps, BottombarTabName } from './Bottombar/Bottombar.types';
 
 // SmartInputModal
 export { SmartInputModal } from './SmartInputModal/SmartInputModal';
-export type { SmartInputModalProps } from './SmartInputModal/SmartInputModal.types';
+export type { SmartInputModalProps, SmartInputMode } from './SmartInputModal/SmartInputModal.types';
 
 // InfiniteScrollList
 export { InfiniteScrollList } from './InfiniteScrollList/InfiniteScrollList';

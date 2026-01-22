@@ -13,6 +13,8 @@ import type { ParsedInput } from '@domain/common';
 import type { CreateItemInput, ItemType } from '@domain/item';
 import type { List, ListType } from '@domain/list';
 import { useItemStoreWithDI, useSmartInput } from '@presentation/hooks';
+import type { SelectableListType } from '@design-system/molecules/MiniCategorySelector/MiniCategorySelector.types';
+import type { BottombarTabName, SmartInputMode } from '@design-system/organisms';
 import { Bottombar, SmartInputModal } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
@@ -44,6 +46,9 @@ export default function TabsLayout(): ReactElement {
 
   // Item store for creating items
   const itemStore = useItemStoreWithDI();
+
+  // Smart input mode - 'item' for creating items, 'list' for creating lists
+  const [smartInputMode, setSmartInputMode] = useState<SmartInputMode>('item');
 
   // Local state for available lists
   const [availableLists, setAvailableLists] = useState<
@@ -210,10 +215,41 @@ export default function TabsLayout(): ReactElement {
     availableLists,
   });
 
+  // Handle FAB press - determines mode based on current tab
+  const handleFABPress = useCallback(
+    (currentTab: BottombarTabName) => {
+      const mode: SmartInputMode = currentTab === 'lists' ? 'list' : 'item';
+      setSmartInputMode(mode);
+      open();
+    },
+    [open],
+  );
+
+  // Handle category selection in list mode - creates the list
+  const handleListModeSelectCategory = useCallback(
+    async (type: SelectableListType) => {
+      const listName = value.trim();
+      if (!listName) {
+        return;
+      }
+
+      await handleCreateList(listName, type);
+      setValue('');
+      close();
+    },
+    [value, handleCreateList, setValue, close],
+  );
+
+  // Handle modal close - reset mode to item
+  const handleModalClose = useCallback(() => {
+    close();
+    setSmartInputMode('item');
+  }, [close]);
+
   return (
     <>
       <Tabs
-        tabBar={(props) => <Bottombar {...props} onFABPress={open} />}
+        tabBar={(props) => <Bottombar {...props} onFABPress={handleFABPress} />}
         screenOptions={{
           headerShown: false,
           tabBarStyle: {
@@ -251,8 +287,9 @@ export default function TabsLayout(): ReactElement {
       </Tabs>
 
       <SmartInputModal
+        mode={smartInputMode}
         visible={visible}
-        onClose={close}
+        onClose={handleModalClose}
         onSubmit={submit}
         value={value}
         onChangeText={setValue}
@@ -265,7 +302,9 @@ export default function TabsLayout(): ReactElement {
         showCategorySelector={showCategorySelector}
         pendingListName={pendingListCreation?.name}
         inferredCategoryType={pendingListCreation?.inferredType}
-        onSelectCategory={confirmCategorySelection}
+        onSelectCategory={
+          smartInputMode === 'list' ? handleListModeSelectCategory : confirmCategorySelection
+        }
         onCancelCategorySelection={cancelCategorySelection}
       />
     </>

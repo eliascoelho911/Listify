@@ -30,6 +30,7 @@ import { createSmartInputModalStyles } from './SmartInputModal.styles';
 import type { SmartInputModalProps } from './SmartInputModal.types';
 
 export function SmartInputModal({
+  mode = 'item',
   visible,
   onClose,
   onSubmit,
@@ -40,7 +41,7 @@ export function SmartInputModal({
   showSuggestions,
   onSelectList,
   onCreateList,
-  placeholder = 'Digite para adicionar...',
+  placeholder,
   isLoading = false,
   style,
   showCategorySelector = false,
@@ -57,7 +58,21 @@ export function SmartInputModal({
   const inputRef = useRef<TextInput>(null);
   const [isFocused, setIsFocused] = useState(false);
 
+  // Determine placeholder based on mode
+  const effectivePlaceholder =
+    placeholder ?? (mode === 'list' ? 'Nome da lista...' : 'Digite para adicionar...');
+
+  // In list mode, check if we have a valid list name
+  const isListMode = mode === 'list';
+  const listNameValue = value.trim();
+  const hasValidListName = isListMode && listNameValue.length > 0;
+
   const handleSubmit = useCallback(() => {
+    // In list mode, submit is handled via category selection
+    if (isListMode) {
+      return;
+    }
+
     if (!parsed.title.trim() && !parsed.listName) {
       return;
     }
@@ -70,7 +85,7 @@ export function SmartInputModal({
       onClose();
     }
     // In keepOpen mode, keep focus on input for continuous creation
-  }, [parsed, onSubmit, onChangeText, keepOpen, onClose]);
+  }, [isListMode, parsed, onSubmit, onChangeText, keepOpen, onClose]);
 
   const handleOverlayPress = useCallback(() => {
     Keyboard.dismiss();
@@ -81,7 +96,9 @@ export function SmartInputModal({
     inputRef.current?.focus();
   }, []);
 
-  const canSubmit = parsed.title.trim().length > 0 || !!parsed.listName;
+  // In item mode: can submit if has title or list name
+  // In list mode: submit is via category selector, so disable the send button
+  const canSubmit = !isListMode && (parsed.title.trim().length > 0 || !!parsed.listName);
 
   // Convert parsed result to ParsedElement array for ParsePreview
   const previewElements = useMemo((): ParsedElement[] => {
@@ -148,8 +165,8 @@ export function SmartInputModal({
           >
             <View style={styles.handle} />
 
-            {/* Suggestions dropdown positioned above input */}
-            {showSuggestions && !showCategorySelector && (
+            {/* Item mode: Suggestions dropdown positioned above input */}
+            {!isListMode && showSuggestions && !showCategorySelector && (
               <View style={styles.suggestionsContainer}>
                 <ListSuggestionDropdown
                   suggestions={listSuggestions}
@@ -169,45 +186,48 @@ export function SmartInputModal({
                 style={styles.input}
                 value={value}
                 onChangeText={onChangeText}
-                placeholder={placeholder}
+                placeholder={effectivePlaceholder}
                 placeholderTextColor={theme.colors.mutedForeground}
                 autoFocus
-                multiline
-                returnKeyType="send"
+                multiline={!isListMode}
+                returnKeyType={isListMode ? 'done' : 'send'}
                 onSubmitEditing={handleSubmit}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 blurOnSubmit={false}
                 testID="smart-input-field"
               />
-              <Pressable
-                style={[styles.submitButton, !canSubmit && styles.submitButtonDisabled]}
-                onPress={handleSubmit}
-                disabled={!canSubmit || isLoading}
-                accessibilityRole="button"
-                accessibilityLabel="Submit"
-                testID="smart-input-submit"
-              >
-                <Icon icon={Send} size="sm" color={theme.colors.primaryForeground} />
-              </Pressable>
+              {/* Hide send button in list mode - submission is via category selection */}
+              {!isListMode && (
+                <Pressable
+                  style={[styles.submitButton, !canSubmit && styles.submitButtonDisabled]}
+                  onPress={handleSubmit}
+                  disabled={!canSubmit || isLoading}
+                  accessibilityRole="button"
+                  accessibilityLabel="Submit"
+                  testID="smart-input-submit"
+                >
+                  <Icon icon={Send} size="sm" color={theme.colors.primaryForeground} />
+                </Pressable>
+              )}
             </View>
 
-            {/* Inline highlight preview (shows parsed text with colored segments) */}
-            {value.length > 0 && parsed.highlights.length > 0 && (
+            {/* Item mode: Inline highlight preview (shows parsed text with colored segments) */}
+            {!isListMode && value.length > 0 && parsed.highlights.length > 0 && (
               <View style={styles.highlightContainer}>
                 <InlineHighlight text={value} highlights={parsed.highlights} />
               </View>
             )}
 
-            {/* Parsed elements preview (chips) */}
-            {previewElements.length > 0 && !showCategorySelector && (
+            {/* Item mode: Parsed elements preview (chips) */}
+            {!isListMode && previewElements.length > 0 && !showCategorySelector && (
               <View style={styles.previewContainer}>
                 <ParsePreview elements={previewElements} />
               </View>
             )}
 
-            {/* Category selector for new list creation */}
-            {showCategorySelector && pendingListName && onSelectCategory && (
+            {/* Item mode: Category selector for new list creation via @mention */}
+            {!isListMode && showCategorySelector && pendingListName && onSelectCategory && (
               <View style={styles.categorySelectorContainer}>
                 <View style={styles.categorySelectorHeader}>
                   <View>
@@ -224,6 +244,22 @@ export function SmartInputModal({
                       <Icon icon={X} size="sm" color={theme.colors.mutedForeground} />
                     </Pressable>
                   )}
+                </View>
+                <MiniCategorySelector
+                  onSelect={onSelectCategory}
+                  inferredType={inferredCategoryType}
+                />
+              </View>
+            )}
+
+            {/* List mode: Category selector shown directly when there's a valid list name */}
+            {isListMode && hasValidListName && onSelectCategory && (
+              <View style={styles.categorySelectorContainer}>
+                <View style={styles.categorySelectorHeader}>
+                  <View>
+                    <Text style={styles.categorySelectorTitle}>Selecione a categoria:</Text>
+                    <Text style={styles.categorySelectorListName}>{listNameValue}</Text>
+                  </View>
                 </View>
                 <MiniCategorySelector
                   onSelect={onSelectCategory}
