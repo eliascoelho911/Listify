@@ -34,4 +34,5 @@ export type AppDependencies = {
   smartInputParser: SmartInputParser;
   categoryInference: CategoryInference;
   movieProvider: MediaProviderRepository;
+  bookProvider: MediaProviderRepository;
 };

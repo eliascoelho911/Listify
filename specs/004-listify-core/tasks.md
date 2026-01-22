@@ -531,10 +531,10 @@
 
 ### Implementação
 
-- [ ] T197 [US8.2] Implementar GoogleBooksProviderService em src/infra/services/GoogleBooksProviderService.ts
-- [ ] T198 [US8.2] Criar variante BookCard de MediaCard
-- [ ] T199 [US8.2] Integrar busca inline no SmartInputModal para listas de livros
-- [ ] T200 [US8.2] Implementar marcação "lido" para livros
+- [X] T197 [US8.2] Implementar GoogleBooksProviderService em src/infra/services/GoogleBooksProviderService.ts
+- [X] T198 [US8.2] Criar variante BookCard de MediaCard
+- [X] T199 [US8.2] Integrar busca inline no SmartInputModal para listas de livros
+- [X] T200 [US8.2] Implementar marcação "lido" para livros
 
 **Checkpoint**: Listas de livros com enriquecimento Google Books funcional
 

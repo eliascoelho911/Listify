@@ -14,7 +14,13 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
 import { createMediaCardStyles } from './MediaCard.styles';
-import type { MediaCardProps, MediaCardType, MediaItem, MediaTypeConfig } from './MediaCard.types';
+import type {
+  MediaCardProps,
+  MediaCardType,
+  MediaItem,
+  MediaTypeConfig,
+} from './MediaCard.types';
+import type { BookMetadata, GameMetadata, MovieMetadata } from '@domain/item';
 
 const MEDIA_TYPE_CONFIG: Record<MediaCardType, MediaTypeConfig> = {
   movie: {
@@ -63,6 +69,21 @@ export function MediaCard({
   const releaseDate = metadata?.releaseDate;
   const description = metadata?.description;
   const year = releaseDate ? new Date(releaseDate).getFullYear() : null;
+
+  // Extract type-specific metadata
+  const authors =
+    mediaType === 'book' ? (metadata as BookMetadata | undefined)?.authors : undefined;
+  const cast = mediaType === 'movie' ? (metadata as MovieMetadata | undefined)?.cast : undefined;
+  const developer =
+    mediaType === 'game' ? (metadata as GameMetadata | undefined)?.developer : undefined;
+
+  // Get secondary info based on media type
+  const secondaryInfo =
+    authors?.length
+      ? authors.slice(0, 2).join(', ')
+      : cast?.length
+        ? cast.slice(0, 2).join(', ')
+        : developer ?? null;
 
   const handlePress = useCallback(() => {
     if (!disabled && onPress) {
@@ -124,6 +145,12 @@ export function MediaCard({
             </View>
           )}
         </View>
+
+        {secondaryInfo && (
+          <Text style={styles.secondaryInfo} numberOfLines={1}>
+            {secondaryInfo}
+          </Text>
+        )}
 
         {description && (
           <Text style={styles.description} numberOfLines={2}>

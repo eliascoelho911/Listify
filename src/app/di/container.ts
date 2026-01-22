@@ -15,6 +15,7 @@ import {
 } from '@infra/repositories';
 import {
   CategoryInferenceService,
+  GoogleBooksProviderService,
   SmartInputParserService,
   TMDbProviderService,
 } from '@infra/services';
@@ -42,6 +43,7 @@ export function buildDependenciesSync(db: DrizzleDB): AppDependencies {
   const smartInputParser = new SmartInputParserService();
   const categoryInference = new CategoryInferenceService();
   const movieProvider = new TMDbProviderService();
+  const bookProvider = new GoogleBooksProviderService();
 
   return {
     db,
@@ -60,5 +62,6 @@ export function buildDependenciesSync(db: DrizzleDB): AppDependencies {
     smartInputParser,
     categoryInference,
     movieProvider,
+    bookProvider,
   };
 }
