@@ -58,10 +58,13 @@ export function PurchaseHistoryScreen(): ReactElement {
     router.back();
   }, [router]);
 
-  const handleEntryPress = useCallback((entry: HistoryEntry) => {
-    console.debug('[PurchaseHistoryScreen] Entry pressed:', entry.id);
-    // Navigate to purchase detail screen if we implement it later
-  }, []);
+  const handleEntryPress = useCallback(
+    (entry: HistoryEntry) => {
+      console.debug('[PurchaseHistoryScreen] Entry pressed:', entry.id);
+      router.push(`/history/${listId}/${entry.id}`);
+    },
+    [router, listId],
+  );
 
   const navbarActions: NavbarAction[] = [];
 

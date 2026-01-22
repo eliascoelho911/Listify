@@ -87,6 +87,16 @@ jest.mock('react-i18next', () => ({
         'shopping.total': 'Total',
         'shopping.progress': `${options?.checked}/${options?.total} items`,
         'shopping.itemsWithoutPrice': `(${options?.count} without price)`,
+        // Shopping history translations
+        'shopping.history.selectAll': 'Selecionar tudo',
+        'shopping.history.deselectAll': 'Desmarcar tudo',
+        'shopping.history.selectedCount': `${options?.count} selecionados`,
+        'shopping.history.alreadyInList': 'Na lista',
+        'shopping.history.empty': 'Nenhum item no histórico',
+        'shopping.history.noItems': 'Nenhum item no histórico',
+        'shopping.history.noPastPurchases': 'Nenhuma compra anterior encontrada',
+        'shopping.history.selectItems': 'Selecione itens para adicionar',
+        'shopping.history.addSelectedItems': 'Adicionar selecionados',
       };
       return translations[key] || key;
     },

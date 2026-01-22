@@ -76,6 +76,28 @@
     "progress": "{{checked}}/{{total}} items",
     "itemsWithoutPrice": "({{count}} without price)",
     "itemsWithoutPrice_one": "(1 item without price)",
-    "itemsWithoutPrice_other": "({{count}} items without price)"
+    "itemsWithoutPrice_other": "({{count}} items without price)",
+    "history": {
+      "selectedCount": "{{count}} selected",
+      "selectedCount_zero": "None selected",
+      "selectedCount_one": "1 selected",
+      "selectedCount_other": "{{count}} selected",
+      "selectAll": "Select all",
+      "deselectAll": "Deselect all",
+      "alreadyInList": "In list",
+      "noItems": "No items in this purchase"
+    }
+  },
+  "history": {
+    "title": "History",
+    "empty": {
+      "title": "No history",
+      "description": "Your completed purchases will appear here"
+    },
+    "detail": {
+      "title": "Purchase",
+      "buyAllAgain": "Buy all again",
+      "addSelected": "Add selected"
+    }
   }
 }
