@@ -20,7 +20,6 @@ export const createSectionAddButtonStyles = (theme: Theme, disabled: boolean) =>
       borderWidth: 1,
       borderStyle: 'dashed',
       borderColor: theme.colors.border,
-      backgroundColor: 'transparent',
       opacity: disabled ? 0.5 : 1,
     },
     pressed: {

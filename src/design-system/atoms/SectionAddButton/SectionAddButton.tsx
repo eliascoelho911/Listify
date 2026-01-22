@@ -5,13 +5,13 @@
  */
 
 import React, { type ReactElement, useCallback } from 'react';
-import { Pressable, View } from 'react-native';
 import { useTranslation } from 'react-i18next';
+import { Pressable, View } from 'react-native';
 import { FolderPlus } from 'lucide-react-native';
 
+import { useTheme } from '../../theme';
 import { Icon } from '../Icon/Icon';
 import { Text } from '../Text/Text';
-import { useTheme } from '../../theme';
 import { createSectionAddButtonStyles } from './SectionAddButton.styles';
 import type { SectionAddButtonProps } from './SectionAddButton.types';
 

@@ -13,7 +13,7 @@ export { useInfiniteScroll } from './useInfiniteScroll';
 export { useItemStoreWithDI } from './useItemStoreWithDI';
 export { useListStoreWithDI } from './useListStoreWithDI';
 export { useSearchStoreWithDI } from './useSearchStoreWithDI';
+export { useSectionStoreWithDI } from './useSectionStoreWithDI';
 export type { SmartInputMode, UseSmartInputOptions, UseSmartInputReturn } from './useSmartInput';
 export { useSmartInput } from './useSmartInput';
-export { useSectionStoreWithDI } from './useSectionStoreWithDI';
 export { useUserPreferencesStoreWithDI } from './useUserPreferencesStoreWithDI';

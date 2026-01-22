@@ -2,7 +2,6 @@ import type {
   BookItem,
   BookMetadata,
   CreateItemInput,
-  ExternalMetadata,
   GameItem,
   GameMetadata,
   Item,

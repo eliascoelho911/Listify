@@ -59,9 +59,7 @@ export function SectionHeader({
         <Text style={styles.name} numberOfLines={1}>
           {name}
         </Text>
-        {itemCount !== undefined && (
-          <Text style={styles.itemCount}>({itemCount})</Text>
-        )}
+        {itemCount !== undefined && <Text style={styles.itemCount}>({itemCount})</Text>}
       </View>
 
       {showAddButton && (

@@ -181,7 +181,9 @@ export function createSectionStore(deps: SectionStoreDependencies): SectionStore
         }
         set({ expandedSections: newExpanded });
 
-        console.debug(`[useSectionStore] Loaded ${sortedSections.length} sections for list ${listId}`);
+        console.debug(
+          `[useSectionStore] Loaded ${sortedSections.length} sections for list ${listId}`,
+        );
       } catch (error) {
         set({ isLoading: false, error: 'Failed to load sections' });
         console.error('[useSectionStore] Failed to load sections:', error);

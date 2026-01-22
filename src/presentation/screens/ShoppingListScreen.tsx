@@ -20,12 +20,7 @@ import type { ShoppingItem } from '@domain/item';
 import type { Section } from '@domain/section';
 import { useItemStoreWithDI, useSectionStoreWithDI } from '@presentation/hooks';
 import { FAB, SectionAddButton } from '@design-system/atoms';
-import {
-  EmptyState,
-  SectionHeader,
-  ShoppingItemCard,
-  TotalBar,
-} from '@design-system/molecules';
+import { EmptyState, SectionHeader, ShoppingItemCard, TotalBar } from '@design-system/molecules';
 import type { NavbarAction } from '@design-system/organisms';
 import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
@@ -35,12 +30,6 @@ interface TotalCalculation {
   checkedCount: number;
   totalCount: number;
   itemsWithoutPrice: number;
-}
-
-/** Represents a section with its items for rendering */
-interface SectionWithItems {
-  section: Section | null; // null for unsorted items
-  items: ShoppingItem[];
 }
 
 /** Type for items in the flat list - can be section header, item, or add button */
@@ -179,14 +168,11 @@ export function ShoppingListScreen(): ReactElement {
     }
   }, []);
 
-  const handleAddItemToSection = useCallback(
-    (section: Section) => {
-      console.debug('[ShoppingListScreen] Add item to section:', section.id, section.name);
-      // TODO: Open smart input with section pre-selected
-      // The smart input would receive: `@${listName}:${section.name}` prefix
-    },
-    [],
-  );
+  const handleAddItemToSection = useCallback((section: Section) => {
+    console.debug('[ShoppingListScreen] Add item to section:', section.id, section.name);
+    // TODO: Open smart input with section pre-selected
+    // The smart input would receive: `@${listName}:${section.name}` prefix
+  }, []);
 
   const shoppingItems = useMemo(
     () =>
@@ -197,7 +183,7 @@ export function ShoppingListScreen(): ReactElement {
   );
 
   const sections = useMemo(
-    () => (listId ? sectionsByListId[listId] ?? [] : []),
+    () => (listId ? (sectionsByListId[listId] ?? []) : []),
     [listId, sectionsByListId],
   );
 
@@ -266,9 +252,7 @@ export function ShoppingListScreen(): ReactElement {
           return (
             <View style={styles.sectionHeaderContainer}>
               <SectionHeader
-                name={
-                  listItem.section?.name ?? t('sections.unsorted', 'Sem seção')
-                }
+                name={listItem.section?.name ?? t('sections.unsorted', 'Sem seção')}
                 itemCount={listItem.itemCount}
                 expanded={isExpanded}
                 onToggleExpand={
@@ -304,10 +288,7 @@ export function ShoppingListScreen(): ReactElement {
         case 'add-section-button':
           return (
             <View style={styles.addSectionContainer}>
-              <SectionAddButton
-                onPress={handleAddSection}
-                testID="add-section-button"
-              />
+              <SectionAddButton onPress={handleAddSection} testID="add-section-button" />
             </View>
           );
         default:

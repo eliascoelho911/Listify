@@ -2,12 +2,12 @@
  * Checkbox Atom Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Text } from '../Text/Text';
 import { ThemeProvider } from '../../theme';
+import { Text } from '../Text/Text';
 import { Checkbox } from './Checkbox';
 
 const meta: Meta<typeof Checkbox> = {

@@ -459,7 +459,7 @@ export function ListsScreen(): ReactElement {
             onCancel={handleCloseEditModal}
             isLoading={editModal.isUpdating}
             error={editModal.error}
-            disableTypeSelection={true}
+            disableTypeSelection
             testID="edit-list-form"
           />
         </View>

@@ -4,9 +4,9 @@
 
 import '../../../app/i18n';
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { ThemeProvider } from '../../theme';
 import { TotalBar } from './TotalBar';

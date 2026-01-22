@@ -2,12 +2,12 @@
  * PriceBadge Atom Stories
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
-import { Text } from '../Text/Text';
 import { ThemeProvider } from '../../theme';
+import { Text } from '../Text/Text';
 import { PriceBadge } from './PriceBadge';
 
 const meta: Meta<typeof PriceBadge> = {
