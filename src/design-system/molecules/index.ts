@@ -152,6 +152,7 @@ export type {
 export { MediaSearchDropdown } from './MediaSearchDropdown/MediaSearchDropdown';
 export type {
   MediaSearchDropdownProps,
+  MediaSearchResult,
   MediaType,
 } from './MediaSearchDropdown/MediaSearchDropdown.types';
 

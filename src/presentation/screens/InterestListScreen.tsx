@@ -89,7 +89,6 @@ export function InterestListScreen(): ReactElement {
   const { items, isLoading, loadByListId, clearItems, toggleChecked, deleteItem } = itemStore();
 
   const [listName, setListName] = useState<string>('');
-  const [listType, setListType] = useState<ListType | null>(null);
   const [itemType, setItemType] = useState<InterestItemType | null>(null);
 
   // Delete confirmation dialog state
@@ -101,7 +100,6 @@ export function InterestListScreen(): ReactElement {
       listRepository.getById(listId).then((list) => {
         if (list) {
           setListName(list.name);
-          setListType(list.listType);
           const type = getItemType(list.listType);
           setItemType(type);
           if (type) {

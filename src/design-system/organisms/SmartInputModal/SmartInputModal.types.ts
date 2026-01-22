@@ -4,10 +4,13 @@
 
 import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
-import type { MediaSearchResult, ParsedInput } from '@domain/common';
+import type { ParsedInput } from '@domain/common';
 
 import type { ListSuggestion } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown.types';
-import type { MediaType } from '../../molecules/MediaSearchDropdown/MediaSearchDropdown.types';
+import type {
+  MediaSearchResult,
+  MediaType,
+} from '../../molecules/MediaSearchDropdown/MediaSearchDropdown.types';
 import type { SelectableListType } from '../../molecules/MiniCategorySelector/MiniCategorySelector.types';
 
 /**

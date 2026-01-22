@@ -4,12 +4,29 @@
 
 import type { StyleProp, ViewProps, ViewStyle } from 'react-native';
 
-import type { MediaSearchResult } from '@domain/common/ports/media-provider.port';
-
 /**
  * Media type for determining icons and labels
  */
 export type MediaType = 'movie' | 'book' | 'game';
+
+/**
+ * Search result from external media provider
+ * (Local definition to avoid design-system dependency on domain)
+ */
+export interface MediaSearchResult {
+  /** External provider ID */
+  externalId: string;
+  /** Title of the media */
+  title: string;
+  /** Description/overview, if available */
+  description: string | null;
+  /** Image/poster URL, if available */
+  imageUrl: string | null;
+  /** Release year, if available */
+  year: number | null;
+  /** Additional provider-specific metadata */
+  metadata: Record<string, unknown>;
+}
 
 export interface MediaSearchDropdownProps extends Omit<ViewProps, 'style'> {
   /**
