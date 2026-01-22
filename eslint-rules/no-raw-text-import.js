@@ -23,6 +23,11 @@ module.exports = {
       return {};
     }
 
+    // Allow in MarkdownViewer which needs raw Text for nested text composition
+    if (filename.includes('design-system/molecules/MarkdownViewer/')) {
+      return {};
+    }
+
     return {
       ImportDeclaration(node) {
         if (node.source.value === 'react-native') {

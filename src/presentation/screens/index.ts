@@ -5,6 +5,7 @@
 export { HistoryDetailScreen } from './HistoryDetailScreen';
 export { InboxScreen } from './InboxScreen';
 export { ListsScreen } from './ListsScreen';
+export { NoteDetailScreen } from './NoteDetailScreen';
 export { NotesScreen } from './NotesScreen';
 export { PurchaseHistoryScreen } from './PurchaseHistoryScreen';
 export { SearchScreen } from './SearchScreen';

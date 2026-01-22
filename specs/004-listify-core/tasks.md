@@ -472,14 +472,14 @@
 
 ### Implementação
 
-- [ ] T177 [P] [US7.2] Criar molécula MarkdownViewer em src/design-system/molecules/MarkdownViewer/ via CLI
-- [ ] T178 [P] [US7.2] Criar molécula MarkdownEditor em src/design-system/molecules/MarkdownEditor/ via CLI
-- [ ] T179 [P] [US7.2] Criar átomo InlineEdit em src/design-system/atoms/InlineEdit/ via CLI
-- [ ] T180 [US7.2] Criar NoteDetailScreen em src/presentation/screens/NoteDetailScreen.tsx
-- [ ] T181 [US7.2] Configurar rota em app/note/[id].tsx
-- [ ] T182 [US7.2] Implementar modo visualização como padrão
-- [ ] T183 [US7.2] Implementar edição inline de título
-- [ ] T184 [US7.2] Implementar suporte a markdown (negrito, itálico, listas, headers, links)
+- [X] T177 [P] [US7.2] Criar molécula MarkdownViewer em src/design-system/molecules/MarkdownViewer/ via CLI
+- [X] T178 [P] [US7.2] Criar molécula MarkdownEditor em src/design-system/molecules/MarkdownEditor/ via CLI
+- [X] T179 [P] [US7.2] Criar átomo InlineEdit em src/design-system/atoms/InlineEdit/ via CLI
+- [X] T180 [US7.2] Criar NoteDetailScreen em src/presentation/screens/NoteDetailScreen.tsx
+- [X] T181 [US7.2] Configurar rota em app/note/[id].tsx
+- [X] T182 [US7.2] Implementar modo visualização como padrão
+- [X] T183 [US7.2] Implementar edição inline de título
+- [X] T184 [US7.2] Implementar suporte a markdown (negrito, itálico, listas, headers, links)
 
 **Checkpoint**: Tela de detalhes de nota com markdown funcional
 

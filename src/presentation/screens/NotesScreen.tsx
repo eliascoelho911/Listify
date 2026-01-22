@@ -172,10 +172,13 @@ export function NotesScreen(): ReactElement {
     await loadAllNotes();
   }, [loadAllNotes]);
 
-  const handleNotePress = useCallback((note: NoteItem) => {
-    console.debug('[NotesScreen] Note pressed:', note.id);
-    // TODO: Navigate to note detail/edit screen when route is created
-  }, []);
+  const handleNotePress = useCallback(
+    (note: NoteItem) => {
+      console.debug('[NotesScreen] Note pressed:', note.id);
+      router.push(`/note/${note.id}`);
+    },
+    [router],
+  );
 
   const handleNoteLongPress = useCallback((note: NoteItem) => {
     console.debug('[NotesScreen] Note long pressed:', note.id);
