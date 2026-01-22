@@ -19,7 +19,7 @@ import type { ListType } from '@domain/list';
 import { useItemStoreWithDI } from '@presentation/hooks';
 import { FAB } from '@design-system/atoms';
 import type { MediaItem } from '@design-system/molecules';
-import { ConfirmationDialog, EmptyState, MediaCard } from '@design-system/molecules';
+import { ConfirmationDialog, EmptyState, MediaCard, SwipeToDelete } from '@design-system/molecules';
 import type { NavbarAction } from '@design-system/organisms';
 import { Navbar } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
@@ -154,6 +154,12 @@ export function InterestListScreen(): ReactElement {
     // TODO: Open add item modal with media search
   }, []);
 
+  const handleSwipeDelete = useCallback((item: Item) => {
+    // Set item for confirmation before actual deletion
+    setItemToDelete(item);
+    setDeleteDialogVisible(true);
+  }, []);
+
   const interestItems = useMemo(
     () =>
       items
@@ -167,19 +173,24 @@ export function InterestListScreen(): ReactElement {
   const renderItem = useCallback(
     ({ item }: { item: InterestItem }) => (
       <View style={styles.itemContainer}>
-        <MediaCard
-          item={item as MediaItem}
-          onPress={handleItemPress}
-          onLongPress={handleItemLongPress}
-          onToggleChecked={handleItemToggle}
-          showCheckbox
-          showRating
-          showYear
-          testID={`media-item-${item.id}`}
-        />
+        <SwipeToDelete
+          onDelete={() => handleSwipeDelete(item)}
+          deleteLabel={t('common.delete', 'Excluir')}
+        >
+          <MediaCard
+            item={item as MediaItem}
+            onPress={handleItemPress}
+            onLongPress={handleItemLongPress}
+            onToggleChecked={handleItemToggle}
+            showCheckbox
+            showRating
+            showYear
+            testID={`media-item-${item.id}`}
+          />
+        </SwipeToDelete>
       </View>
     ),
-    [handleItemPress, handleItemLongPress, handleItemToggle, styles.itemContainer],
+    [handleItemPress, handleItemLongPress, handleSwipeDelete, handleItemToggle, styles.itemContainer, t],
   );
 
   const keyExtractor = useCallback((item: InterestItem) => item.id, []);
