@@ -7,7 +7,7 @@
 
 import React from 'react';
 import { View } from 'react-native';
-import type { Meta, StoryObj } from '@storybook/react';
+import type { Meta, StoryObj } from '@storybook/react-native';
 
 import { Text } from '../../atoms/Text/Text';
 
@@ -31,7 +31,7 @@ type Story = StoryObj;
 export const Documentation: Story = {
   render: () => (
     <View style={{ padding: 16 }}>
-      <Text variant="heading">Bottombar Component</Text>
+      <Text variant="h2">Bottombar Component</Text>
       <Text variant="body" color="muted" style={{ marginTop: 8 }}>
         The Bottombar is a custom tab bar component designed for Expo Router. It displays 4
         navigation tabs (Inbox, Search, Notes, Lists) with a central FAB button for adding new
