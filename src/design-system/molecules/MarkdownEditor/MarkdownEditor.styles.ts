@@ -5,6 +5,7 @@
 import { StyleSheet } from 'react-native';
 
 import type { Theme } from '../../theme/theme';
+import { transparent } from '../../tokens/colors';
 
 export const createMarkdownEditorStyles = (theme: Theme, minHeight: number) => {
   return StyleSheet.create({
@@ -23,7 +24,7 @@ export const createMarkdownEditorStyles = (theme: Theme, minHeight: number) => {
     toolbarButton: {
       padding: theme.spacing.sm,
       borderRadius: theme.radii.md,
-      backgroundColor: 'transparent',
+      backgroundColor: transparent,
     },
     toolbarButtonPressed: {
       backgroundColor: theme.colors.muted,
@@ -45,7 +46,7 @@ export const createMarkdownEditorStyles = (theme: Theme, minHeight: number) => {
       color: theme.colors.foreground,
       lineHeight: theme.typography.sizes.base * 1.6,
       textAlignVertical: 'top',
-      minHeight: minHeight,
+      minHeight,
     },
     placeholder: {
       color: theme.colors.mutedForeground,

@@ -70,10 +70,7 @@ Check out [React Native](https://reactnative.dev) for more info.`}
 
 export const WithoutToolbar: Story = {
   render: () => (
-    <MarkdownEditorWithState
-      showToolbar={false}
-      placeholder="Simple editor without toolbar..."
-    />
+    <MarkdownEditorWithState showToolbar={false} placeholder="Simple editor without toolbar..." />
   ),
 };
 
@@ -87,9 +84,7 @@ export const ReadOnly: Story = {
 };
 
 export const CustomMinHeight: Story = {
-  render: () => (
-    <MarkdownEditorWithState minHeight={400} placeholder="Tall editor..." />
-  ),
+  render: () => <MarkdownEditorWithState minHeight={400} placeholder="Tall editor..." />,
 };
 
 export const AutoFocus: Story = {

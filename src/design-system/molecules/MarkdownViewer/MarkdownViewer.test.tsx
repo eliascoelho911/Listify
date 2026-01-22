@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { ThemeProvider } from '../../theme';
 import { MarkdownViewer } from './MarkdownViewer';
@@ -92,9 +92,7 @@ describe('MarkdownViewer', () => {
   });
 
   it('should apply custom style', () => {
-    const { toJSON } = renderWithTheme(
-      <MarkdownViewer content="Test" style={{ marginTop: 20 }} />,
-    );
+    const { toJSON } = renderWithTheme(<MarkdownViewer content="Test" style={{ marginTop: 20 }} />);
     expect(toJSON()).toBeTruthy();
   });
 });

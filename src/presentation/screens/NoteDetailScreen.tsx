@@ -298,7 +298,10 @@ export function NoteDetailScreen(): ReactElement {
       <ConfirmationDialog
         visible={showDeleteDialog}
         title={t('notes.deleteTitle', 'Excluir nota')}
-        message={t('notes.deleteMessage', 'Tem certeza que deseja excluir esta nota? Esta ação não pode ser desfeita.')}
+        message={t(
+          'notes.deleteMessage',
+          'Tem certeza que deseja excluir esta nota? Esta ação não pode ser desfeita.',
+        )}
         confirmLabel={t('common.delete', 'Excluir')}
         cancelLabel={t('common.cancel', 'Cancelar')}
         onConfirm={handleConfirmDelete}

@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, screen, fireEvent } from '@testing-library/react-native';
+import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { ThemeProvider } from '../../theme';
 import { InlineEdit } from './InlineEdit';
@@ -14,23 +14,17 @@ const renderWithTheme = (component: React.ReactElement) => {
 
 describe('InlineEdit', () => {
   it('should render with value in display mode', () => {
-    renderWithTheme(
-      <InlineEdit value="Test Value" onChangeText={jest.fn()} />,
-    );
+    renderWithTheme(<InlineEdit value="Test Value" onChangeText={jest.fn()} />);
     expect(screen.getByText('Test Value')).toBeTruthy();
   });
 
   it('should render placeholder when value is empty', () => {
-    renderWithTheme(
-      <InlineEdit value="" onChangeText={jest.fn()} placeholder="Enter text" />,
-    );
+    renderWithTheme(<InlineEdit value="" onChangeText={jest.fn()} placeholder="Enter text" />);
     expect(screen.getByText('Enter text')).toBeTruthy();
   });
 
   it('should enter edit mode on press', () => {
-    renderWithTheme(
-      <InlineEdit value="Test" onChangeText={jest.fn()} />,
-    );
+    renderWithTheme(<InlineEdit value="Test" onChangeText={jest.fn()} />);
 
     fireEvent.press(screen.getByText('Test'));
     // In edit mode, an input should be visible
@@ -39,9 +33,7 @@ describe('InlineEdit', () => {
 
   it('should call onChangeText when editing', () => {
     const onChangeText = jest.fn();
-    renderWithTheme(
-      <InlineEdit value="Test" onChangeText={onChangeText} isEditing />,
-    );
+    renderWithTheme(<InlineEdit value="Test" onChangeText={onChangeText} isEditing />);
 
     fireEvent.changeText(screen.getByDisplayValue('Test'), 'New Text');
     expect(onChangeText).toHaveBeenCalledWith('New Text');
@@ -58,9 +50,7 @@ describe('InlineEdit', () => {
   });
 
   it('should not enter edit mode when disabled', () => {
-    renderWithTheme(
-      <InlineEdit value="Disabled" onChangeText={jest.fn()} disabled />,
-    );
+    renderWithTheme(<InlineEdit value="Disabled" onChangeText={jest.fn()} disabled />);
 
     fireEvent.press(screen.getByText('Disabled'));
     // Should still show text, not input
@@ -71,11 +61,7 @@ describe('InlineEdit', () => {
   it('should call onEditingChange when editing state changes', () => {
     const onEditingChange = jest.fn();
     renderWithTheme(
-      <InlineEdit
-        value="Test"
-        onChangeText={jest.fn()}
-        onEditingChange={onEditingChange}
-      />,
+      <InlineEdit value="Test" onChangeText={jest.fn()} onEditingChange={onEditingChange} />,
     );
 
     fireEvent.press(screen.getByText('Test'));
@@ -97,14 +83,7 @@ describe('InlineEdit', () => {
   });
 
   it('should respect maxLength', () => {
-    renderWithTheme(
-      <InlineEdit
-        value="Test"
-        onChangeText={jest.fn()}
-        maxLength={10}
-        isEditing
-      />,
-    );
+    renderWithTheme(<InlineEdit value="Test" onChangeText={jest.fn()} maxLength={10} isEditing />);
 
     const input = screen.getByDisplayValue('Test');
     expect(input.props.maxLength).toBe(10);
@@ -112,12 +91,7 @@ describe('InlineEdit', () => {
 
   it('should handle multiline mode', () => {
     renderWithTheme(
-      <InlineEdit
-        value="Line 1\nLine 2"
-        onChangeText={jest.fn()}
-        multiline
-        isEditing
-      />,
+      <InlineEdit value="Line 1\nLine 2" onChangeText={jest.fn()} multiline isEditing />,
     );
 
     const input = screen.getByDisplayValue('Line 1\nLine 2');
@@ -125,20 +99,14 @@ describe('InlineEdit', () => {
   });
 
   it('should show edit icon when not disabled', () => {
-    renderWithTheme(
-      <InlineEdit value="Text" onChangeText={jest.fn()} />,
-    );
+    renderWithTheme(<InlineEdit value="Text" onChangeText={jest.fn()} />);
     // Edit icon should be present (pencil icon)
     expect(screen.getByLabelText(/Edit/)).toBeTruthy();
   });
 
   it('should apply custom style', () => {
     const { toJSON } = renderWithTheme(
-      <InlineEdit
-        value="Test"
-        onChangeText={jest.fn()}
-        style={{ marginTop: 20 }}
-      />,
+      <InlineEdit value="Test" onChangeText={jest.fn()} style={{ marginTop: 20 }} />,
     );
     expect(toJSON()).toBeTruthy();
   });

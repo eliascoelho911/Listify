@@ -7,7 +7,7 @@
  */
 
 import React, { type ReactElement, useCallback, useMemo } from 'react';
-import { Linking, Pressable, Text, View } from 'react-native';
+import { Linking, Text as RNText, View } from 'react-native';
 
 import { useTheme } from '../../theme';
 import { createMarkdownViewerStyles } from './MarkdownViewer.styles';
@@ -76,7 +76,7 @@ function parseInlineMarkdown(text: string): InlineNode[] {
     }
 
     // Find next special character or take rest as plain text
-    const nextSpecial = remaining.search(/[*_~`\[]/);
+    const nextSpecial = remaining.search(/[*_~`[]/);
     if (nextSpecial === -1) {
       nodes.push({ type: 'text', content: remaining });
       break;
@@ -217,52 +217,52 @@ export function MarkdownViewer({
 
   const renderInlineNodes = useCallback(
     (inlineNodes: InlineNode[], key: string): ReactElement => (
-      <Text key={key} style={[styles.text, textStyle]}>
+      <RNText key={key} style={[styles.text, textStyle]}>
         {inlineNodes.map((node, idx) => {
           const nodeKey = `${key}-${idx}`;
           switch (node.type) {
             case 'text':
-              return <Text key={nodeKey}>{node.content}</Text>;
+              return <RNText key={nodeKey}>{node.content}</RNText>;
             case 'bold':
               return (
-                <Text key={nodeKey} style={styles.bold}>
+                <RNText key={nodeKey} style={styles.bold}>
                   {node.content}
-                </Text>
+                </RNText>
               );
             case 'italic':
               return (
-                <Text key={nodeKey} style={styles.italic}>
+                <RNText key={nodeKey} style={styles.italic}>
                   {node.content}
-                </Text>
+                </RNText>
               );
             case 'strikethrough':
               return (
-                <Text key={nodeKey} style={styles.strikethrough}>
+                <RNText key={nodeKey} style={styles.strikethrough}>
                   {node.content}
-                </Text>
+                </RNText>
               );
             case 'code':
               return (
-                <Text key={nodeKey} style={styles.code}>
+                <RNText key={nodeKey} style={styles.code}>
                   {node.content}
-                </Text>
+                </RNText>
               );
             case 'link':
               return (
-                <Text
+                <RNText
                   key={nodeKey}
                   style={styles.link}
                   onPress={() => handleLinkPress(node.url)}
                   accessibilityRole="link"
                 >
                   {node.text}
-                </Text>
+                </RNText>
               );
             default:
               return null;
           }
         })}
-      </Text>
+      </RNText>
     ),
     [styles, textStyle, handleLinkPress],
   );
@@ -280,29 +280,29 @@ export function MarkdownViewer({
 
         case 'h1':
           return (
-            <Text key={key} style={styles.h1}>
+            <RNText key={key} style={styles.h1}>
               {node.content.map((n, i) =>
                 n.type === 'text' ? n.content : renderInlineNodes([n], `${key}-${i}`),
               )}
-            </Text>
+            </RNText>
           );
 
         case 'h2':
           return (
-            <Text key={key} style={styles.h2}>
+            <RNText key={key} style={styles.h2}>
               {node.content.map((n, i) =>
                 n.type === 'text' ? n.content : renderInlineNodes([n], `${key}-${i}`),
               )}
-            </Text>
+            </RNText>
           );
 
         case 'h3':
           return (
-            <Text key={key} style={styles.h3}>
+            <RNText key={key} style={styles.h3}>
               {node.content.map((n, i) =>
                 n.type === 'text' ? n.content : renderInlineNodes([n], `${key}-${i}`),
               )}
-            </Text>
+            </RNText>
           );
 
         case 'ul':
@@ -310,7 +310,7 @@ export function MarkdownViewer({
             <View key={key}>
               {node.items.map((item, idx) => (
                 <View key={`${key}-item-${idx}`} style={styles.listItem}>
-                  <Text style={styles.listBullet}>•</Text>
+                  <RNText style={styles.listBullet}>•</RNText>
                   <View style={styles.listContent}>
                     {renderInlineNodes(item, `${key}-item-${idx}`)}
                   </View>
@@ -324,7 +324,7 @@ export function MarkdownViewer({
             <View key={key}>
               {node.items.map((item, idx) => (
                 <View key={`${key}-item-${idx}`} style={styles.listItem}>
-                  <Text style={styles.listBullet}>{idx + 1}.</Text>
+                  <RNText style={styles.listBullet}>{idx + 1}.</RNText>
                   <View style={styles.listContent}>
                     {renderInlineNodes(item, `${key}-item-${idx}`)}
                   </View>
@@ -336,18 +336,18 @@ export function MarkdownViewer({
         case 'blockquote':
           return (
             <View key={key} style={styles.blockquote}>
-              <Text style={[styles.text, styles.blockquoteText, textStyle]}>
+              <RNText style={[styles.text, styles.blockquoteText, textStyle]}>
                 {node.content.map((n, i) =>
                   n.type === 'text' ? n.content : renderInlineNodes([n], `${key}-${i}`),
                 )}
-              </Text>
+              </RNText>
             </View>
           );
 
         case 'codeBlock':
           return (
             <View key={key} style={styles.codeBlock}>
-              <Text style={styles.codeBlockText}>{node.content}</Text>
+              <RNText style={styles.codeBlockText}>{node.content}</RNText>
             </View>
           );
 

@@ -6,11 +6,12 @@
  */
 
 import React, { type ReactElement, useCallback, useEffect, useRef, useState } from 'react';
-import { Pressable, Text, TextInput, View } from 'react-native';
+import { Pressable, TextInput, View } from 'react-native';
 import { Pencil } from 'lucide-react-native';
 
-import { Icon } from '../Icon/Icon';
 import { useTheme } from '../../theme';
+import { Icon } from '../Icon/Icon';
+import { Text } from '../Text/Text';
 import { createInlineEditStyles } from './InlineEdit.styles';
 import type { InlineEditProps } from './InlineEdit.types';
 
@@ -112,7 +113,9 @@ export function InlineEdit({
             {value}
           </Text>
         ) : (
-          <Text style={[styles.placeholder, textStyle]}>{placeholder}</Text>
+          <Text style={[styles.placeholder, textStyle]} color="muted">
+            {placeholder}
+          </Text>
         )}
       </View>
       {!disabled && (

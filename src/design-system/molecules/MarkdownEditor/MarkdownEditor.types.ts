@@ -68,4 +68,11 @@ export interface MarkdownEditorProps extends Omit<ViewProps, 'style'> {
   onFocus?: () => void;
 }
 
-export type MarkdownFormatAction = 'bold' | 'italic' | 'strikethrough' | 'code' | 'link' | 'list' | 'heading';
+export type MarkdownFormatAction =
+  | 'bold'
+  | 'italic'
+  | 'strikethrough'
+  | 'code'
+  | 'link'
+  | 'list'
+  | 'heading';

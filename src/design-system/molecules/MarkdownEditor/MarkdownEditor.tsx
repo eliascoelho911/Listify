@@ -7,15 +7,7 @@
 
 import React, { type ReactElement, useCallback, useRef, useState } from 'react';
 import { Pressable, TextInput, View } from 'react-native';
-import {
-  Bold,
-  Code,
-  Heading,
-  Italic,
-  Link,
-  List,
-  Strikethrough,
-} from 'lucide-react-native';
+import { Bold, Code, Heading, Italic, Link, List, Strikethrough } from 'lucide-react-native';
 
 import { Icon } from '../../atoms/Icon/Icon';
 import { useTheme } from '../../theme';
@@ -170,14 +162,11 @@ export function MarkdownEditor({
     [value, selection, onChangeText],
   );
 
-  const handleSelectionChange = useCallback(
-    (event: { nativeEvent: { selection: Selection } }) => {
-      setSelection(event.nativeEvent.selection);
-    },
-    [],
-  );
+  const handleSelectionChange = useCallback((event: { nativeEvent: { selection: Selection } }) => {
+    setSelection(event.nativeEvent.selection);
+  }, []);
 
-  const toolbarButtons: Array<{ action: MarkdownFormatAction; icon: typeof Bold }> = [
+  const toolbarButtons: { action: MarkdownFormatAction; icon: typeof Bold }[] = [
     { action: 'bold', icon: Bold },
     { action: 'italic', icon: Italic },
     { action: 'strikethrough', icon: Strikethrough },
@@ -203,11 +192,7 @@ export function MarkdownEditor({
                 accessibilityLabel={`Format ${button.action}`}
                 accessibilityRole="button"
               >
-                <Icon
-                  icon={button.icon}
-                  size="sm"
-                  color={theme.colors.mutedForeground}
-                />
+                <Icon icon={button.icon} size="sm" color={theme.colors.mutedForeground} />
               </Pressable>
             </React.Fragment>
           ))}

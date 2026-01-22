@@ -56,15 +56,11 @@ export const Default: Story = {
 };
 
 export const Title: Story = {
-  render: () => (
-    <InlineEditWithState initialValue="Note Title" variant="title" />
-  ),
+  render: () => <InlineEditWithState initialValue="Note Title" variant="title" />,
 };
 
 export const Subtitle: Story = {
-  render: () => (
-    <InlineEditWithState initialValue="Section Header" variant="subtitle" />
-  ),
+  render: () => <InlineEditWithState initialValue="Section Header" variant="subtitle" />,
 };
 
 export const Empty: Story = {
@@ -73,11 +69,7 @@ export const Empty: Story = {
 
 export const WithMaxLength: Story = {
   render: () => (
-    <InlineEditWithState
-      initialValue="Limited"
-      maxLength={20}
-      placeholder="Max 20 characters"
-    />
+    <InlineEditWithState initialValue="Limited" maxLength={20} placeholder="Max 20 characters" />
   ),
 };
 
@@ -91,25 +83,25 @@ export const Multiline: Story = {
 };
 
 export const Disabled: Story = {
-  render: () => (
-    <InlineEditWithState initialValue="Cannot edit this" disabled />
-  ),
+  render: () => <InlineEditWithState initialValue="Cannot edit this" disabled />,
+};
+
+const ControlledEditingExample = () => {
+  const [value, setValue] = useState('Controlled editing state');
+  const [isEditing, setIsEditing] = useState(true);
+
+  return (
+    <InlineEdit
+      value={value}
+      onChangeText={setValue}
+      isEditing={isEditing}
+      onEditingChange={setIsEditing}
+    />
+  );
 };
 
 export const ControlledEditing: Story = {
-  render: () => {
-    const [value, setValue] = useState('Controlled editing state');
-    const [isEditing, setIsEditing] = useState(true);
-
-    return (
-      <InlineEdit
-        value={value}
-        onChangeText={setValue}
-        isEditing={isEditing}
-        onEditingChange={setIsEditing}
-      />
-    );
-  },
+  render: () => <ControlledEditingExample />,
 };
 
 export const AllVariants: Story = {

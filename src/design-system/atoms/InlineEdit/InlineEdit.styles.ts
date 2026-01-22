@@ -5,6 +5,7 @@
 import { StyleSheet } from 'react-native';
 
 import type { Theme } from '../../theme/theme';
+import { transparent } from '../../tokens/colors';
 import type { InlineEditProps } from './InlineEdit.types';
 
 export const createInlineEditStyles = (
@@ -68,7 +69,7 @@ export const createInlineEditStyles = (
       paddingVertical: theme.spacing.xs,
       paddingHorizontal: 0,
       margin: 0,
-      backgroundColor: 'transparent',
+      backgroundColor: transparent,
       ...textStyles,
     },
     editIcon: {

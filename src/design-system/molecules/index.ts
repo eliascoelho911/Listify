@@ -143,4 +143,7 @@ export type { MarkdownViewerProps } from './MarkdownViewer/MarkdownViewer.types'
 
 // MarkdownEditor
 export { MarkdownEditor } from './MarkdownEditor/MarkdownEditor';
-export type { MarkdownEditorProps, MarkdownFormatAction } from './MarkdownEditor/MarkdownEditor.types';
+export type {
+  MarkdownEditorProps,
+  MarkdownFormatAction,
+} from './MarkdownEditor/MarkdownEditor.types';
