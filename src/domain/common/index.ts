@@ -35,3 +35,4 @@ export type {
   SortOrderUpdate,
   Timestamped,
 } from './types';
+export { generateNoteTitle } from './utils';

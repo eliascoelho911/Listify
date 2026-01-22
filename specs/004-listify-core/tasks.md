@@ -456,9 +456,9 @@
 
 ### Implementação
 
-- [ ] T174 [US7.1] Adicionar criação de NoteItem no useItemStore
-- [ ] T175 [US7.1] Integrar drag and drop na NotesScreen
-- [ ] T176 [US7.1] Implementar geração automática de título (fallback: timestamp)
+- [X] T174 [US7.1] Adicionar criação de NoteItem no useItemStore
+- [X] T175 [US7.1] Integrar drag and drop na NotesScreen
+- [X] T176 [US7.1] Implementar geração automática de título (fallback: timestamp)
 
 **Checkpoint**: Criação e reordenação de notas funcional
 
