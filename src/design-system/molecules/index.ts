@@ -129,3 +129,10 @@ export type { CompleteButtonProps } from './CompleteButton/CompleteButton.types'
 // HistoryCard
 export { HistoryCard } from './HistoryCard/HistoryCard';
 export type { HistoryCardProps } from './HistoryCard/HistoryCard.types';
+
+// SelectableItemList
+export { SelectableItemList } from './SelectableItemList/SelectableItemList';
+export type {
+  SelectableItemListItem,
+  SelectableItemListProps,
+} from './SelectableItemList/SelectableItemList.types';

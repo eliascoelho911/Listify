@@ -90,3 +90,7 @@ export type { DragHandleProps, DragHandleSize } from './DragHandle/DragHandle.ty
 // SectionAddButton
 export { SectionAddButton } from './SectionAddButton/SectionAddButton';
 export type { SectionAddButtonProps } from './SectionAddButton/SectionAddButton.types';
+
+// AddAllButton
+export { AddAllButton } from './AddAllButton/AddAllButton';
+export type { AddAllButtonProps } from './AddAllButton/AddAllButton.types';

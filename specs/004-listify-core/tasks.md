@@ -436,13 +436,13 @@
 
 ### Implementação
 
-- [ ] T167 [P] [US6.5] Criar molécula SelectableItemList em src/design-system/molecules/SelectableItemList/ via CLI
-- [ ] T168 [P] [US6.5] Criar átomo AddAllButton em src/design-system/atoms/AddAllButton/ via CLI
-- [ ] T169 [US6.5] Criar HistoryDetailScreen em src/presentation/screens/HistoryDetailScreen.tsx
-- [ ] T170 [US6.5] Implementar "Comprar tudo novamente"
-- [ ] T171 [US6.5] Implementar seleção individual de itens
-- [ ] T172 [US6.5] Implementar soma de quantidade para itens existentes
-- [ ] T173 [US6.5] Implementar indicação visual de itens já na lista
+- [X] T167 [P] [US6.5] Criar molécula SelectableItemList em src/design-system/molecules/SelectableItemList/ via CLI
+- [X] T168 [P] [US6.5] Criar átomo AddAllButton em src/design-system/atoms/AddAllButton/ via CLI
+- [X] T169 [US6.5] Criar HistoryDetailScreen em src/presentation/screens/HistoryDetailScreen.tsx
+- [X] T170 [US6.5] Implementar "Comprar tudo novamente"
+- [X] T171 [US6.5] Implementar seleção individual de itens
+- [X] T172 [US6.5] Implementar soma de quantidade para itens existentes
+- [X] T173 [US6.5] Implementar indicação visual de itens já na lista
 
 **Checkpoint**: Reutilização de histórico funcional
 
