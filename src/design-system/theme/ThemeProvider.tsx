@@ -3,25 +3,33 @@
  *
  * Provides theme context with:
  * - Dark theme as default
- * - Theme switching (dark ↔ light)
+ * - Theme switching (dark ↔ light ↔ auto)
+ * - Auto mode follows system preference
  * - AsyncStorage persistence
  * - Fira Sans/Code font loading via expo-font
  * - Splash screen management
  */
 
 import React, { createContext, type ReactElement, useCallback, useEffect, useState } from 'react';
+import { useColorScheme } from 'react-native';
 import * as Font from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { darkTheme, lightTheme, type Theme, type ThemeMode } from './theme';
+import { darkTheme, lightTheme, type ResolvedTheme, type Theme, type ThemeMode } from './theme';
 
 const THEME_STORAGE_KEY = '@listify:theme';
 
 interface ThemeContextValue {
+  /** The current theme object (resolved) */
   theme: Theme;
+  /** User's selected mode (dark, light, or auto) */
   mode: ThemeMode;
+  /** The actual theme being displayed (dark or light) */
+  resolvedTheme: ResolvedTheme;
+  /** Toggle between dark and light (skips auto) */
   toggleTheme: () => void;
+  /** Set specific theme mode */
   setTheme: (mode: ThemeMode) => void;
 }
 
@@ -45,6 +53,13 @@ export function ThemeProvider({
   const isTestEnvironment = process.env.NODE_ENV === 'test';
   const [fontsLoaded, setFontsLoaded] = useState(isTestEnvironment);
 
+  // Get system color scheme
+  const systemColorScheme = useColorScheme();
+
+  // Resolve the actual theme to display
+  const resolvedTheme: ResolvedTheme =
+    mode === 'auto' ? (systemColorScheme === 'light' ? 'light' : 'dark') : mode;
+
   // Load fonts and theme preference
   useEffect(() => {
     if (isTestEnvironment) {
@@ -66,7 +81,7 @@ export function ThemeProvider({
 
         // Load theme preference from AsyncStorage
         const storedTheme = await AsyncStorage.getItem(THEME_STORAGE_KEY);
-        if (storedTheme === 'light' || storedTheme === 'dark') {
+        if (storedTheme === 'light' || storedTheme === 'dark' || storedTheme === 'auto') {
           setMode(storedTheme);
         }
 
@@ -87,16 +102,16 @@ export function ThemeProvider({
     }
   }, [fontsLoaded]);
 
-  // Toggle between dark and light
+  // Toggle between dark and light (direct toggle, not through auto)
   const toggleTheme = useCallback(async () => {
-    const newMode = mode === 'dark' ? 'light' : 'dark';
+    const newMode: ThemeMode = resolvedTheme === 'dark' ? 'light' : 'dark';
     setMode(newMode);
     try {
       await AsyncStorage.setItem(THEME_STORAGE_KEY, newMode);
     } catch (error) {
       console.warn('Error saving theme preference:', error);
     }
-  }, [mode]);
+  }, [resolvedTheme]);
 
   // Set specific theme
   const setThemeMode = useCallback(async (newMode: ThemeMode) => {
@@ -108,11 +123,12 @@ export function ThemeProvider({
     }
   }, []);
 
-  const theme = mode === 'dark' ? darkTheme : lightTheme;
+  const theme = resolvedTheme === 'dark' ? darkTheme : lightTheme;
 
   const contextValue: ThemeContextValue = {
     theme,
     mode,
+    resolvedTheme,
     toggleTheme,
     setTheme: setThemeMode,
   };

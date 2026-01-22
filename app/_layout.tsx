@@ -7,6 +7,7 @@ import { StatusBar } from 'expo-status-bar';
 import { AppDependenciesProvider } from '@app/di/AppDependenciesProvider';
 import { DatabaseProvider } from '@app/di/DatabaseProvider';
 import { initializeI18n } from '@app/i18n/i18n';
+import { ErrorBoundary } from '@presentation/components';
 import { ThemeProvider } from '@design-system/theme';
 
 initializeI18n().catch(() => undefined);
@@ -25,16 +26,18 @@ function NavigationStack(): ReactElement {
 export default function RootLayout(): ReactElement {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider>
-        <SafeAreaProvider>
-          <DatabaseProvider>
-            <AppDependenciesProvider>
-              <StatusBar style="light" />
-              <NavigationStack />
-            </AppDependenciesProvider>
-          </DatabaseProvider>
-        </SafeAreaProvider>
-      </ThemeProvider>
+      <ErrorBoundary>
+        <ThemeProvider>
+          <SafeAreaProvider>
+            <DatabaseProvider>
+              <AppDependenciesProvider>
+                <StatusBar style="light" />
+                <NavigationStack />
+              </AppDependenciesProvider>
+            </DatabaseProvider>
+          </SafeAreaProvider>
+        </ThemeProvider>
+      </ErrorBoundary>
     </GestureHandlerRootView>
   );
 }

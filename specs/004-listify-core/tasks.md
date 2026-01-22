@@ -565,13 +565,13 @@
 
 ### Implementação
 
-- [ ] T205 [P] [US9.1] Criar molécula ThemeSelector em src/design-system/molecules/ThemeSelector/ via CLI
-- [ ] T206 [P] [US9.1] Criar molécula ColorPicker em src/design-system/molecules/ColorPicker/ via CLI
-- [ ] T207 [US9.1] Completar SettingsScreen com seções de tema e cor
-- [ ] T208 [US9.1] Integrar tema automático com preferência do sistema
-- [ ] T209 [US9.1] Implementar persistência de configurações via UserPreferences
+- [X] T205 [P] [US9.1] Criar molécula ThemeSelector em src/design-system/molecules/ThemeSelector/ via CLI
+- [X] T206 [P] [US9.1] Criar molécula ColorPicker em src/design-system/molecules/ColorPicker/ via CLI
+- [X] T207 [US9.1] Completar SettingsScreen com seções de tema e cor
+- [X] T208 [US9.1] Integrar tema automático com preferência do sistema
+- [X] T209 [US9.1] Implementar persistência de configurações via UserPreferences
 
-**Checkpoint**: Configuração de tema e cor funcional
+**Checkpoint**: Configuração de tema e cor funcional ✅
 
 ---
 
@@ -579,15 +579,15 @@
 
 **Propósito**: Melhorias que afetam múltiplas user stories
 
-- [ ] T210 [P] Adicionar i18n para todas as strings de UI em src/app/i18n/locales/
-- [ ] T211 [P] Implementar loading states para todas as operações assíncronas
-- [ ] T212 [P] Implementar error boundaries para tratamento de erros
-- [ ] T213 [P] Adicionar empty states com ilustrações em todas as telas de lista
-- [ ] T214 Otimizar performance de FlatList com memoização
-- [ ] T215 Executar `npm run lint` e corrigir warnings
-- [ ] T216 Executar `npm test` e garantir cobertura adequada
-- [ ] T217 Validar todos os cenários de quickstart.md
-- [ ] T218 Testar edge cases documentados em spec.md
+- [X] T210 [P] Adicionar i18n para todas as strings de UI em src/app/i18n/locales/
+- [X] T211 [P] Implementar loading states para todas as operações assíncronas
+- [X] T212 [P] Implementar error boundaries para tratamento de erros
+- [X] T213 [P] Adicionar empty states com ilustrações em todas as telas de lista
+- [X] T214 Otimizar performance de FlatList com memoização
+- [X] T215 Executar `npm run lint` e corrigir warnings
+- [X] T216 Executar `npm test` e garantir cobertura adequada
+- [X] T217 Validar todos os cenários de quickstart.md
+- [X] T218 Testar edge cases documentados em spec.md
 
 ---
 

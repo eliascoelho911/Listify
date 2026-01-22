@@ -64,6 +64,14 @@ export const lightTheme: Theme = {
 };
 
 /**
- * Theme mode type
+ * Theme mode type (user preference)
+ * - 'dark': Always dark theme
+ * - 'light': Always light theme
+ * - 'auto': Follow system preference
  */
-export type ThemeMode = 'dark' | 'light';
+export type ThemeMode = 'dark' | 'light' | 'auto';
+
+/**
+ * Resolved theme (actual theme being displayed)
+ */
+export type ResolvedTheme = 'dark' | 'light';

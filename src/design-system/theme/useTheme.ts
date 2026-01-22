@@ -6,12 +6,13 @@
 
 import { useContext } from 'react';
 
-import type { Theme, ThemeMode } from './theme';
+import type { ResolvedTheme, Theme, ThemeMode } from './theme';
 import { ThemeContext } from './ThemeProvider';
 
 export interface UseThemeReturn {
   theme: Theme;
   mode: ThemeMode;
+  resolvedTheme: ResolvedTheme;
   toggleTheme: () => void;
   setTheme: (mode: ThemeMode) => void;
 }
