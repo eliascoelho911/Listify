@@ -102,3 +102,11 @@ export type {
   SelectableListType as CategorySelectorListType,
   CategorySelectorProps,
 } from './CategorySelector/CategorySelector.types';
+
+// ShoppingItemCard
+export { ShoppingItemCard } from './ShoppingItemCard/ShoppingItemCard';
+export type { ShoppingItemCardProps } from './ShoppingItemCard/ShoppingItemCard.types';
+
+// TotalBar
+export { TotalBar } from './TotalBar/TotalBar';
+export type { TotalBarProps } from './TotalBar/TotalBar.types';
