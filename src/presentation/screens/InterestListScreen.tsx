@@ -6,7 +6,7 @@
  * Supports marking items as watched/read/played.
  */
 
-import React, { type ReactElement, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { type ReactElement, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FlatList, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -14,14 +14,26 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
-import type { BookItem, GameItem, Item, MovieItem } from '@domain/item';
+import type { MediaProviderRepository } from '@domain/common';
+import type {
+  BookItem,
+  BookMetadata,
+  GameItem,
+  Item,
+  MovieItem,
+  MovieMetadata,
+} from '@domain/item';
 import type { ListType } from '@domain/list';
-import { useItemStoreWithDI } from '@presentation/hooks';
+import { useItemStoreWithDI, useSmartInput } from '@presentation/hooks';
 import { FAB } from '@design-system/atoms';
 import type { MediaItem } from '@design-system/molecules';
 import { ConfirmationDialog, EmptyState, MediaCard, SwipeToDelete } from '@design-system/molecules';
+import type {
+  MediaSearchResult,
+  MediaType,
+} from '@design-system/molecules/MediaSearchDropdown/MediaSearchDropdown.types';
 import type { NavbarAction } from '@design-system/organisms';
-import { Navbar } from '@design-system/organisms';
+import { Navbar, SmartInputModal } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';
 
 type InterestItem = MovieItem | BookItem | GameItem;
@@ -72,6 +84,8 @@ function getItemType(listType: ListType): InterestItemType | null {
   }
 }
 
+const SEARCH_DEBOUNCE_MS = 300;
+
 export function InterestListScreen(): ReactElement {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
@@ -80,9 +94,11 @@ export function InterestListScreen(): ReactElement {
   const { id: listId } = useLocalSearchParams<{ id: string }>();
   const styles = createStyles(theme, insets.top);
 
-  const { listRepository } = useAppDependencies();
+  const { listRepository, smartInputParser, categoryInference, movieProvider, bookProvider } =
+    useAppDependencies();
   const itemStore = useItemStoreWithDI();
-  const { items, isLoading, loadByListId, clearItems, toggleChecked, deleteItem } = itemStore();
+  const { items, isLoading, loadByListId, clearItems, toggleChecked, deleteItem, createItem } =
+    itemStore();
 
   const [listName, setListName] = useState<string>('');
   const [itemType, setItemType] = useState<InterestItemType | null>(null);
@@ -90,6 +106,36 @@ export function InterestListScreen(): ReactElement {
   // Delete confirmation dialog state
   const [deleteDialogVisible, setDeleteDialogVisible] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<Item | null>(null);
+
+  // Add item modal state
+  const [addModalVisible, setAddModalVisible] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [mediaSearchResults, setMediaSearchResults] = useState<MediaSearchResult[]>([]);
+  const [isMediaSearchLoading, setIsMediaSearchLoading] = useState(false);
+  const [mediaSearchError, setMediaSearchError] = useState<string | undefined>(undefined);
+  const searchTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Get the appropriate media provider based on item type
+  const mediaProvider: MediaProviderRepository | null = useMemo(() => {
+    switch (itemType) {
+      case 'movie':
+        return movieProvider;
+      case 'book':
+        return bookProvider;
+      case 'game':
+        return null; // TODO: Add gameProvider when IGDB is implemented
+      default:
+        return null;
+    }
+  }, [itemType, movieProvider, bookProvider]);
+
+  // Smart input hook for parsing (minimal use in media search mode)
+  const smartInput = useSmartInput({
+    parser: smartInputParser,
+    categoryInference,
+    mode: 'item',
+    keepOpenAfterSubmit: true,
+  });
 
   useEffect(() => {
     if (listId) {
@@ -151,7 +197,159 @@ export function InterestListScreen(): ReactElement {
 
   const handleAddItem = useCallback(() => {
     console.debug('[InterestListScreen] Add item');
-    // TODO: Open add item modal with media search
+    setAddModalVisible(true);
+    setSearchQuery('');
+    setMediaSearchResults([]);
+    setMediaSearchError(undefined);
+  }, []);
+
+  const handleCloseAddModal = useCallback(() => {
+    setAddModalVisible(false);
+    setSearchQuery('');
+    setMediaSearchResults([]);
+    setMediaSearchError(undefined);
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+  }, []);
+
+  // Debounced media search
+  const handleSearchQueryChange = useCallback(
+    (query: string) => {
+      setSearchQuery(query);
+
+      // Clear any existing timeout
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+
+      // Clear results if query is too short
+      if (query.trim().length < 2 || !mediaProvider) {
+        setMediaSearchResults([]);
+        setIsMediaSearchLoading(false);
+        return;
+      }
+
+      // Set loading state
+      setIsMediaSearchLoading(true);
+      setMediaSearchError(undefined);
+
+      // Debounce the search
+      searchTimeoutRef.current = setTimeout(async () => {
+        try {
+          const results = await mediaProvider.search(query.trim());
+          setMediaSearchResults(
+            results.map((r) => ({
+              externalId: r.externalId,
+              title: r.title,
+              description: r.description,
+              imageUrl: r.imageUrl,
+              year: r.year,
+              metadata: r.metadata,
+            })),
+          );
+          setMediaSearchError(undefined);
+        } catch (error) {
+          console.debug('[InterestListScreen] Media search error:', error);
+          setMediaSearchError(t('interest.searchError', 'Erro ao buscar. Tente novamente.'));
+          setMediaSearchResults([]);
+        } finally {
+          setIsMediaSearchLoading(false);
+        }
+      }, SEARCH_DEBOUNCE_MS);
+    },
+    [mediaProvider, t],
+  );
+
+  // Handle selection of a media search result
+  const handleSelectMediaResult = useCallback(
+    async (result: MediaSearchResult) => {
+      if (!listId || !itemType) return;
+
+      console.debug('[InterestListScreen] Selected media result:', result.title);
+
+      // Create item based on type
+      const baseInput = {
+        listId,
+        title: result.title,
+        externalId: result.externalId,
+        sortOrder: items.length,
+        isChecked: false,
+      };
+
+      if (itemType === 'movie') {
+        const metadata: MovieMetadata = {
+          category: 'movie',
+          coverUrl: result.imageUrl ?? undefined,
+          description: result.description ?? undefined,
+          releaseDate: result.year ? `${result.year}-01-01` : undefined,
+          rating: (result.metadata.voteAverage as number) ?? undefined,
+          cast: (result.metadata.cast as string[]) ?? undefined,
+        };
+
+        await createItem({ ...baseInput, type: 'movie', metadata }, 'movie');
+      } else if (itemType === 'book') {
+        const metadata: BookMetadata = {
+          category: 'book',
+          coverUrl: result.imageUrl ?? undefined,
+          description: result.description ?? undefined,
+          releaseDate: result.year ? `${result.year}-01-01` : undefined,
+          rating: (result.metadata.averageRating as number) ?? undefined,
+          authors: (result.metadata.authors as string[]) ?? undefined,
+        };
+
+        await createItem({ ...baseInput, type: 'book', metadata }, 'book');
+      }
+      // TODO: Handle game type when IGDB is implemented
+
+      // Keep modal open for continuous creation
+      setSearchQuery('');
+      setMediaSearchResults([]);
+    },
+    [listId, itemType, items.length, createItem],
+  );
+
+  // Handle manual entry (no API result selected)
+  const handleManualMediaEntry = useCallback(
+    async (title: string) => {
+      if (!listId || !itemType || !title.trim()) return;
+
+      console.debug('[InterestListScreen] Manual entry:', title);
+
+      const baseInput = {
+        listId,
+        title: title.trim(),
+        sortOrder: items.length,
+        isChecked: false,
+      };
+
+      if (itemType === 'movie') {
+        await createItem(
+          { ...baseInput, type: 'movie', metadata: { category: 'movie' as const } },
+          'movie',
+        );
+      } else if (itemType === 'book') {
+        await createItem(
+          { ...baseInput, type: 'book', metadata: { category: 'book' as const } },
+          'book',
+        );
+      }
+      // TODO: Handle game type when IGDB is implemented
+
+      // Keep modal open for continuous creation
+      setSearchQuery('');
+      setMediaSearchResults([]);
+    },
+    [listId, itemType, items.length, createItem],
+  );
+
+  // Cleanup timeout on unmount
+  useEffect(() => {
+    return () => {
+      if (searchTimeoutRef.current) {
+        clearTimeout(searchTimeoutRef.current);
+      }
+    };
   }, []);
 
   const handleSwipeDelete = useCallback((item: Item) => {
@@ -263,6 +461,34 @@ export function InterestListScreen(): ReactElement {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
         testID="interest-delete-dialog"
+      />
+
+      {/* Add Item Modal with Media Search */}
+      <SmartInputModal
+        visible={addModalVisible}
+        onClose={handleCloseAddModal}
+        onSubmit={() => {}}
+        value={searchQuery}
+        onChangeText={handleSearchQueryChange}
+        parsed={smartInput.parsed}
+        listSuggestions={[]}
+        showSuggestions={false}
+        onSelectList={() => {}}
+        placeholder={t(
+          `interest.${itemType}.searchPlaceholder`,
+          itemType === 'movie'
+            ? 'Buscar filme...'
+            : itemType === 'book'
+              ? 'Buscar livro...'
+              : 'Buscar jogo...',
+        )}
+        keepOpen
+        mediaSearchMode={itemType as MediaType | undefined}
+        mediaSearchResults={mediaSearchResults}
+        isMediaSearchLoading={isMediaSearchLoading}
+        mediaSearchError={mediaSearchError}
+        onSelectMediaResult={handleSelectMediaResult}
+        onManualMediaEntry={handleManualMediaEntry}
       />
     </View>
   );

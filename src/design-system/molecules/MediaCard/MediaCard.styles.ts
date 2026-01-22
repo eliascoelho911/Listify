@@ -86,6 +86,12 @@ export const createMediaCardStyles = (theme: Theme) => {
       fontWeight: theme.typography.weights.medium,
       color: theme.colors.foreground,
     },
+    secondaryInfo: {
+      fontFamily: theme.typography.families.body,
+      fontSize: theme.typography.sizes.xs,
+      fontWeight: theme.typography.weights.medium,
+      color: theme.colors.primary,
+    },
     description: {
       fontFamily: theme.typography.families.body,
       fontSize: theme.typography.sizes.xs,
