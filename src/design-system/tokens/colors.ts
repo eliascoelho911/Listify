@@ -119,6 +119,10 @@ export const darkTheme = {
   itemMovie: itemTypeColors.movie,
   itemBook: itemTypeColors.book,
   itemGame: itemTypeColors.game,
+
+  // Bottombar tokens (elevated surface with more contrast)
+  bottombar: gray[800],
+  bottombarBorder: gray[700],
 };
 
 /**
@@ -180,6 +184,10 @@ export const lightTheme = {
   itemMovie: itemTypeColors.movie,
   itemBook: itemTypeColors.book,
   itemGame: itemTypeColors.game,
+
+  // Bottombar tokens (elevated surface with more contrast)
+  bottombar: gray[100],
+  bottombarBorder: gray[300],
 };
 
 /**
