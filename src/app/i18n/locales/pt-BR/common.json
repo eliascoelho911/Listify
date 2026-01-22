@@ -43,7 +43,69 @@
   "common": {
     "expanded": "expandido",
     "collapsed": "recolhido",
-    "cancel": "Cancelar"
+    "cancel": "Cancelar",
+    "delete": "Excluir",
+    "edit": "Editar",
+    "save": "Salvar",
+    "loading": "Carregando...",
+    "error": "Ocorreu um erro",
+    "retry": "Tentar novamente"
+  },
+  "inbox": {
+    "title": "Entrada",
+    "groupBy": "Agrupar por",
+    "sortOptions": {
+      "date": "Data",
+      "type": "Tipo"
+    },
+    "dateGroups": {
+      "today": "Hoje",
+      "yesterday": "Ontem",
+      "weeksAgo_one": "{{count}} semana atrás",
+      "weeksAgo_other": "{{count}} semanas atrás"
+    },
+    "empty": {
+      "title": "Nenhum item",
+      "description": "Adicione itens usando o botão +"
+    },
+    "deleteItem": {
+      "title": "Excluir item?",
+      "message": "Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita."
+    }
+  },
+  "notes": {
+    "title": "Notas",
+    "empty": {
+      "title": "Nenhuma nota",
+      "description": "Crie uma nota usando o botão +"
+    },
+    "untitled": "Nota sem título",
+    "deleteNote": {
+      "title": "Excluir nota?",
+      "message": "Tem certeza que deseja excluir esta nota? Esta ação não pode ser desfeita."
+    }
+  },
+  "noteDetail": {
+    "untitled": "Sem título",
+    "tapToEdit": "Toque para editar...",
+    "editTitle": "Editar título",
+    "titlePlaceholder": "Título da nota"
+  },
+  "interestList": {
+    "markAs": {
+      "watched": "Assistido",
+      "read": "Lido",
+      "played": "Jogado"
+    },
+    "unmarkAs": {
+      "watched": "Não assistido",
+      "read": "Não lido",
+      "played": "Não jogado"
+    },
+    "deleteItem": {
+      "title": "Excluir item?",
+      "message": "Tem certeza que deseja excluir este item? Esta ação não pode ser desfeita."
+    }
   },
   "listForm": {
     "nameLabel": "NOME DA LISTA",

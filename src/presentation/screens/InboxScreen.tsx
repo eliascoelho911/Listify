@@ -31,52 +31,60 @@ import { useTheme } from '@design-system/theme';
 
 type GroupBy = 'date' | 'type' | 'list';
 
-const SORT_OPTIONS: SortOption<GroupBy>[] = [
-  { value: 'date', label: 'Data' },
-  { value: 'type', label: 'Tipo' },
-];
-
-function formatDateGroup(date: Date): string {
+function formatDateGroup(
+  date: Date,
+  t: (key: string, defaultValue?: string) => string,
+  locale: string,
+): string {
   const now = new Date();
   const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   const yesterday = new Date(today.getTime() - 24 * 60 * 60 * 1000);
   const itemDate = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
   if (itemDate.getTime() === today.getTime()) {
-    return 'Hoje';
+    return t('inbox.dateGroups.today', 'Today');
   }
   if (itemDate.getTime() === yesterday.getTime()) {
-    return 'Ontem';
+    return t('inbox.dateGroups.yesterday', 'Yesterday');
   }
 
   const diff = today.getTime() - itemDate.getTime();
   const days = Math.floor(diff / (24 * 60 * 60 * 1000));
 
   if (days < 7) {
-    return date.toLocaleDateString('pt-BR', { weekday: 'long' });
+    return date.toLocaleDateString(locale, { weekday: 'long' });
   }
   if (days < 30) {
-    return `${Math.floor(days / 7)} semana${days >= 14 ? 's' : ''} atrás`;
+    const weeks = Math.floor(days / 7);
+    return t('inbox.dateGroups.weeksAgo', { count: weeks, defaultValue: `${weeks} week(s) ago` });
   }
-  return date.toLocaleDateString('pt-BR', { month: 'long', year: 'numeric' });
+  return date.toLocaleDateString(locale, { month: 'long', year: 'numeric' });
 }
 
-function getItemTypeName(type: Item['type']): string {
-  const typeNames: Record<Item['type'], string> = {
-    note: 'Notas',
-    shopping: 'Compras',
-    movie: 'Filmes',
-    book: 'Livros',
-    game: 'Jogos',
+function getItemTypeName(
+  type: Item['type'],
+  t: (key: string, defaultValue?: string) => string,
+): string {
+  const typeKeys: Record<Item['type'], string> = {
+    note: 'listTypes.notes',
+    shopping: 'listTypes.shopping',
+    movie: 'listTypes.movies',
+    book: 'listTypes.books',
+    game: 'listTypes.games',
   };
-  return typeNames[type];
+  return t(typeKeys[type], type);
 }
 
-function groupItemsByDate(items: Item[], direction: SortDirection): InfiniteScrollGroup<Item>[] {
+function groupItemsByDate(
+  items: Item[],
+  direction: SortDirection,
+  t: (key: string, defaultValue?: string) => string,
+  locale: string,
+): InfiniteScrollGroup<Item>[] {
   const groups = new Map<string, Item[]>();
 
   for (const item of items) {
-    const key = formatDateGroup(item.createdAt);
+    const key = formatDateGroup(item.createdAt, t, locale);
     const existing = groups.get(key) ?? [];
     existing.push(item);
     groups.set(key, existing);
@@ -95,7 +103,11 @@ function groupItemsByDate(items: Item[], direction: SortDirection): InfiniteScro
   return direction === 'desc' ? sortedGroups : sortedGroups.reverse();
 }
 
-function groupItemsByType(items: Item[], direction: SortDirection): InfiniteScrollGroup<Item>[] {
+function groupItemsByType(
+  items: Item[],
+  direction: SortDirection,
+  t: (key: string, defaultValue?: string) => string,
+): InfiniteScrollGroup<Item>[] {
   const groups = new Map<string, Item[]>();
 
   for (const item of items) {
@@ -108,7 +120,7 @@ function groupItemsByType(items: Item[], direction: SortDirection): InfiniteScro
   const sortedGroups = Array.from(groups.entries())
     .map(([type, groupItems]) => ({
       key: type,
-      title: getItemTypeName(type as Item['type']),
+      title: getItemTypeName(type as Item['type'], t),
       items: groupItems.sort((a, b) => {
         const aTime = a.createdAt.getTime();
         const bTime = b.createdAt.getTime();
@@ -128,8 +140,17 @@ export function InboxScreen(): ReactElement {
   const { theme } = useTheme();
   const insets = useSafeAreaInsets();
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const styles = createStyles(theme, insets.top);
+  const locale = i18n.language || 'en';
+
+  const sortOptions: SortOption<GroupBy>[] = useMemo(
+    () => [
+      { value: 'date', label: t('inbox.sortOptions.date', 'Date') },
+      { value: 'type', label: t('inbox.sortOptions.type', 'Type') },
+    ],
+    [t],
+  );
 
   const [groupBy, setGroupBy] = useState<GroupBy>('date');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
@@ -155,13 +176,13 @@ export function InboxScreen(): ReactElement {
 
     switch (groupBy) {
       case 'date':
-        return groupItemsByDate(items, sortDirection);
+        return groupItemsByDate(items, sortDirection, t, locale);
       case 'type':
-        return groupItemsByType(items, sortDirection);
+        return groupItemsByType(items, sortDirection, t);
       default:
-        return groupItemsByDate(items, sortDirection);
+        return groupItemsByDate(items, sortDirection, t, locale);
     }
-  }, [items, groupBy, sortDirection]);
+  }, [items, groupBy, sortDirection, t, locale]);
 
   const handleGroupByChange = useCallback((value: GroupBy) => {
     setGroupBy(value);
@@ -294,7 +315,7 @@ export function InboxScreen(): ReactElement {
       />
 
       <SortingControls
-        options={SORT_OPTIONS}
+        options={sortOptions}
         selectedValue={groupBy}
         sortDirection={sortDirection}
         onSortChange={handleGroupByChange}

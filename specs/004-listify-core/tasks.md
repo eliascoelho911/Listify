@@ -579,15 +579,15 @@
 
 **Propósito**: Melhorias que afetam múltiplas user stories
 
-- [ ] T210 [P] Adicionar i18n para todas as strings de UI em src/app/i18n/locales/
-- [ ] T211 [P] Implementar loading states para todas as operações assíncronas
-- [ ] T212 [P] Implementar error boundaries para tratamento de erros
-- [ ] T213 [P] Adicionar empty states com ilustrações em todas as telas de lista
-- [ ] T214 Otimizar performance de FlatList com memoização
-- [ ] T215 Executar `npm run lint` e corrigir warnings
-- [ ] T216 Executar `npm test` e garantir cobertura adequada
-- [ ] T217 Validar todos os cenários de quickstart.md
-- [ ] T218 Testar edge cases documentados em spec.md
+- [X] T210 [P] Adicionar i18n para todas as strings de UI em src/app/i18n/locales/
+- [X] T211 [P] Implementar loading states para todas as operações assíncronas
+- [X] T212 [P] Implementar error boundaries para tratamento de erros
+- [X] T213 [P] Adicionar empty states com ilustrações em todas as telas de lista
+- [X] T214 Otimizar performance de FlatList com memoização
+- [X] T215 Executar `npm run lint` e corrigir warnings
+- [X] T216 Executar `npm test` e garantir cobertura adequada
+- [X] T217 Validar todos os cenários de quickstart.md
+- [X] T218 Testar edge cases documentados em spec.md
 
 ---
 

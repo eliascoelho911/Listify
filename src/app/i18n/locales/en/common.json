@@ -43,7 +43,69 @@
   "common": {
     "expanded": "expanded",
     "collapsed": "collapsed",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "save": "Save",
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "retry": "Retry"
+  },
+  "inbox": {
+    "title": "Inbox",
+    "groupBy": "Group by",
+    "sortOptions": {
+      "date": "Date",
+      "type": "Type"
+    },
+    "dateGroups": {
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "weeksAgo_one": "{{count}} week ago",
+      "weeksAgo_other": "{{count}} weeks ago"
+    },
+    "empty": {
+      "title": "No items",
+      "description": "Add items using the + button"
+    },
+    "deleteItem": {
+      "title": "Delete item?",
+      "message": "Are you sure you want to delete this item? This action cannot be undone."
+    }
+  },
+  "notes": {
+    "title": "Notes",
+    "empty": {
+      "title": "No notes",
+      "description": "Create a note using the + button"
+    },
+    "untitled": "Untitled note",
+    "deleteNote": {
+      "title": "Delete note?",
+      "message": "Are you sure you want to delete this note? This action cannot be undone."
+    }
+  },
+  "noteDetail": {
+    "untitled": "Untitled",
+    "tapToEdit": "Tap to edit...",
+    "editTitle": "Edit title",
+    "titlePlaceholder": "Note title"
+  },
+  "interestList": {
+    "markAs": {
+      "watched": "Watched",
+      "read": "Read",
+      "played": "Played"
+    },
+    "unmarkAs": {
+      "watched": "Not watched",
+      "read": "Not read",
+      "played": "Not played"
+    },
+    "deleteItem": {
+      "title": "Delete item?",
+      "message": "Are you sure you want to delete this item? This action cannot be undone."
+    }
   },
   "listForm": {
     "nameLabel": "LIST NAME",
