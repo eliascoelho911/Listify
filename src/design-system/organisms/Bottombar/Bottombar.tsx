@@ -10,7 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import type { LucideIcon } from 'lucide-react-native';
 import { Inbox, List, Plus, Search, StickyNote } from 'lucide-react-native';
 
-import { FAB, IconButton } from '@design-system/atoms';
+import { IconButton } from '@design-system/atoms';
 
 import { useTheme } from '../../theme';
 import { BOTTOMBAR_CONFIG, createBottombarStyles } from './Bottombar.styles';
@@ -86,9 +86,10 @@ export function Bottombar({ state, navigation, onFABPress }: BottombarProps): Re
       if (index === 2) {
         items.push(
           <View key="fab" style={styles.item}>
-            <FAB
-              size="md"
+            <IconButton
               icon={Plus}
+              variant="accent"
+              size="lg"
               onPress={handleFABPress}
               accessibilityLabel={currentTabName === 'lists' ? 'Add new list' : 'Add new item'}
               testID="fab-add"

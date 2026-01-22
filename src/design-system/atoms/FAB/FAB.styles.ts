@@ -25,7 +25,7 @@ export const createFABStyles = (theme: Theme, size: FABSize) => {
     container: {
       width: config.size,
       height: config.size,
-      borderRadius: theme.radii.full,
+      borderRadius: theme.radii.lg,
       backgroundColor: theme.colors.primary,
       alignItems: 'center',
       justifyContent: 'center',
