@@ -1,7 +1,7 @@
 /**
  * Bottombar Organism Styles
  *
- * Floating pill-shaped bottom bar with notch cutout for FAB
+ * Floating pill-shaped bottom bar with centered FAB
  */
 
 import { StyleSheet } from 'react-native';
@@ -13,8 +13,8 @@ import type { Theme } from '../../theme/theme';
  */
 export const BOTTOMBAR_CONFIG = {
   height: 64,
-  fabSize: 64,
-  fabIconSize: 28,
+  fabSize: 48,
+  fabIconSize: 24,
   horizontalMargin: 16,
   bottomMargin: 16,
 };
@@ -29,12 +29,15 @@ export const createBottombarStyles = (theme: Theme) => {
       right: 0,
       paddingHorizontal: BOTTOMBAR_CONFIG.horizontalMargin,
     },
-    // Inner container that holds the SVG background and content
+    // Inner container with pill shape
     container: {
       height: BOTTOMBAR_CONFIG.height,
       flexDirection: 'row',
       alignItems: 'center',
-      justifyContent: 'space-around',
+      backgroundColor: theme.colors.bottombar,
+      borderRadius: BOTTOMBAR_CONFIG.height / 2,
+      borderWidth: 1,
+      borderColor: theme.colors.bottombarBorder,
       // Strong shadow for floating effect and contrast
       shadowColor: theme.colors.shadowBase,
       shadowOffset: { width: 0, height: -4 },
@@ -42,34 +45,11 @@ export const createBottombarStyles = (theme: Theme) => {
       shadowRadius: 12,
       elevation: 12,
     },
-    // Left tabs container
-    leftTabs: {
+    // Each item (tab or FAB) takes equal space
+    item: {
       flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      zIndex: 1,
-    },
-    // Right tabs container
-    rightTabs: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      zIndex: 1,
-    },
-    // FAB container - positioned absolutely to allow elevation above the bar
-    fabContainer: {
-      position: 'absolute',
-      top:
-        -(BOTTOMBAR_CONFIG.fabSize * 0.5) +
-        BOTTOMBAR_CONFIG.height * 0.5 -
-        BOTTOMBAR_CONFIG.fabSize * 0.08,
-      left: '50%',
-      marginLeft: -(BOTTOMBAR_CONFIG.fabSize / 2),
-      zIndex: 10,
-    },
-    // Center spacer to maintain layout around the FAB
-    centerSpacer: {
-      width: BOTTOMBAR_CONFIG.fabSize + theme.spacing.md * 2,
+      alignItems: 'center',
+      justifyContent: 'center',
     },
   });
 };

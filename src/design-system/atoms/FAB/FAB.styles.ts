@@ -29,15 +29,6 @@ export const createFABStyles = (theme: Theme, size: FABSize) => {
       backgroundColor: theme.colors.primary,
       alignItems: 'center',
       justifyContent: 'center',
-      // Shadow for elevation effect
-      shadowColor: theme.colors.primary,
-      shadowOffset: {
-        width: 0,
-        height: 4,
-      },
-      shadowOpacity: 0.3,
-      shadowRadius: 8,
-      elevation: 8,
     },
     pressed: {
       transform: [{ scale: 0.95 }],
