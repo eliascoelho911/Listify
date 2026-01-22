@@ -1,4 +1,8 @@
-import type { CategoryInference, SmartInputParser } from '@domain/common';
+import type {
+  CategoryInference,
+  MediaProviderRepository,
+  SmartInputParser,
+} from '@domain/common';
 import type {
   BookItemRepository,
   GameItemRepository,
@@ -33,4 +37,5 @@ export type AppDependencies = {
   globalSearchRepository: GlobalSearchRepository<Item, List>;
   smartInputParser: SmartInputParser;
   categoryInference: CategoryInference;
+  movieProvider: MediaProviderRepository;
 };

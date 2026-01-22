@@ -4,6 +4,7 @@
 
 export { HistoryDetailScreen } from './HistoryDetailScreen';
 export { InboxScreen } from './InboxScreen';
+export { InterestListScreen } from './InterestListScreen';
 export { ListsScreen } from './ListsScreen';
 export { NoteDetailScreen } from './NoteDetailScreen';
 export { NotesScreen } from './NotesScreen';

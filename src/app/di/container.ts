@@ -13,7 +13,11 @@ import {
   DrizzleUserPreferencesRepository,
   DrizzleUserRepository,
 } from '@infra/repositories';
-import { CategoryInferenceService, SmartInputParserService } from '@infra/services';
+import {
+  CategoryInferenceService,
+  SmartInputParserService,
+  TMDbProviderService,
+} from '@infra/services';
 
 import type { AppDependencies } from './types';
 
@@ -37,6 +41,7 @@ export function buildDependenciesSync(db: DrizzleDB): AppDependencies {
 
   const smartInputParser = new SmartInputParserService();
   const categoryInference = new CategoryInferenceService();
+  const movieProvider = new TMDbProviderService();
 
   return {
     db,
@@ -54,5 +59,6 @@ export function buildDependenciesSync(db: DrizzleDB): AppDependencies {
     globalSearchRepository,
     smartInputParser,
     categoryInference,
+    movieProvider,
   };
 }

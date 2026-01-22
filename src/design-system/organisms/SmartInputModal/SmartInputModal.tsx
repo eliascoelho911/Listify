@@ -22,6 +22,7 @@ import { Icon } from '../../atoms/Icon/Icon';
 import { Text } from '../../atoms/Text/Text';
 import { InlineHighlight } from '../../molecules/InlineHighlight/InlineHighlight';
 import { ListSuggestionDropdown } from '../../molecules/ListSuggestionDropdown/ListSuggestionDropdown';
+import { MediaSearchDropdown } from '../../molecules/MediaSearchDropdown/MediaSearchDropdown';
 import { MiniCategorySelector } from '../../molecules/MiniCategorySelector/MiniCategorySelector';
 import { ParsePreview } from '../../molecules/ParsePreview/ParsePreview';
 import type { ParsedElement } from '../../molecules/ParsePreview/ParsePreview.types';
@@ -50,6 +51,12 @@ export function SmartInputModal({
   onSelectCategory,
   onCancelCategorySelection,
   keepOpen = true,
+  mediaSearchMode,
+  mediaSearchResults = [],
+  isMediaSearchLoading = false,
+  mediaSearchError,
+  onSelectMediaResult,
+  onManualMediaEntry,
   ...viewProps
 }: SmartInputModalProps): ReactElement {
   const { theme } = useTheme();
@@ -166,7 +173,7 @@ export function SmartInputModal({
             <View style={styles.handle} />
 
             {/* Item mode: Suggestions dropdown positioned above input */}
-            {!isListMode && showSuggestions && !showCategorySelector && (
+            {!isListMode && showSuggestions && !showCategorySelector && !mediaSearchMode && (
               <View style={styles.suggestionsContainer}>
                 <ListSuggestionDropdown
                   suggestions={listSuggestions}
@@ -175,6 +182,23 @@ export function SmartInputModal({
                   onCreateNew={onCreateList}
                   searchText={typedListName ?? undefined}
                   showCreateOption={!!onCreateList}
+                />
+              </View>
+            )}
+
+            {/* Media search mode: Show media search dropdown */}
+            {!isListMode && mediaSearchMode && value.length >= 2 && (
+              <View style={styles.suggestionsContainer}>
+                <MediaSearchDropdown
+                  results={mediaSearchResults}
+                  visible
+                  mediaType={mediaSearchMode}
+                  isLoading={isMediaSearchLoading}
+                  searchQuery={value}
+                  errorMessage={mediaSearchError}
+                  onSelectResult={onSelectMediaResult ?? (() => {})}
+                  onManualEntry={onManualMediaEntry}
+                  showManualOption={!!onManualMediaEntry}
                 />
               </View>
             )}
