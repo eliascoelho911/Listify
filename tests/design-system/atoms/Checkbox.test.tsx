@@ -2,8 +2,8 @@
  * Checkbox Atom Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import { Checkbox } from '@design-system/atoms/Checkbox/Checkbox';
 import { ThemeProvider } from '@design-system/theme';

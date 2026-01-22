@@ -2,8 +2,8 @@
  * PriceBadge Atom Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { PriceBadge } from '@design-system/atoms/PriceBadge/PriceBadge';
 import { ThemeProvider } from '@design-system/theme';

@@ -86,3 +86,7 @@ export type { PriceBadgeProps } from './PriceBadge/PriceBadge.types';
 // DragHandle
 export { DragHandle } from './DragHandle/DragHandle';
 export type { DragHandleProps, DragHandleSize } from './DragHandle/DragHandle.types';
+
+// SectionAddButton
+export { SectionAddButton } from './SectionAddButton/SectionAddButton';
+export type { SectionAddButtonProps } from './SectionAddButton/SectionAddButton.types';

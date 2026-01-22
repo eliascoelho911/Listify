@@ -378,13 +378,13 @@
 
 ### Implementação
 
-- [ ] T148 [P] [US5.1] Criar molécula SectionHeader em src/design-system/molecules/SectionHeader/ via CLI
-- [ ] T149 [P] [US5.1] Criar átomo SectionAddButton em src/design-system/atoms/SectionAddButton/ via CLI
-- [ ] T150 [US5.1] Criar useSectionStore em src/presentation/stores/useSectionStore.ts
-- [ ] T151 [US5.1] Integrar seções nas screens de lista
-- [ ] T152 [US5.1] Implementar drag de itens entre seções
-- [ ] T153 [US5.1] Implementar reordenação de seções
-- [ ] T154 [US5.1] Implementar botão "Adicionar nessa seção" com @Lista:Seção preenchido
+- [X] T148 [P] [US5.1] Criar molécula SectionHeader em src/design-system/molecules/SectionHeader/ via CLI
+- [X] T149 [P] [US5.1] Criar átomo SectionAddButton em src/design-system/atoms/SectionAddButton/ via CLI
+- [X] T150 [US5.1] Criar useSectionStore em src/presentation/stores/useSectionStore.ts
+- [X] T151 [US5.1] Integrar seções nas screens de lista
+- [X] T152 [US5.1] Implementar drag de itens entre seções
+- [X] T153 [US5.1] Implementar reordenação de seções
+- [X] T154 [US5.1] Implementar botão "Adicionar nessa seção" com @Lista:Seção preenchido
 
 **Checkpoint**: Seções com drag and drop funcional
 

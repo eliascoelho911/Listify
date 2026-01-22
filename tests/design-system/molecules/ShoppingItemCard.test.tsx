@@ -2,11 +2,10 @@
  * ShoppingItemCard Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
+import { fireEvent, render } from '@testing-library/react-native';
 
 import type { ShoppingItem } from '@domain/item/entities/item.entity';
-
 import { ShoppingItemCard } from '@design-system/molecules/ShoppingItemCard/ShoppingItemCard';
 import { ThemeProvider } from '@design-system/theme';
 

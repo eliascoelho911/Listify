@@ -8,8 +8,8 @@
 import React, { type ReactElement, useMemo } from 'react';
 import { View } from 'react-native';
 
-import { Text } from '../Text/Text';
 import { useTheme } from '../../theme';
+import { Text } from '../Text/Text';
 import { createPriceBadgeStyles } from './PriceBadge.styles';
 import type { PriceBadgeProps } from './PriceBadge.types';
 

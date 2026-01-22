@@ -2,8 +2,8 @@
  * DragHandle Atom Tests
  */
 
-import { render } from '@testing-library/react-native';
 import React from 'react';
+import { render } from '@testing-library/react-native';
 
 import { DragHandle } from '@design-system/atoms/DragHandle/DragHandle';
 import { ThemeProvider } from '@design-system/theme';

@@ -4,9 +4,9 @@
  * Dialog de confirmação para ações destrutivas. Inspirado no AlertDialog do Shadcn.
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React, { useState } from 'react';
 import { View } from 'react-native';
+import type { Meta, StoryObj } from '@storybook/react';
 
 import { Button } from '../../atoms';
 import { ConfirmationDialog } from './ConfirmationDialog';
@@ -107,7 +107,7 @@ export const Loading: Story = {
       description="Are you sure you want to delete this list and all its items?"
       confirmButton={{ label: 'Delete', destructive: true }}
       cancelButton={{ label: 'Cancel' }}
-      isLoading={true}
+      isLoading
     />
   ),
 };
