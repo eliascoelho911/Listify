@@ -5,8 +5,7 @@
  * Uses react-native-gesture-handler and react-native-reanimated for smooth animations.
  */
 
-import { Trash2 } from 'lucide-react-native';
-import React, { useCallback, type ReactElement } from 'react';
+import React, { type ReactElement, useCallback } from 'react';
 import { Dimensions, View } from 'react-native';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import Animated, {
@@ -16,6 +15,7 @@ import Animated, {
   withSpring,
   withTiming,
 } from 'react-native-reanimated';
+import { Trash2 } from 'lucide-react-native';
 
 import { Text } from '../../atoms';
 import { useTheme } from '../../theme';
@@ -97,11 +97,7 @@ export function SwipeToDelete({
     <View style={styles.container} testID={testID} {...viewProps}>
       {/* Delete action background */}
       <Animated.View style={[styles.deleteActionContainer, animatedActionStyle]}>
-        <Trash2
-          size={20}
-          color={theme.colors.destructiveForeground}
-          style={styles.deleteIcon}
-        />
+        <Trash2 size={20} color={theme.colors.destructiveForeground} style={styles.deleteIcon} />
         <Text style={styles.deleteActionText}>{deleteLabel}</Text>
       </Animated.View>
 

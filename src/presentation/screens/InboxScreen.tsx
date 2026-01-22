@@ -240,14 +240,11 @@ export function InboxScreen(): ReactElement {
     router.push('/settings');
   }, [router]);
 
-  const handleSwipeDelete = useCallback(
-    async (item: Item) => {
-      // Set item for confirmation before actual deletion
-      setItemToDelete(item);
-      setDeleteDialogVisible(true);
-    },
-    [],
-  );
+  const handleSwipeDelete = useCallback((item: Item) => {
+    // Set item for confirmation before actual deletion
+    setItemToDelete(item);
+    setDeleteDialogVisible(true);
+  }, []);
 
   const renderItem = useCallback(
     (item: Item) => (

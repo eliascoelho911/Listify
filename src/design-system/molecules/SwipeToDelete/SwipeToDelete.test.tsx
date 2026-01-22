@@ -2,10 +2,11 @@
  * SwipeToDelete Molecule Tests
  */
 
-import { fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
+import { render } from '@testing-library/react-native';
 
+import { Text } from '../../atoms';
 import { ThemeProvider } from '../../theme';
 import { SwipeToDelete } from './SwipeToDelete';
 
@@ -20,7 +21,7 @@ describe('SwipeToDelete', () => {
         <View>
           <Text>Test Content</Text>
         </View>
-      </SwipeToDelete>
+      </SwipeToDelete>,
     );
 
     expect(getByText('Test Content')).toBeTruthy();
@@ -32,7 +33,7 @@ describe('SwipeToDelete', () => {
         <View>
           <Text>Test Content</Text>
         </View>
-      </SwipeToDelete>
+      </SwipeToDelete>,
     );
 
     expect(getByTestId('swipe-delete')).toBeTruthy();
@@ -44,7 +45,7 @@ describe('SwipeToDelete', () => {
         <View>
           <Text>Test Content</Text>
         </View>
-      </SwipeToDelete>
+      </SwipeToDelete>,
     );
 
     expect(getByText('Remove')).toBeTruthy();
@@ -56,7 +57,7 @@ describe('SwipeToDelete', () => {
         <View>
           <Text>Test Content</Text>
         </View>
-      </SwipeToDelete>
+      </SwipeToDelete>,
     );
 
     expect(getByText('Delete')).toBeTruthy();

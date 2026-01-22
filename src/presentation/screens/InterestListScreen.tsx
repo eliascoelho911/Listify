@@ -190,7 +190,14 @@ export function InterestListScreen(): ReactElement {
         </SwipeToDelete>
       </View>
     ),
-    [handleItemPress, handleItemLongPress, handleSwipeDelete, handleItemToggle, styles.itemContainer, t],
+    [
+      handleItemPress,
+      handleItemLongPress,
+      handleSwipeDelete,
+      handleItemToggle,
+      styles.itemContainer,
+      t,
+    ],
   );
 
   const keyExtractor = useCallback((item: InterestItem) => item.id, []);

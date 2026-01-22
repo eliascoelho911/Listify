@@ -4,11 +4,12 @@
  * Storybook stories for the SwipeToDelete component.
  */
 
-import type { Meta, StoryObj } from '@storybook/react';
 import React from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import type { Meta, StoryObj } from '@storybook/react';
 
+import { Text } from '../../atoms';
 import { useTheme } from '../../theme';
 import { SwipeToDelete } from './SwipeToDelete';
 
@@ -26,7 +27,7 @@ const SwipeToDeleteMeta: Meta<typeof SwipeToDelete> = {
 
 export default SwipeToDeleteMeta;
 
-const SampleContent = (): React.ReactElement => {
+function SampleContent(): React.ReactElement {
   const { theme } = useTheme();
   return (
     <View
@@ -47,7 +48,7 @@ const SampleContent = (): React.ReactElement => {
       </Text>
     </View>
   );
-};
+}
 
 export const Default: StoryObj<typeof SwipeToDelete> = {
   render: () => (
@@ -73,33 +74,35 @@ export const CustomLabel: StoryObj<typeof SwipeToDelete> = {
   ),
 };
 
-export const MultipleItems: StoryObj<typeof SwipeToDelete> = {
-  render: () => {
-    const { theme } = useTheme();
-    return (
-      <View style={{ gap: theme.spacing.sm }}>
-        {['Item 1', 'Item 2', 'Item 3'].map((item, index) => (
-          <SwipeToDelete key={index} onDelete={() => console.log(`Deleted ${item}`)}>
-            <View
+function MultipleItemsContent(): React.ReactElement {
+  const { theme } = useTheme();
+  return (
+    <View style={{ gap: theme.spacing.sm }}>
+      {['Item 1', 'Item 2', 'Item 3'].map((item, index) => (
+        <SwipeToDelete key={index} onDelete={() => console.log(`Deleted ${item}`)}>
+          <View
+            style={{
+              padding: theme.spacing.lg,
+              backgroundColor: theme.colors.card,
+              borderRadius: theme.radii.md,
+            }}
+          >
+            <Text
               style={{
-                padding: theme.spacing.lg,
-                backgroundColor: theme.colors.card,
-                borderRadius: theme.radii.md,
+                color: theme.colors.foreground,
+                fontSize: theme.typography.sizes.base,
+                fontFamily: theme.typography.families.body,
               }}
             >
-              <Text
-                style={{
-                  color: theme.colors.foreground,
-                  fontSize: theme.typography.sizes.base,
-                  fontFamily: theme.typography.families.body,
-                }}
-              >
-                {item}
-              </Text>
-            </View>
-          </SwipeToDelete>
-        ))}
-      </View>
-    );
-  },
+              {item}
+            </Text>
+          </View>
+        </SwipeToDelete>
+      ))}
+    </View>
+  );
+}
+
+export const MultipleItems: StoryObj<typeof SwipeToDelete> = {
+  render: () => <MultipleItemsContent />,
 };
