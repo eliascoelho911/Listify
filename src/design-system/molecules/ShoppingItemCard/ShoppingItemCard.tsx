@@ -3,12 +3,14 @@
  *
  * A card component specifically designed for shopping list items.
  * Displays item title, quantity, price, and a checkbox for marking as purchased.
+ * Supports drag handle for reordering when in edit mode.
  */
 
 import React, { type ReactElement, useCallback, useMemo } from 'react';
-import { Pressable, View } from 'react-native';
+import { Pressable, TouchableOpacity, View } from 'react-native';
 
 import { Checkbox } from '../../atoms/Checkbox/Checkbox';
+import { DragHandle } from '../../atoms/DragHandle/DragHandle';
 import { PriceBadge } from '../../atoms/PriceBadge/PriceBadge';
 import { Text } from '../../atoms/Text/Text';
 import { useTheme } from '../../theme';
@@ -21,12 +23,15 @@ export function ShoppingItemCard({
   onPress,
   onLongPress,
   selected = false,
+  showDragHandle = false,
+  isDragging = false,
+  onDrag,
   style,
   testID,
 }: ShoppingItemCardProps): ReactElement {
   const { theme } = useTheme();
   const isChecked = item.isChecked ?? false;
-  const styles = createShoppingItemCardStyles(theme, { isChecked, selected });
+  const styles = createShoppingItemCardStyles(theme, { isChecked, selected, isDragging });
 
   const handleToggle = useCallback(
     (checked: boolean) => {
@@ -40,8 +45,13 @@ export function ShoppingItemCard({
   }, [item, onPress]);
 
   const handleLongPress = useCallback(() => {
-    onLongPress?.(item);
-  }, [item, onLongPress]);
+    if (showDragHandle && onDrag) {
+      // When drag handle is shown, long press on card initiates drag
+      onDrag();
+    } else {
+      onLongPress?.(item);
+    }
+  }, [item, onLongPress, showDragHandle, onDrag]);
 
   const hasPrice = useMemo(() => item.price !== undefined && item.price > 0, [item.price]);
 
@@ -54,6 +64,18 @@ export function ShoppingItemCard({
       accessibilityLabel={`${item.title}${item.quantity ? `, ${item.quantity}` : ''}${hasPrice ? `, price` : ''}, ${isChecked ? 'checked' : 'unchecked'}`}
       testID={testID}
     >
+      {showDragHandle && (
+        <TouchableOpacity
+          onLongPress={onDrag}
+          delayLongPress={100}
+          style={styles.dragHandleContainer}
+          accessibilityLabel="Drag to reorder"
+          accessibilityHint="Long press and drag to reorder this item"
+        >
+          <DragHandle size="md" isDragging={isDragging} />
+        </TouchableOpacity>
+      )}
+
       <View style={styles.checkboxContainer}>
         <Checkbox
           checked={isChecked}

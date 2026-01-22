@@ -26,7 +26,8 @@ export interface ShoppingItemCardProps {
   onPress?: (item: ShoppingItem) => void;
 
   /**
-   * Callback when the card is long pressed (for context menu)
+   * Callback when the card is long pressed (for context menu or drag)
+   * Not used when showDragHandle is true
    */
   onLongPress?: (item: ShoppingItem) => void;
 
@@ -35,6 +36,23 @@ export interface ShoppingItemCardProps {
    * @default false
    */
   selected?: boolean;
+
+  /**
+   * Whether to show the drag handle for reordering
+   * @default false
+   */
+  showDragHandle?: boolean;
+
+  /**
+   * Whether the item is currently being dragged
+   * @default false
+   */
+  isDragging?: boolean;
+
+  /**
+   * Callback to initiate drag (from react-native-draggable-flatlist)
+   */
+  onDrag?: () => void;
 
   /**
    * Custom style for the container

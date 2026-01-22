@@ -8,9 +8,9 @@ import type { Theme } from '../../theme/theme';
 
 export const createShoppingItemCardStyles = (
   theme: Theme,
-  options: { isChecked: boolean; selected: boolean },
+  options: { isChecked: boolean; selected: boolean; isDragging: boolean },
 ) => {
-  const { isChecked, selected } = options;
+  const { isChecked, selected, isDragging } = options;
 
   return StyleSheet.create({
     container: {
@@ -18,10 +18,22 @@ export const createShoppingItemCardStyles = (
       alignItems: 'center',
       padding: theme.spacing.md,
       borderRadius: theme.radii.lg,
-      backgroundColor: selected ? theme.colors.accent : theme.colors.card,
+      backgroundColor: isDragging
+        ? theme.colors.accent
+        : selected
+          ? theme.colors.accent
+          : theme.colors.card,
       borderWidth: 1,
-      borderColor: selected ? theme.colors.primary : theme.colors.border,
+      borderColor: isDragging
+        ? theme.colors.primary
+        : selected
+          ? theme.colors.primary
+          : theme.colors.border,
       gap: theme.spacing.sm,
+      opacity: isDragging ? 0.9 : 1,
+    },
+    dragHandleContainer: {
+      paddingRight: theme.spacing.xs,
     },
     checkboxContainer: {
       marginRight: theme.spacing.xs,

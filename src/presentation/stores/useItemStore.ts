@@ -134,6 +134,14 @@ export interface ItemStoreActions {
    * Clear any error state
    */
   clearError: () => void;
+
+  /**
+   * Update the sort order of multiple items (for drag and drop reordering)
+   * @param items - Array of items with updated sortOrder
+   * @param type - The item type
+   * @returns True if all updates succeeded
+   */
+  updateSortOrder: (items: Item[], type: ItemType) => Promise<boolean>;
 }
 
 export type ItemStore = ItemStoreState & ItemStoreActions;
@@ -519,6 +527,47 @@ export function createItemStore(deps: ItemStoreDependencies): ItemStoreInstance 
     // Clear error state
     clearError: (): void => {
       set({ error: null });
+    },
+
+    // Update sort order for multiple items
+    updateSortOrder: async (items: Item[], type: ItemType): Promise<boolean> => {
+      const backup = get().items;
+
+      // Optimistic update - update items with new sortOrder immediately
+      set({ items: [...items], error: null });
+
+      try {
+        // Update each item's sortOrder in the database
+        const updatePromises = items.map(async (item, index) => {
+          const updates = { sortOrder: index };
+
+          switch (type) {
+            case 'note':
+              return noteItemRepository.update(item.id, updates as UpdateNoteItemInput);
+            case 'shopping':
+              return shoppingItemRepository.update(item.id, updates as UpdateShoppingItemInput);
+            case 'movie':
+              return movieItemRepository.update(item.id, updates as UpdateMovieItemInput);
+            case 'book':
+              return bookItemRepository.update(item.id, updates as UpdateBookItemInput);
+            case 'game':
+              return gameItemRepository.update(item.id, updates as UpdateGameItemInput);
+            default: {
+              const exhaustiveCheck: never = type;
+              throw new Error(`Unknown item type: ${exhaustiveCheck}`);
+            }
+          }
+        });
+
+        await Promise.all(updatePromises);
+        console.debug(`[useItemStore] Updated sort order for ${items.length} items`);
+        return true;
+      } catch (error) {
+        // Rollback on error
+        set({ items: backup, error: 'Failed to update sort order' });
+        console.error('[useItemStore] Failed to update sort order:', error);
+        return false;
+      }
     },
   }));
 }

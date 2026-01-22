@@ -59,3 +59,4 @@ storybook-static
 
 # Worktrees
 .worktrees/**
+.claude/ralph-loop.local.md
