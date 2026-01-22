@@ -14,14 +14,24 @@ import { useLocalSearchParams, useRouter } from 'expo-router';
 import { ArrowLeft, Plus } from 'lucide-react-native';
 
 import { useAppDependencies } from '@app/di';
-import type { BookItem, BookMetadata, GameItem, Item, MovieItem, MovieMetadata } from '@domain/item';
-import type { ListType } from '@domain/list';
 import type { MediaProviderRepository } from '@domain/common';
+import type {
+  BookItem,
+  BookMetadata,
+  GameItem,
+  Item,
+  MovieItem,
+  MovieMetadata,
+} from '@domain/item';
+import type { ListType } from '@domain/list';
 import { useItemStoreWithDI, useSmartInput } from '@presentation/hooks';
 import { FAB } from '@design-system/atoms';
 import type { MediaItem } from '@design-system/molecules';
-import type { MediaSearchResult, MediaType } from '@design-system/molecules/MediaSearchDropdown/MediaSearchDropdown.types';
 import { ConfirmationDialog, EmptyState, MediaCard, SwipeToDelete } from '@design-system/molecules';
+import type {
+  MediaSearchResult,
+  MediaType,
+} from '@design-system/molecules/MediaSearchDropdown/MediaSearchDropdown.types';
 import type { NavbarAction } from '@design-system/organisms';
 import { Navbar, SmartInputModal } from '@design-system/organisms';
 import { useTheme } from '@design-system/theme';

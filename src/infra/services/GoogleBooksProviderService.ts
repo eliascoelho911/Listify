@@ -189,9 +189,7 @@ export class GoogleBooksProviderService implements MediaProviderRepository {
   /**
    * Get the best available image URL from imageLinks
    */
-  private getBestImageUrl(
-    imageLinks?: GoogleBooksVolumeInfo['imageLinks'],
-  ): string | null {
+  private getBestImageUrl(imageLinks?: GoogleBooksVolumeInfo['imageLinks']): string | null {
     if (!imageLinks) {
       return null;
     }
